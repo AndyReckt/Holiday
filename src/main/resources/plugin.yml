@@ -5,3 +5,5 @@ prefix: "Holiday"
 authors: [ Andyreckt ]
 description: Core Plugin I try to make
 website: https://andyreckt.me
+softdepend:
+  - LunarClient-API
