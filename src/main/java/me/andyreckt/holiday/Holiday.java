@@ -14,7 +14,7 @@ public final class Holiday extends JavaPlugin {
     public void onEnable() {
         Instance = this;
         saveDefaultConfig();
-        getLogger().info(ChatColor.BLUE + "Succesfully Loaded!");
+        getLogger().info(ChatColor.BLUE + "Successfully Loaded!");
     }
 
     @Override
