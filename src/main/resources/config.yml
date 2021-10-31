@@ -1,0 +1,12 @@
+ServerName: "Lobby"
+NetworkName: "example.com"
+
+Mongo:
+  URI: "mongodb://localhost:27017"
+
+Redis:
+  host:
+  port:
+  Auth:
+    enabled: false
+    password: "password"

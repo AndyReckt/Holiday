@@ -1,0 +1,66 @@
+package me.andyreckt.holiday.grant;
+
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ReplaceOptions;
+import lombok.Getter;
+import lombok.Setter;
+import me.andyreckt.holiday.database.utils.MongoUtils;
+import me.andyreckt.holiday.rank.Rank;
+import org.bson.Document;
+
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
+/**
+ * This Class is from Zowpy
+ * All credits to him
+ *
+ * @author Zowpy
+ */
+@Getter @Setter
+public class Grant {
+
+     final UUID uuid;
+     Rank rank;
+
+     UUID user, issuer;
+     boolean active;
+     long duration, executedAt;
+
+    public Grant(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public Grant(UUID user, UUID issuer, Rank rank, long duration) {
+        this.uuid = UUID.randomUUID();
+        this.user = user;
+        this.issuer = issuer;
+        this.rank = rank;
+        this.duration = duration;
+        this.active = true;
+        this.executedAt = System.currentTimeMillis();
+    }
+
+    public int getPriority() {
+        return rank == null ? 0 : rank.getPriority();
+    }
+
+    public boolean expired() {
+        return (executedAt + duration) <= System.currentTimeMillis();
+    }
+
+    public void save() {
+        MongoUtils.getExecutor().execute(() -> MongoUtils.getGrantCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
+    }
+
+    public Document toBson() {
+        return new Document("_id", uuid.toString())
+                .append("user", user.toString())
+                .append("issuer", issuer == null ? "Console" : issuer.toString())
+                .append("rank", rank == null ? "null" : rank.getUuid().toString())
+                .append("active", active)
+                .append("duration", duration)
+                .append("executedAt", executedAt);
+    }
+
+}

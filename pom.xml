@@ -73,6 +73,13 @@
             <version>22.0.0</version>
             <scope>compile</scope>
         </dependency>
+        <!--LunarClientApi-->
+        <dependency>
+            <groupId>com.lunarclient</groupId>
+            <artifactId>bukkitapi</artifactId>
+            <version>0.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.name}-${project.version}</finalName>
