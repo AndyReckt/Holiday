@@ -23,7 +23,7 @@ public class Rank {
      String name;
 
      String prefix, suffix;
-     boolean bold, italic, purchasable, isDefault, isStaff, isAdmin, isDev;
+     boolean bold, italic, purchasable, isDefault, isStaff, isAdmin, isDev, isVisible;
      ChatColor color;
 
      int priority; //price
@@ -63,6 +63,7 @@ public class Rank {
         this.isStaff = document.getBoolean("staff");
         this.isAdmin = document.getBoolean("admin");
         this.isDev = document.getBoolean("dev");
+        this.isVisible = document.getBoolean("visible");
 
 
         this.color = ChatColor.valueOf(document.getString("color"));
@@ -79,7 +80,7 @@ public class Rank {
     }
 
     public void save() {
-        MongoUtils.getExecutor().execute(() -> MongoUtils.getRankCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
+        MongoUtils.submitToThread(() -> MongoUtils.getRankCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
     }
 
     public Document toBson() {
@@ -94,6 +95,7 @@ public class Rank {
                 .append("staff", isStaff)
                 .append("admin", isAdmin)
                 .append("dev", isDev)
+                .append("visible", isVisible)
                 //.append("price", price)
                 .append("priority", priority)
                 .append("color", color.name())

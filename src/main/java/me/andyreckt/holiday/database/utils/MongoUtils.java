@@ -8,6 +8,7 @@ import org.bson.Document;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 
 
 public class MongoUtils {
@@ -45,8 +46,8 @@ public class MongoUtils {
         else throw new Exception("This player isn't in the database");
     }
 
-    public static Executor getExecutor() {
-        return Holiday.getInstance().getDbExecutor();
+    public static void submitToThread(Runnable runnable) {
+        ForkJoinPool.commonPool().execute(runnable);
     }
 
 }

@@ -9,7 +9,6 @@ import me.andyreckt.holiday.rank.Rank;
 import org.bson.Document;
 
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * This Class is from Zowpy
@@ -50,7 +49,7 @@ public class Grant {
     }
 
     public void save() {
-        MongoUtils.getExecutor().execute(() -> MongoUtils.getGrantCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
+        MongoUtils.submitToThread(() -> MongoUtils.getGrantCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
     }
 
     public Document toBson() {

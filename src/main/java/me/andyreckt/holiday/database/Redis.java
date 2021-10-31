@@ -7,6 +7,7 @@ import lombok.Getter;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.subscibers.PunishmentSubsciber;
 import me.andyreckt.holiday.database.subscibers.ServerStartupSubsciber;
+import me.andyreckt.holiday.database.utils.RedisUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Redis {
@@ -29,7 +30,7 @@ public class Redis {
      }
 
     public static void sendPayload(String type, JsonObject object) {
-        Holiday.getInstance().getRedisExecutor().execute(() -> jedis.getJedisHandler().write(type + "###" + object));
+        RedisUtils.submitToThread(() -> jedis.getJedisHandler().write(type + "###" + object));
     }
 
 }

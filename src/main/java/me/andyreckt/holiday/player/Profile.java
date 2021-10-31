@@ -5,16 +5,17 @@ import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.database.utils.MongoUtils;
+import me.andyreckt.holiday.grant.Grant;
 import me.andyreckt.holiday.rank.Rank;
 import org.bson.Document;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.libs.joptsimple.internal.Strings;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Getter @Setter
 public class Profile {
@@ -25,11 +26,12 @@ public class Profile {
     String name, ip;
     List<String> ips;
 
-    boolean frozen, vanished;
+    boolean frozen, vanished, online;
 
     Date firstLogin, lastSeen;
 
-    Rank rank;
+    Rank highestRank, currentVisibleRank;
+    List<Grant> grants;
 
 
     public Profile() {
@@ -68,8 +70,25 @@ public class Profile {
         return document != null;
     }
 
+    public Player getPlayer() {
+        AtomicBoolean connected = new AtomicBoolean(false);
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if(player.getUniqueId() == uuid) connected.set(true);
+        });
+
+        if(connected.get()) return Bukkit.getPlayer(uuid);
+        else return (Player) Bukkit.getOfflinePlayer(uuid);
+    }
+
+    public String getNameWithColor() {
+        return currentVisibleRank.getColor() + name;
+    }
+
+
+
     public void load() {
-        MongoUtils.getExecutor().execute(() -> {
+        MongoUtils.submitToThread(() -> {
             Document document = (Document) MongoUtils.getRankCollection().find(Filters.eq("_id", uuid.toString())).first();
 
             this.name = document.getString("name");
@@ -79,11 +98,12 @@ public class Profile {
 
             this.firstLogin = document.getDate("firstLogin");
             this.lastSeen = document.getDate("lastSeen");
+
         });
     }
 
     public void save() {
-        MongoUtils.getExecutor().execute(() -> MongoUtils.getRankCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
+        MongoUtils.submitToThread(() -> MongoUtils.getRankCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
     }
 
     public void create(Player player) {
@@ -92,17 +112,15 @@ public class Profile {
             load();
             return;
         }
+        List<String> ipsL = new ArrayList<>();
+        ipsL.add(player.getAddress().getAddress().getHostAddress());
+        this.name = player.getName();
+        this.ip = player.getAddress().getAddress().getHostAddress();
+        this.ips = ipsL;
+        this.firstLogin = new Date();
+        this.lastSeen = new Date();
+        save();
 
-        MongoUtils.getExecutor().execute(() -> {
-            Document document = new Document("_id", player.getUniqueId().toString())
-                    .append("name", player.getName())
-                    .append("ip", player.getAddress().getAddress().getHostAddress())
-                    .append("ips", new ArrayList<String>().add(player.getAddress().getAddress().getHostAddress()))
-                    .append("firstLogin", new Date())
-                    .append("lastSeen", new Date());
-
-            MongoUtils.getRankCollection().replaceOne(Filters.eq("_id", uuid.toString()), document, new ReplaceOptions().upsert(true));
-        });
     }
 
     public void create(UUID uuid) {
@@ -114,17 +132,24 @@ public class Profile {
 
         Player player = (Player) Bukkit.getOfflinePlayer(uuid);
 
-        MongoUtils.getExecutor().execute(() -> {
-            Document document = new Document("_id", player.getUniqueId().toString())
-                    .append("name", player.getName())
-                    .append("ip", player.getAddress().getAddress().getHostAddress())
-                    .append("ips", new ArrayList<String>().add(player.getAddress().getAddress().getHostAddress()))
-                    .append("firstLogin", new Date())
-                    .append("lastSeen", new Date());
-
-            MongoUtils.getRankCollection().replaceOne(Filters.eq("_id", uuid.toString()), document, new ReplaceOptions().upsert(true));
-        });
+        List<String> ipsL = new ArrayList<>();
+        ipsL.add(player.getAddress().getAddress().getHostAddress());
+        this.name = player.getName();
+        this.ip = player.getAddress().getAddress().getHostAddress();
+        this.ips = ipsL;
+        this.firstLogin = new Date();
+        this.lastSeen = new Date();
+        save();
     }
+
+    public static List<Profile> getAllProfiles() {
+        List<Profile> profiles = new ArrayList<>();
+
+        Bukkit.getOnlinePlayers().forEach(player -> profiles.add(Profile.getInstance().getFromPlayer(player)));
+
+        return profiles;
+    }
+
 
     public Document toBson() {
         return new Document("_id", uuid.toString())

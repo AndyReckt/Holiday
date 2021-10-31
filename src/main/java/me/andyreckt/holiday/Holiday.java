@@ -18,7 +18,6 @@ public final class Holiday extends JavaPlugin {
     @Getter static Holiday instance;
     @Getter boolean lunarEnabled = false;
     @Getter static final Gson gson = new GsonBuilder().serializeNulls().create();
-    @Getter Executor dbExecutor;
 
     @Override
     public void onEnable() {

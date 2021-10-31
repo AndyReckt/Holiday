@@ -9,6 +9,7 @@ import me.andyreckt.holiday.utils.json.JsonBuilder;
 
 import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 
 public class RedisUtils {
 
@@ -61,8 +62,8 @@ public class RedisUtils {
     }
 
 
-    public static Executor getExecutor() {
-        return Holiday.getInstance().getDbExecutor();
+    public static void submitToThread(Runnable runnable) {
+        ForkJoinPool.commonPool().execute(runnable);
     }
 
 }

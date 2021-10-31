@@ -5,6 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.utils.TimeUtil;
+import org.bson.Document;
+
+import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -41,6 +45,30 @@ public class PunishData {
     public String getNiceDuration() {
         return isPermanent() ? "Permanent" : this.removed ? "Removed" : TimeUtil.formatDuration(Math.abs((System.currentTimeMillis() - (this.addedAt + this.duration))));
     }
+
+    public PunishData getFromDocument(Document document) {
+
+        Profile punished = Profile.getInstance().getFromUUID(UUID.fromString(document.getString("punished")));
+        Profile issuer = Profile.getInstance().getFromUUID(UUID.fromString(document.getString("addedBy")));
+        PunishmentType type = PunishmentType.getByName(document.getString("type"));
+        String reason = document.getString("addedReason");
+        Date addedAt = document.getDate("addedAt");
+        long duration = document.getLong("duration");
+        boolean silent = document.getBoolean("silent");
+        boolean removed = document.getBoolean("removed");
+        long removedAt = document.getLong("removedAt");
+        Profile removedBy = Profile.getInstance().getFromUUID(UUID.fromString(document.getString("removedBy")));
+        String removedReason = document.getString("removedReason");
+
+        PunishData data = new PunishData(punished, type, issuer, reason, addedAt.getTime(), duration, silent);
+        data.setRemoved(removed);
+        data.setRemovedAt(removedAt);
+        data.setRemovedBy(removedBy);
+        data.setRemovedReason(removedReason);
+
+        return data;
+    }
+
 
 
 }

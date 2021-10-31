@@ -24,6 +24,12 @@ public class TimeUtil {
         return FORMAT.format(new Date(value));
     }
 
+
+
+    public static String getDuration(long input) {
+        return input == -1 ? "Permanent" : formatDuration(input);
+    }
+
     public static long getDuration(String input) {
         input = input.toLowerCase();
 
