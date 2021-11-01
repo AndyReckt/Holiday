@@ -3,8 +3,9 @@ package me.andyreckt.holiday.punishments;
 import com.mongodb.DBCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
+import me.andyreckt.holiday.database.Redis;
+import me.andyreckt.holiday.database.packets.PunishmentPacket;
 import me.andyreckt.holiday.database.utils.MongoUtils;
-import me.andyreckt.holiday.database.utils.RedisUtils;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.utils.TimeUtil;
 import org.bson.Document;
@@ -18,13 +19,13 @@ public class Punishment {
 
     public Punishment(Profile punished, Profile issuer, PunishmentType punishmentType, String reason, Boolean silent) {
         PunishData punishData = new PunishData(punished, punishmentType, issuer, reason, System.currentTimeMillis(), TimeUtil.PERMANENT, silent);
-        RedisUtils.sendPunishmentAdd(punishData);
+        Redis.getPidgin().sendPacket(new PunishmentPacket(punishData));
         addPunishment(punishData);
     }
 
     public Punishment(Profile punished, Profile issuer, PunishmentType punishmentType, String duration, String reason, Boolean silent) {
         PunishData punishData = new PunishData(punished, punishmentType, issuer, reason, System.currentTimeMillis(), TimeUtil.getDuration(duration), silent);
-        RedisUtils.sendPunishmentAdd(punishData);
+        Redis.getPidgin().sendPacket(new PunishmentPacket(punishData));
         addPunishment(punishData);
     }
 
@@ -98,19 +99,11 @@ public class Punishment {
         return list;
     }
 
-    public static List<Document> getAllPunishments(String ip) {
-        List<Document> list = new ArrayList<>();
 
-        MongoUtils.submitToThread(() -> {
 
-            DBCursor cursor = (DBCursor) MongoUtils.getPunishmentsCollection().find();
-            while(cursor.hasNext()) {
 
-                list.add((Document) cursor.getQuery());
-            }
-        });
-
-        return list;
-    }
 
 }
+
+
+

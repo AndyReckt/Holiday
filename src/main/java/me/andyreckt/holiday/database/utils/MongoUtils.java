@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.MongoDB;
+import me.andyreckt.holiday.utils.Tasks;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
@@ -47,7 +48,7 @@ public class MongoUtils {
     }
 
     public static void submitToThread(Runnable runnable) {
-        ForkJoinPool.commonPool().execute(runnable);
+        Tasks.runAsync(() -> ForkJoinPool.commonPool().execute(runnable));
     }
 
 }

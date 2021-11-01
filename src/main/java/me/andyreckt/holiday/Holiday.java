@@ -8,15 +8,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 
 @Getter @Setter
 public final class Holiday extends JavaPlugin {
 
     @Getter static Holiday instance;
-    @Getter boolean lunarEnabled = false;
+    boolean lunarEnabled = false;
     @Getter static final Gson gson = new GsonBuilder().serializeNulls().create();
 
     @Override

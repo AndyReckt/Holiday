@@ -11,16 +11,13 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Getter @Setter
 public class Profile {
 
-    @Getter static Profile instance;
+    public static Map<UUID, Profile> profileCache = new HashMap<>();
 
     UUID uuid;
     String name, ip;
@@ -31,38 +28,39 @@ public class Profile {
     Date firstLogin, lastSeen;
 
     Rank highestRank, currentVisibleRank;
+    List<Rank> ranks;
     List<Grant> grants;
 
+    List<UUID> alts;
 
-    public Profile() {
-        instance = this;
-    }
 
 
     public Profile(Player player) {
-        if(hasProfile(player.getUniqueId())) getFromPlayer(player);
-        else {
+        if(hasProfile(player.getUniqueId())) {
+            this.uuid = player.getUniqueId();
+            load();
+        } else {
             create(player);
         }
     }
 
     public Profile(UUID uuid) {
-        if(hasProfile(uuid)) getFromUUID(uuid);
-        else {
+        if(hasProfile(uuid)) {
+            this.uuid = uuid;
+            load();
+        } else {
             create(uuid);
         }
     }
 
-    public Profile getFromPlayer(Player player) {
-        this.uuid = player.getUniqueId();
-        load();
-        return this;
+    public static Profile getFromPlayer(Player player) {
+        if(profileCache.containsKey(player.getUniqueId())) return profileCache.get(player.getUniqueId());
+        return new Profile(player);
     }
 
-    public Profile getFromUUID(UUID uuid) {
-        this.uuid = uuid;
-        load();
-        return this;
+    public static Profile getFromUUID(UUID uuid) {
+        if(profileCache.containsKey(uuid)) return profileCache.get(uuid);
+        return new Profile(uuid);
     }
 
     public static boolean hasProfile(UUID uuid) {
@@ -85,8 +83,6 @@ public class Profile {
         return currentVisibleRank.getColor() + name;
     }
 
-
-
     public void load() {
         MongoUtils.submitToThread(() -> {
             Document document = (Document) MongoUtils.getRankCollection().find(Filters.eq("_id", uuid.toString())).first();
@@ -96,10 +92,19 @@ public class Profile {
 
             this.ips = document.getList("ips", String.class);
 
+            this.frozen = false;
+            this.vanished = document.getBoolean("vanished");
+            this.online = Bukkit.getPlayer(uuid) != null;
+
+            this.highestRank = Rank.getFromUUID(UUID.fromString("highestRank"));
+            this.currentVisibleRank = Rank.getFromUUID(UUID.fromString("currentVisibleRank"));
+            this.ranks = Rank.getFromStringList(document.getList("ranks", String.class));
+
             this.firstLogin = document.getDate("firstLogin");
             this.lastSeen = document.getDate("lastSeen");
 
         });
+        profileCache.put(uuid, this);
     }
 
     public void save() {
@@ -114,13 +119,13 @@ public class Profile {
         }
         List<String> ipsL = new ArrayList<>();
         ipsL.add(player.getAddress().getAddress().getHostAddress());
-        this.name = player.getName();
-        this.ip = player.getAddress().getAddress().getHostAddress();
-        this.ips = ipsL;
-        this.firstLogin = new Date();
-        this.lastSeen = new Date();
+        name = player.getName();
+        ip = player.getAddress().getAddress().getHostAddress();
+        ips = ipsL;
+        firstLogin = new Date();
+        lastSeen = new Date();
         save();
-
+        profileCache.put(uuid, this);
     }
 
     public void create(UUID uuid) {
@@ -130,22 +135,29 @@ public class Profile {
             return;
         }
 
-        Player player = (Player) Bukkit.getOfflinePlayer(uuid);
+        Player player = Bukkit.getPlayer(uuid);
 
         List<String> ipsL = new ArrayList<>();
         ipsL.add(player.getAddress().getAddress().getHostAddress());
-        this.name = player.getName();
-        this.ip = player.getAddress().getAddress().getHostAddress();
-        this.ips = ipsL;
-        this.firstLogin = new Date();
-        this.lastSeen = new Date();
+        name = player.getName();
+        ip = player.getAddress().getAddress().getHostAddress();
+        ips = ipsL;
+        firstLogin = new Date();
+        lastSeen = new Date();
+        highestRank = Rank.getDefaultRank();
+        currentVisibleRank = Rank.getDefaultRank();
+        ranks = new ArrayList<>(Collections.singletonList(Rank.getDefaultRank()));
+
+
         save();
+        profileCache.put(uuid, this);
+
     }
 
     public static List<Profile> getAllProfiles() {
         List<Profile> profiles = new ArrayList<>();
 
-        Bukkit.getOnlinePlayers().forEach(player -> profiles.add(Profile.getInstance().getFromPlayer(player)));
+        Bukkit.getOnlinePlayers().forEach(player -> profiles.add(Profile.getFromPlayer(player)));
 
         return profiles;
     }

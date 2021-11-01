@@ -60,12 +60,6 @@
             <version>3.5.2</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>io.github.zowpy</groupId>
-            <artifactId>JedisAPI</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
-        </dependency>
         <!--JetBrains Annotations in case of any errors-->
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -79,6 +73,13 @@
             <artifactId>bukkitapi</artifactId>
             <version>0.1</version>
             <scope>provided</scope>
+        </dependency>
+        <!--CommandApi-->
+        <dependency>
+            <groupId>com.jonahseguin</groupId>
+            <artifactId>drink</artifactId>
+            <version>1.0.2</version> <!-- At time of writing, 1.0.0 is latest version.  See the pom.xml for the latest version -->
+            <scope>compile</scope> <!-- Change scope to 'provided' if you are running drink as a plugin rather than shading it -->
         </dependency>
     </dependencies>
     <build>

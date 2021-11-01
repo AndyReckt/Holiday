@@ -15,7 +15,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PunishData {
 
-
     final Profile punished;
     final PunishmentType type;
     final Profile addedBy;
@@ -46,10 +45,10 @@ public class PunishData {
         return isPermanent() ? "Permanent" : this.removed ? "Removed" : TimeUtil.formatDuration(Math.abs((System.currentTimeMillis() - (this.addedAt + this.duration))));
     }
 
-    public PunishData getFromDocument(Document document) {
+    public static PunishData getFromDocument(Document document) {
 
-        Profile punished = Profile.getInstance().getFromUUID(UUID.fromString(document.getString("punished")));
-        Profile issuer = Profile.getInstance().getFromUUID(UUID.fromString(document.getString("addedBy")));
+        Profile punished = Profile.getFromUUID(UUID.fromString(document.getString("punished")));
+        Profile issuer = Profile.getFromUUID(UUID.fromString(document.getString("addedBy")));
         PunishmentType type = PunishmentType.getByName(document.getString("type"));
         String reason = document.getString("addedReason");
         Date addedAt = document.getDate("addedAt");
@@ -57,7 +56,7 @@ public class PunishData {
         boolean silent = document.getBoolean("silent");
         boolean removed = document.getBoolean("removed");
         long removedAt = document.getLong("removedAt");
-        Profile removedBy = Profile.getInstance().getFromUUID(UUID.fromString(document.getString("removedBy")));
+        Profile removedBy = Profile.getFromUUID(UUID.fromString(document.getString("removedBy")));
         String removedReason = document.getString("removedReason");
 
         PunishData data = new PunishData(punished, type, issuer, reason, addedAt.getTime(), duration, silent);

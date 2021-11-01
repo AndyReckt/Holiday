@@ -1,36 +1,51 @@
 package me.andyreckt.holiday.database;
 
-import com.google.gson.JsonObject;
-import io.github.zowpy.jedisapi.JedisAPI;
-import io.github.zowpy.jedisapi.redis.RedisCredentials;
 import lombok.Getter;
-import me.andyreckt.holiday.Holiday;
-import me.andyreckt.holiday.database.subscibers.PunishmentSubsciber;
-import me.andyreckt.holiday.database.subscibers.ServerStartupSubsciber;
-import me.andyreckt.holiday.database.utils.RedisUtils;
-import org.bukkit.configuration.file.FileConfiguration;
+import me.andyreckt.holiday.Files;
+import me.andyreckt.holiday.database.packets.PunishmentPacket;
+import me.andyreckt.holiday.database.packets.ServerStartPacket;
+import me.andyreckt.holiday.punishments.PunishmentType;
+import me.andyreckt.holiday.utils.packets.Pidgin;
+import me.andyreckt.holiday.utils.packets.RedisCredentials;
+import me.andyreckt.holiday.database.subscibers.PunishmentSubscriber;
+import me.andyreckt.holiday.database.subscibers.ServerStartupSubscriber;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
+import java.util.Arrays;
 
 public class Redis {
 
-    @Getter static RedisCredentials credentials;
-    @Getter static JedisAPI jedis;
+    static RedisCredentials credentials;
+    @Getter static Pidgin pidgin;
+    final JedisPool jedis;
 
     public Redis() {
-        FileConfiguration config = Holiday.getInstance().getConfig();
-        credentials = new RedisCredentials(config.getString("Redis.host"), config.getString("Redis.Auth.password"), "Holiday", config.getInt("Redis.port"), config.getBoolean("Redis.Auth.enabled"));
-        jedis = new JedisAPI(credentials);
-        loadSubscibers();
+
+        credentials = new RedisCredentials(Files.Config.REDIS_HOSTNAME.getString(), Files.Config.REDIS_PORT.getInteger(), Files.Config.REDIS_AUTH.getValue(), Files.Config.REDIS_PASSWORD.getString()); //<<<<<<<<<<<"Holiday",
+        if (credentials.isAuth()) {
+            jedis = new JedisPool(new JedisPoolConfig(),
+                    credentials.getHostname(),
+                    credentials.getPort(),
+                    2000,
+                    credentials.getPassword());
+        } else {
+            jedis = new JedisPool(credentials.getHostname(), credentials.getPort());
+        }
+
+        pidgin = new Pidgin("Holiday", jedis);
+        loadSubscribers();
+        Arrays.asList(
+                PunishmentPacket.class,
+                ServerStartPacket.class
+        ).forEach(packet -> pidgin.registerPacket(packet));
     }
 
-     void loadSubscibers() {
+     void loadSubscribers() {
 
-        jedis.registerSubscriber(new ServerStartupSubsciber());
-        jedis.registerSubscriber(new PunishmentSubsciber());
+        pidgin.registerListener(new ServerStartupSubscriber());
+        pidgin.registerListener(new PunishmentSubscriber());
 
      }
-
-    public static void sendPayload(String type, JsonObject object) {
-        RedisUtils.submitToThread(() -> jedis.getJedisHandler().write(type + "###" + object));
-    }
 
 }

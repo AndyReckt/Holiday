@@ -1,20 +1,18 @@
 package me.andyreckt.holiday.database.subscibers;
 
 import com.google.gson.JsonObject;
-import io.github.zowpy.jedisapi.redis.subscription.IncomingMessage;
-import io.github.zowpy.jedisapi.redis.subscription.JedisSubscriber;
 import me.andyreckt.holiday.Files;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.punishments.PunishmentType;
 import me.andyreckt.holiday.rank.Rank;
 import me.andyreckt.holiday.utils.TimeUtil;
+import me.andyreckt.holiday.utils.packets.listener.PacketListener;
 import org.bukkit.Bukkit;
 
 import java.util.UUID;
 
-public class PunishmentSubsciber extends JedisSubscriber {
+public class PunishmentSubscriber implements PacketListener {
 
-    @IncomingMessage(payload = "punishments")
     public void add(JsonObject object) {
         String type = object.get("type").toString();
         if(type.equalsIgnoreCase("add")) {
@@ -31,8 +29,8 @@ public class PunishmentSubsciber extends JedisSubscriber {
                 case BLACKLIST: string = Files.Messages.TEMP_BAN_MESSAGE.getString();
             }
 
-            Profile issuer = Profile.getInstance().getFromUUID(UUID.fromString(object.get("issuer").getAsString()));
-            Profile punished = Profile.getInstance().getFromUUID(UUID.fromString(object.get("punished").getAsString()));
+            Profile issuer = Profile.getFromUUID(UUID.fromString(object.get("issuer").getAsString()));
+            Profile punished = Profile.getFromUUID(UUID.fromString(object.get("punished").getAsString()));
 
             string = string.replace("<executor>", issuer.getNameWithColor());
             string = string.replace("<player>", punished.getNameWithColor());
@@ -51,6 +49,8 @@ public class PunishmentSubsciber extends JedisSubscriber {
             } else {
                 Bukkit.broadcastMessage(string);
             }
+
+
         }
     }
 }
