@@ -6,7 +6,6 @@ import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.utils.packets.handler.IncomingPacketHandler;
 import me.andyreckt.holiday.utils.packets.listener.PacketListener;
 import me.andyreckt.holiday.utils.packets.listener.PacketListenerData;
-import org.slf4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
@@ -17,9 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ForkJoinPool;
+import java.util.logging.Logger;
 
 public class Pidgin {
-    private static final Logger logger = (Logger) Holiday.getInstance().getLogger();
+    private static final Logger logger = Holiday.getInstance().getLogger();
     private static final Gson GSON = new GsonBuilder().create();
 
     private final String channel;
@@ -55,7 +55,8 @@ public class Pidgin {
 
             jedis.publish(this.channel, id + ";" + object);
         } catch(Exception ex) {
-            logger.error("[Pidgin] Failed to publish packet...", ex);
+            logger.warning("[Pidgin] Failed to publish packet...");
+            ex.printStackTrace();
         }
     }
 
@@ -93,7 +94,7 @@ public class Pidgin {
     }
 
     private void setupPubSub() {
-        logger.debug("[Pidgin] Setting up PubSup..");
+        logger.info("[Pidgin] Setting up PubSup..");
 
         this.jedisPubSub = new JedisPubSub() {
             @Override
@@ -116,7 +117,7 @@ public class Pidgin {
                         }
                     }
                 } catch(Exception e) {
-                    logger.error("[Pidgin] Failed to handle message", e);
+                    logger.warning("[Pidgin] Failed to handle message");
                     e.printStackTrace();
                 }
             }
@@ -125,9 +126,10 @@ public class Pidgin {
         ForkJoinPool.commonPool().execute(() -> {
             try(final Jedis jedis = this.pool.getResource()) {
                 jedis.subscribe(this.jedisPubSub, channel);
-                logger.debug("[Pidgin] Successfully subscribing to channel..");
+                logger.info("[Pidgin] Successfully subscribing to channel..");
             } catch(Exception ex) {
-                logger.error("[Pidgin] Failed to subscribe to channel..", ex);
+                logger.warning("[Pidgin] Failed to subscribe to channel..");
+                ex.printStackTrace();
             }
         });
     }

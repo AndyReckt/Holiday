@@ -21,6 +21,7 @@ public class PunishData {
     final String addedReason;
     final long addedAt, duration;
     final boolean silent;
+    final String ip;
 
     Profile removedBy;
     String removedReason;
@@ -53,13 +54,14 @@ public class PunishData {
         String reason = document.getString("addedReason");
         Date addedAt = document.getDate("addedAt");
         long duration = document.getLong("duration");
+        String ip = document.getString("ip");
         boolean silent = document.getBoolean("silent");
         boolean removed = document.getBoolean("removed");
         long removedAt = document.getLong("removedAt");
         Profile removedBy = Profile.getFromUUID(UUID.fromString(document.getString("removedBy")));
         String removedReason = document.getString("removedReason");
 
-        PunishData data = new PunishData(punished, type, issuer, reason, addedAt.getTime(), duration, silent);
+        PunishData data = new PunishData(punished, type, issuer, reason, addedAt.getTime(), duration, silent, ip);
         data.setRemoved(removed);
         data.setRemovedAt(removedAt);
         data.setRemovedBy(removedBy);

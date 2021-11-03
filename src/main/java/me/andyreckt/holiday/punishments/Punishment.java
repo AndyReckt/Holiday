@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.punishments;
 
+import com.mongodb.Block;
 import com.mongodb.DBCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
@@ -15,16 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressWarnings("unchecked")
 public class Punishment {
 
     public Punishment(Profile punished, Profile issuer, PunishmentType punishmentType, String reason, Boolean silent) {
-        PunishData punishData = new PunishData(punished, punishmentType, issuer, reason, System.currentTimeMillis(), TimeUtil.PERMANENT, silent);
+        PunishData punishData = new PunishData(punished, punishmentType, issuer, reason, System.currentTimeMillis(), TimeUtil.PERMANENT, silent, punished.getIp());
         Redis.getPidgin().sendPacket(new PunishmentPacket(punishData));
         addPunishment(punishData);
     }
 
     public Punishment(Profile punished, Profile issuer, PunishmentType punishmentType, String duration, String reason, Boolean silent) {
-        PunishData punishData = new PunishData(punished, punishmentType, issuer, reason, System.currentTimeMillis(), TimeUtil.getDuration(duration), silent);
+        PunishData punishData = new PunishData(punished, punishmentType, issuer, reason, System.currentTimeMillis(), TimeUtil.getDuration(duration), silent, punished.getIp());
         Redis.getPidgin().sendPacket(new PunishmentPacket(punishData));
         addPunishment(punishData);
     }
@@ -39,6 +41,7 @@ public class Punishment {
                 .append("addedAt", punishData.getAddedAt())
                 .append("duration", punishData.getDuration())
                 .append("silent", punishData.isSilent())
+                .append("ip", punishData.getPunished().getIp())
                 .append("removed", false)
                 .append("removedAt", null)
                 .append("removedBy", null)
@@ -63,12 +66,9 @@ public class Punishment {
     public static List<Document> getAllPunishments(Player player) {
         List<Document> list = new ArrayList<>();
 
-        MongoUtils.submitToThread(() -> {
-            DBCursor cursor = (DBCursor) MongoUtils.getPunishmentsCollection().find(Filters.eq("punished", player.getUniqueId().toString()));
-            while(cursor.hasNext()) {
-                list.add((Document) cursor.getQuery());
-            }
-        });
+        MongoUtils.submitToThread(() -> MongoUtils.getPunishmentsCollection()
+                .find(Filters.eq("punished", player.getUniqueId().toString()))
+                .forEach((Block<Document>) list::add));
 
         return list;
     }
@@ -76,12 +76,19 @@ public class Punishment {
     public static List<Document> getAllPunishments(UUID uuid) {
         List<Document> list = new ArrayList<>();
 
-        MongoUtils.submitToThread(() -> {
-            DBCursor cursor = (DBCursor) MongoUtils.getPunishmentsCollection().find(Filters.eq("punished", uuid.toString()));
-            while(cursor.hasNext()) {
-                list.add((Document) cursor.getQuery());
-            }
-        });
+        MongoUtils.submitToThread(() -> MongoUtils.getPunishmentsCollection()
+                .find(Filters.eq("punished", uuid.toString()))
+                .forEach((Block<Document>) list::add));
+
+        return list;
+    }
+
+    public static List<Document> getAllPunishments(String ip) {
+        List<Document> list = new ArrayList<>();
+
+        MongoUtils.submitToThread(() -> MongoUtils.getPunishmentsCollection()
+                .find(Filters.eq("ip", ip))
+                .forEach((Block<Document>) list::add));
 
         return list;
     }
@@ -89,12 +96,9 @@ public class Punishment {
     public static List<Document> getAllPunishments(Profile profile) {
         List<Document> list = new ArrayList<>();
 
-        MongoUtils.submitToThread(() -> {
-            DBCursor cursor = (DBCursor) MongoUtils.getPunishmentsCollection().find(Filters.eq("punished", profile.getUuid().toString()));
-            while(cursor.hasNext()) {
-                list.add((Document) cursor.getQuery());
-            }
-        });
+        MongoUtils.submitToThread(() -> MongoUtils.getPunishmentsCollection()
+                .find(Filters.eq("punished", profile.getUuid().toString()))
+                .forEach((Block<Document>) list::add));
 
         return list;
     }

@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.utils;
 
+import me.andyreckt.holiday.Files;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 
@@ -19,24 +20,6 @@ public class StringUtil {
 
     public static final char NICE_CHAR = '●';
     public static final char HEART = '\u2764';
-
-    public static final String SERVER_NAME = "Mandown Network";
-    public static final String WEBSITE = "www.mandown.us";
-    public static final String FACEBOOK = "www.facebook.com/MandownNetwork";
-    public static final String STORE_LINK = "store.mandown.us";
-    public static final String TEAMSPEAK = "ts.mandown.us";
-    public static final String APPEAL = "discord.mandown.us";
-    public static final String DISCORD = "discord.mandown.us";
-    public static final String RULES = "discord.mandown.us";
-    public static final String TWITTER = "www.twitter.com/MandownUS";
-    public static final String TWITTER_GAME_FEED = "www.twitter.com/MandownUS";
-
-    public static final String NO_PERMISSION = CC.RED + "No permission.";
-    public static final String FOR_PLAYER_ONLY = CC.RED + "Only players can perform this command.";
-    public static final String NO_PLAYER_FOUND = CC.RED + "No player with the name '<player>' found.";
-    public static final String NO_ITEM_FOUND = CC.RED + "No item with the name '<item>' found.";
-    public static final String NO_WORLD_FOUND = CC.RED + "No world with the name '<world>' found.";
-    public static final String INTEGER_NOT_VALID = CC.RED + "<source> isn't a valid number.";
 
     public static final String LOAD_ERROR_1 = CC.RED + "Error found while loading your data. (1)\n\nTry again later or contact a staff member.";
     public static final String LOAD_ERROR_2 = CC.RED + "Error found while loading your data. (2)\n\nTry again later or contact a staff member.";
@@ -196,4 +179,21 @@ public class StringUtil {
         }
         return time.toString().trim();
     }
+
+
+    public static String addNetworkPlaceholder(String string) {
+
+        string = string.replace("<network_name>", Files.Config.NETWORK_NAME.getString());
+        string = string.replace("<network_ip>", Files.Config.NETWORK_IP.getString());
+        string = string.replace("<discord>", Files.Config.NETWORK_DISCORD.getString());
+        string = string.replace("<teamspeak>", Files.Config.NETWORK_TEAMSPEAK.getString());
+        string = string.replace("<website>", Files.Config.NETWORK_WEBSITE.getString());
+        string = string.replace("<servername>", Files.Config.SERVER_NAME.getString());
+        string = string.replace("<teamspeak>", Files.Config.NETWORK_TEAMSPEAK.getString());
+        string = string.replace("<store>", Files.Config.NETWORK_STORE.getString());
+
+        return string;
+    }
+
+
 }

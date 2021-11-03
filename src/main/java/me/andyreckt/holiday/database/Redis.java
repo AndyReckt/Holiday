@@ -2,9 +2,9 @@ package me.andyreckt.holiday.database;
 
 import lombok.Getter;
 import me.andyreckt.holiday.Files;
-import me.andyreckt.holiday.database.packets.PunishmentPacket;
-import me.andyreckt.holiday.database.packets.ServerStartPacket;
-import me.andyreckt.holiday.punishments.PunishmentType;
+import me.andyreckt.holiday.database.packets.*;
+import me.andyreckt.holiday.database.subscibers.BroadcastSubscriber;
+import me.andyreckt.holiday.database.subscibers.RankSubscriber;
 import me.andyreckt.holiday.utils.packets.Pidgin;
 import me.andyreckt.holiday.utils.packets.RedisCredentials;
 import me.andyreckt.holiday.database.subscibers.PunishmentSubscriber;
@@ -37,7 +37,11 @@ public class Redis {
         loadSubscribers();
         Arrays.asList(
                 PunishmentPacket.class,
-                ServerStartPacket.class
+                ServerStartPacket.class,
+                RankDeletePacket.class,
+                RankCreatePacket.class,
+                RankUpdatePacket.class,
+                BroadcastPacket.class
         ).forEach(packet -> pidgin.registerPacket(packet));
     }
 
@@ -45,6 +49,8 @@ public class Redis {
 
         pidgin.registerListener(new ServerStartupSubscriber());
         pidgin.registerListener(new PunishmentSubscriber());
+        pidgin.registerListener(new RankSubscriber());
+        pidgin.registerListener(new BroadcastSubscriber());
 
      }
 

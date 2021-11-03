@@ -23,18 +23,18 @@ import java.util.*;
 @Getter @Setter @SuppressWarnings("unchecked")
 public class Rank {
 
-     static Map<UUID, Rank> rankCache = new HashMap<>();
+    static Map<UUID, Rank> rankCache = new HashMap<>();
 
-     final UUID uuid;
-     String name;
+    final UUID uuid;
+    String name;
 
-     String prefix, suffix;
-     boolean bold, italic, isDefault, isStaff, isAdmin, isDev, isVisible;
-     ChatColor color;
+    String prefix, suffix;
+    boolean bold, italic, isDefault, isStaff, isAdmin, isDev, isVisible;
+    ChatColor color;
 
-     int priority;
+    int priority;
 
-     String[] permissions;
+    List<String> permissions;
 
     public Rank(String name) {
         this.uuid = UUID.randomUUID();
@@ -47,7 +47,7 @@ public class Rank {
     }
 
     public Rank(Document document) {
-        this.uuid = UUID.fromString(document.getString("id"));
+        this.uuid = UUID.fromString(document.getString("_id"));
         this.name = document.getString("name");
         this.prefix = document.getString("prefix");
         this.suffix = document.getString("suffix");
@@ -60,7 +60,7 @@ public class Rank {
         this.isVisible = document.getBoolean("visible");
         this.color = ChatColor.valueOf(document.getString("color"));
         this.priority = document.getInteger("priority");
-        this.permissions = document.getList("permissions", String.class).toArray(new String[0]);
+        this.permissions = document.getList("permissions", String.class);
     }
 
     public Rank(UUID uuid) {
@@ -78,7 +78,6 @@ public class Rank {
         this.name = document.getString("name");
         this.prefix = document.getString("prefix");
         this.suffix = document.getString("suffix");
-
         this.bold = document.getBoolean("bold");
         this.italic = document.getBoolean("italic");
         this.isDefault = document.getBoolean("default");
@@ -86,18 +85,9 @@ public class Rank {
         this.isAdmin = document.getBoolean("admin");
         this.isDev = document.getBoolean("dev");
         this.isVisible = document.getBoolean("visible");
-
-
         this.color = ChatColor.valueOf(document.getString("color"));
-
         this.priority = document.getInteger("priority");
-
-        if (document.getString("permissions").equalsIgnoreCase("null")) {
-            this.permissions = new String[0];
-            return;
-        }
-
-        this.permissions = document.getList("permissions", String.class).toArray(new String[0]);
+        this.permissions = document.getList("permissions", String.class);
     }
 
     public void save() {
@@ -120,7 +110,7 @@ public class Rank {
                 .append("visible", isVisible)
                 .append("priority", priority)
                 .append("color", color.name())
-                .append("permissions", permissions == null ? "null" : permissions);
+                .append("permissions", permissions == null ? new ArrayList<String>() : permissions);
     }
 
     public static Rank getFromUUID(UUID uuid) {
@@ -135,11 +125,14 @@ public class Rank {
     }
 
     public static Rank getDefaultRank() {
-        return rankCache.values().stream().filter(Rank::isDefault).findFirst().orElseGet(Rank::createDefaultRank);
+        for (Rank rank : rankCache.values()) {
+            if (rank.isDefault()) return rank;
+        }
+        return Rank.createDefaultRank();
     }
 
     public static Rank createDefaultRank() {
-        Document document = new Document("_id", UUID.randomUUID())
+        Document document = new Document("_id", UUID.randomUUID().toString())
                 .append("name", "Default")
                 .append("prefix", "&aDefault")
                 .append("suffix", "")
@@ -152,26 +145,18 @@ public class Rank {
                 .append("visible", true)
                 .append("priority", 1)
                 .append("color", ChatColor.GREEN.name())
-                .append("permissions", null);
+                .append("permissions", new ArrayList<String>());
         Rank rank = new Rank(document);
         rank.save();
-        rankCache.put(rank.uuid, rank);
+        rankCache.put(rank.getUuid(), rank);
         return rank;
     }
 
 
     public static void init() {
-        MongoUtils.submitToThread(() -> {
-
-            MongoUtils.getPunishmentsCollection().find().forEach((Block<Document>) o -> {
-                Rank rank = new Rank(o);
-                rankCache.put(rank.uuid, rank);
-            });
-
-            if(rankCache.isEmpty()) {
-                createDefaultRank();
-            }
-
+        MongoUtils.getRankCollection().find().forEach((Block<Document>) o -> {
+            Rank rank = new Rank(o);
+            rankCache.put(rank.getUuid(), rank);
         });
     }
 

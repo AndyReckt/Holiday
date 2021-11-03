@@ -18,7 +18,7 @@ import java.util.*;
         REDIS_HOSTNAME("REDIS.HOSTNAME", "localhost"),
         REDIS_PASSWORD("REDIS.PASSWORD", ""),
         REDIS_PORT("REDIS.PORT", 6379),
-        REDIS_AUTH("REDIS.AUTH", true),
+        REDIS_AUTH("REDIS.AUTH", false),
 
         /* SERVER INFORMATIONS */
         SERVER_NAME("SERVERNAME", "Lobby"),
@@ -94,10 +94,17 @@ import java.util.*;
         TEMP_BAN_MESSAGE("PUNISHMENTS.TEMPBANMESSAGE", "&c<player> &chas been unblacklisted by <executor> &cfor <reason> for a duration of <duration>"),
 
         /* BAN JOIN MESSAGES */
-        BAN_JOIN("PUNISHMENTS.JOIN.BANNED", "&cYou have been permanently banned from <network_name> for <reason>. \n &cAppeal at <network_discord> or buy an unban at <network_store>"),
-        TEMP_BAN_JOIN("PUNISHMENTS.JOIN.TEMPBANNED", "&cYou have been temporarly banned from <network_name> for a duration of <duration> for <reason>. \n &cAppeal at <network_discord> or buy an unban at <network_store>"),
-        IP_BAN_JOIN("PUNISHMENTS.JOIN.IPBANNED", "&cYou have been permanently ip-banned from <network_name>. \n &cAppeal at <network_discord> or buy an unban at <network_store>"),
-        BLACKLIST_JOIN("PUNISHMENTS.JOIN.BLACKLISTED", "&cYou have been blacklisted from <network_name> for <reason>. \n &cThis type of punishment can't be appealed");
+        BAN_JOIN("PUNISHMENTS.JOIN.BANNED", "&cYou have been permanently banned from <network_name> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>"),
+        TEMP_BAN_JOIN("PUNISHMENTS.JOIN.TEMPBANNED", "&cYou have been temporarly banned from <network_name> for a duration of <duration> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>"),
+        IP_BAN_JOIN("PUNISHMENTS.JOIN.IPBANNED", "&cYou have been permanently ip-banned from <network_name>. \n &cAppeal at <discord> or buy an unban at <store>"),
+        BLACKLIST_JOIN("PUNISHMENTS.JOIN.BLACKLISTED", "&cYou have been blacklisted from <network_name> for <reason>. \n &cThis type of punishment can't be appealed"),
+
+
+        /* ADMIN MESSAGES */
+        NOTIFY_BANNED("ADMIN.BANNEDJOIN.NOTIFY", "&c[A] &c<player> tried to join but is banned!"),
+        NOTIFY_ALT("ADMIN.BANNEDJOIN.NOTIFYALT", "&c[A] &c<player> might be alting while banned! &7(<alt>)"),
+        START_MESSAGE("ADMIN.START", "&c[A] &a<server> has just started and will soon be joinable!");
+
 
 
 
