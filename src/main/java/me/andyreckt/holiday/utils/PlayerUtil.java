@@ -1,5 +1,7 @@
 package me.andyreckt.holiday.utils;
 
+import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -23,38 +25,6 @@ import java.util.stream.Stream;
  * Created by Marko on 01.03.2019.
  */
 public class PlayerUtil {
-
-     static Map<UUID, Integer> entityIds = new WeakHashMap<>();
-     static int currentFakeEntityId = -1;
-
-    public static void sit(Player player) {
-        Location location = player.getLocation();
-
-        EntityBat bat = new EntityBat(((CraftWorld) player.getWorld()).getHandle());
-        bat.setPosition(location.getX(), location.getY(), location.getZ());
-        bat.setInvisible(true);
-        bat.setHealth(6F);
-
-        entityIds.put(player.getUniqueId(), bat.getId());
-
-        EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-        entityPlayer.playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(bat));
-        entityPlayer.playerConnection.sendPacket(new PacketPlayOutAttachEntity(0, entityPlayer, bat));
-    }
-
-
-
-
-    public static EntityPlayer getNMSPlayer(Player player) {
-        return ((CraftPlayer) player).getHandle();
-    }
-
-    public static void unsit(Player player) {
-        if(entityIds.containsKey(player.getUniqueId())) {
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(entityIds.get(player.getUniqueId())));
-            entityIds.remove(player.getUniqueId());
-        }
-    }
 
     public static void clearPlayer(Player player) {
         player.setHealth(20.0D);
@@ -84,21 +54,26 @@ public class PlayerUtil {
             player.setGameMode(GameMode.SURVIVAL);
             player.setWalkSpeed(0.0F);
             player.setFlySpeed(0.0F);
-            player.setFoodLevel(0);
+            player.setFoodLevel(20);
             player.setSprinting(false);
             player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 200));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 200));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, 200));
         } else {
             player.setWalkSpeed(0.2F);
             player.setFlySpeed(0.1F);
             player.setFoodLevel(20);
             player.setSprinting(true);
             player.removePotionEffect(PotionEffectType.JUMP);
+            player.removePotionEffect(PotionEffectType.BLINDNESS);
+            player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
         }
     }
 
     public static boolean hasVotedOnNameMC(UUID uuid) {
+        BasicConfigurationFile config = Holiday.getInstance().getConfig();
         try (Scanner scanner = new Scanner(
-                new URL("https://api.namemc.com/server/mandown.us/likes?profile=" + uuid.toString())
+                new URL("https://api.namemc.com/server/" + config.getString("NETWORK.IP") + "/likes?profile=" + uuid.toString())
                         .openStream()).useDelimiter("\\A")) {
             return Boolean.parseBoolean(scanner.next());
         } catch (IOException e) {

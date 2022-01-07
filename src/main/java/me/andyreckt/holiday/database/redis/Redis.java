@@ -1,14 +1,11 @@
 package me.andyreckt.holiday.database.redis;
 
 import lombok.Getter;
-import me.andyreckt.holiday.database.redis.packets.*;
-import me.andyreckt.holiday.database.redis.subscibers.BroadcastSubscriber;
-import me.andyreckt.holiday.database.redis.subscibers.RankSubscriber;
+import me.andyreckt.holiday.database.redis.packet.*;
+import me.andyreckt.holiday.database.redis.subscribers.*;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import me.andyreckt.holiday.utils.packets.Pidgin;
 import me.andyreckt.holiday.utils.packets.RedisCredentials;
-import me.andyreckt.holiday.database.redis.subscibers.PunishmentSubscriber;
-import me.andyreckt.holiday.database.redis.subscibers.ServerStartupSubscriber;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -44,19 +41,34 @@ public class Redis {
         loadSubscribers();
         Arrays.asList(
                 PunishmentPacket.class,
-                ServerStartPacket.class,
+                BroadcastPacket.class,
+                MessagePacket.class,
+                ProfilePacket.class,
+                DisguisePacket.class,
+                ClickablePacket.class,
+                ServerPacket.class,
+                CrossServerCommandPacket.class,
+                StaffSwitchServer.StaffPacket.class,
+                ProfilePacket.ProfileDeletePacket.class,
+                ProfilePacket.ProfileMessagePacket.class,
+                StaffMessages.ReportPacket.class,
+                StaffMessages.StaffMessagesPacket.class,
+                StaffMessages.HelpopPacket.class,
                 RankDeletePacket.class,
                 RankCreatePacket.class,
-                RankUpdatePacket.class,
-                BroadcastPacket.class
+                RankUpdatePacket.class
         ).forEach(packet -> pidgin.registerPacket(packet));
     }
 
      void loadSubscribers() {
-        pidgin.registerListener(new ServerStartupSubscriber());
-        pidgin.registerListener(new PunishmentSubscriber());
-        pidgin.registerListener(new RankSubscriber());
-        pidgin.registerListener(new BroadcastSubscriber());
+         pidgin.registerListener(new PunishmentSubscriber());
+         pidgin.registerListener(new BroadcastSubscriber());
+         pidgin.registerListener(new MessageSubscriber());
+         pidgin.registerListener(new ProfileSubscriber());
+         pidgin.registerListener(new DisguiseSubscriber());
+         pidgin.registerListener(new ServerListener());
+         pidgin.registerListener(new RankSubscriber());
+         pidgin.registerListener(new StaffMessagesSubscriber());
 
      }
 

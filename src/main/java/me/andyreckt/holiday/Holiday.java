@@ -7,9 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.database.mongo.MongoDB;
 import me.andyreckt.holiday.database.redis.Redis;
-import me.andyreckt.holiday.database.redis.packets.ServerStartPacket;
+import me.andyreckt.holiday.database.redis.packet.ServerStartPacket;
 import me.andyreckt.holiday.listeners.ProfileListener;
-import me.andyreckt.holiday.rank.Rank;
+import me.andyreckt.holiday.player.ProfileHandler;
+import me.andyreckt.holiday.player.disguise.DisguiseHandler;
+import me.andyreckt.holiday.player.punishments.PunishmentHandler;
+import me.andyreckt.holiday.player.rank.Rank;
+import me.andyreckt.holiday.player.rank.RankHandler;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import me.andyreckt.holiday.utils.packets.Pidgin;
 import org.bukkit.Bukkit;
@@ -17,6 +21,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.JedisPool;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 @Getter @Setter
@@ -35,6 +42,13 @@ public final class Holiday extends JavaPlugin {
 
     MongoDatabase mongoDatabase;
 
+    PunishmentHandler punishmentHandler;
+    ProfileHandler profileHandler;
+    DisguiseHandler disguiseHandler;
+    RankHandler rankHandler;
+
+    Executor dbExecutor, executor;
+
 
     @Override
     public void onEnable() {
@@ -44,6 +58,7 @@ public final class Holiday extends JavaPlugin {
         } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Plugin was not loaded correctly...");
             e.printStackTrace();
+            Bukkit.getServer().shutdown();
         }
     }
 
@@ -51,20 +66,19 @@ public final class Holiday extends JavaPlugin {
         instance = this;
         this.gson  = new GsonBuilder().serializeNulls().create();
         setupConfigFiles();
-
-
-
+        setupExecutors();
         setupDatabases();
-
-
-
-        Rank.init();
-
+        setupHandlers();
         setupListeners();
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API")) {
             lunarEnabled = true;
         }
         redis.sendPacket(new ServerStartPacket(config.getString("SERVER.NAME")));
+    }
+
+    void setupExecutors() {
+        this.dbExecutor = Executors.newFixedThreadPool(2);
+        this.executor = Executors.newFixedThreadPool(4);
     }
 
 
@@ -78,6 +92,13 @@ public final class Holiday extends JavaPlugin {
         this.redisPool = new Redis(config);
         this.jedisPool = redisPool.getJedis();
         this.redis = redisPool.getPidgin();
+    }
+
+    void setupHandlers() {
+        this.punishmentHandler = new PunishmentHandler();
+        this.profileHandler = new ProfileHandler();
+        this.rankHandler = new RankHandler();
+        this.disguiseHandler = new DisguiseHandler(this);
     }
 
 
@@ -94,7 +115,5 @@ public final class Holiday extends JavaPlugin {
         this.jedisPool = null;
         this.redis = null;
         this.mongoDatabase = null;
-
-
     }
 }

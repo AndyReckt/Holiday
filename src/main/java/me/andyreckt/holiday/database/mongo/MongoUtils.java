@@ -2,6 +2,7 @@ package me.andyreckt.holiday.database.mongo;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoDB;
 import me.andyreckt.holiday.utils.Tasks;
 import org.bson.Document;
@@ -12,41 +13,37 @@ import java.util.concurrent.ForkJoinPool;
 
 public class MongoUtils {
 
-    public static MongoDatabase getDatabase() {
-        return MongoDB.getDatabase();
+    static MongoDatabase getDatabase() {
+        return Holiday.getInstance().getMongoDatabase();
     }
 
-    public static MongoCollection getCollection(String collection){
-        return MongoDB.getDatabase().getCollection(collection);
+    static MongoCollection getCollection(String collection){
+        return getDatabase().getCollection(collection);
     }
 
     public static MongoCollection getRankCollection(){
-        return MongoDB.getDatabase().getCollection("Ranks");
+        return getCollection("Ranks");
     }
 
-
-
     public static MongoCollection getProfileCollection(){
-        return MongoDB.getDatabase().getCollection("Profiles");
+        return getCollection("Profiles");
     }
 
     public static MongoCollection getPunishmentsCollection() {
-        return MongoDB.getDatabase().getCollection("Punishments");
+        return getCollection("Punishments");
     }
 
     public static MongoCollection getGrantCollection(){
-        return MongoDB.getDatabase().getCollection("Grants");
+        return getCollection("Grants");
     }
 
-    public static Object getFromCollection(Player player, String string, String collection) throws Exception {
-        Document query = new Document("uuid", player.getUniqueId());
-        Document toReturn = (Document) getCollection(collection).find(query).first();
-        if(toReturn != null) return toReturn.get(string);
-        else throw new Exception("This player isn't in the database");
+    public static MongoCollection getDisguiseCollection() {
+        return getCollection("Disguises");
     }
+
 
     public static void submitToThread(Runnable runnable) {
-        Tasks.runAsync(() -> ForkJoinPool.commonPool().execute(runnable));
+        Holiday.getInstance().getDbExecutor().execute(runnable);
     }
 
 }

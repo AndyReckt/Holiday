@@ -25,6 +25,10 @@
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
@@ -33,11 +37,10 @@
     <dependencies>
         <!--PaperSpigot-->
         <dependency>
-            <groupId>io.papermc</groupId>
-            <artifactId>paper</artifactId>
-            <version>1.8</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/patched.jar</systemPath>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <!--Lombok-->
         <dependency>
@@ -51,6 +54,13 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.12.10</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--Menu Api-->
+        <dependency>
+            <groupId>com.github.ericstolly</groupId>
+            <artifactId>menu-api</artifactId>
+            <version>-b86620c97e-1</version>
             <scope>compile</scope>
         </dependency>
         <!--Jedis API-->
@@ -69,18 +79,11 @@
         </dependency>
         <!--LunarClientApi-->
         <dependency>
-            <groupId>com.lunarclient</groupId>
-            <artifactId>bukkitapi</artifactId>
-            <version>0.1</version>
-            <scope>provided</scope>
+            <groupId>com.github.LunarClient</groupId>
+            <artifactId>BukkitAPI</artifactId>
+            <version>v1.0.1</version>
         </dependency>
-        <!--CommandApi-->
-        <dependency>
-            <groupId>com.jonahseguin</groupId>
-            <artifactId>drink</artifactId>
-            <version>1.0.2</version>
-            <scope>compile</scope>
-        </dependency>
+        <!--Gson-->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

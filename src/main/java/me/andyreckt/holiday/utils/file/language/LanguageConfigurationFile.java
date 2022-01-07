@@ -1,6 +1,6 @@
 package me.andyreckt.holiday.utils.file.language;
 
-import cc.teamfight.astria.utils.file.AbstractConfigurationFile;
+import me.andyreckt.holiday.utils.file.AbstractConfigurationFile;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;

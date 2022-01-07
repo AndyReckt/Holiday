@@ -19,8 +19,14 @@ NETWORK:
   Twitter: "https://twitter.com/examplenetwork"
   Teamspeak: "ts.example.com"
 
-
-
 SERVER:
   Name: "Lobby"
+
+
+NAMEMC:
+  Enabled: false
+  Message: "&eThank you for liking our NameMC"
+  Rank:
+    Enabled: false
+    Name: "VOTER"
 

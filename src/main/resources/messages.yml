@@ -1,10 +1,14 @@
 
 # Network Placeholders: <network_name> <network_ip> <discord> <teamspeak> <website> <servername> <teamspeak> <store>
 
-SERVER:
-  STARTUP: "&c[A] &a<server> has just started and will soon be joinable!"
+SERVER: # Placeholder: <server>
+  Startup: "&c[A] &a<server> has just started and will soon be joinable!"
+  Shutdown: "&c[A] &c<server> just went offline and is no longer joinable!"
 
-
+STAFF: # Placeholders: <player> <server> <oldserver>
+  Join: "&5[S] <player> &econnected to <server>."
+  Switch: "&5[S] <player> &ejoined <server> from <oldserver>."
+  Leave: "&5[S] <player> &edisconnected from <server>."
 
 PUNISHMENTS: #Placeholders: <player> <executor> <reason> <duration>
   SilentPrefix: "&7(Silent) "
@@ -20,7 +24,8 @@ PUNISHMENTS: #Placeholders: <player> <executor> <reason> <duration>
     UnIpBan: "&a<player> &ahas been unip-banned by <executor> &afor <reason>."
     Blacklist: "&c<player> &chas been blacklisted by <executor> &cfor <reason>."
     UnBlacklist: "&a<player> &ahas been unblacklisted by <executor> &afor <reason>."
-  Join:
+  KickMessage:
+    Kick: "&cYou have been kick by <executor> &cfor <reason>."
     Ban: "&cYou have been permanently banned from <network_name> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>."
     TempBan: "&cYou have been temporarily banned from <network_name> for a duration of <duration> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>."
     IpBan: "&cYou have been permanently ip-banned from <network_name>. \n &cAppeal at <discord> or buy an unban at <store>."
