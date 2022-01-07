@@ -1,11 +1,10 @@
 package me.andyreckt.holiday.utils;
 
-import me.andyreckt.holiday.database.Redis;
-import me.andyreckt.holiday.database.packets.BroadcastPacket;
+import me.andyreckt.holiday.database.redis.Redis;
+import me.andyreckt.holiday.database.redis.packets.BroadcastPacket;
 import me.andyreckt.holiday.enums.BroadcastType;
-import me.andyreckt.holiday.player.Profile;
 import org.bukkit.ChatColor;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -104,6 +103,9 @@ public final class CC {
 	public static final String CHAT_BAR = ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH.toString() + "------------------------------------------------";
 	public static final String SB_BAR = ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH.toString() + "------------------";
 
+	public static final char NICE_CHAR = '●';
+	public static final char HEART = '\u2764';
+
 
 	public static String translate(String input) {
 		return ChatColor.translateAlternateColorCodes('&', input);
@@ -111,23 +113,6 @@ public final class CC {
 
 	public static List<String> translate(List<String> input) {
 		return input.stream().map(CC::translate).collect(Collectors.toList());
-	}
-
-	public static void sendMessageToAll(String message) {
-		Redis.getPidgin().sendPacket(new BroadcastPacket(CC.translate(message), BroadcastType.ALL));
-	}
-
-	public static void sendMessageToDevs(String message) {
-		Redis.getPidgin().sendPacket(new BroadcastPacket(CC.translate(message), BroadcastType.DEV));
-
-	}
-
-	public static void sendMessageToAdmins(String message) {
-		Redis.getPidgin().sendPacket(new BroadcastPacket(CC.translate(message), BroadcastType.ADMIN));
-	}
-
-	public static void sendMessageToStaffs(String message) {
-		Redis.getPidgin().sendPacket(new BroadcastPacket(CC.translate(message), BroadcastType.STAFF));
 	}
 
 }

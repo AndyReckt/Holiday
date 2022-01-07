@@ -1,6 +1,6 @@
-package me.andyreckt.holiday.database.subscibers;
+package me.andyreckt.holiday.database.redis.subscibers;
 
-import me.andyreckt.holiday.database.packets.BroadcastPacket;
+import me.andyreckt.holiday.database.redis.packets.BroadcastPacket;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.packets.handler.IncomingPacketHandler;

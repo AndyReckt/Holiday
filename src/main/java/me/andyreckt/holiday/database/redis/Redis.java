@@ -1,28 +1,35 @@
-package me.andyreckt.holiday.database;
+package me.andyreckt.holiday.database.redis;
 
 import lombok.Getter;
-import me.andyreckt.holiday.Files;
-import me.andyreckt.holiday.database.packets.*;
-import me.andyreckt.holiday.database.subscibers.BroadcastSubscriber;
-import me.andyreckt.holiday.database.subscibers.RankSubscriber;
+import me.andyreckt.holiday.database.redis.packets.*;
+import me.andyreckt.holiday.database.redis.subscibers.BroadcastSubscriber;
+import me.andyreckt.holiday.database.redis.subscibers.RankSubscriber;
+import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import me.andyreckt.holiday.utils.packets.Pidgin;
 import me.andyreckt.holiday.utils.packets.RedisCredentials;
-import me.andyreckt.holiday.database.subscibers.PunishmentSubscriber;
-import me.andyreckt.holiday.database.subscibers.ServerStartupSubscriber;
+import me.andyreckt.holiday.database.redis.subscibers.PunishmentSubscriber;
+import me.andyreckt.holiday.database.redis.subscibers.ServerStartupSubscriber;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.Arrays;
 
+@Getter
 public class Redis {
 
-    static RedisCredentials credentials;
-    @Getter static Pidgin pidgin;
-    final JedisPool jedis;
+    RedisCredentials credentials;
+    Pidgin pidgin;
+    JedisPool jedis;
 
-    public Redis() {
+    public Redis(BasicConfigurationFile config) {
 
-        credentials = new RedisCredentials(Files.Config.REDIS_HOSTNAME.getString(), Files.Config.REDIS_PORT.getInteger(), Files.Config.REDIS_AUTH.getValue(), Files.Config.REDIS_PASSWORD.getString()); //<<<<<<<<<<<"Holiday",
+        credentials = new RedisCredentials(
+                config.getString("REDIS.HOSTNAME"),
+                config.getInteger("REDIS.PORT"),
+                config.getBoolean("REDIS.AUTH"),
+                config.getString("REDIS.PASSWORD"));
+
+
         if (credentials.isAuth()) {
             jedis = new JedisPool(new JedisPoolConfig(),
                     credentials.getHostname(),
@@ -33,7 +40,7 @@ public class Redis {
             jedis = new JedisPool(credentials.getHostname(), credentials.getPort());
         }
 
-        pidgin = new Pidgin("Holiday", jedis);
+        pidgin = new Pidgin(config.getString("REDIS.CHANNEL"), jedis);
         loadSubscribers();
         Arrays.asList(
                 PunishmentPacket.class,
@@ -46,7 +53,6 @@ public class Redis {
     }
 
      void loadSubscribers() {
-
         pidgin.registerListener(new ServerStartupSubscriber());
         pidgin.registerListener(new PunishmentSubscriber());
         pidgin.registerListener(new RankSubscriber());

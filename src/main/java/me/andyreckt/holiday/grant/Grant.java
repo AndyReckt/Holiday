@@ -5,10 +5,9 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
 import lombok.Setter;
-import me.andyreckt.holiday.database.utils.MongoUtils;
+import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.rank.Rank;
 import org.bson.Document;
-import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;

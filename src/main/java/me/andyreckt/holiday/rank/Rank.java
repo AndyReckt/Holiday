@@ -5,9 +5,9 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
 import lombok.Setter;
-import me.andyreckt.holiday.database.Redis;
-import me.andyreckt.holiday.database.packets.RankCreatePacket;
-import me.andyreckt.holiday.database.utils.MongoUtils;
+import me.andyreckt.holiday.database.redis.Redis;
+import me.andyreckt.holiday.database.redis.packets.RankCreatePacket;
+import me.andyreckt.holiday.database.mongo.MongoUtils;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 

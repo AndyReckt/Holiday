@@ -1,8 +1,8 @@
-package me.andyreckt.holiday.database.subscibers;
+package me.andyreckt.holiday.database.redis.subscibers;
 
-import me.andyreckt.holiday.database.packets.RankCreatePacket;
-import me.andyreckt.holiday.database.packets.RankDeletePacket;
-import me.andyreckt.holiday.database.packets.RankUpdatePacket;
+import me.andyreckt.holiday.database.redis.packets.RankCreatePacket;
+import me.andyreckt.holiday.database.redis.packets.RankDeletePacket;
+import me.andyreckt.holiday.database.redis.packets.RankUpdatePacket;
 import me.andyreckt.holiday.utils.packets.handler.IncomingPacketHandler;
 import me.andyreckt.holiday.utils.packets.listener.PacketListener;
 

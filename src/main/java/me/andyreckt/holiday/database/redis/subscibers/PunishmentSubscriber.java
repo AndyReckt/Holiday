@@ -1,4 +1,4 @@
-package me.andyreckt.holiday.database.subscibers;
+package me.andyreckt.holiday.database.redis.subscibers;
 
 import com.google.gson.JsonObject;
 import me.andyreckt.holiday.Files;

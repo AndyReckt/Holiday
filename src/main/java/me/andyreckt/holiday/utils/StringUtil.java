@@ -1,14 +1,13 @@
 package me.andyreckt.holiday.utils;
 
-import me.andyreckt.holiday.Files;
+import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 
 import java.util.*;
 
-/**
- * Created by Marko on 25.02.2019.
- */
+
 public class StringUtil {
 
      static List<ChatColor> COLORS = new ArrayList<>(Arrays.asList(
@@ -18,12 +17,7 @@ public class StringUtil {
             ChatColor.DARK_PURPLE, ChatColor.BLUE, ChatColor.BLACK,
             ChatColor.DARK_GREEN, ChatColor.RED));
 
-    public static final char NICE_CHAR = '●';
-    public static final char HEART = '\u2764';
 
-    public static final String LOAD_ERROR_1 = CC.RED + "Error found while loading your data. (1)\n\nTry again later or contact a staff member.";
-    public static final String LOAD_ERROR_2 = CC.RED + "Error found while loading your data. (2)\n\nTry again later or contact a staff member.";
-    public static final String LOAD_ERROR_3 = CC.RED + "Error found while loading your data. (3)\n\nTry again later or contact a staff member.";
 
     public static String formatInteger(int value) {
         return String.format("%,d", value);
@@ -114,12 +108,9 @@ public class StringUtil {
             }
 
             StringBuilder builder = new StringBuilder();
-            Iterator<String> iterator = contents.iterator();
 
-            while (iterator.hasNext()) {
-                String name = iterator.next();
-
-                if(builder.length() > 0) {
+            for (String name : contents) {
+                if (builder.length() > 0) {
                     builder.append(delimiter);
                 }
 
@@ -140,57 +131,20 @@ public class StringUtil {
         return min + (int) (Math.random() * ((max - min) + 1));
     }
 
-    public static String getSexyTime(long millis) {
-        long seconds = millis / 1000L;
 
-        if (seconds <= 0) {
-            return "0 seconds";
-        }
-
-        long minutes = seconds / 60;
-        seconds = seconds % 60;
-        long hours = minutes / 60;
-        minutes = minutes % 60;
-        long day = hours / 24;
-        hours = hours % 24;
-        long years = day / 365;
-        day = day % 365;
-
-        StringBuilder time = new StringBuilder();
-
-        if (years != 0) {
-            time.append(years).append(years == 1 ? " year" : " years").append(day == 0 ? " " : ", ");
-        }
-
-        if (day != 0) {
-            time.append(day).append(day == 1 ? " day" : " days").append(hours == 0 ? " " : ", ");
-        }
-
-        if (hours != 0) {
-            time.append(hours).append(hours == 1 ? " hour" : " hours").append(minutes == 0 ? " " : ", ");
-        }
-
-        if (minutes != 0) {
-            time.append(minutes).append(minutes == 1 ? " minute" : " minutes").append(seconds == 0 ? " " : ", ");
-        }
-
-        if (seconds != 0) {
-            time.append(seconds).append(seconds == 1 ? " second" : " seconds");
-        }
-        return time.toString().trim();
-    }
 
 
     public static String addNetworkPlaceholder(String string) {
+        BasicConfigurationFile config = Holiday.getInstance().getConfig();
 
-        string = string.replace("<network_name>", Files.Config.NETWORK_NAME.getString());
-        string = string.replace("<network_ip>", Files.Config.NETWORK_IP.getString());
-        string = string.replace("<discord>", Files.Config.NETWORK_DISCORD.getString());
-        string = string.replace("<teamspeak>", Files.Config.NETWORK_TEAMSPEAK.getString());
-        string = string.replace("<website>", Files.Config.NETWORK_WEBSITE.getString());
-        string = string.replace("<servername>", Files.Config.SERVER_NAME.getString());
-        string = string.replace("<teamspeak>", Files.Config.NETWORK_TEAMSPEAK.getString());
-        string = string.replace("<store>", Files.Config.NETWORK_STORE.getString());
+        string = string.replace("<network_name>", config.getString("NETWORK.NAME"));
+        string = string.replace("<network_ip>", config.getString("NETWORK.IP"));
+        string = string.replace("<discord>", config.getString("NETWORK.DISCORD"));
+        string = string.replace("<teamspeak>", config.getString("NETWORK.TEAMSPEAK"));
+        string = string.replace("<website>", config.getString("NETWORK.WEBSITE"));
+        string = string.replace("<servername>", config.getString("SERVER.NAME"));
+        string = string.replace("<store>", config.getString("NETWORK.STORE"));
+        string = string.replace("<twitter>", config.getString("NETWORK.TWITTER"));
 
         return string;
     }

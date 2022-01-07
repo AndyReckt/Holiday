@@ -1,14 +1,12 @@
-package me.andyreckt.holiday.database.utils;
+package me.andyreckt.holiday.database.mongo;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import me.andyreckt.holiday.Holiday;
-import me.andyreckt.holiday.database.MongoDB;
+import me.andyreckt.holiday.database.mongo.MongoDB;
 import me.andyreckt.holiday.utils.Tasks;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 
 

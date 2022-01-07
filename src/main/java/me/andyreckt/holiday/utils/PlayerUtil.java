@@ -100,7 +100,7 @@ public class PlayerUtil {
         try (Scanner scanner = new Scanner(
                 new URL("https://api.namemc.com/server/mandown.us/likes?profile=" + uuid.toString())
                         .openStream()).useDelimiter("\\A")) {
-            return Boolean.valueOf(scanner.next());
+            return Boolean.parseBoolean(scanner.next());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,11 +113,4 @@ public class PlayerUtil {
         return player.getInventory().firstEmpty() == -1;
     }
 
-
-
-
-
-    public static int getFakeEntityId() {
-        return currentFakeEntityId--;
-    }
 }

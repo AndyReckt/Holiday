@@ -1,0 +1,26 @@
+# MONGODB
+MONGO:
+  URI: "mongodb://localhost:27017"
+  DbName: "Holiday"
+
+REDIS:
+  Hostname: "localhost"
+  Port: 6379
+  Auth: false
+  Password: "pass"
+  Channel: "Holiday"
+
+NETWORK:
+  Name: "example network"
+  Ip: "example.com"
+  Website: "https://example.com"
+  Store: "https://store.example.com"
+  Discord: "https://store.example.com"
+  Twitter: "https://twitter.com/examplenetwork"
+  Teamspeak: "ts.example.com"
+
+
+
+SERVER:
+  Name: "Lobby"
+

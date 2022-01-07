@@ -6,7 +6,7 @@ import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.Files;
-import me.andyreckt.holiday.database.utils.MongoUtils;
+import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.grant.Grant;
 import me.andyreckt.holiday.rank.Rank;
 import me.andyreckt.holiday.utils.Tasks;

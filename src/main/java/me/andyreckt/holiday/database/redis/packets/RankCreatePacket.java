@@ -1,4 +1,4 @@
-package me.andyreckt.holiday.database.packets;
+package me.andyreckt.holiday.database.redis.packets;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class RankDeletePacket implements Packet {
+public class RankCreatePacket implements Packet {
 
     final UUID uuid;
+
 }
