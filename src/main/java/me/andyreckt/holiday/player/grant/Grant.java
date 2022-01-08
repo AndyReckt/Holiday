@@ -8,6 +8,7 @@ import lombok.Setter;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.player.rank.Rank;
+import me.andyreckt.holiday.utils.TimeUtil;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -22,8 +23,6 @@ import java.util.UUID;
  */
 @Getter @Setter
 public class Grant {
-
-
 
      final UUID uuid;
      Rank rank;
@@ -61,7 +60,7 @@ public class Grant {
     }
 
     public boolean expired() {
-        if(duration == -1) return false;
+        if(duration == TimeUtil.PERMANENT) return false;
         return (executedAt + duration) <= System.currentTimeMillis();
     }
 
@@ -79,6 +78,10 @@ public class Grant {
                 .append("executedAt", executedAt);
     }
 
+    public boolean isActive() {
+        if (expired()) setActive(false);
+        return !expired() && isActive();
+    }
 
 
 }

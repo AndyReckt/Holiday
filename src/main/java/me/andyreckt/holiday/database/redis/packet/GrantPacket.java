@@ -1,15 +1,16 @@
 package me.andyreckt.holiday.database.redis.packet;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import me.andyreckt.holiday.other.enums.GrantType;
+import me.andyreckt.holiday.player.grant.Grant;
 import me.andyreckt.holiday.utils.packets.Packet;
-
-import java.util.UUID;
-
 
 @Getter
 @AllArgsConstructor
-public class RankUpdatePacket implements Packet {
+public class GrantPacket implements Packet {
 
-    final UUID uuid;
+    Grant grant;
+
 }

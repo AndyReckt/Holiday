@@ -46,8 +46,8 @@ public class DisguiseHandler {
 	private final Map<UUID, GameProfile> originalCache = new HashMap<>();
 	@Getter
 	private final Map<UUID, DisguiseData> disguiseData = new HashMap<>();
-
-	public static List<String> usedNames = new ArrayList<>();
+	@Getter
+	public List<String> usedNames = new ArrayList<>();
 
 
 	public DisguiseHandler(Holiday plugin) {
@@ -124,14 +124,7 @@ public class DisguiseHandler {
 
 			mineman.setDisguiseData(null);
 			mineman.save();
-			//mineman.updateTabList(mineman.getRank());
-
 			disguiseData.remove(player.getUniqueId());
-			/*
-			MinecraftServer.getServer().getPlayerList().setPlayerName(originalProfile.getName(), ((CraftPlayer) player).getHandle());
-			MinecraftServer.getServer().getPlayerList().removeFromPlayerNames(player.getName());
-
-			 */
 		}
 	}
 
@@ -225,9 +218,10 @@ public class DisguiseHandler {
 
 
 	public static class DisguiseRequest {
-
+		static Holiday hol = Holiday.getInstance();
+		static DisguiseHandler dis = hol.getDisguiseHandler();
 		public static boolean alreadyUsed(String name) {
-			return usedNames.contains(name.toLowerCase());
+			return dis.getUsedNames().contains(name.toLowerCase());
 			/*
 			Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("displayName", name)).first();
 			return document != null;
@@ -244,9 +238,9 @@ public class DisguiseHandler {
 
 			MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().replaceOne(Filters.eq("_id", profile.getUuid().toString()), document, new ReplaceOptions().upsert(true)));
 			Holiday.getInstance().getRedis().sendPacket(new DisguisePacket(profile.getDisguiseData().displayName(), DisguiseType.ADD));
-			if(!DisguiseHandler.usedNames.contains(profile.getDisguiseData().displayName().toLowerCase())) DisguiseHandler.usedNames.add(profile.getDisguiseData().displayName().toLowerCase());
+			if(!dis.getUsedNames().contains(profile.getDisguiseData().displayName().toLowerCase())) dis.usedNames.add(profile.getDisguiseData().displayName().toLowerCase());
 			MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().replaceOne(Filters.eq("_id", "names"), new Document("_id", "names")
-					.append("list", usedNames)));
+					.append("list", dis.getUsedNames())));
 		}
 
 		public static void removeDisguise(Profile profile) {
@@ -256,14 +250,13 @@ public class DisguiseHandler {
 			}
 			Holiday.getInstance().getRedis().sendPacket(new DisguisePacket(profile.getDisguiseData().displayName(), DisguiseType.REMOVE));
 			MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().replaceOne(Filters.eq("_id", "names"), new Document("_id", "names")
-					.append("list", usedNames)));
+					.append("list", dis.getUsedNames())));
 		}
 
 		public static DisguiseData getDataFromName(String name) {
 			Document document = (Document) MongoUtils.getDisguiseCollection().find(Filters.eq("lDisplayName", name.toLowerCase())).first();
 			if (document != null) {
 				DisguiseData data = new DisguiseData();
-
 
 				data.disguiseRank(Holiday.getInstance().getRankHandler().getFromName(document.getString("disguiseRank")));
 				data.displayName(document.getString("displayName"));

@@ -43,7 +43,7 @@ public class ProfileHandler {
         return new Profile(uuid, cache);
     }
 
-    public Profile getFromCommandSender(CommandSender sender) {
+    public Profile getByCommandSender(CommandSender sender) {
         if (sender instanceof Player) return getByUUID(((Player) sender).getUniqueId());
         else return getConsoleProfile();
     }
@@ -52,7 +52,7 @@ public class ProfileHandler {
         return getByUUID(player.getUniqueId());
     }
 
-    public Profile getFromNameFor5Minute(String name) {
+    public Profile getByNameFor5Minute(String name) {
         if(DisguiseHandler.DisguiseRequest.alreadyUsed(name)) {
             return Holiday.getInstance().getProfileHandler().getByUUIDFor5Minutes(DisguiseHandler.DisguiseRequest.getDataFromName(name).uuid());
         }

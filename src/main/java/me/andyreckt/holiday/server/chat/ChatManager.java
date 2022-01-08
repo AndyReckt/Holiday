@@ -1,13 +1,14 @@
 package me.andyreckt.holiday.server.chat;
 
-import cc.teamfight.astria.player.Profile;
-import cc.teamfight.astria.punishments.PunishData;
-import cc.teamfight.astria.punishments.Punishment;
-import cc.teamfight.astria.punishments.PunishmentType;
-import cc.teamfight.astria.utils.CC;
-import cc.teamfight.astria.utils.Cooldown;
-import cc.teamfight.astria.utils.PunishmentUtils;
-import cc.teamfight.astria.utils.StaffUtils;
+import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.player.Profile;
+import me.andyreckt.holiday.player.ProfileHandler;
+import me.andyreckt.holiday.player.punishments.PunishData;
+import me.andyreckt.holiday.player.punishments.Punishment;
+import me.andyreckt.holiday.player.punishments.PunishmentType;
+import me.andyreckt.holiday.utils.CC;
+import me.andyreckt.holiday.utils.Cooldown;
+import me.andyreckt.holiday.utils.PunishmentUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
@@ -25,7 +26,6 @@ public class ChatManager {
     public static long chatDelay = 0;
 
 
-    static String[] extremeFilters = {"jndi", "log4j", "kubernetes", "jvmrunargs"};
     static String[] hardFilters = {"nigger", "coon", "niggers", "coons", "faggot", "niggr", "niggre", "nigrito"};
     static String[] filter = {"cunt", "negro", "anal", "anus", "beaner", "nazi", "paki", "niger", "gringo", "nigga"};
 
@@ -41,7 +41,8 @@ public class ChatManager {
     }
 
     public static boolean canChat(UUID uuid) {
-        Profile profile = Profile.getFromUUID(uuid);
+        ProfileHandler ph = Holiday.getInstance().getProfileHandler();
+        Profile profile = ph.getByUUID(uuid);
 
         if(PunishmentUtils.checkMuted(profile)) {
             PunishData data = PunishmentUtils.getMute(profile);
@@ -53,7 +54,7 @@ public class ChatManager {
             return false;
         }
 
-        if(profile.getRank().isStaff()) return true;
+        if(profile.getHighestGrant().getRank().isStaff()) return true;
 
         if(chatMuted) {
             profile.getPlayer().sendMessage(CC.translate("&cThe global chat is currently muted."));
@@ -73,7 +74,8 @@ public class ChatManager {
 
 
     public static boolean isFine(String message, Player player) {
-        boolean hardFilter = false, lowFilter = false, extrmeFilter = false;
+        ProfileHandler ph = Holiday.getInstance().getProfileHandler();
+        boolean hardFilter = false, lowFilter = false;
         String filtered = "";
         String replacedMessage = message.toLowerCase()
                 .replace("@", "a")
@@ -84,14 +86,6 @@ public class ChatManager {
                 .replace("5", "s")
                 .replaceAll("[^a-z0-9 ]", "");
 
-        for (String s : extremeFilters) {
-            if (replacedMessage.contains(s)) {
-                extrmeFilter = true;
-                filtered = s;
-                break;
-            }
-        }
-        if (!extrmeFilter)
         for (String s : hardFilters) {
             if (replacedMessage.contains(s)) {
                 hardFilter = true;
@@ -107,19 +101,10 @@ public class ChatManager {
                 break;
             }
         }
-
-        if (extrmeFilter) {
-            new Punishment(Profile.getConsoleProfile(),
-                    Profile.getFromUUID(player.getUniqueId()),
-                    PunishmentType.TEMP_BAN, "1d",
-                    "Trying to use Log4j exploit (" + filtered + ")",
-                    true);
-            return false;
-        }
-
         if (hardFilter) {
-            new Punishment(Profile.getConsoleProfile(),
-                    Profile.getFromUUID(player.getUniqueId()),
+            //TODO CHECK CONFIG FOR MUTE
+            new Punishment(ph.getConsoleProfile(),
+                    ph.getByUUID(player.getUniqueId()),
                     PunishmentType.TEMP_MUTE, "6h",
                     "AutoMute (" + filtered + ")",
                     true);
@@ -127,7 +112,9 @@ public class ChatManager {
         }
 
         if (lowFilter) {
-            StaffUtils.Staff.sendFilteredMessage(Profile.getFromUUID(player.getUniqueId()).getNameWithColor(), message);
+            //TODO SEND FILTERED MESSAGE
+
+            //StaffUtils.Staff.sendFilteredMessage(Profile.getFromUUID(player.getUniqueId()).getNameWithColor(), message);
             /*Redis.getPidgin().sendPacket(
                     new BroadcastPacket("&d[Filtered] &5[" + Loader.getServerName() + "] "
                             + Profile.getFromUUID(player.getUniqueId()).getNameWithColor() + "&e: " + message, BroadcastType.STAFF));

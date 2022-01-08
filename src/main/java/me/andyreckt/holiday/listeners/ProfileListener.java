@@ -57,7 +57,7 @@ public class ProfileListener implements Listener {
             Profile p = ph.getByPlayer(event.getPlayer());
             RankHandler rh = Holiday.getInstance().getRankHandler();
 
-            BasicConfigurationFile config = Holiday.getInstance().getConfig();
+            BasicConfigurationFile config = Holiday.getInstance().getSettings();
 
             if (config.getBoolean("NAMEMC.ENABLED")) {
                 if (!p.isLiked()) {
@@ -65,16 +65,23 @@ public class ProfileListener implements Listener {
                         p.setLiked(true);
                         p.getPlayer().sendMessage(CC.translate(config.getString("NAMEMC.MESSAGE")));
                         if (config.getBoolean("NAMEMC.RANK.ENABLED")) {
-                            if (p.getRank() == rh.getDefaultRank()) {
-                                p.setRank(rh.getFromName(config.getString("NAMEMC.RANK.NAME")));
+                            if (p.getHighestRank() == rh.getDefaultRank()) {
+                                Grant grant = new Grant(p.getUuid(),
+                                        ph.getConsoleProfile().getUuid(),
+                                        rh.getFromName(config.getString("NAMEMC.RANK.NAME")),
+                                        TimeUtil.PERMANENT);
+                                grant.save();
                             }
                         }
                     }
                 } else {
                     if (!PlayerUtil.hasVotedOnNameMC(p.getUuid())) {
                         p.setLiked(false);
-                        if (p.getRank() == rh.getFromName(config.getString("NAMEMC.RANK.NAME"))) {
-                            p.setRank(rh.getDefaultRank());
+
+                        for (Grant o : p.getActiveGrants()) {
+                            if (!(o.getRank().getName().equalsIgnoreCase(config.getString("NAMEMC.RANK.NAME")))) continue;
+                            o.setActive(false);
+                            o.save();
                         }
                     }
                 }
@@ -95,7 +102,7 @@ public class ProfileListener implements Listener {
                 p.setCurrentServer(config.getString("SERVER.NAME"));
                 p.setOnline(true);
 
-                if (p.getRank().isStaff()) new StaffSwitchServer(p, false);
+                if (p.isStaff()) new StaffSwitchServer(p, false);
 
                 p.save();
             }, 10L);
@@ -108,8 +115,8 @@ public class ProfileListener implements Listener {
         Holiday.getInstance().getExecutor().execute(() -> {
             Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(event.getPlayer());
             try {
-                if (profile.getRank().isStaff()) {
-                    profile.setCurrentServer(Holiday.getInstance().getConfig().getString("SERVER.NAME"));
+                if (profile.isStaff()) {
+                    profile.setCurrentServer(Holiday.getInstance().getSettings().getString("SERVER.NAME"));
                     new StaffSwitchServer(profile, true);
                 }
             } catch (Exception ignored) {
@@ -130,8 +137,8 @@ public class ProfileListener implements Listener {
         Holiday.getInstance().getExecutor().execute(() -> {
             Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(event.getPlayer());
             try {
-                if (profile.getRank().isStaff()) {
-                    profile.setCurrentServer(Holiday.getInstance().getConfig().getString("SERVER.NAME"));
+                if (profile.isStaff()) {
+                    profile.setCurrentServer(Holiday.getInstance().getSettings().getString("SERVER.NAME"));
                     new StaffSwitchServer(profile, true);
                 }
             } catch (Exception ignored) {
@@ -144,7 +151,7 @@ public class ProfileListener implements Listener {
                 Holiday.getInstance().getProfileHandler().removeFromCache(event.getPlayer().getUniqueId());
             }
         });
-
     }
+
 
 }

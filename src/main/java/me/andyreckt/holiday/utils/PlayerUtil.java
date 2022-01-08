@@ -2,15 +2,8 @@ package me.andyreckt.holiday.utils;
 
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -18,7 +11,6 @@ import org.bukkit.potion.PotionEffectType;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Stream;
 
 
 /**
@@ -71,7 +63,7 @@ public class PlayerUtil {
     }
 
     public static boolean hasVotedOnNameMC(UUID uuid) {
-        BasicConfigurationFile config = Holiday.getInstance().getConfig();
+        BasicConfigurationFile config = Holiday.getInstance().getSettings();
         try (Scanner scanner = new Scanner(
                 new URL("https://api.namemc.com/server/" + config.getString("NETWORK.IP") + "/likes?profile=" + uuid.toString())
                         .openStream()).useDelimiter("\\A")) {

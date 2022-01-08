@@ -5,16 +5,16 @@ import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.utils.packets.Packet;
 
 public class ServerPacket implements Packet {
-    final Server.ServerData data;
+    final Server data;
 
     final ServerPacketType type;
 
-    public ServerPacket(Server.ServerData data, ServerPacketType type) {
+    public ServerPacket(Server data, ServerPacketType type) {
         this.data = data;
         this.type = type;
     }
 
-    public Server.ServerData getData() {
+    public Server getData() {
         return this.data;
     }
 

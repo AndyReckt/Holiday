@@ -13,7 +13,8 @@ import org.bukkit.ChatColor;
 import java.util.Objects;
 
 public class StaffMessagesSubscriber implements PacketListener {
-
+//TODO DO THIS
+    /*
     @IncomingPacketHandler
     public void onMsg(StaffMessages.StaffMessagesPacket packet) {
 
@@ -89,8 +90,6 @@ public class StaffMessagesSubscriber implements PacketListener {
                     clickable1.sendToPlayer(p);
                 });
     }
-
-
-
+*/
 
 }

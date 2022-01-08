@@ -11,8 +11,10 @@ import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.database.redis.packet.ProfilePacket;
 import me.andyreckt.holiday.player.disguise.DisguiseHandler;
 import me.andyreckt.holiday.player.grant.Grant;
+import me.andyreckt.holiday.player.grant.GrantComparator;
 import me.andyreckt.holiday.player.punishments.PunishData;
 import me.andyreckt.holiday.player.rank.Rank;
+import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.PunishmentUtils;
 import me.andyreckt.holiday.utils.StringUtils;
 import me.andyreckt.holiday.utils.Tasks;
@@ -23,6 +25,7 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -37,12 +40,11 @@ public class Profile {
 
     long firstLogin, lastSeen;
 
-    Rank rank;
-    long rankTime;
+    boolean console = false;
 
     @Nullable
     String currentServer;
-
+    @Nullable
     DisguiseHandler.DisguiseData disguiseData;
 
 
@@ -58,9 +60,9 @@ public class Profile {
 
     public Profile() {
         this.uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
-        this.name = "Console";
+        this.name = "&4Console";
         this.online = true;
-        this.rank = Holiday.getInstance().getRankHandler().getHighestRank();
+        console = true;
     }
 
     public Profile(UUID uuid) {
@@ -80,7 +82,6 @@ public class Profile {
         }
     }
 
-
     boolean hasProfile(UUID uuid) {
         Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
         return document != null;
@@ -97,8 +98,6 @@ public class Profile {
         getProfileFromDb(uuid);
         if (cache) Holiday.getInstance().getProfileHandler().updateProfile(this);
     }
-
-
 
     void getProfileFromDb(UUID uuid) {
         Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
@@ -138,12 +137,10 @@ public class Profile {
         this.ips = new ArrayList<>();
         this.firstLogin = System.currentTimeMillis();
         this.lastSeen = System.currentTimeMillis();
-        this.rank = Holiday.getInstance().getRankHandler().getDefaultRank();
         this.online = true;
         this.liked = false;
         this.inStaffMode = false;
         this.coins = 100;
-        this.rankTime = -1;
         this.lowerCaseName = name.toLowerCase();
         this.messagesEnabled = true;
         Holiday.getInstance().getProfileHandler().updateProfile(this);
@@ -177,11 +174,9 @@ public class Profile {
             this.ips = ipsL;
             this.firstLogin = document.getLong("firstLogin");
             this.lastSeen = document.getLong("lastSeen");
-            this.rank = Holiday.getInstance().getRankHandler().getFromName(document.getString("rank"));
             this.liked = document.getBoolean("liked");
             this.inStaffMode = document.getBoolean("staff");
             this.online = document.getBoolean("online");
-            this.rankTime = document.getLong("rankTime");
             this.coins = document.getInteger("coins");
             this.lowerCaseName = name.toLowerCase();
             this.messagesEnabled = document.getBoolean("isMessages");
@@ -207,8 +202,6 @@ public class Profile {
                 .append("firstLogin", profile.getFirstLogin())
                 .append("lastSeen", profile.getLastSeen())
                 .append("online", profile.isOnline())
-                .append("rank", profile.getRank().getName())
-                .append("rankTime", profile.getRankTime())
                 .append("liked", profile.isLiked())
                 .append("staff", profile.isInStaffMode())
                 .append("coins", profile.getCoins())
@@ -222,10 +215,12 @@ public class Profile {
     }
 
     public String getNameWithColor() {
-        if (rank == null || name == null || (rank.getColor() + name).contains("null")) {
-            return "&4Console";
-        }
-        return rank.getColor() + name;
+        Rank rank = getHighestVisibleGrant().getRank();
+        String color = "";
+        if (rank.isItalic()) color += CC.I;
+        if (rank.isBold()) color += CC.B;
+        color += rank.getColor().toString();
+        return color + name;
     }
 
 
@@ -243,22 +238,6 @@ public class Profile {
 
     public List<PunishData> getPunishments() {
         return new ArrayList<>(Holiday.getInstance().getPunishmentHandler().getAllPunishmentsProfile(this));
-    }
-
-    public void checkRankTime() {
-        if (this.rankTime == -1L) return;
-        if (this.rankTime >= System.currentTimeMillis()) return;
-        this.rankTime = -1L;
-        this.rank = Holiday.getInstance().getRankHandler().getDefaultRank();
-        save();
-    }
-
-    public static List<Grant> getAllGrants(UUID user) {
-        List<Grant> toReturn = new ArrayList<>();
-        MongoUtils.submitToThread(() -> MongoUtils.getGrantCollection()
-                .find(Filters.eq("user", user.toString()))
-                .forEach((Block<Document>) doc -> toReturn.add(new Grant(doc))));
-        return toReturn;
     }
 
 
@@ -287,14 +266,9 @@ public class Profile {
         return toReturn;
     }
 
-    public List<Grant> getAllGrants() {
-        List<Grant> toReturn = new ArrayList<>();
-        MongoUtils.submitToThread(() -> MongoUtils.getGrantCollection()
-                .find(Filters.eq("user", uuid.toString()))
-                .forEach((Block<Document>) doc -> toReturn.add(new Grant(doc))));
-        return toReturn;
+    public List<Grant> getGrants() {
+        return Holiday.getInstance().getGrantHandler().getGrants(uuid);
     }
-
 
     public String getDisplayName() {
         if (this.disguiseData != null) {
@@ -305,23 +279,20 @@ public class Profile {
     }
 
     public String getDisplayNameWithColor() {
-        if (this.disguiseData != null) {
-            return disguiseData.disguiseRank().getColor() + disguiseData.displayName();
-        } else {
-            if (rank == null || name == null || (rank.getColor() + name).contains("null")) {
-                return "&cConsole";
-            }
-            return rank.getColor() + name;
-        }
-    }
 
+        Rank rank = getHighestVisibleGrant().getRank();
+        String name = this.name;
 
-    public Rank getDisplayRank() {
         if (this.disguiseData != null) {
-            return disguiseData.disguiseRank();
-        } else {
-            return rank;
+            rank = disguiseData.disguiseRank();
+            name = disguiseData.displayName();
         }
+
+        String color = "";
+        if (rank.isItalic()) color += CC.I;
+        if (rank.isBold()) color += CC.B;
+        color += rank.getColor().toString();
+        return color + name;
     }
 
     public boolean isDisguised() {
@@ -331,10 +302,6 @@ public class Profile {
     public boolean isDisguisedOnLogin() {
         return Holiday.getInstance().getDisguiseHandler().isDisguisedMongo(uuid);
     }
-
-
-
-
 
     void loadFromDocument(Document document) {
         this.uuid = UUID.fromString(document.getString("_id"));
@@ -346,7 +313,6 @@ public class Profile {
 
         this.online = document.getBoolean("online");
         this.liked = document.getBoolean("liked");
-        this.rank = Holiday.getInstance().getRankHandler().getFromName(document.getString("rank"));
         this.inStaffMode = document.getBoolean("staff");
 
         this.firstLogin = document.getLong("firstLogin");
@@ -354,12 +320,57 @@ public class Profile {
 
         this.coins = document.getInteger("coins");
         this.currentServer = document.getString("server");
-        this.rankTime = document.getLong("rankTime");
         this.lowerCaseName = name.toLowerCase();
         this.messagesEnabled = document.getBoolean("isMessages");
 
         if (Holiday.getInstance().getDisguiseHandler().isDisguisedMongo(uuid)) this.disguiseData = Holiday.getInstance().getDisguiseHandler().getDisguiseData(uuid);
     }
 
+    public Grant getHighestGrant() {
+        return Holiday.getInstance().getGrantHandler().getGrants(uuid).stream().min(new GrantComparator()).orElseGet(() -> Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid));
+    }
+
+    public Grant getHighestVisibleGrant() {
+        return Holiday.getInstance().getGrantHandler().getGrants(uuid).stream().filter(grant -> grant.getRank().isVisible()).min(new GrantComparator()).orElseGet(() -> Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid));
+    }
+
+    public Rank getHighestRank() {
+        return getHighestGrant().getRank();
+    }
+
+    public Rank getHighestVisibleRank() {
+        return getHighestVisibleGrant().getRank();
+    }
+
+    public List<Grant> getActiveGrants() {
+        return getGrants().stream().filter(Grant::isActive).collect(Collectors.toList());
+    }
+
+    public boolean isStaff() {
+
+        for (Grant o : getGrants()) {
+            if (o.getRank().isStaff()) return true;
+        }
+
+        return false;
+    }
+
+    public boolean isAdmin() {
+
+        for (Grant o : getGrants()) {
+            if (o.getRank().isAdmin()) return true;
+        }
+
+        return false;
+    }
+
+    public boolean isOp() {
+
+        for (Grant o : getGrants()) {
+            if (o.getRank().isDev()) return true;
+        }
+
+        return false;
+    }
 
 }

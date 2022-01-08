@@ -1,10 +1,10 @@
 package me.andyreckt.holiday.server.menu;
 
 
-import cc.teamfight.astria.Astria;
-import cc.teamfight.astria.server.Server;
-import cc.teamfight.astria.server.menu.button.ServerButton;
-import cc.teamfight.astria.utils.CC;
+import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.server.Server;
+import me.andyreckt.holiday.server.menu.button.ServerButton;
+import me.andyreckt.holiday.utils.CC;
 import com.ericstolly.menu.button.MenuButton;
 import com.ericstolly.menu.menu.Menu;
 import com.ericstolly.menu.menu.type.MenuType;
@@ -19,7 +19,7 @@ public class ServersMenu extends Menu {
 
 
     public ServersMenu() {
-        super(Astria.getInstance());
+        super(Holiday.getInstance());
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ServersMenu extends Menu {
         Map<Integer, MenuButton> toReturn = new HashMap<>();
 
         int i = 0;
-        for (Server.ServerData serverData : Server.servers.values()) {
+        for (Server serverData : Holiday.getInstance().getServerHandler().getServers().values()) {
             toReturn.put(i, new ServerButton(serverData));
             i++;
         }

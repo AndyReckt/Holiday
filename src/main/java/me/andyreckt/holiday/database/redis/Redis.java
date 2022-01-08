@@ -3,6 +3,7 @@ package me.andyreckt.holiday.database.redis;
 import lombok.Getter;
 import me.andyreckt.holiday.database.redis.packet.*;
 import me.andyreckt.holiday.database.redis.subscribers.*;
+import me.andyreckt.holiday.player.grant.Grant;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import me.andyreckt.holiday.utils.packets.Pidgin;
 import me.andyreckt.holiday.utils.packets.RedisCredentials;
@@ -54,9 +55,8 @@ public class Redis {
                 StaffMessages.ReportPacket.class,
                 StaffMessages.StaffMessagesPacket.class,
                 StaffMessages.HelpopPacket.class,
-                RankDeletePacket.class,
-                RankCreatePacket.class,
-                RankUpdatePacket.class
+                RankPacket.class,
+                GrantPacket.class
         ).forEach(packet -> pidgin.registerPacket(packet));
     }
 
@@ -66,9 +66,10 @@ public class Redis {
          pidgin.registerListener(new MessageSubscriber());
          pidgin.registerListener(new ProfileSubscriber());
          pidgin.registerListener(new DisguiseSubscriber());
-         pidgin.registerListener(new ServerListener());
+         pidgin.registerListener(new ServerSubscriber());
          pidgin.registerListener(new RankSubscriber());
          pidgin.registerListener(new StaffMessagesSubscriber());
+         pidgin.registerListener(new GrantSubscriber());
 
      }
 

@@ -5,8 +5,9 @@ import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.utils.packets.handler.IncomingPacketHandler;
 import me.andyreckt.holiday.utils.packets.listener.PacketListener;
 
-public class ServerListener implements PacketListener {
-
+public class ServerSubscriber implements PacketListener {
+//TODO THIS
+    /*
     @IncomingPacketHandler
     public void server(ServerPacket packet) {
         switch (packet.getType()) {
@@ -25,6 +26,8 @@ public class ServerListener implements PacketListener {
             }
         }
     }
+
+     */
 
 
 }

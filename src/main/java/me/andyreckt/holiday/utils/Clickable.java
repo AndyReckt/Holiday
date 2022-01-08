@@ -1,7 +1,5 @@
 package me.andyreckt.holiday.utils;
 
-import me.andyreckt.holiday.database.redis.Redis;
-import me.andyreckt.holiday.database.redis.packet.ClickablePacket;
 import lombok.NoArgsConstructor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -68,7 +66,7 @@ public class Clickable {
 	}
 
 	public void sendToPlayer(Player player) {
-		player.sendMessage(this.asComponents());
+		player.spigot().sendMessage(this.asComponents());
 	}
 
 	public TextComponent[] asComponents() {
@@ -76,13 +74,7 @@ public class Clickable {
 	}
 
 
-	public static void sendClickableToAll(String message, String hoverMessage, ClickEvent.Action clickAction, String clickCmd) {
-		Redis.getPidgin().sendPacket(new ClickablePacket(message, hoverMessage, clickAction, clickCmd));
-	}
 
-	public static void sendClickableToAll(String message, String hoverMessage, String clickCmd) {
-		Redis.getPidgin().sendPacket(new ClickablePacket(message, hoverMessage, ClickEvent.Action.RUN_COMMAND, clickCmd));
-	}
 
 
 }

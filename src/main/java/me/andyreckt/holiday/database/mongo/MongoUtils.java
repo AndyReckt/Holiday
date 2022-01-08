@@ -41,6 +41,10 @@ public class MongoUtils {
         return getCollection("Disguises");
     }
 
+    public static MongoCollection getServersCollection() {
+        return getCollection("Servers");
+    }
+
 
     public static void submitToThread(Runnable runnable) {
         Holiday.getInstance().getDbExecutor().execute(runnable);

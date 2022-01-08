@@ -1,8 +1,8 @@
 package me.andyreckt.holiday.server.menu.button;
 
-import cc.teamfight.astria.server.Server;
-import cc.teamfight.astria.utils.CC;
-import cc.teamfight.astria.utils.ItemBuilder;
+import me.andyreckt.holiday.server.Server;
+import me.andyreckt.holiday.utils.CC;
+import me.andyreckt.holiday.utils.ItemBuilder;
 import com.ericstolly.menu.button.MenuButton;
 import com.ericstolly.menu.button.listener.MenuButtonListener;
 import lombok.NonNull;
@@ -12,9 +12,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class ServerButton extends MenuButton {
 
-    final Server.ServerData serverData;
+    final Server serverData;
 
-    public ServerButton(Server.ServerData serverData) {
+    public ServerButton(Server serverData) {
         this.serverData = serverData;
     }
 

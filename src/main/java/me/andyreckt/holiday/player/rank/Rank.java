@@ -1,13 +1,13 @@
 package me.andyreckt.holiday.player.rank;
 
-import com.mongodb.Block;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
-import me.andyreckt.holiday.database.redis.packet.RankUpdatePacket;
+import me.andyreckt.holiday.database.redis.packet.RankPacket;
+import me.andyreckt.holiday.other.enums.RankType;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 
@@ -27,7 +27,7 @@ public class Rank {
     final UUID uuid;
     String name;
 
-    String prefix, suffix;
+    String prefix, suffix, displayName;
     boolean bold, italic, isDefault, isStaff, isAdmin, isDev, isVisible;
     ChatColor color;
 
@@ -47,19 +47,7 @@ public class Rank {
 
     public Rank(Document document) {
         this.uuid = UUID.fromString(document.getString("_id"));
-        this.name = document.getString("name");
-        this.prefix = document.getString("prefix");
-        this.suffix = document.getString("suffix");
-        this.bold = document.getBoolean("bold");
-        this.italic = document.getBoolean("italic");
-        this.isDefault = document.getBoolean("default");
-        this.isStaff = document.getBoolean("staff");
-        this.isAdmin = document.getBoolean("admin");
-        this.isDev = document.getBoolean("dev");
-        this.isVisible = document.getBoolean("visible");
-        this.color = ChatColor.valueOf(document.getString("color"));
-        this.priority = document.getInteger("priority");
-        this.permissions = document.getList("permissions", String.class);
+        loadFromDocument(document);
     }
 
     public Rank(UUID uuid) {
@@ -74,24 +62,12 @@ public class Rank {
             return;
         }
 
-        this.name = document.getString("name");
-        this.prefix = document.getString("prefix");
-        this.suffix = document.getString("suffix");
-        this.bold = document.getBoolean("bold");
-        this.italic = document.getBoolean("italic");
-        this.isDefault = document.getBoolean("default");
-        this.isStaff = document.getBoolean("staff");
-        this.isAdmin = document.getBoolean("admin");
-        this.isDev = document.getBoolean("dev");
-        this.isVisible = document.getBoolean("visible");
-        this.color = ChatColor.valueOf(document.getString("color"));
-        this.priority = document.getInteger("priority");
-        this.permissions = document.getList("permissions", String.class);
+        loadFromDocument(document);
     }
 
     public void save() {
         MongoUtils.submitToThread(() -> MongoUtils.getRankCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
-        Holiday.getInstance().getRedis().sendPacket(new RankUpdatePacket(uuid));
+        Holiday.getInstance().getRedis().sendPacket(new RankPacket(this, RankType.UPDATE));
     }
 
 
@@ -100,6 +76,7 @@ public class Rank {
                 .append("name", name)
                 .append("prefix", prefix)
                 .append("suffix", suffix)
+                .append("displayName", displayName)
                 .append("bold", bold)
                 .append("italic", italic)
                 .append("default", isDefault)
@@ -110,6 +87,24 @@ public class Rank {
                 .append("priority", priority)
                 .append("color", color.name())
                 .append("permissions", permissions == null ? new ArrayList<String>() : permissions);
+    }
+
+
+    void loadFromDocument(Document document) {
+        this.name = document.getString("name");
+        this.prefix = document.getString("prefix");
+        this.suffix = document.getString("suffix");
+        this.displayName = document.getString("displayName");
+        this.bold = document.getBoolean("bold");
+        this.italic = document.getBoolean("italic");
+        this.isDefault = document.getBoolean("default");
+        this.isStaff = document.getBoolean("staff");
+        this.isAdmin = document.getBoolean("admin");
+        this.isDev = document.getBoolean("dev");
+        this.isVisible = document.getBoolean("visible");
+        this.color = ChatColor.valueOf(document.getString("color"));
+        this.priority = document.getInteger("priority");
+        this.permissions = document.getList("permissions", String.class);
     }
 
 }

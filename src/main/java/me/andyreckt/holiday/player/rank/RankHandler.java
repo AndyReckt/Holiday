@@ -22,10 +22,7 @@ public class RankHandler {
              Rank rank = new Rank(o);
              rankCache.put(rank.getUuid(), rank);
          });
-
-
      }
-
 
     public boolean cacheContains(UUID id) {
         return rankCache.containsKey(id);
@@ -37,6 +34,10 @@ public class RankHandler {
 
     public void clearCache() {
         rankCache.clear();
+    }
+
+    public void removeFromCache(UUID id) {
+         rankCache.remove(id);
     }
 
 

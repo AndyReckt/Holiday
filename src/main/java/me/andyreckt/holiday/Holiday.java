@@ -7,13 +7,16 @@ import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.database.mongo.MongoDB;
 import me.andyreckt.holiday.database.redis.Redis;
-import me.andyreckt.holiday.database.redis.packet.ServerStartPacket;
+import me.andyreckt.holiday.database.redis.packet.BroadcastPacket;
 import me.andyreckt.holiday.listeners.ProfileListener;
+import me.andyreckt.holiday.other.enums.BroadcastType;
 import me.andyreckt.holiday.player.ProfileHandler;
 import me.andyreckt.holiday.player.disguise.DisguiseHandler;
+import me.andyreckt.holiday.player.grant.GrantHandler;
 import me.andyreckt.holiday.player.punishments.PunishmentHandler;
-import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.player.rank.RankHandler;
+import me.andyreckt.holiday.server.ServerHandler;
+import me.andyreckt.holiday.utils.StringUtil;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import me.andyreckt.holiday.utils.packets.Pidgin;
 import org.bukkit.Bukkit;
@@ -34,7 +37,7 @@ public final class Holiday extends JavaPlugin {
     boolean lunarEnabled = false;
     Gson gson;
 
-    BasicConfigurationFile config, messages;
+    BasicConfigurationFile settings, messages;
 
     Redis redisPool;
     Pidgin redis;
@@ -46,6 +49,8 @@ public final class Holiday extends JavaPlugin {
     ProfileHandler profileHandler;
     DisguiseHandler disguiseHandler;
     RankHandler rankHandler;
+    GrantHandler grantHandler;
+    ServerHandler serverHandler;
 
     Executor dbExecutor, executor;
 
@@ -70,10 +75,15 @@ public final class Holiday extends JavaPlugin {
         setupDatabases();
         setupHandlers();
         setupListeners();
+
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API")) {
             lunarEnabled = true;
         }
-        redis.sendPacket(new ServerStartPacket(config.getString("SERVER.NAME")));
+
+        redis.sendPacket(new BroadcastPacket(StringUtil.addNetworkPlaceholder(
+                messages.getString("SERVER.STARTUP")
+                        .replace("<server>", settings.getString("SERVER.NAME"))),
+                BroadcastType.ADMIN));
     }
 
     void setupExecutors() {
@@ -83,13 +93,13 @@ public final class Holiday extends JavaPlugin {
 
 
     void setupConfigFiles() {
-        this.config = new BasicConfigurationFile(this, "settings");
+        this.settings = new BasicConfigurationFile(this, "settings");
         this.messages = new BasicConfigurationFile(this, "messages");
     }
 
     void setupDatabases() {
-        this.mongoDatabase = new MongoDB(config).getDatabase();
-        this.redisPool = new Redis(config);
+        this.mongoDatabase = new MongoDB(settings).getDatabase();
+        this.redisPool = new Redis(settings);
         this.jedisPool = redisPool.getJedis();
         this.redis = redisPool.getPidgin();
     }
@@ -99,6 +109,8 @@ public final class Holiday extends JavaPlugin {
         this.profileHandler = new ProfileHandler();
         this.rankHandler = new RankHandler();
         this.disguiseHandler = new DisguiseHandler(this);
+        this.serverHandler = new ServerHandler(this);
+        this.grantHandler = new GrantHandler();
     }
 
 

@@ -4,6 +4,7 @@ import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.redis.packet.PunishmentPacket;
 import me.andyreckt.holiday.other.enums.PunishmentSubType;
 import me.andyreckt.holiday.player.Profile;
+import me.andyreckt.holiday.player.ProfileHandler;
 import me.andyreckt.holiday.player.punishments.PunishData;
 import me.andyreckt.holiday.player.punishments.PunishmentHandler;
 import me.andyreckt.holiday.player.rank.Rank;
@@ -26,6 +27,7 @@ public class PunishmentSubscriber implements PacketListener {
 
         PunishData data = packet.getPunishData();
         PunishmentHandler ph = Holiday.getInstance().getPunishmentHandler();
+        ProfileHandler prh = Holiday.getInstance().getProfileHandler();
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
         if (!ph.cacheContains(data.getId())) ph.updateCache(data.getId(), data);
@@ -94,9 +96,8 @@ public class PunishmentSubscriber implements PacketListener {
 
         if (data.isSilent()) {
             String fString = message = messages.getString("PUNISHMENT.SILENTPREFIX") + string;
-            Profile.getAllProfiles().forEach(profile -> {
-                Rank rank = profile.getRank();
-                if (rank.isStaff()) {
+            prh.getOnlineProfiles().forEach(profile -> {
+                if (profile.isStaff()) {
                     profile.getPlayer().sendMessage(CC.translate(fString));
                     Holiday.getInstance().getLogger().info(CC.translate(fString));
                 }

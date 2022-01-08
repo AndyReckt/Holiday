@@ -1,9 +1,9 @@
 package me.andyreckt.holiday.server.reboot;
 
-import cc.teamfight.astria.Astria;
-import cc.teamfight.astria.utils.CC;
-import cc.teamfight.astria.utils.TimeUtil;
-import cc.teamfight.astria.utils.Utilities;
+import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.utils.CC;
+import me.andyreckt.holiday.utils.TimeUtil;
+import me.andyreckt.holiday.utils.Utilities;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,13 +25,13 @@ public class Reboot extends BukkitRunnable {
         active = true;
         currentReboot = this;
         Bukkit.broadcastMessage(CC.translate("&eThe server will reboot in: &d" + TimeUtil.formatDuration(time)));
-        this.runTaskTimerAsynchronously(Astria.getInstance(), 0, 20L);
+        this.runTaskTimerAsynchronously(Holiday.getInstance(), 0, 20L);
 
     }
 
     @Override
     public void run() {
-        time-= 1000;
+        time -= 1000;
 
         if (time == 0) {
             Bukkit.broadcastMessage(CC.translate("&4Server is rebooting."));
@@ -45,7 +45,8 @@ public class Reboot extends BukkitRunnable {
             Bukkit.getOnlinePlayers().forEach(player -> Utilities.sendToServer(player, "Hub-1"));
         }
 
-        if (rebootTimes.contains(time)) Bukkit.broadcastMessage(CC.translate("&eThe server will reboot in: &d" + TimeUtil.formatDuration(time)));
+        if (rebootTimes.contains(time))
+            Bukkit.broadcastMessage(CC.translate("&eThe server will reboot in: &d" + TimeUtil.formatDuration(time)));
     }
 
 

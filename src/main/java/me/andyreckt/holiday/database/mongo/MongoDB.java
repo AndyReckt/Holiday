@@ -4,8 +4,6 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 import lombok.Getter;
-import me.andyreckt.holiday.Files;
-import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 
 @Getter

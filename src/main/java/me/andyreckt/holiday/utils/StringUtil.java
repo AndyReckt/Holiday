@@ -135,7 +135,7 @@ public class StringUtil {
 
 
     public static String addNetworkPlaceholder(String string) {
-        BasicConfigurationFile config = Holiday.getInstance().getConfig();
+        BasicConfigurationFile config = Holiday.getInstance().getSettings();
 
         string = string.replace("<network_name>", config.getString("NETWORK.NAME"));
         string = string.replace("<network_ip>", config.getString("NETWORK.IP"));
