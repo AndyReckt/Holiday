@@ -27,6 +27,8 @@ import redis.clients.jedis.JedisPool;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 @Getter @Setter
@@ -53,6 +55,7 @@ public final class Holiday extends JavaPlugin {
     ServerHandler serverHandler;
 
     Executor dbExecutor, executor;
+    ScheduledExecutorService scheduledExecutor;
 
 
     @Override
@@ -75,6 +78,7 @@ public final class Holiday extends JavaPlugin {
         setupDatabases();
         setupHandlers();
         setupListeners();
+        setupRunnables();
 
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API")) {
             lunarEnabled = true;
@@ -88,7 +92,8 @@ public final class Holiday extends JavaPlugin {
 
     void setupExecutors() {
         this.dbExecutor = Executors.newFixedThreadPool(2);
-        this.executor = Executors.newFixedThreadPool(4);
+        this.executor = Executors.newFixedThreadPool(3);
+        this.scheduledExecutor = Executors.newScheduledThreadPool(2);
     }
 
 
@@ -114,6 +119,12 @@ public final class Holiday extends JavaPlugin {
     }
 
 
+    void setupRunnables() {
+        Runnable refreshGrants = () -> grantHandler.refreshGrants();
+        scheduledExecutor.scheduleAtFixedRate(refreshGrants, 0, 1, TimeUnit.MINUTES);
+    }
+
+
     void setupListeners() {
         addListener(new ProfileListener());
     }
@@ -123,9 +134,11 @@ public final class Holiday extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        instance = null;
         this.redisPool = null;
         this.jedisPool = null;
         this.redis = null;
         this.mongoDatabase = null;
+        scheduledExecutor.shutdownNow();
     }
 }

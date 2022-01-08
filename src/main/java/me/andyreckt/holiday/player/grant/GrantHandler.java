@@ -43,6 +43,15 @@ public class GrantHandler {
         return grant;
     }
 
+    public void refreshGrants() {
+        for (Grant o : grants()) {
+            if (o.expired()) {
+                o.setActive(false);
+                o.save();
+            }
+        }
+    }
+
 
     public void removeFromCache(UUID id) {
         grantCache.remove(id);
