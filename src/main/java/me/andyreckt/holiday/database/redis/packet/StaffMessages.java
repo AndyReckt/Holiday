@@ -20,7 +20,7 @@ public class StaffMessages {
             this.channel = channel;
         }
 
-        public StaffMessagesPacket(String message, StaffMessageType channel,String hovermsg, String clickCmd) {
+        public StaffMessagesPacket(String message, StaffMessageType channel, String hovermsg, String clickCmd) {
             this.message = message;
             this.channel = channel;
             this.hoverMsg = hovermsg;

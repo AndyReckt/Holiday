@@ -53,6 +53,7 @@ public final class Holiday extends JavaPlugin {
     RankHandler rankHandler;
     GrantHandler grantHandler;
     ServerHandler serverHandler;
+    ChatHandler chatHandler;
 
     Executor dbExecutor, executor;
     ScheduledExecutorService scheduledExecutor;
@@ -116,6 +117,7 @@ public final class Holiday extends JavaPlugin {
         this.disguiseHandler = new DisguiseHandler(this);
         this.serverHandler = new ServerHandler(this);
         this.grantHandler = new GrantHandler();
+        this.chatHandler = new ChatHandler(this.settings, serverHandler.getThisServer());
     }
 
 

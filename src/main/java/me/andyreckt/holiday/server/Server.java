@@ -18,4 +18,7 @@ public class Server {
     boolean whitelisted;
     Rank whitelistRank;
     List<UUID> whitelistedPlayers;
+
+    long chatDelay;
+    boolean chatMuted;
 }

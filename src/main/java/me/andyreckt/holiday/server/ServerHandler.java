@@ -33,7 +33,7 @@ public class ServerHandler {
         servers = new HashMap<>();
 
         if (MongoUtils.getServersCollection().find(Filters.eq("_id", plugin.getSettings().getString("SERVER.NAME"))).first() == null) {
-            data = new Server(plugin.getSettings().getString("SERVER.NAME"), Bukkit.getOnlinePlayers().size(), 250, false, plugin.getRankHandler().getDefaultRank(), new ArrayList<>());
+            data = new Server(plugin.getSettings().getString("SERVER.NAME"), Bukkit.getOnlinePlayers().size(), 250, false, plugin.getRankHandler().getDefaultRank(), new ArrayList<>(), 3000, false);
             StringUtils.setSlots(250);
         } else {
             data = fromDocument((Document) MongoUtils.getServersCollection().find(Filters.eq("_id", plugin.getSettings().getString("SERVER.NAME"))).first());
@@ -58,7 +58,9 @@ public class ServerHandler {
                 document.getInteger("maxPlayers"),
                 document.getBoolean("whitelisted"),
                 rh.getFromName(document.getString("whitelistRank")),
-                transform(document.getList("whitelistedPlayers", String.class))
+                transform(document.getList("whitelistedPlayers", String.class)),
+                document.getInteger("chatDelay"),
+                document.getBoolean("chatMuted")
         );
     }
 
@@ -79,7 +81,9 @@ public class ServerHandler {
                 .append("maxPlayers", data.getMaxplayers())
                 .append("whitelisted", data.isWhitelisted())
                 .append("whitelistRank", data.getWhitelistRank().getName())
-                .append("whitelistedPlayers", transforms(data.getWhitelistedPlayers()));
+                .append("whitelistedPlayers", transforms(data.getWhitelistedPlayers()))
+                .append("chatDelay", data.getChatDelay())
+                .append("chatMuted", data.isChatMuted());
     }
 
 
