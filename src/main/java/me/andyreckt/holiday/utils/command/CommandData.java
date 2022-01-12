@@ -51,7 +51,21 @@ final class CommandData {
         Player p = (Player) sender;
 
         if (p.isOp()) return true;
+        if (p.hasPermission("*")) return true;
+        if (p.hasPermission("*.*")) return true;
 
+        String[] array = permissionNode.split("\\.");
+        for (int i = 1; i < 4; i++) {
+            if (array[i] == null) continue;
+
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < i; j++) {
+                sb.append(array[j]);
+                sb.append(".");
+            }
+            sb.append("*");
+            if (p.hasPermission(sb.toString())) return true;
+        }
         return p.hasPermission(permissionNode);
     }
 

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
+import me.andyreckt.holiday.database.redis.packet.GrantPacket;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.TimeUtil;
 import org.bson.Document;
@@ -66,6 +67,7 @@ public class Grant {
 
     public void save() {
         MongoUtils.submitToThread(() -> MongoUtils.getGrantCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
+        Holiday.getInstance().getRedis().sendPacket(new GrantPacket(this));
     }
 
     public Document toBson() {

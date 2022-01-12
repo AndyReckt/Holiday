@@ -46,9 +46,8 @@ public class ProfileListener implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
-
         event.setJoinMessage(null);
 
         Holiday.getInstance().getExecutor().execute(() -> {
@@ -105,6 +104,8 @@ public class ProfileListener implements Listener {
                 if (p.isStaff()) new StaffSwitchServer(p, false);
 
                 p.save();
+                Tasks.runLater(() -> PermissionUtils.updatePermissions(event.getPlayer()), 5L);
+
             }, 10L);
         });
     }

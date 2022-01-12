@@ -9,27 +9,18 @@ import me.andyreckt.holiday.utils.packets.listener.PacketListener;
 public class RankSubscriber implements PacketListener {
 
     @IncomingPacketHandler
-    public void create(RankPacket packet) {
-
-        if (!(packet.getUpdateType() == RankType.ADD)) return;
-        Holiday.getInstance().getRankHandler().updateCache(packet.getRank().getUuid(), packet.getRank());
-
+    public void handle(RankPacket packet) {
+        switch (packet.getUpdateType()) {
+            case ADD:
+            case UPDATE: {
+                Holiday.getInstance().getRankHandler().updateCache(packet.getRank().getUuid(), packet.getRank());
+                break;
+            } case DELETE: {
+                Holiday.getInstance().getRankHandler().removeFromCache(packet.getRank().getUuid());
+                break;
+            }
+        }
     }
 
-    @IncomingPacketHandler
-    public void delete(RankPacket packet) {
-
-        if (!(packet.getUpdateType() == RankType.DELETE)) return;
-        Holiday.getInstance().getRankHandler().removeFromCache(packet.getRank().getUuid());
-
-    }
-
-    @IncomingPacketHandler
-    public void update(RankPacket packet) {
-
-        if (!(packet.getUpdateType() == RankType.UPDATE)) return;
-        Holiday.getInstance().getRankHandler().updateCache(packet.getRank().getUuid(), packet.getRank());
-
-    }
 
 }

@@ -7,7 +7,9 @@ import lombok.Getter;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.database.redis.packet.ServerPacket;
+import me.andyreckt.holiday.database.redis.packet.StaffMessages;
 import me.andyreckt.holiday.other.enums.ServerPacketType;
+import me.andyreckt.holiday.other.enums.StaffMessageType;
 import me.andyreckt.holiday.player.rank.RankHandler;
 import me.andyreckt.holiday.utils.StringUtils;
 import org.bson.Document;
@@ -59,7 +61,7 @@ public class ServerHandler {
                 document.getBoolean("whitelisted"),
                 rh.getFromName(document.getString("whitelistRank")),
                 transform(document.getList("whitelistedPlayers", String.class)),
-                document.getInteger("chatDelay"),
+                document.getLong("chatDelay"),
                 document.getBoolean("chatMuted")
         );
     }
@@ -89,9 +91,12 @@ public class ServerHandler {
 
     public void stop() { //TODO MESSAGE
         thisServer.setPlayers(0);
-        //Redis.getPidgin().sendPacket(new BroadcastPacket("&c[A] &5"  + Loader.getServerName() + " &cjust went offline and wont be joinable anymore!", BroadcastType.ADMIN));
-        //StaffUtils.Admin.sendServerStop();
         plugin.getRedis().sendPacket(new ServerPacket(thisServer, ServerPacketType.REMOVE));
+        Holiday.getInstance().getRedis().sendPacket(new StaffMessages.StaffMessagesPacket(
+                Holiday.getInstance().getMessages().getString("SERVER.SHUTDOWN")
+                        .replace("<server>", Holiday.getInstance().getSettings().getString("SERVER.NAME")),
+                StaffMessageType.ADMIN
+        ));
     }
 
     public void save() {

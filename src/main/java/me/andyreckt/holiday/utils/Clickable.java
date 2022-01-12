@@ -16,7 +16,7 @@ public class Clickable {
 	private final List<TextComponent> components = new ArrayList<>();
 
 	public Clickable(String msg) {
-		TextComponent message = new TextComponent(msg);
+		TextComponent message = new TextComponent(CC.translate(msg));
 
 		this.components.add(message);
 	}

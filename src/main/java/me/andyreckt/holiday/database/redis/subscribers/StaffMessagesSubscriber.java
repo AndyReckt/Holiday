@@ -1,8 +1,10 @@
 package me.andyreckt.holiday.database.redis.subscribers;
 
+import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.redis.packet.StaffMessages;
 import me.andyreckt.holiday.other.enums.StaffMessageType;
 import me.andyreckt.holiday.player.Profile;
+import me.andyreckt.holiday.player.ProfileHandler;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.Clickable;
 import me.andyreckt.holiday.utils.packets.handler.IncomingPacketHandler;
@@ -13,83 +15,91 @@ import org.bukkit.ChatColor;
 import java.util.Objects;
 
 public class StaffMessagesSubscriber implements PacketListener {
-//TODO DO THIS
-    /*
+
     @IncomingPacketHandler
     public void onMsg(StaffMessages.StaffMessagesPacket packet) {
 
         String msg = CC.translate(packet.getMessage());
+        ProfileHandler ph = Holiday.getInstance().getProfileHandler();
+
         if (packet.getClickCmd() != null && !packet.getClickCmd().equalsIgnoreCase("")) {
             Clickable clickable = new Clickable(msg, packet.getHoverMsg(), packet.getClickCmd());
             if (packet.getChannel() == StaffMessageType.STAFF) {
-                Profile.getAllProfiles().stream()
-                        .filter(profile -> profile.getRank().isStaff())
+                ph.getOnlineProfiles().stream()
+                        .filter(Profile::isStaff)
                         .map(Profile::getPlayer)
                         .filter(Objects::nonNull)
                         .forEach(clickable::sendToPlayer);
             } else {
-                Profile.getAllProfiles().stream()
-                        .filter(profile -> profile.getRank().isAdmin())
+                ph.getOnlineProfiles().stream()
+                        .filter(Profile::isAdmin)
                         .map(Profile::getPlayer)
                         .filter(Objects::nonNull)
                         .forEach(clickable::sendToPlayer);
             }
         } else {
             if (packet.getChannel() == StaffMessageType.STAFF) {
-                Profile.getAllProfiles().stream()
-                        .filter(profile -> profile.getRank().isStaff())
+                ph.getOnlineProfiles().stream()
+                        .filter(Profile::isStaff)
                         .map(Profile::getPlayer)
                         .filter(Objects::nonNull)
-                        .forEach(o -> o.sendMessage(msg));
+                        .forEach(o -> o.sendMessage(CC.translate(msg)));
             } else {
-                Profile.getAllProfiles().stream()
-                        .filter(profile -> profile.getRank().isAdmin())
+                ph.getOnlineProfiles().stream()
+                        .filter(Profile::isAdmin)
                         .map(Profile::getPlayer)
                         .filter(Objects::nonNull)
-                        .forEach(o -> o.sendMessage(msg));
-
+                        .forEach(o -> o.sendMessage(CC.translate(msg)));
             }
         }
     }
 
     @IncomingPacketHandler
     public void onReport(StaffMessages.ReportPacket packet) {
-        String message = "&9[REPORT] &d[" + packet.getServer() + "] "
-                + packet.getReporter() + " &9reported " + packet.getReported()
-                + "&9.";
-        String reason = " &7» &9Reason: &3" + packet.getReason();
+        String[] message = Holiday.getInstance().getMessages().getString("REPORTS.MESSAGE")
+                .replace("<server>", packet.getServer())
+                .replace("<player>", packet.getReporter())
+                .replace("<target>", packet.getReported())
+                .replace("<reason>", packet.getReason())
+                .split("\n");
+        for (String s : message) {
 
-        Clickable clickable = new Clickable(message, "&dClick to join " + packet.getServer(), "/join " + packet.getServer());
-        Clickable clickable1 = new Clickable(reason, "&dClick to join " + packet.getServer(), "/join " + packet.getServer());
+            Clickable clickable = new Clickable(s,
+                    Holiday.getInstance().getMessages().getString("REPORTS.CLICKMESSAGE")
+                            .replace("<server>", packet.getServer()),
+                    "/join " + packet.getServer()
+            );
 
-        Profile.getAllProfiles().stream()
-                .filter(profile -> profile.getRank().isStaff())
-                .map(Profile::getPlayer)
-                .filter(Objects::nonNull)
-                .forEach(p -> {
-                    clickable.sendToPlayer(p);
-                    clickable1.sendToPlayer(p);
-                });
+            Holiday.getInstance().getProfileHandler().getOnlineProfiles().stream()
+                    .filter(Profile::isStaff)
+                    .map(Profile::getPlayer)
+                    .filter(Objects::nonNull)
+                    .forEach(clickable::sendToPlayer);
+        }
     }
 
     @IncomingPacketHandler
     public void onRequest(StaffMessages.HelpopPacket packet) {
-        String message = "&2[HELPOP] &d[" + packet.getServer() + "] "
-                + packet.getSender() + " &2needs help.";
-        String reason = " &7» &2Request: &a" + packet.getRequest();
+        String[] message = Holiday.getInstance().getMessages().getString("HELPOPS.MESSAGE")
+                .replace("<server>", packet.getServer())
+                .replace("<player>", packet.getSender())
+                .replace("<reason>", packet.getRequest())
+                .split("\n");
+        for (String s : message) {
 
-        Clickable clickable = new Clickable(message, "&dClick to answer", ClickEvent.Action.SUGGEST_COMMAND, "/msg " + ChatColor.stripColor(packet.getSender()) + " ");
-        Clickable clickable1 = new Clickable(reason, "&dClick to answer", ClickEvent.Action.SUGGEST_COMMAND, "/msg " + ChatColor.stripColor(packet.getSender()) + " ");
+            Clickable clickable = new Clickable(s,
+                    Holiday.getInstance().getMessages().getString("HELPOPS.CLICKMESSAGE")
+                            .replace("<player>", packet.getSender()),
+                    "/msg " + packet.getSender()
+            );
 
-        Profile.getAllProfiles().stream()
-                .filter(profile -> profile.getRank().isStaff())
-                .map(Profile::getPlayer)
-                .filter(Objects::nonNull)
-                .forEach(p -> {
-                    clickable.sendToPlayer(p);
-                    clickable1.sendToPlayer(p);
-                });
+            Holiday.getInstance().getProfileHandler().getOnlineProfiles().stream()
+                    .filter(Profile::isStaff)
+                    .map(Profile::getPlayer)
+                    .filter(Objects::nonNull)
+                    .forEach(clickable::sendToPlayer);
+        }
     }
-*/
+
 
 }

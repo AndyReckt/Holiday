@@ -34,6 +34,7 @@ public class Rank {
     int priority;
 
     List<String> permissions;
+    List<UUID> childs;
 
     public Rank(String name) {
         this.uuid = UUID.randomUUID();
@@ -72,6 +73,12 @@ public class Rank {
 
 
     public Document toBson() {
+
+        List<String> childs = new ArrayList<>();
+        for (UUID child : this.childs) {
+            childs.add(child.toString());
+        }
+
         return new Document("_id", uuid.toString())
                 .append("name", name)
                 .append("prefix", prefix)
@@ -86,6 +93,7 @@ public class Rank {
                 .append("visible", isVisible)
                 .append("priority", priority)
                 .append("color", color.name())
+                .append("childs", childs)
                 .append("permissions", permissions == null ? new ArrayList<String>() : permissions);
     }
 
@@ -105,6 +113,11 @@ public class Rank {
         this.color = ChatColor.valueOf(document.getString("color"));
         this.priority = document.getInteger("priority");
         this.permissions = document.getList("permissions", String.class);
+
+
+        for (String child : document.getList("childs", String.class)) {
+            this.childs.add(UUID.fromString(child));
+        }
     }
 
 }

@@ -51,7 +51,7 @@ public class Reboot extends BukkitRunnable {
         }
 
         if (time == 2000) {
-            Bukkit.getOnlinePlayers().forEach(player -> Utilities.sendToServer(player, "Hub-1"));
+            Bukkit.getOnlinePlayers().forEach(player -> Utilities.sendToServer(player, fallbackServer));
         }
 
         if (rebootTimes.contains(time))

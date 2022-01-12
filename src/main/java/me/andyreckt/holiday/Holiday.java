@@ -3,13 +3,17 @@ package me.andyreckt.holiday;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.client.MongoDatabase;
+import io.github.damt.menu.MenuHandler;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.database.mongo.MongoDB;
 import me.andyreckt.holiday.database.redis.Redis;
 import me.andyreckt.holiday.database.redis.packet.BroadcastPacket;
+import me.andyreckt.holiday.database.redis.packet.StaffMessages;
+import me.andyreckt.holiday.listeners.ChatListener;
 import me.andyreckt.holiday.listeners.ProfileListener;
 import me.andyreckt.holiday.other.enums.BroadcastType;
+import me.andyreckt.holiday.other.enums.StaffMessageType;
 import me.andyreckt.holiday.player.ProfileHandler;
 import me.andyreckt.holiday.player.disguise.DisguiseHandler;
 import me.andyreckt.holiday.player.grant.GrantHandler;
@@ -54,6 +58,7 @@ public final class Holiday extends JavaPlugin {
     GrantHandler grantHandler;
     ServerHandler serverHandler;
     ChatHandler chatHandler;
+    MenuHandler menuHander;
 
     Executor dbExecutor, executor;
     ScheduledExecutorService scheduledExecutor;
@@ -63,9 +68,8 @@ public final class Holiday extends JavaPlugin {
     public void onEnable() {
         try {
             this.loadPlugin();
-            getLogger().info(ChatColor.GREEN + "Successfully Loaded!");
         } catch (Exception e) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Plugin was not loaded correctly...");
+            infoConsole(ChatColor.DARK_RED + "Plugin was not loaded correctly...");
             e.printStackTrace();
             Bukkit.getServer().shutdown();
         }
@@ -74,21 +78,20 @@ public final class Holiday extends JavaPlugin {
     void loadPlugin() {
         instance = this;
         this.gson  = new GsonBuilder().serializeNulls().create();
-        setupConfigFiles();
-        setupExecutors();
-        setupDatabases();
-        setupHandlers();
-        setupListeners();
-        setupRunnables();
+        this.setupConfigFiles();
+        this.setupExecutors();
+        this.setupDatabases();
+        this.setupHandlers();
+        this.setupListeners();
+        this.setupRunnables();
 
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API")) {
-            lunarEnabled = true;
-        }
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API")) lunarEnabled = true;
 
-        redis.sendPacket(new BroadcastPacket(StringUtil.addNetworkPlaceholder(
+        infoConsole(ChatColor.GREEN + "Successfully Loaded!");
+        redis.sendPacket(new StaffMessages.StaffMessagesPacket(StringUtil.addNetworkPlaceholder(
                 messages.getString("SERVER.STARTUP")
                         .replace("<server>", settings.getString("SERVER.NAME"))),
-                BroadcastType.ADMIN));
+                StaffMessageType.ADMIN));
     }
 
     void setupExecutors() {
@@ -118,17 +121,19 @@ public final class Holiday extends JavaPlugin {
         this.serverHandler = new ServerHandler(this);
         this.grantHandler = new GrantHandler();
         this.chatHandler = new ChatHandler(this.settings, serverHandler.getThisServer());
+        this.menuHander = new MenuHandler(this);
     }
 
 
     void setupRunnables() {
-        Runnable refreshGrants = () -> grantHandler.refreshGrants();
-        scheduledExecutor.scheduleAtFixedRate(refreshGrants, 0, 1, TimeUnit.MINUTES);
+        Runnable refreshGrants = () -> this.grantHandler.refreshGrants();
+        this.scheduledExecutor.scheduleAtFixedRate(refreshGrants, 0, 1, TimeUnit.MINUTES);
     }
 
 
     void setupListeners() {
-        addListener(new ProfileListener());
+        this.addListener(new ProfileListener());
+        this.addListener(new ChatListener());
     }
     void addListener(Listener listener){
         this.getServer().getPluginManager().registerEvents(listener, this);
@@ -136,11 +141,17 @@ public final class Holiday extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.serverHandler.stop();
+
         instance = null;
         this.redisPool = null;
         this.jedisPool = null;
         this.redis = null;
         this.mongoDatabase = null;
         scheduledExecutor.shutdownNow();
+    }
+
+    public void infoConsole(String message) {
+        Bukkit.getConsoleSender().sendMessage(CC.translate(message));
     }
 }

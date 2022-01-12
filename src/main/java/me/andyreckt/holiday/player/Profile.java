@@ -14,10 +14,7 @@ import me.andyreckt.holiday.player.grant.Grant;
 import me.andyreckt.holiday.player.grant.GrantComparator;
 import me.andyreckt.holiday.player.punishments.PunishData;
 import me.andyreckt.holiday.player.rank.Rank;
-import me.andyreckt.holiday.utils.CC;
-import me.andyreckt.holiday.utils.PunishmentUtils;
-import me.andyreckt.holiday.utils.StringUtils;
-import me.andyreckt.holiday.utils.Tasks;
+import me.andyreckt.holiday.utils.*;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -33,7 +30,7 @@ public class Profile {
 
     UUID uuid;
     String name, ip, lowerCaseName;
-    List<String> ips;
+    List<String> ips, permissions;
 
     boolean online, liked, inStaffMode, messagesEnabled;
     int coins;
@@ -134,6 +131,7 @@ public class Profile {
         }
         this.name = "null";
         this.ip = "null";
+        this.permissions = new ArrayList<>();
         this.ips = new ArrayList<>();
         this.firstLogin = System.currentTimeMillis();
         this.lastSeen = System.currentTimeMillis();
@@ -143,6 +141,7 @@ public class Profile {
         this.coins = 100;
         this.lowerCaseName = name.toLowerCase();
         this.messagesEnabled = true;
+        Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid);
         Holiday.getInstance().getProfileHandler().updateProfile(this);
         save();
 
@@ -172,6 +171,7 @@ public class Profile {
             this.name = player.getName();
             this.ip = ipp;
             this.ips = ipsL;
+            this.permissions = new ArrayList<>();
             this.firstLogin = document.getLong("firstLogin");
             this.lastSeen = document.getLong("lastSeen");
             this.liked = document.getBoolean("liked");
@@ -199,6 +199,7 @@ public class Profile {
                 .append("name", profile.getName())
                 .append("ip", profile.getIp())
                 .append("ips", profile.getIps())
+                .append("permissions", profile.getPermissions())
                 .append("firstLogin", profile.getFirstLogin())
                 .append("lastSeen", profile.getLastSeen())
                 .append("online", profile.isOnline())
@@ -310,6 +311,7 @@ public class Profile {
         this.ip = document.getString("ip");
 
         this.ips = document.getList("ips", String.class);
+        this.permissions = document.getList("permissions", String.class);
 
         this.online = document.getBoolean("online");
         this.liked = document.getBoolean("liked");
@@ -340,6 +342,10 @@ public class Profile {
 
     public Rank getHighestVisibleRank() {
         return getHighestVisibleGrant().getRank();
+    }
+
+    public Rank getDisplayRank() {
+        return disguiseData != null ? disguiseData.disguiseRank() : getHighestVisibleRank();
     }
 
     public List<Grant> getActiveGrants() {

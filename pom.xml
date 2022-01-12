@@ -56,13 +56,6 @@
             <version>3.12.10</version>
             <scope>compile</scope>
         </dependency>
-        <!--Menu Api-->
-        <dependency>
-            <groupId>com.github.ericstolly</groupId>
-            <artifactId>menu-api</artifactId>
-            <version>-b86620c97e-1</version>
-            <scope>compile</scope>
-        </dependency>
         <!--Jedis API-->
         <dependency>
             <groupId>redis.clients</groupId>

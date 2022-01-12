@@ -2,35 +2,48 @@
 # Network Placeholders: <network_name> <network_ip> <discord> <teamspeak> <website> <servername> <teamspeak> <store>
 
 SERVER: # Placeholder: <server>
-  Startup: "&c[A] &a<server> has just started and will soon be joinable!"
-  Shutdown: "&c[A] &c<server> just went offline and is no longer joinable!"
+  STARTUP: "&c[A] &a<server> has just started and will soon be joinable!"
+  SHUTDOWN: "&c[A] &c<server> just went offline and is no longer joinable!"
 
-STAFF: # Placeholders: <player> <server> <oldserver>
-  Join: "&5[S] <player> &econnected to <server>."
-  Switch: "&5[S] <player> &ejoined <server> from <oldserver>."
-  Leave: "&5[S] <player> &edisconnected from <server>."
+STAFF: # Placeholders: <player> <server>
+  CHAT: "&5[S] &d[<server>] <player>&e: <message>" # Placeholder: <message>
+  JOIN: "&5[S] <player> &econnected to <server>."
+  SWITCH: "&5[S] <player> &ejoined <server> from <oldserver>." # Placeholder: <oldserver>
+  LEAVE: "&5[S] <player> &edisconnected from <server>."
+
+REPORTS:
+  FORMAT: "&9[REPORT] &d[<server>] <player> &9reported <target> \n  &7» &9Reason: &3<reason>"# Placeholders: <server> <player> <target> <reason>
+  CLICKMESSAGE: "&dClick to join <server>" # Placeholder <server>
+  COOLDOWN: "&cYou are still on report cooldown for another <time>" # Placeholder: <time>
+  MESSAGE: "&aYour report has been sent to all online staff"
+
+HELPOPS:
+  FORMAT: "&2[HELPOP] &d[<server>] <player> &2needs help <target> \n  &7» &2Request: &a<reason>"# Placeholders: <server> <player><reason>
+  CLICKMESSAGE: "&dClick to answer <player>" #Placeholder: <player>
+  COOLDOWN: "&cYou are still on helpop cooldown for another <time>" # Placeholder: <time>
+  MESSAGE: "&aYour helpop has been sent to all online staff"
 
 PUNISHMENTS: #Placeholders: <player> <executor> <reason> <duration>
-  SilentPrefix: "&7(Silent) "
-  Messages:
-    Kick: "&c<executor> kicked <player> &cfor <reason>."
-    Mute: "&c<player> &chas been muted by <executor> &cfor <reason>."
-    TempMute: "&c<player> &chas been temporarily muted by <executor> &cfor <reason> for a duration of <duration>."
-    UnMute: "&a<player> &ahas been unmuted by <executor> &afor <reason>."
-    Ban: "&c<player> &chas been permanently banned by <executor> &cfor <reason>."
-    TempBan: "&c<player> &chas been unblacklisted by <executor> &cfor <reason> for a duration of <duration>."
-    UnBan: "&a<player> &ahas been unbanned by <executor> for &a<reason>."
-    IpBan: "&c<player> &chas been permanently ip-banned by <executor> &cfor <reason>."
-    UnIpBan: "&a<player> &ahas been unip-banned by <executor> &afor <reason>."
-    Blacklist: "&c<player> &chas been blacklisted by <executor> &cfor <reason>."
-    UnBlacklist: "&a<player> &ahas been unblacklisted by <executor> &afor <reason>."
-  KickMessage:
-    Kick: "&cYou have been kick by <executor> &cfor <reason>."
-    Ban: "&cYou have been permanently banned from <network_name> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>."
-    TempBan: "&cYou have been temporarily banned from <network_name> for a duration of <duration> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>."
-    IpBan: "&cYou have been permanently ip-banned from <network_name>. \n &cAppeal at <discord> or buy an unban at <store>."
-    Blacklist: "&cYou have been blacklisted from <network_name> for <reason>. \n &cThis type of punishment can't be appealed."
-  Notify:
-    Ban: "&c[A] &c<player> tried to join but is banned!"
-    Alt: "&c[A] &c<player> might be alting while banned! &7(<alt>)"
+  SILENTPREFIX: "&7(Silent) "
+  MESSAGES:
+    KICK: "&c<executor> kicked <player> &cfor <reason>."
+    MUTE: "&c<player> &chas been muted by <executor> &cfor <reason>."
+    TEMPMUTE: "&c<player> &chas been temporarily muted by <executor> &cfor <reason> for a duration of <duration>."
+    UNMUTE: "&a<player> &ahas been unmuted by <executor> &afor <reason>."
+    BAN: "&c<player> &chas been permanently banned by <executor> &cfor <reason>."
+    TEMPBAN: "&c<player> &chas been unblacklisted by <executor> &cfor <reason> for a duration of <duration>."
+    UNBAN: "&a<player> &ahas been unbanned by <executor> for &a<reason>."
+    IPBAN: "&c<player> &chas been permanently ip-banned by <executor> &cfor <reason>."
+    UNIPBAN: "&a<player> &ahas been unip-banned by <executor> &afor <reason>."
+    BLACKLIST: "&c<player> &chas been blacklisted by <executor> &cfor <reason>."
+    UNBLACKLIST: "&a<player> &ahas been unblacklisted by <executor> &afor <reason>."
+  KICKMESSAGE:
+    KICK: "&cYou have been kick by <executor> &cfor <reason>."
+    BAN: "&cYou have been permanently banned from <network_name> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>."
+    TEMPBAN: "&cYou have been temporarily banned from <network_name> for a duration of <duration> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>."
+    IPBAN: "&cYou have been permanently ip-banned from <network_name>. \n &cAppeal at <discord> or buy an unban at <store>."
+    BLACKLIST: "&cYou have been blacklisted from <network_name> for <reason>. \n &cThis type of punishment can't be appealed."
+  NOTIFY:
+    BAN: "&c[A] &c<player> tried to join but is banned!"
+    ALT: "&c[A] &c<player> might be alting while banned! &7(<alt>)"
 

@@ -1,32 +1,56 @@
 # MONGODB
 MONGO:
   URI: "mongodb://localhost:27017"
-  DbName: "Holiday"
+  DBNAME: "Holiday"
 
 REDIS:
-  Hostname: "localhost"
-  Port: 6379
-  Auth: false
-  Password: "pass"
-  Channel: "Holiday"
+  HOSTNAME: "localhost"
+  PORT: 6379
+  AUTH: false
+  PASSWORD: "pass"
+  CHANNEL: "Holiday"
 
 NETWORK:
-  Name: "example network"
-  Ip: "example.com"
-  Website: "https://example.com"
-  Store: "https://store.example.com"
-  Discord: "https://store.example.com"
-  Twitter: "https://twitter.com/examplenetwork"
-  Teamspeak: "ts.example.com"
+  NAME: "example network"
+  IP: "example.com"
+  WEBSITE: "https://example.com"
+  STORE: "https://store.example.com"
+  DISCORD: "https://store.example.com"
+  TWITTER: "https://twitter.com/examplenetwork"
+  TEAMSPEAK: "ts.example.com"
 
 SERVER:
-  Name: "Lobby"
+  NAME: "Lobby"
+  FALLBACKSERVERNAME: "Lobby" # The Bungee ServerName to send to in server shutdowns
+  CHAT:
+    ENABLED: true
+    FORMAT: "<prefix> <player> <suffix>&f: <message>" # Placeholders: <prefix> <player> <suffix> <message>
 
+FILTERS:
+  SENDTOSTAFF: true
+  MESSAGE: "&d[Filtered] &5[<server>] <player>&e: <message>" # Placeholders: <server> <player> <message>
+  LOW:
+    ALLOWMESSAGE: true
+    LIST:
+      - "cunt"
+      - "anal"
+      - "beaner"
+      - "nazi"
+      - "paki"
+  HIGH:
+    ALLOWMESSAGE: false
+    MUTE: false
+    MUTEDURATION: "3h"
+    MUTEREASON: "Automute (<word>)" # Placeholder: <word>
+    LIST:
+      - "nigger"
+      - "coon"
+      - "faggot"
+      - "nigga"
 
 NAMEMC:
-  Enabled: false
-  Message: "&eThank you for liking our NameMC"
-  Rank:
-    Enabled: false
-    Name: "VOTER"
-
+  ENABLED: false
+  MESSAGE: "&eThank you for liking our NameMC"
+  RANK:
+    ENABLED: false
+    NAME: "VOTER"
