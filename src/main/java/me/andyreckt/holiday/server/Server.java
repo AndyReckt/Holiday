@@ -13,12 +13,12 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 public class Server {
-    String name;
-    int players, maxplayers;
-    boolean whitelisted;
-    Rank whitelistRank;
-    List<UUID> whitelistedPlayers;
+    private String name;
+    private int players, maxplayers;
+    private boolean whitelisted;
+    private Rank whitelistRank;
+    private List<UUID> whitelistedPlayers;
 
-    long chatDelay;
-    boolean chatMuted;
+    private long chatDelay;
+    private boolean chatMuted;
 }

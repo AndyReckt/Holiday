@@ -14,6 +14,7 @@ public class BroadcastSubscriber implements PacketListener {
     @IncomingPacketHandler
     public void onBroadcast(BroadcastPacket packet) {
         ProfileHandler ph = Holiday.getInstance().getProfileHandler();
+        Holiday.getInstance().infoConsole(packet.getMessage());
         switch (packet.getType()){
             case ALL: {
                 Bukkit.broadcastMessage(CC.translate(packet.getMessage()));

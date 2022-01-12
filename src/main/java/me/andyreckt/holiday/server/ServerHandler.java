@@ -17,20 +17,20 @@ import org.bukkit.Bukkit;
 
 import java.util.*;
 
-@Getter
+@Getter @SuppressWarnings("unchecked")
 public class ServerHandler {
 
-    Map<String, Server> servers;
-    Server thisServer;
+    private Map<String, Server> servers;
+    private Server thisServer;
 
-    final Holiday plugin;
+    private final Holiday plugin;
 
     public ServerHandler(Holiday plugin) {
         this.plugin = plugin;
         init();
     }
 
-    void init() {
+    private void init() {
         Server data;
         servers = new HashMap<>();
 
@@ -66,18 +66,18 @@ public class ServerHandler {
         );
     }
 
-    List<UUID> transform(List<String> strings) {
+    private List<UUID> transform(List<String> strings) {
         List<UUID> toReturn = new ArrayList<>();
         strings.forEach(s -> toReturn.add(UUID.fromString(s)));
         return toReturn;
     }
-    List<String> transforms(List<UUID> strings) {
+    private List<String> transforms(List<UUID> strings) {
         List<String> toReturn = new ArrayList<>();
         strings.forEach(s -> toReturn.add(s.toString()));
         return toReturn;
     }
 
-    Document toBson(Server data) {
+    private Document toBson(Server data) {
         return new Document("_id", data.getName())
                 .append("playerCount", data.getPlayers())
                 .append("maxPlayers", data.getMaxplayers())
@@ -105,7 +105,7 @@ public class ServerHandler {
         Holiday.getInstance().getRedis().sendPacket(new ServerPacket(thisServer, ServerPacketType.KEEPALIVE));
     }
 
-    void update() {
+    private void update() {
         thisServer.setPlayers(Bukkit.getOnlinePlayers().size());
         thisServer.setMaxplayers(Bukkit.getMaxPlayers());
     }

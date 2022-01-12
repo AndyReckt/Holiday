@@ -12,7 +12,7 @@ import java.util.*;
 
 public class PunishmentHandler {
 
-    Map<String, PunishData> punishments;
+    private Map<String, PunishData> punishments;
 
     public PunishmentHandler() {
         init();
@@ -26,7 +26,7 @@ public class PunishmentHandler {
         return list;
     }
 
-    void init() {
+    private void init() {
         punishments = new HashMap<>();
         getAllPunishments().forEach(pun -> {
             PunishData data = getFromDocument(pun);

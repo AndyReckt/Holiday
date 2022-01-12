@@ -22,14 +22,14 @@ import java.util.*;
 @Getter @Setter
 public class ChatHandler {
 
-    Map<UUID, Cooldown> cooldownMap = new HashMap<>();
+    private Map<UUID, Cooldown> cooldownMap = new HashMap<>();
 
-    boolean chatMuted;
-    long chatDelay;
-    BasicConfigurationFile settings;
+    private boolean chatMuted;
+    private long chatDelay;
+    private BasicConfigurationFile settings;
 
-    List<String> hardFilters;
-    List<String> filter;
+    private List<String> hardFilters;
+    private List<String> filter;
 
     public ChatHandler(BasicConfigurationFile config, Server server) {
         this.settings = config;

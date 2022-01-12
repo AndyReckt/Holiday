@@ -13,11 +13,11 @@ import java.util.concurrent.ForkJoinPool;
 
 public class MongoUtils {
 
-    static MongoDatabase getDatabase() {
+    private static MongoDatabase getDatabase() {
         return Holiday.getInstance().getMongoDatabase();
     }
 
-    static MongoCollection getCollection(String collection){
+    private static MongoCollection getCollection(String collection){
         return getDatabase().getCollection(collection);
     }
 

@@ -25,6 +25,7 @@ SERVER:
   CHAT:
     ENABLED: true
     FORMAT: "<prefix> <player> <suffix>&f: <message>" # Placeholders: <prefix> <player> <suffix> <message>
+  BANNEDJOIN: false
 
 FILTERS:
   SENDTOSTAFF: true

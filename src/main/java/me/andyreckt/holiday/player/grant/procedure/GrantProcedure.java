@@ -18,14 +18,14 @@ import java.util.UUID;
 @Getter @Setter
 public class GrantProcedure {
 
-    @Getter  static List<GrantProcedure> procedures = new ArrayList<>();
+    @Getter static List<GrantProcedure> procedures = new ArrayList<>();
 
-     final UUID user, issuer;
+    private final UUID user, issuer;
 
-     GrantStage stage;
+    private GrantStage stage;
 
-     Rank rank;
-     long duration;
+    private Rank rank;
+    private long duration;
 
     public GrantProcedure(UUID user, UUID issuer) {
         this.user = user;

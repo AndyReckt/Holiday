@@ -25,19 +25,19 @@ import java.util.concurrent.atomic.AtomicReference;
 @RequiredArgsConstructor
 public class PunishData {
 
-    final String id;
-    final Profile punished;
-    final PunishmentType type;
-    final Profile addedBy;
-    final String addedReason;
-    final long addedAt, duration;
-    final boolean silent;
-    final String ip;
+    private final String id;
+    private final Profile punished;
+    private final PunishmentType type;
+    private final Profile addedBy;
+    private final String addedReason;
+    private final long addedAt, duration;
+    private final boolean silent;
+    private final String ip;
 
-    Profile removedBy;
-    String removedReason;
-    long removedAt;
-    boolean removed;
+    private Profile removedBy;
+    private String removedReason;
+    private long removedAt;
+    private boolean removed;
 
     public String getRemovedReason() {
         if(removedReason == null) {

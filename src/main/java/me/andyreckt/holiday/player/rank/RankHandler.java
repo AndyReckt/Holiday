@@ -10,13 +10,13 @@ import java.util.*;
 
 public class RankHandler {
 
-     Map<UUID, Rank> rankCache;
+    private Map<UUID, Rank> rankCache;
 
      public RankHandler() {
          init();
      }
 
-     void init() {
+    private void init() {
          rankCache = new HashMap<>();
          MongoUtils.getRankCollection().find().forEach((Block<Document>) o -> {
              Rank rank = new Rank(o);

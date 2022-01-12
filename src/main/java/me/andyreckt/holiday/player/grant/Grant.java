@@ -25,12 +25,12 @@ import java.util.UUID;
 @Getter @Setter
 public class Grant {
 
-     final UUID uuid;
-     Rank rank;
+     private final UUID uuid;
+     private Rank rank;
 
-     UUID user, issuer;
-     boolean active;
-     long duration, executedAt;
+     private UUID user, issuer;
+     private boolean active;
+     private long duration, executedAt;
 
     public Grant(UUID uuid) {
         this.uuid = uuid;

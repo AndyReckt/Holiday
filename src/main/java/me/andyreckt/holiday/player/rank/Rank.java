@@ -24,17 +24,16 @@ import java.util.*;
 public class Rank {
 
 
-    final UUID uuid;
-    String name;
+    private final UUID uuid;
+    private String name;
+    private String prefix, suffix, displayName;
+    private boolean bold, italic, isDefault, isStaff, isAdmin, isDev, isVisible;
+    private ChatColor color;
 
-    String prefix, suffix, displayName;
-    boolean bold, italic, isDefault, isStaff, isAdmin, isDev, isVisible;
-    ChatColor color;
+    private int priority;
 
-    int priority;
-
-    List<String> permissions;
-    List<UUID> childs;
+    private List<String> permissions;
+    private List<UUID> childs;
 
     public Rank(String name) {
         this.uuid = UUID.randomUUID();
@@ -98,7 +97,7 @@ public class Rank {
     }
 
 
-    void loadFromDocument(Document document) {
+    private void loadFromDocument(Document document) {
         this.name = document.getString("name");
         this.prefix = document.getString("prefix");
         this.suffix = document.getString("suffix");

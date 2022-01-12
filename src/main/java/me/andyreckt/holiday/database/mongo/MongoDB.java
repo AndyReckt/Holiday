@@ -9,8 +9,8 @@ import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 @Getter
 public class MongoDB {
 
-    MongoClient mongoClient;
-    MongoDatabase database;
+    private final MongoClient mongoClient;
+    private final MongoDatabase database;
 
 
     public MongoDB(BasicConfigurationFile config) {

@@ -15,9 +15,9 @@ import java.util.Arrays;
 @Getter
 public class Redis {
 
-    RedisCredentials credentials;
-    Pidgin pidgin;
-    JedisPool jedis;
+    private final RedisCredentials credentials;
+    private final Pidgin pidgin;
+    private final JedisPool jedis;
 
     public Redis(BasicConfigurationFile config) {
 

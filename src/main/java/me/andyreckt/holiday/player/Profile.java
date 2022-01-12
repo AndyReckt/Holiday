@@ -28,21 +28,20 @@ import java.util.stream.Collectors;
 @Setter
 public class Profile {
 
-    UUID uuid;
-    String name, ip, lowerCaseName;
-    List<String> ips, permissions;
+    private UUID uuid;
+    private String name, ip, lowerCaseName;
+    private List<String> ips, permissions;
 
-    boolean online, liked, inStaffMode, messagesEnabled;
-    int coins;
+    private boolean online, liked, inStaffMode, messagesEnabled;
+    private int coins;
 
-    long firstLogin, lastSeen;
+    private long firstLogin, lastSeen;
 
-    boolean console = false;
-
+    private boolean console = false;
     @Nullable
-    String currentServer;
+    private String currentServer;
     @Nullable
-    DisguiseHandler.DisguiseData disguiseData;
+    private DisguiseHandler.DisguiseData disguiseData;
 
 
     public Profile(Player player) {
@@ -79,12 +78,12 @@ public class Profile {
         }
     }
 
-    boolean hasProfile(UUID uuid) {
+    private boolean hasProfile(UUID uuid) {
         Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
         return document != null;
     }
 
-    boolean hasProfile(String name) {
+    private boolean hasProfile(String name) {
         if (DisguiseHandler.DisguiseRequest.alreadyUsed(name)) return true;
 
         Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
@@ -96,13 +95,13 @@ public class Profile {
         if (cache) Holiday.getInstance().getProfileHandler().updateProfile(this);
     }
 
-    void getProfileFromDb(UUID uuid) {
+    private void getProfileFromDb(UUID uuid) {
         Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
         assert document != null;
         loadFromDocument(document);
     }
 
-    void getProfileFromDb(String name) {
+    private void getProfileFromDb(String name) {
         if (hasProfile(name)) {
             Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
             assert document != null;
@@ -123,7 +122,7 @@ public class Profile {
         MongoUtils.getProfileCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true));
     }
 
-    void create(UUID uuid) {
+    private void create(UUID uuid) {
         this.uuid = uuid;
         if (hasProfile(uuid)) {
             load(true);
@@ -148,7 +147,7 @@ public class Profile {
         Tasks.runLater(() -> reloadProfile(uuid), 15L);
     }
 
-    void reloadProfile(UUID uuid) {
+    private void reloadProfile(UUID uuid) {
         Player player = Bukkit.getPlayer(uuid);
         if (player == null) return;
         Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid)).first();
@@ -304,7 +303,7 @@ public class Profile {
         return Holiday.getInstance().getDisguiseHandler().isDisguisedMongo(uuid);
     }
 
-    void loadFromDocument(Document document) {
+    private void loadFromDocument(Document document) {
         this.uuid = UUID.fromString(document.getString("_id"));
 
         this.name = document.getString("name");

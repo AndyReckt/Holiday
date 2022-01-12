@@ -28,7 +28,7 @@ public class Punishment {
         Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(punishData, PunishmentSubType.ADD));
     }
 
-    void addPunishment(PunishData punishData) {
+    private void addPunishment(PunishData punishData) {
         Document document = new Document("_id", punishData.getId())
                 .append("punished", punishData.getPunished().getUuid().toString())
                 .append("punishedName", punishData.getPunished().getName())

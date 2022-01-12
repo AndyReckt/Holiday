@@ -12,6 +12,7 @@ import me.andyreckt.holiday.database.redis.packet.BroadcastPacket;
 import me.andyreckt.holiday.database.redis.packet.StaffMessages;
 import me.andyreckt.holiday.listeners.ChatListener;
 import me.andyreckt.holiday.listeners.ProfileListener;
+import me.andyreckt.holiday.listeners.PunishmentsListener;
 import me.andyreckt.holiday.other.enums.BroadcastType;
 import me.andyreckt.holiday.other.enums.StaffMessageType;
 import me.andyreckt.holiday.player.ProfileHandler;
@@ -145,6 +146,7 @@ public final class Holiday extends JavaPlugin {
     void setupListeners() {
         this.addListener(new ProfileListener());
         this.addListener(new ChatListener());
+        this.addListener(new PunishmentsListener());
     }
     void addListener(Listener listener){
         this.getServer().getPluginManager().registerEvents(listener, this);

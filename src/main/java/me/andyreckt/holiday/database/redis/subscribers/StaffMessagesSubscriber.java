@@ -21,7 +21,7 @@ public class StaffMessagesSubscriber implements PacketListener {
 
         String msg = CC.translate(packet.getMessage());
         ProfileHandler ph = Holiday.getInstance().getProfileHandler();
-
+        Holiday.getInstance().infoConsole(packet.getMessage());
         if (packet.getClickCmd() != null && !packet.getClickCmd().equalsIgnoreCase("")) {
             Clickable clickable = new Clickable(msg, packet.getHoverMsg(), packet.getClickCmd());
             if (packet.getChannel() == StaffMessageType.STAFF) {
@@ -62,8 +62,9 @@ public class StaffMessagesSubscriber implements PacketListener {
                 .replace("<target>", packet.getReported())
                 .replace("<reason>", packet.getReason())
                 .split("\n");
-        for (String s : message) {
 
+        for (String s : message) {
+            Holiday.getInstance().infoConsole(s);
             Clickable clickable = new Clickable(s,
                     Holiday.getInstance().getMessages().getString("REPORTS.CLICKMESSAGE")
                             .replace("<server>", packet.getServer()),
@@ -86,6 +87,7 @@ public class StaffMessagesSubscriber implements PacketListener {
                 .replace("<reason>", packet.getRequest())
                 .split("\n");
         for (String s : message) {
+            Holiday.getInstance().infoConsole(s);
 
             Clickable clickable = new Clickable(s,
                     Holiday.getInstance().getMessages().getString("HELPOPS.CLICKMESSAGE")

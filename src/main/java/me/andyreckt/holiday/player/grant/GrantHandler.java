@@ -18,7 +18,7 @@ public class GrantHandler {
         init();
     }
 
-    void init() {
+    private void init() {
         grantCache = new HashMap<>();
         MongoUtils.getGrantCollection().find().forEach((Block<Document>) o -> {
             Grant grant = new Grant(o);
