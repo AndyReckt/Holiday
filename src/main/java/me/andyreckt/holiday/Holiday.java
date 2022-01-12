@@ -21,6 +21,7 @@ import me.andyreckt.holiday.player.punishments.PunishmentHandler;
 import me.andyreckt.holiday.player.rank.RankHandler;
 import me.andyreckt.holiday.server.ServerHandler;
 import me.andyreckt.holiday.utils.StringUtil;
+import me.andyreckt.holiday.utils.Tasks;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import me.andyreckt.holiday.utils.packets.Pidgin;
 import org.bukkit.Bukkit;
@@ -88,10 +89,17 @@ public final class Holiday extends JavaPlugin {
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API")) lunarEnabled = true;
 
         infoConsole(ChatColor.GREEN + "Successfully Loaded!");
-        redis.sendPacket(new StaffMessages.StaffMessagesPacket(StringUtil.addNetworkPlaceholder(
+        this.sendServerStartup();
+    }
+
+    void sendServerStartup() {
+        Tasks.runAsyncLater(() -> redis.sendPacket(new StaffMessages.StaffMessagesPacket(StringUtil.addNetworkPlaceholder(
                 messages.getString("SERVER.STARTUP")
                         .replace("<server>", settings.getString("SERVER.NAME"))),
-                StaffMessageType.ADMIN));
+                StaffMessageType.ADMIN)),
+                20 * 5L);
+
+
     }
 
     void setupExecutors() {
@@ -127,7 +135,10 @@ public final class Holiday extends JavaPlugin {
 
     void setupRunnables() {
         Runnable refreshGrants = () -> this.grantHandler.refreshGrants();
+        Runnable refreshServer = () -> this.serverHandler.save();
+
         this.scheduledExecutor.scheduleAtFixedRate(refreshGrants, 0, 1, TimeUnit.MINUTES);
+        this.scheduledExecutor.scheduleAtFixedRate(refreshServer, 25, 30, TimeUnit.SECONDS);
     }
 
 
@@ -142,13 +153,7 @@ public final class Holiday extends JavaPlugin {
     @Override
     public void onDisable() {
         this.serverHandler.stop();
-
-        instance = null;
-        this.redisPool = null;
-        this.jedisPool = null;
-        this.redis = null;
-        this.mongoDatabase = null;
-        scheduledExecutor.shutdownNow();
+        this.scheduledExecutor.shutdownNow();
     }
 
     public void infoConsole(String message) {

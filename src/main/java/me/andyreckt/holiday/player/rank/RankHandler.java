@@ -69,6 +69,7 @@ public class RankHandler {
                 .append("visible", true)
                 .append("priority", 1)
                 .append("color", ChatColor.GREEN.name())
+                .append("childs", new ArrayList<String>())
                 .append("permissions", new ArrayList<String>());
         Rank rank = new Rank(document);
         rank.save();

@@ -93,7 +93,7 @@ public class Rank {
                 .append("visible", isVisible)
                 .append("priority", priority)
                 .append("color", color.name())
-                .append("childs", childs)
+                .append("childs", this.childs == null ? new ArrayList<String>() : childs)
                 .append("permissions", permissions == null ? new ArrayList<String>() : permissions);
     }
 
@@ -114,10 +114,11 @@ public class Rank {
         this.priority = document.getInteger("priority");
         this.permissions = document.getList("permissions", String.class);
 
-
+        if (!document.getList("childs", String.class).isEmpty() && !(document.getList("childs", String.class) == null))
         for (String child : document.getList("childs", String.class)) {
             this.childs.add(UUID.fromString(child));
         }
+        else this.childs = new ArrayList<>();
     }
 
 }
