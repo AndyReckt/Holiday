@@ -3,17 +3,15 @@ package me.andyreckt.holiday;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.client.MongoDatabase;
-import io.github.damt.menu.MenuHandler;
+import io.github.zowpy.menu.MenuAPI;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.database.mongo.MongoDB;
 import me.andyreckt.holiday.database.redis.Redis;
-import me.andyreckt.holiday.database.redis.packet.BroadcastPacket;
 import me.andyreckt.holiday.database.redis.packet.StaffMessages;
 import me.andyreckt.holiday.listeners.ChatListener;
 import me.andyreckt.holiday.listeners.ProfileListener;
 import me.andyreckt.holiday.listeners.PunishmentsListener;
-import me.andyreckt.holiday.other.enums.BroadcastType;
 import me.andyreckt.holiday.other.enums.StaffMessageType;
 import me.andyreckt.holiday.player.ProfileHandler;
 import me.andyreckt.holiday.player.disguise.DisguiseHandler;
@@ -21,6 +19,9 @@ import me.andyreckt.holiday.player.grant.GrantHandler;
 import me.andyreckt.holiday.player.punishments.PunishmentHandler;
 import me.andyreckt.holiday.player.rank.RankHandler;
 import me.andyreckt.holiday.server.ServerHandler;
+import me.andyreckt.holiday.server.chat.ChatHandler;
+import me.andyreckt.holiday.server.reboot.RebootTask;
+import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.StringUtil;
 import me.andyreckt.holiday.utils.Tasks;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
@@ -31,10 +32,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.JedisPool;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 
 @Getter @Setter
@@ -60,10 +58,12 @@ public final class Holiday extends JavaPlugin {
     GrantHandler grantHandler;
     ServerHandler serverHandler;
     ChatHandler chatHandler;
-    MenuHandler menuHander;
+    MenuAPI menuAPI;
 
     Executor dbExecutor, executor;
     ScheduledExecutorService scheduledExecutor;
+
+    RebootTask rebootTask;
 
 
     @Override
@@ -104,8 +104,8 @@ public final class Holiday extends JavaPlugin {
     }
 
     void setupExecutors() {
-        this.dbExecutor = Executors.newFixedThreadPool(2);
-        this.executor = Executors.newFixedThreadPool(3);
+        this.dbExecutor = Executors.newFixedThreadPool(1);
+        this.executor = ForkJoinPool.commonPool();
         this.scheduledExecutor = Executors.newScheduledThreadPool(2);
     }
 
@@ -130,7 +130,7 @@ public final class Holiday extends JavaPlugin {
         this.serverHandler = new ServerHandler(this);
         this.grantHandler = new GrantHandler();
         this.chatHandler = new ChatHandler(this.settings, serverHandler.getThisServer());
-        this.menuHander = new MenuHandler(this);
+        this.menuAPI = new MenuAPI(this);
     }
 
 

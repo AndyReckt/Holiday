@@ -44,7 +44,6 @@ public class Punishment {
                 .append("removedBy", null)
                 .append("removedReason", null);
 
-
         MongoUtils.submitToThread(() -> MongoUtils.getPunishmentsCollection().replaceOne(Filters.eq("_id", punishData.getId()), document, new ReplaceOptions().upsert(true)));
     }
 }

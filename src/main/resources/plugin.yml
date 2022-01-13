@@ -2,7 +2,7 @@ name: Holiday
 version: '${project.version}'
 main: me.andyreckt.holiday.Holiday
 prefix: "Holiday"
-authors: [ Andyreckt, Rhodless, Zowpy ]
+authors: [ Andyreckt, Zowpy ]
 description: Core Plugin I try to make that is open sourced
 website: https://andyreckt.me
 softdepend:

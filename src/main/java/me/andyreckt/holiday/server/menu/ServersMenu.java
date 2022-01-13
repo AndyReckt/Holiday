@@ -1,15 +1,12 @@
 package me.andyreckt.holiday.server.menu;
 
 
-import io.github.damt.menu.Menu;
-import io.github.damt.menu.MenuUpdateType;
-import io.github.damt.menu.buttons.Button;
-import io.github.damt.menu.pagination.PaginatedMenu;
+import io.github.zowpy.menu.Button;
+import io.github.zowpy.menu.Menu;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.server.menu.button.ServerButton;
 import me.andyreckt.holiday.utils.CC;
-import lombok.NonNull;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -18,13 +15,12 @@ import java.util.Map;
 public class ServersMenu extends Menu {
 
 
-    public ServersMenu(Player player) {
-        super(player, CC.B_PRIMARY + "Servers", 18);
-        this.setUpdateType(MenuUpdateType.RUNNABLE);
+    public ServersMenu() {
+        this.setAutoUpdate(true);
     }
 
     @Override
-    public Map<Integer, Button> getButtons() {
+    public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> toReturn = new HashMap<>();
 
         int i = 0;
@@ -34,6 +30,11 @@ public class ServersMenu extends Menu {
         }
 
         return toReturn;
+    }
+
+    @Override
+    public String getTitle(Player paramPlayer) {
+        return CC.B_PRIMARY + "Servers";
     }
 
 
