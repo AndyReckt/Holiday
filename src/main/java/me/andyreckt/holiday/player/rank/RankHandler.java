@@ -12,7 +12,7 @@ public class RankHandler {
 
     private Map<UUID, Rank> rankCache;
 
-     public RankHandler() {
+    public RankHandler() {
          init();
      }
 

@@ -18,6 +18,8 @@ import me.andyreckt.holiday.player.disguise.DisguiseHandler;
 import me.andyreckt.holiday.player.grant.GrantHandler;
 import me.andyreckt.holiday.player.punishments.PunishmentHandler;
 import me.andyreckt.holiday.player.rank.RankHandler;
+import me.andyreckt.holiday.player.staff.StaffHandler;
+import me.andyreckt.holiday.player.staff.StaffListeners;
 import me.andyreckt.holiday.server.ServerHandler;
 import me.andyreckt.holiday.server.chat.ChatHandler;
 import me.andyreckt.holiday.server.reboot.RebootTask;
@@ -58,6 +60,7 @@ public final class Holiday extends JavaPlugin {
     GrantHandler grantHandler;
     ServerHandler serverHandler;
     ChatHandler chatHandler;
+    StaffHandler staffHandler;
     MenuAPI menuAPI;
 
     Executor dbExecutor, executor;
@@ -130,6 +133,7 @@ public final class Holiday extends JavaPlugin {
         this.serverHandler = new ServerHandler(this);
         this.grantHandler = new GrantHandler();
         this.chatHandler = new ChatHandler(this.settings, serverHandler.getThisServer());
+        this.staffHandler = new StaffHandler(this);
         this.menuAPI = new MenuAPI(this);
     }
 
@@ -147,6 +151,7 @@ public final class Holiday extends JavaPlugin {
         this.addListener(new ProfileListener());
         this.addListener(new ChatListener());
         this.addListener(new PunishmentsListener());
+        new StaffListeners(this);
     }
     void addListener(Listener listener){
         this.getServer().getPluginManager().registerEvents(listener, this);

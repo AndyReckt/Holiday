@@ -181,6 +181,11 @@ public class ItemBuilder {
 		return this;
 	}
 
+	public ItemBuilder damage(int damage) {
+		this.damage = Short.parseShort(String.valueOf(damage));
+		return this;
+	}
+
 	/**
 	 * Sets the Durability (Damage) of the ItemStack
 	 * @param damage Damage for the ItemStack

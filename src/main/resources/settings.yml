@@ -27,6 +27,12 @@ SERVER:
     FORMAT: "<prefix> <player> <suffix>&f: <message>" # Placeholders: <prefix> <player> <suffix> <message>
   BANNEDJOIN: false
 
+STAFFMODE:
+  ENABLED: true
+  TELEPORTBACK: true
+  VANISHONENABLE: true
+  UPDATEVISIBILITY: false
+
 FILTERS:
   SENDTOSTAFF: true
   MESSAGE: "&d[Filtered] &5[<server>] <player>&e: <message>" # Placeholders: <server> <player> <message>

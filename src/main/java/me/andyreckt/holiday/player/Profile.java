@@ -32,7 +32,7 @@ public class Profile {
     private String name, ip, lowerCaseName;
     private List<String> ips, permissions;
 
-    private boolean online, liked, inStaffMode, messagesEnabled;
+    private boolean online, liked, inStaffMode, messagesEnabled, socialSpy;
     private int coins;
 
     private long firstLogin, lastSeen;
@@ -137,6 +137,7 @@ public class Profile {
         this.online = true;
         this.liked = false;
         this.inStaffMode = false;
+        this.socialSpy = false;
         this.coins = 100;
         this.lowerCaseName = name.toLowerCase();
         this.messagesEnabled = true;
@@ -177,6 +178,7 @@ public class Profile {
             this.inStaffMode = document.getBoolean("staff");
             this.online = document.getBoolean("online");
             this.coins = document.getInteger("coins");
+            this.socialSpy = false;
             this.lowerCaseName = name.toLowerCase();
             this.messagesEnabled = document.getBoolean("isMessages");
 
@@ -206,6 +208,7 @@ public class Profile {
                 .append("staff", profile.isInStaffMode())
                 .append("coins", profile.getCoins())
                 .append("server", profile.getCurrentServer())
+                .append("socialSpy", profile.isSocialSpy())
                 .append("isMessages", profile.isMessagesEnabled())
                 .append("lname", profile.getName().toLowerCase());
     }
@@ -323,6 +326,7 @@ public class Profile {
         this.currentServer = document.getString("server");
         this.lowerCaseName = name.toLowerCase();
         this.messagesEnabled = document.getBoolean("isMessages");
+        this.socialSpy = document.getBoolean("socialSpy") != null && document.getBoolean("socialSpy");
 
         if (Holiday.getInstance().getDisguiseHandler().isDisguisedMongo(uuid)) this.disguiseData = Holiday.getInstance().getDisguiseHandler().getDisguiseData(uuid);
     }

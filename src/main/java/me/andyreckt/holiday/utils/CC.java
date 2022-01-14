@@ -1,11 +1,13 @@
 package me.andyreckt.holiday.utils;
 
+import me.andyreckt.holiday.Holiday;
 import org.bukkit.ChatColor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.bukkit.entity.Player;
 
 /**
  * Created by Marko on 26.02.2019.
@@ -110,6 +112,13 @@ public final class CC {
 
 	public static List<String> translate(List<String> input) {
 		return input.stream().map(CC::translate).collect(Collectors.toList());
+	}
+
+
+	public static void sendFrozenMessage(Player player, boolean frozen) {
+		List<String> messages = frozen ? Holiday.getInstance().getMessages().getStringList("FREEZE.FROZEN") : Holiday.getInstance().getMessages().getStringList("FREEZE.UNFROZEN");
+		List<String> toSend = translate(messages);
+		toSend.forEach(player::sendMessage);
 	}
 
 }
