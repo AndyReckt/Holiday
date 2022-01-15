@@ -46,11 +46,8 @@ public final class CommandHandler implements Listener {
 
     final JavaPlugin plugin;
 
-    // Static class -- cannot be created.
-    CommandHandler(JavaPlugin plugin) {
+    public CommandHandler(JavaPlugin plugin) {
         this.plugin = plugin;
-
-
     }
 
     /**

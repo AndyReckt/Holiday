@@ -21,10 +21,6 @@
 
     <repositories>
         <repository>
-            <id>papermc-repo</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
-        </repository>
-        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -75,6 +71,7 @@
             <groupId>com.github.LunarClient</groupId>
             <artifactId>BukkitAPI</artifactId>
             <version>v1.0.1</version>
+            <scope>provided</scope>
         </dependency>
         <!--Gson-->
         <dependency>
@@ -94,6 +91,7 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

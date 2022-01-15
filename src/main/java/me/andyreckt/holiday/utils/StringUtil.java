@@ -33,6 +33,14 @@ public class StringUtil {
                 : COLORS.indexOf(color);
     }
 
+    public static ChatColor convertWoolDataToChatColor(int data) {
+        return data == 0 ? ChatColor.WHITE : data == 1 ? ChatColor.GOLD : data == 3 ? ChatColor.LIGHT_PURPLE :
+                data == 4 ? ChatColor.AQUA : data == 5 ? ChatColor.YELLOW : data == 6 ? ChatColor.GREEN :
+                data == 7 ? ChatColor.DARK_GRAY : data == 8 ? ChatColor.GRAY : data == 9 ? ChatColor.DARK_AQUA :
+                data == 10 ? ChatColor.DARK_PURPLE : data == 11 ? ChatColor.BLUE : data == 13 ? ChatColor.DARK_GREEN :
+                data == 14 ? ChatColor.RED : data == 15 ? ChatColor.DARK_RED : null;
+    }
+
     public static Enchantment getEnchantmentByName(Object object) {
         String value = object.toString().replace("_", "").trim();
 

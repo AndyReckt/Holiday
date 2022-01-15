@@ -2,6 +2,7 @@ package me.andyreckt.holiday.player.rank;
 
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.Holiday;
@@ -20,7 +21,9 @@ import java.util.*;
  * @author Zowpy
  */
 
-@Getter @Setter @SuppressWarnings("unchecked")
+@Getter @Setter
+@AllArgsConstructor
+@SuppressWarnings("unchecked")
 public class Rank {
 
 
@@ -119,5 +122,6 @@ public class Rank {
         }
         else this.childs = new ArrayList<>();
     }
+
 
 }

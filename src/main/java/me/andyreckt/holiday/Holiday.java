@@ -26,6 +26,7 @@ import me.andyreckt.holiday.server.reboot.RebootTask;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.StringUtil;
 import me.andyreckt.holiday.utils.Tasks;
+import me.andyreckt.holiday.utils.command.CommandHandler;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import me.andyreckt.holiday.utils.packets.Pidgin;
 import org.bukkit.Bukkit;
@@ -53,6 +54,7 @@ public final class Holiday extends JavaPlugin {
 
     MongoDatabase mongoDatabase;
 
+    CommandHandler commandHandler;
     PunishmentHandler punishmentHandler;
     ProfileHandler profileHandler;
     DisguiseHandler disguiseHandler;
@@ -80,7 +82,7 @@ public final class Holiday extends JavaPlugin {
         }
     }
 
-    void loadPlugin() {
+    private void loadPlugin() {
         instance = this;
         this.gson  = new GsonBuilder().serializeNulls().create();
         this.setupConfigFiles();
@@ -89,6 +91,7 @@ public final class Holiday extends JavaPlugin {
         this.setupHandlers();
         this.setupListeners();
         this.setupRunnables();
+        this.setupCommands();
 
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API")) lunarEnabled = true;
 
@@ -96,7 +99,14 @@ public final class Holiday extends JavaPlugin {
         this.sendServerStartup();
     }
 
-    void sendServerStartup() {
+    private void setupCommands() {
+        this.commandHandler = new CommandHandler(this);
+        this.commandHandler.hook();
+        CommandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands");
+
+    }
+
+    private void sendServerStartup() {
         Tasks.runAsyncLater(() -> redis.sendPacket(new StaffMessages.StaffMessagesPacket(StringUtil.addNetworkPlaceholder(
                 messages.getString("SERVER.STARTUP")
                         .replace("<server>", settings.getString("SERVER.NAME"))),
@@ -106,26 +116,26 @@ public final class Holiday extends JavaPlugin {
 
     }
 
-    void setupExecutors() {
+    private void setupExecutors() {
         this.dbExecutor = Executors.newFixedThreadPool(1);
         this.executor = ForkJoinPool.commonPool();
         this.scheduledExecutor = Executors.newScheduledThreadPool(2);
     }
 
 
-    void setupConfigFiles() {
+    private void setupConfigFiles() {
         this.settings = new BasicConfigurationFile(this, "settings");
         this.messages = new BasicConfigurationFile(this, "messages");
     }
 
-    void setupDatabases() {
+    private void setupDatabases() {
         this.mongoDatabase = new MongoDB(settings).getDatabase();
         this.redisPool = new Redis(settings);
         this.jedisPool = redisPool.getJedis();
         this.redis = redisPool.getPidgin();
     }
 
-    void setupHandlers() {
+    private void setupHandlers() {
         this.punishmentHandler = new PunishmentHandler();
         this.profileHandler = new ProfileHandler();
         this.rankHandler = new RankHandler();
@@ -138,7 +148,7 @@ public final class Holiday extends JavaPlugin {
     }
 
 
-    void setupRunnables() {
+    private void setupRunnables() {
         Runnable refreshGrants = () -> this.grantHandler.refreshGrants();
         Runnable refreshServer = () -> this.serverHandler.save();
 
@@ -147,7 +157,7 @@ public final class Holiday extends JavaPlugin {
     }
 
 
-    void setupListeners() {
+    private void setupListeners() {
         this.addListener(new ProfileListener());
         this.addListener(new ChatListener());
         this.addListener(new PunishmentsListener());

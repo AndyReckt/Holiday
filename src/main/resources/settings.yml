@@ -15,7 +15,7 @@ NETWORK:
   IP: "example.com"
   WEBSITE: "https://example.com"
   STORE: "https://store.example.com"
-  DISCORD: "https://store.example.com"
+  DISCORD: "https://discord.example.com"
   TWITTER: "https://twitter.com/examplenetwork"
   TEAMSPEAK: "ts.example.com"
 

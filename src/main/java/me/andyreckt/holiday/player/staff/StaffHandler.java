@@ -11,6 +11,7 @@ import me.andyreckt.holiday.player.staff.event.StaffModeLeaveEvent;
 import me.andyreckt.holiday.player.staff.event.StaffUpdateVisibilityEvent;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.PlayerUtil;
+import me.andyreckt.holiday.utils.Tasks;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -79,7 +80,7 @@ public class StaffHandler {
         PlayerUtil.clearPlayer(player);
         updateProfile(player, true);
         player.setAllowFlight(true);
-        data.updateItems(true);
+        Tasks.runLater(() -> data.updateItems(true), 5L);
 
 
         Bukkit.getServer().getPluginManager().callEvent(new StaffModeEnterEvent(player));

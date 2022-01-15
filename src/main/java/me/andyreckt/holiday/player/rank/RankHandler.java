@@ -14,7 +14,7 @@ public class RankHandler {
 
     public RankHandler() {
          init();
-     }
+    }
 
     private void init() {
          rankCache = new HashMap<>();
@@ -22,7 +22,12 @@ public class RankHandler {
              Rank rank = new Rank(o);
              rankCache.put(rank.getUuid(), rank);
          });
-     }
+         getDefaultRank();
+    }
+
+    public Rank createRank(String name) {
+        return new Rank(UUID.randomUUID(), name, "", "", name, false, false, false, false, false, false, true, ChatColor.WHITE, 0, new ArrayList<>(), new ArrayList<>());
+    }
 
     public boolean cacheContains(UUID id) {
         return rankCache.containsKey(id);
@@ -58,10 +63,11 @@ public class RankHandler {
     public Rank createDefaultRank() {
         Document document = new Document("_id", UUID.randomUUID().toString())
                 .append("name", "Default")
-                .append("prefix", "&aDefault")
+                .append("prefix", "&a")
                 .append("suffix", "")
                 .append("bold", false)
                 .append("italic", false)
+                .append("displayname", "&aDefault")
                 .append("default", true)
                 .append("staff", false)
                 .append("admin", false)

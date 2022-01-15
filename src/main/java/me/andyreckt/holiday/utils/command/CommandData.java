@@ -51,6 +51,8 @@ final class CommandData {
         if (permissionNode.equals("")) return true;
         Player p = (Player) sender;
 
+        if (permissionNode.equals("op")) return p.isOp();
+
         if (p.isOp()) return true;
         if (p.hasPermission("*")) return true;
         if (p.hasPermission("*.*")) return true;
