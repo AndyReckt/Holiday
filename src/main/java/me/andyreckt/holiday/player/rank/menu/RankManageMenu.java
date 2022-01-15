@@ -72,7 +72,7 @@ public class RankManageMenu extends Menu {
                 new ItemBuilder(Material.PAPER, "&dPrefix").lore(rank.getPrefix()).build(),
                 rank, "&aEnter the new prefix for this rank:",
                 (rank1, pair) -> {
-                    rank.setPrefix(pair.getB() + " ");
+                    rank.setPrefix(pair.getB());
                     rank.save();
                     pair.getA().getForWhom().sendRawMessage(CC.translate("&aSuccessfully changed the prefix to " + pair.getB() ));
                 }
@@ -90,7 +90,7 @@ public class RankManageMenu extends Menu {
                 new ItemBuilder(Material.PAPER, "&dSuffix").lore(rank.getSuffix()).build(),
                 rank, "&aEnter the new suffix for this rank:",
                 (rank1, pair) -> {
-                    rank.setDisplayName(pair.getB() + " ");
+                    rank.setDisplayName(pair.getB());
                     rank.save();
                     pair.getA().getForWhom().sendRawMessage(CC.translate("&aSuccessfully changed the suffix to " + pair.getB() ));
                 }
