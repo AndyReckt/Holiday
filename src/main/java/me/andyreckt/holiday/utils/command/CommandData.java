@@ -103,7 +103,7 @@ final class CommandData {
 
             // We needed a parameter where we didn't get one (where there's no default value available)
             if (parameterIndex >= params.length && parameter.getDefaultValue().isEmpty()) {
-                sender.sendMessage(ChatColor.YELLOW + "Usage: " + ChatColor.LIGHT_PURPLE + getUsageString());
+                sender.sendMessage(ChatColor.RED + "Usage: " + getUsageString());
                 return;
             }
 

@@ -29,14 +29,7 @@ public class RankCommands {
     }
 
     @Command(names = {"rank manage", "rank edit"}, perm = "op")
-    public static void manage(Player sender, @Param(name = "rank") String string) {
-
-        if (rh.getFromName(string) == null) {
-            sender.sendMessage(CC.translate("&cThe rank " + string + " does not exist."));
-            return;
-        }
-
-        Rank rank = rh.getFromName(string);
+    public static void manage(Player sender, @Param(name = "rank") Rank rank) {
         new RankManageMenu(rank).openMenu(sender);
     }
 

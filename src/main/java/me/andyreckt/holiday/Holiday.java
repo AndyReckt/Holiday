@@ -43,7 +43,7 @@ public final class Holiday extends JavaPlugin {
 
     @Getter static Holiday instance;
 
-    boolean lunarEnabled = false;
+    boolean lunarEnabled = false, protocolEnabled;
     Gson gson;
 
     BasicConfigurationFile settings, messages;

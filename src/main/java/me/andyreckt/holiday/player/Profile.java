@@ -142,6 +142,7 @@ public class Profile {
         this.lowerCaseName = name.toLowerCase();
         this.messagesEnabled = true;
         Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid);
+        Bukkit.broadcastMessage("CREATERPROFILE");
         Holiday.getInstance().getProfileHandler().updateProfile(this);
         save();
 
@@ -220,9 +221,9 @@ public class Profile {
     public String getNameWithColor() {
         Rank rank = getHighestVisibleGrant().getRank();
         String color = "";
+        color += rank.getColor().toString();
         if (rank.isItalic()) color += CC.I;
         if (rank.isBold()) color += CC.B;
-        color += rank.getColor().toString();
         return color + name;
     }
 
@@ -283,7 +284,7 @@ public class Profile {
 
     public String getDisplayNameWithColor() {
 
-        Rank rank = getHighestVisibleGrant().getRank();
+        Rank rank = getHighestVisibleRank();
         String name = this.name;
 
         if (this.disguiseData != null) {
@@ -292,9 +293,10 @@ public class Profile {
         }
 
         String color = "";
+        color += rank.getColor().toString();
         if (rank.isItalic()) color += CC.I;
         if (rank.isBold()) color += CC.B;
-        color += rank.getColor().toString();
+
         return color + name;
     }
 
@@ -332,11 +334,11 @@ public class Profile {
     }
 
     public Grant getHighestGrant() {
-        return Holiday.getInstance().getGrantHandler().getGrants(uuid).stream().min(new GrantComparator()).orElseGet(() -> Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid));
+        return getActiveGrants().stream().min(new GrantComparator()).orElseGet(() -> Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid));
     }
 
     public Grant getHighestVisibleGrant() {
-        return Holiday.getInstance().getGrantHandler().getGrants(uuid).stream().filter(grant -> grant.getRank().isVisible()).min(new GrantComparator()).orElseGet(() -> Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid));
+        return getActiveGrants().stream().filter(grant -> grant.getRank().isVisible()).min(new GrantComparator()).orElseGet(() -> Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid));
     }
 
     public Rank getHighestRank() {
@@ -356,29 +358,23 @@ public class Profile {
     }
 
     public boolean isStaff() {
-
         for (Grant o : getGrants()) {
             if (o.getRank().isStaff()) return true;
         }
-
         return false;
     }
 
     public boolean isAdmin() {
-
         for (Grant o : getGrants()) {
             if (o.getRank().isAdmin()) return true;
         }
-
         return false;
     }
 
     public boolean isOp() {
-
         for (Grant o : getGrants()) {
             if (o.getRank().isDev()) return true;
         }
-
         return false;
     }
 

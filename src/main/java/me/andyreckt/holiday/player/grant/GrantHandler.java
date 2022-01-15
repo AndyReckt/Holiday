@@ -6,6 +6,7 @@ import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.TimeUtil;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,7 +28,13 @@ public class GrantHandler {
     }
 
     public List<Grant> getGrants(UUID user) {
-        return grants().stream().filter(g -> g.getUser() == user).collect(Collectors.toList());
+        List<Grant> list = new ArrayList<>();
+        for (Grant o: grants()) {
+            if (o.getUser().toString().equalsIgnoreCase(user.toString())) {
+                list.add(o);
+            }
+        }
+        return list;
     }
 
     public List<Grant> grants() {

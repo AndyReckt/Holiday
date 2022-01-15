@@ -1,16 +1,13 @@
 package io.github.zowpy.menu.buttons;
 
-import com.google.common.collect.ImmutableList;
 import io.github.zowpy.menu.Button;
 import me.andyreckt.holiday.utils.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;

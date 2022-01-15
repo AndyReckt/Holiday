@@ -26,7 +26,7 @@ import java.util.UUID;
 public class Grant {
 
      private final UUID uuid;
-     private Rank rank;
+     private String rank;
 
      private UUID user, issuer;
      private boolean active;
@@ -40,7 +40,7 @@ public class Grant {
         this.uuid = UUID.randomUUID();
         this.user = user;
         this.issuer = issuer;
-        this.rank = rank;
+        this.rank = rank.getName();
         this.duration = duration;
         this.active = true;
         this.executedAt = System.currentTimeMillis();
@@ -50,14 +50,18 @@ public class Grant {
         this.uuid = UUID.fromString(document.getString("_id"));
         this.user = UUID.fromString(document.getString("user"));
         this.issuer = document.getString("issuer").equalsIgnoreCase("Console") ? null : UUID.fromString(document.getString("issuer"));
-        this.rank = Holiday.getInstance().getRankHandler().getFromId(UUID.fromString(document.getString("rank")));
+        this.rank = document.getString("rank");
         this.active = document.getBoolean("active");
         this.duration = document.getLong("duration");
         this.executedAt = document.getLong("executedAt");
     }
 
+    public Rank getRank() {
+        return Holiday.getInstance().getRankHandler().getFromName(rank);
+    }
+
     public int getPriority() {
-        return rank == null ? 0 : rank.getPriority();
+        return rank == null ? 0 : getRank().getPriority();
     }
 
     public boolean expired() {
@@ -74,7 +78,7 @@ public class Grant {
         return new Document("_id", uuid.toString())
                 .append("user", user.toString())
                 .append("issuer", issuer == null ? "Console" : issuer.toString())
-                .append("rank", rank == null ? "null" : rank.getUuid().toString())
+                .append("rank", rank == null ? "null" : rank)
                 .append("active", active)
                 .append("duration", duration)
                 .append("executedAt", executedAt);
@@ -82,7 +86,7 @@ public class Grant {
 
     public boolean isActive() {
         if (expired()) setActive(false);
-        return !expired() && isActive();
+        return !expired() && active;
     }
 
 

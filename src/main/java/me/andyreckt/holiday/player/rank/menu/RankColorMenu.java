@@ -31,24 +31,28 @@ public class RankColorMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player paramPlayer) {
         Map<Integer, Button> toReturn = new HashMap<>();
-
+        int j = 0;
         for (int i = 0; i < 16; i++) {
             if (i == 12) continue;
             int finalI = i;
-            toReturn.put(i, new Button() {
-                final ChatColor color = StringUtil.convertWoolDataToChatColor(finalI);
+            final ChatColor color = StringUtil.convertWoolDataToChatColor(finalI);
+            if (color == null) continue;
+            toReturn.put(j, new Button() {
 
                 @Override
                 public ItemStack getButtonItem(Player p0) {
-                    return new ItemBuilder(Material.WOOL).damage(finalI == 15 ? 14 : 15).displayname(color + color.name()).build();
+                    return new ItemBuilder(Material.WOOL).damage(finalI == 15 ? 14 : finalI).displayname(color + color.name()).build();
                 }
 
                 @Override
                 public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
                     rank.setColor(color);
                     rank.save();
+                    player.closeInventory();
+                    player.sendMessage(CC.translate("&aSet " + rank.getName() + "'s rank color to " + color + color.name()));
                 }
             });
+            j++;
         }
         
         return toReturn;

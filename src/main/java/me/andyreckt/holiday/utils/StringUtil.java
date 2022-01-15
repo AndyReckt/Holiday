@@ -34,8 +34,8 @@ public class StringUtil {
     }
 
     public static ChatColor convertWoolDataToChatColor(int data) {
-        return data == 0 ? ChatColor.WHITE : data == 1 ? ChatColor.GOLD : data == 3 ? ChatColor.LIGHT_PURPLE :
-                data == 4 ? ChatColor.AQUA : data == 5 ? ChatColor.YELLOW : data == 6 ? ChatColor.GREEN :
+        return data == 0 ? ChatColor.WHITE : data == 1 ? ChatColor.GOLD : data == 3 ? ChatColor.AQUA :
+                data == 4 ? ChatColor.YELLOW : data == 5 ? ChatColor.GREEN : data == 6 ? ChatColor.LIGHT_PURPLE :
                 data == 7 ? ChatColor.DARK_GRAY : data == 8 ? ChatColor.GRAY : data == 9 ? ChatColor.DARK_AQUA :
                 data == 10 ? ChatColor.DARK_PURPLE : data == 11 ? ChatColor.BLUE : data == 13 ? ChatColor.DARK_GREEN :
                 data == 14 ? ChatColor.RED : data == 15 ? ChatColor.DARK_RED : null;
