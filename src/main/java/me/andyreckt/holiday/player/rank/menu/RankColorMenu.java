@@ -35,10 +35,9 @@ public class RankColorMenu extends Menu {
         int j = 0;
         for (int i = 0; i < 16; i++) {
             if (i == 12) continue;
-            int finalI = i;
-            final ChatColor color = StringUtil.convertWoolDataToChatColor(finalI);
+            final ChatColor color = StringUtil.convertWoolDataToChatColor(i);
             if (color == null) continue;
-            toReturn.put(j, new EasyButton(new ItemBuilder(Material.WOOL).damage(finalI == 15 ? 14 : finalI).displayname(color + color.name()).build(),
+            toReturn.put(j, new EasyButton(new ItemBuilder(Material.WOOL).damage(i == 15 ? 14 : i).displayname(color + color.name()).build(),
                     player -> {
                         rank.setColor(color);
                         rank.save();
