@@ -1,12 +1,17 @@
 package me.andyreckt.holiday.player.rank;
 
 import com.mongodb.Block;
+import com.mongodb.client.model.Filters;
+import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
+import me.andyreckt.holiday.database.redis.packet.RankPacket;
+import me.andyreckt.holiday.other.enums.RankType;
 import me.andyreckt.holiday.player.punishments.PunishData;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RankHandler {
 
@@ -20,13 +25,13 @@ public class RankHandler {
          rankCache = new HashMap<>();
          MongoUtils.getRankCollection().find().forEach((Block<Document>) o -> {
              Rank rank = new Rank(o);
-             rankCache.put(rank.getUuid(), rank);
+             updateCache(rank.getUuid(), rank);
          });
          getDefaultRank();
     }
 
     public Rank createRank(String name) {
-        return new Rank(UUID.randomUUID(), name, "", "", name, false, false, false, false, false, false, true, ChatColor.WHITE, 0, new ArrayList<>(), new ArrayList<>());
+        return new Rank(UUID.randomUUID(), name, "&f", "&f", name, false, false, false, false, false, false, true, ChatColor.WHITE, 0, new ArrayList<>(), new ArrayList<>());
     }
 
     public boolean cacheContains(UUID id) {
@@ -50,6 +55,12 @@ public class RankHandler {
         return new ArrayList<>(rankCache.values());
     }
 
+    public List<Rank> ranksSorted() {
+        List<Rank> list = new ArrayList<>(ranks()).stream().sorted((Comparator.comparingInt(Rank::getPriority))).collect(Collectors.toList());
+        Collections.reverse(list);
+        return list;
+    }
+
     public Rank getFromId(UUID id) {
         if (cacheContains(id)) return rankCache.get(id);
         else return null;
@@ -67,7 +78,7 @@ public class RankHandler {
                 .append("suffix", "")
                 .append("bold", false)
                 .append("italic", false)
-                .append("displayname", "&aDefault")
+                .append("displayName", "&aDefault")
                 .append("default", true)
                 .append("staff", false)
                 .append("admin", false)
@@ -79,12 +90,12 @@ public class RankHandler {
                 .append("permissions", new ArrayList<String>());
         Rank rank = new Rank(document);
         rank.save();
-        rankCache.put(rank.getUuid(), rank);
+        updateCache(rank.getUuid(), rank);
         return rank;
     }
 
     public Rank getDefaultRank() {
-        for (Rank rank : rankCache.values()) {
+        for (Rank rank : ranks()) {
             if (rank.isDefault()) return rank;
         }
         return createDefaultRank();
@@ -93,6 +104,12 @@ public class RankHandler {
     public Rank getHighestRank() {
          List<Rank> ran = new ArrayList<>(ranks());
          ran.sort(Comparator.comparingInt(Rank::getPriority));
+         Collections.reverse(ran);
          return ran.get(0);
+    }
+
+    public void deleteRank(Rank rank) {
+        MongoUtils.getRankCollection().deleteOne(Filters.eq("_id", rank.getUuid().toString()));
+        Holiday.getInstance().getRedis().sendPacket(new RankPacket(rank, RankType.DELETE));
     }
 }

@@ -58,7 +58,7 @@ final class CommandData {
         if (p.hasPermission("*.*")) return true;
 
         String[] array = permissionNode.split("\\.");
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < array.length; i++) {
             if (array[i] == null) continue;
 
             StringBuilder sb = new StringBuilder();

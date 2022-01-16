@@ -55,7 +55,7 @@ public class Reboot extends BukkitRunnable {
         }
 
         if (rebootTimes.contains(time))
-            Bukkit.broadcastMessage(CC.translate(serverRebootIn.replace("<time>", TimeUtil.formatDuration(time))));
+            Bukkit.broadcastMessage(CC.translate(serverRebootIn.replace("<time>", TimeUtil.getDuration(time))));
         };
     }
 

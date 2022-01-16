@@ -28,6 +28,7 @@ public class ProfileHandler {
     }
 
     public Profile getByUUIDFor5Minutes(UUID uuid) {
+        if (uuid == getConsoleProfile().getUuid()) return getConsoleProfile();
         if (profileCache.containsKey(uuid)) return profileCache.get(uuid);
         Profile profile = new Profile(uuid);
         Tasks.runAsyncLater(() -> profileCache.remove(uuid), 5*60*20);
@@ -39,6 +40,7 @@ public class ProfileHandler {
     }
 
     public Profile getByUUID(UUID uuid, boolean cache) {
+        if (uuid == getConsoleProfile().getUuid()) return getConsoleProfile();
         if(profileCache.containsKey(uuid)) return profileCache.get(uuid);
         return new Profile(uuid, cache);
     }
@@ -62,6 +64,7 @@ public class ProfileHandler {
     }
 
     public boolean hasProfile(UUID uuid) {
+        if (uuid == getConsoleProfile().getUuid()) return true;
         Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
         return document != null;
     }

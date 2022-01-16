@@ -2,10 +2,7 @@ package me.andyreckt.holiday.player.rank.menu;
 
 import io.github.zowpy.menu.Button;
 import io.github.zowpy.menu.Menu;
-import io.github.zowpy.menu.buttons.BooleanButton;
-import io.github.zowpy.menu.buttons.ConversationButton;
-import io.github.zowpy.menu.buttons.DisplayButton;
-import io.github.zowpy.menu.buttons.Glass;
+import io.github.zowpy.menu.buttons.*;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.CC;
@@ -40,19 +37,11 @@ public class RankManageMenu extends Menu {
     public Map<Integer, Button> getButtons(Player paramPlayer) {
         Map<Integer, Button> toReturn = new HashMap<>();
 
-        toReturn.put(4, new Button() {
-            @Override
-            public ItemStack getButtonItem(Player p0) {
-                return new ItemBuilder(Material.WOOL)
-                        .displayname(rank.getColor() + "Current Color")
-                        .damage(StringUtil.convertChatColorToWoolData(rank.getColor()))
-                        .build();
-            }
-
-            @Override
-            public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-                new RankColorMenu(rank).openMenu(player);
-            }
+        toReturn.put(4, new EasyButton(new ItemBuilder(Material.WOOL)
+                .displayname(rank.getColor() + "Current Color")
+                .damage(StringUtil.convertChatColorToWoolData(rank.getColor()))
+                .build(),
+                player -> new RankColorMenu(rank).openMenu(player)) {
         });
 
         Consumer<Rank> save = rank -> {

@@ -56,8 +56,9 @@ public class Redis {
                 StaffMessages.StaffMessagesPacket.class,
                 StaffMessages.HelpopPacket.class,
                 RankPacket.class,
+                PermissionChangePacket.class,
                 GrantPacket.class
-        ).forEach(packet -> pidgin.registerPacket(packet));
+        ).forEach(pidgin::registerPacket);
     }
 
      void loadSubscribers() {
@@ -70,7 +71,6 @@ public class Redis {
          pidgin.registerListener(new RankSubscriber());
          pidgin.registerListener(new StaffMessagesSubscriber());
          pidgin.registerListener(new GrantSubscriber());
-
      }
 
 }

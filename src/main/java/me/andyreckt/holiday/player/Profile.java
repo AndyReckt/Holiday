@@ -142,7 +142,6 @@ public class Profile {
         this.lowerCaseName = name.toLowerCase();
         this.messagesEnabled = true;
         Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid);
-        Bukkit.broadcastMessage("CREATERPROFILE");
         Holiday.getInstance().getProfileHandler().updateProfile(this);
         save();
 
@@ -334,11 +333,11 @@ public class Profile {
     }
 
     public Grant getHighestGrant() {
-        return getActiveGrants().stream().min(new GrantComparator()).orElseGet(() -> Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid));
+        return getActiveGrants().stream().max(new GrantComparator()).orElseGet(() -> Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid));
     }
 
     public Grant getHighestVisibleGrant() {
-        return getActiveGrants().stream().filter(grant -> grant.getRank().isVisible()).min(new GrantComparator()).orElseGet(() -> Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid));
+        return getActiveGrants().stream().filter(grant -> grant.getRank().isVisible()).max(new GrantComparator()).orElseGet(() -> Holiday.getInstance().getGrantHandler().newDefaultGrant(uuid));
     }
 
     public Rank getHighestRank() {
@@ -358,24 +357,36 @@ public class Profile {
     }
 
     public boolean isStaff() {
-        for (Grant o : getGrants()) {
+        for (Grant o : getActiveGrants()) {
             if (o.getRank().isStaff()) return true;
         }
         return false;
     }
 
     public boolean isAdmin() {
-        for (Grant o : getGrants()) {
+        for (Grant o : getActiveGrants()) {
             if (o.getRank().isAdmin()) return true;
         }
         return false;
     }
 
     public boolean isOp() {
-        for (Grant o : getGrants()) {
+        for (Grant o : getActiveGrants()) {
             if (o.getRank().isDev()) return true;
         }
         return false;
+    }
+
+    public boolean hasRank(Rank rank) {
+        for (Grant grant : getActiveGrants()) {
+            if (grant.getRank().getUuid() == rank.getUuid()) return true;
+        }
+        return false;
+    }
+
+    public void delete() {
+        MongoUtils.getProfileCollection().deleteOne(Filters.eq("_id", uuid.toString()));
+        Holiday.getInstance().getRedis().sendPacket(new ProfilePacket.ProfileDeletePacket(this));
     }
 
 }

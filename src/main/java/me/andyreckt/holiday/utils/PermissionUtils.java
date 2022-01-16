@@ -28,7 +28,7 @@ public class PermissionUtils { //Initially from Exolon, edited
             for (String permission : profile.getPermissions()) {
                 attachment.setPermission((permission.startsWith("-") ? permission.substring(1) : permission), !permission.startsWith("-"));
             }
-            for (Grant grant : profile.getGrants()) {
+            for (Grant grant : profile.getActiveGrants()) {
 
                 Rank rank = grant.getRank();
                 for (String permission : rank.getPermissions()) {

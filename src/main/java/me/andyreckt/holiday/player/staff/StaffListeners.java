@@ -41,8 +41,8 @@ public class StaffListeners {
 
             String message = event.getMessage().substring(1);
             String playerName = profile.getNameWithColor(); //TODO STAFF CHAT
-            //StaffUtils.Staff.sendStaffChatMessage(playerName, message);
-            //Redis.getPidgin().sendPacket(new BroadcastPacket(CC.translate("&d[S] &5[" + Loader.getServerName() + "] " + playerName + "&7: &e" + message), BroadcastType.STAFF));
+            // StaffUtils.Staff.sendStaffChatMessage(playerName, message);
+            // Redis.getPidgin().sendPacket(new BroadcastPacket(CC.translate("&d[S] &5[" + Loader.getServerName() + "] " + playerName + "&7: &e" + message), BroadcastType.STAFF));
 
             event.setCancelled(true);
         }
@@ -150,6 +150,15 @@ public class StaffListeners {
             Player player = (Player) e.getEntity();
             StaffHandler sh = Holiday.getInstance().getStaffHandler();
             if (!sh.isInStaffMode(player.getUniqueId())) return;
+            e.setCancelled(true);
+        }
+        @EventHandler
+        public void onDamageDealt(EntityDamageByEntityEvent e) {
+            if (!(e.getDamager() instanceof Player)) return;
+            Player player = (Player) e.getDamager();
+            StaffHandler sh = Holiday.getInstance().getStaffHandler();
+            if (!sh.isInStaffMode(player.getUniqueId())) return;
+            if (!sh.getStaffPlayer(player).isInVanish()) return;
             e.setCancelled(true);
         }
     }

@@ -16,7 +16,7 @@ public class TimeUtil {
      static final ThreadLocal<DecimalFormat> SECONDS = ThreadLocal.withInitial(() -> new DecimalFormat("0.#"));
      static final ThreadLocal<DecimalFormat> TRAILING = ThreadLocal.withInitial(() -> new DecimalFormat("0"));
 
-    public static String formatDuration(long input) {
+    private static String formatDuration(long input) {
         return DurationFormatUtils.formatDurationWords(input, true, true);
     }
 
@@ -27,7 +27,7 @@ public class TimeUtil {
 
 
     public static String getDuration(long input) {
-        return input == -1 ? "Permanent" : formatDuration(input);
+        return input == PERMANENT ? "Permanent" : formatDuration(input);
     }
 
     public static long getDuration(String input) {

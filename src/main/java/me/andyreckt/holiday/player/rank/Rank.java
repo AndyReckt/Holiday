@@ -21,9 +21,9 @@ import java.util.*;
  * @author Zowpy
  */
 
+@SuppressWarnings("unchecked")
 @Getter @Setter
 @AllArgsConstructor
-@SuppressWarnings("unchecked")
 public class Rank {
 
 
@@ -123,5 +123,19 @@ public class Rank {
         else this.childs = new ArrayList<>();
     }
 
+    public void addPermission(String perm) {
+        this.permissions.add(perm);
+    }
 
+    public void addChild(Rank rank) {
+        this.childs.add(rank.getUuid());
+    }
+
+    public void removeChild(Rank rank) {
+        this.childs.add(rank.getUuid());
+    }
+
+    public void removePermission(String perm) {
+        this.permissions.remove(perm);
+    }
 }

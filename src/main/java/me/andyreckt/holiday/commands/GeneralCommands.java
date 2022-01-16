@@ -17,7 +17,7 @@ public class GeneralCommands {
 
         String playtimeString = target == sender ? Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.PLAYTIME.SELF") :
                 Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.PLAYTIME.OTHER");
-        playtimeString = playtimeString.replace("<playtime>", TimeUtil.formatDuration(playtime)).replace("<player>", Holiday.getInstance().getProfileHandler().getByUUID(target.getUniqueId()).getDisplayNameWithColor());
+        playtimeString = playtimeString.replace("<playtime>", TimeUtil.getDuration(playtime)).replace("<player>", Holiday.getInstance().getProfileHandler().getByUUID(target.getUniqueId()).getDisplayNameWithColor());
 
         sender.sendMessage(CC.translate(playtimeString));
     }

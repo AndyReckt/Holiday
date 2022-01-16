@@ -38,37 +38,38 @@ import redis.clients.jedis.JedisPool;
 import java.util.concurrent.*;
 
 
-@Getter @Setter
+@Getter
 public final class Holiday extends JavaPlugin {
 
     @Getter static Holiday instance;
 
-    boolean lunarEnabled = false, protocolEnabled;
-    Gson gson;
+    private boolean lunarEnabled = false, protocolEnabled = false;
+    private Gson gson;
 
-    BasicConfigurationFile settings, messages;
+    private BasicConfigurationFile settings, messages;
 
-    Redis redisPool;
-    Pidgin redis;
-    JedisPool jedisPool;
+    private Redis redisPool;
+    private Pidgin redis;
+    private JedisPool jedisPool;
 
-    MongoDatabase mongoDatabase;
+    private MongoDatabase mongoDatabase;
 
-    CommandHandler commandHandler;
-    PunishmentHandler punishmentHandler;
-    ProfileHandler profileHandler;
-    DisguiseHandler disguiseHandler;
-    RankHandler rankHandler;
-    GrantHandler grantHandler;
-    ServerHandler serverHandler;
-    ChatHandler chatHandler;
-    StaffHandler staffHandler;
-    MenuAPI menuAPI;
+    private CommandHandler commandHandler;
+    private PunishmentHandler punishmentHandler;
+    private ProfileHandler profileHandler;
+    private DisguiseHandler disguiseHandler;
+    private RankHandler rankHandler;
+    private GrantHandler grantHandler;
+    private ServerHandler serverHandler;
+    private ChatHandler chatHandler;
+    private StaffHandler staffHandler;
+    private MenuAPI menuAPI;
 
-    Executor dbExecutor, executor;
-    ScheduledExecutorService scheduledExecutor;
+    private Executor dbExecutor, executor;
+    private ScheduledExecutorService scheduledExecutor;
 
-    RebootTask rebootTask;
+    @Setter
+    private RebootTask rebootTask;
 
 
     @Override
@@ -94,6 +95,7 @@ public final class Holiday extends JavaPlugin {
         this.setupCommands();
 
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API")) lunarEnabled = true;
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib")) protocolEnabled = true;
 
         infoConsole(ChatColor.GREEN + "Successfully Loaded!");
         this.sendServerStartup();
@@ -103,7 +105,6 @@ public final class Holiday extends JavaPlugin {
         this.commandHandler = new CommandHandler(this);
         this.commandHandler.hook();
         CommandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands");
-
     }
 
     private void sendServerStartup() {
@@ -112,8 +113,6 @@ public final class Holiday extends JavaPlugin {
                         .replace("<server>", settings.getString("SERVER.NAME"))),
                 StaffMessageType.ADMIN)),
                 20 * 5L);
-
-
     }
 
     private void setupExecutors() {
@@ -156,14 +155,13 @@ public final class Holiday extends JavaPlugin {
         this.scheduledExecutor.scheduleAtFixedRate(refreshServer, 25, 30, TimeUnit.SECONDS);
     }
 
-
     private void setupListeners() {
         this.addListener(new ProfileListener());
         this.addListener(new ChatListener());
         this.addListener(new PunishmentsListener());
         new StaffListeners(this);
     }
-    void addListener(Listener listener){
+    private void addListener(Listener listener){
         this.getServer().getPluginManager().registerEvents(listener, this);
     }
 

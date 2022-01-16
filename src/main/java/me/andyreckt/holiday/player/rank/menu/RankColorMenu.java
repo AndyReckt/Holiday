@@ -2,6 +2,7 @@ package me.andyreckt.holiday.player.rank.menu;
 
 import io.github.zowpy.menu.Button;
 import io.github.zowpy.menu.Menu;
+import io.github.zowpy.menu.buttons.EasyButton;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.ItemBuilder;
@@ -37,21 +38,13 @@ public class RankColorMenu extends Menu {
             int finalI = i;
             final ChatColor color = StringUtil.convertWoolDataToChatColor(finalI);
             if (color == null) continue;
-            toReturn.put(j, new Button() {
-
-                @Override
-                public ItemStack getButtonItem(Player p0) {
-                    return new ItemBuilder(Material.WOOL).damage(finalI == 15 ? 14 : finalI).displayname(color + color.name()).build();
-                }
-
-                @Override
-                public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-                    rank.setColor(color);
-                    rank.save();
-                    player.closeInventory();
-                    player.sendMessage(CC.translate("&aSet " + rank.getName() + "'s rank color to " + color + color.name()));
-                }
-            });
+            toReturn.put(j, new EasyButton(new ItemBuilder(Material.WOOL).damage(finalI == 15 ? 14 : finalI).displayname(color + color.name()).build(),
+                    player -> {
+                        rank.setColor(color);
+                        rank.save();
+                        player.closeInventory();
+                        player.sendMessage(CC.translate("&aSet " + rank.getName() + "'s rank color to " + color + color.name()));
+                    }));
             j++;
         }
         

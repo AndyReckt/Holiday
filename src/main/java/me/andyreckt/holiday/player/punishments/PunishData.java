@@ -66,12 +66,12 @@ public class PunishData {
     }
 
     public String getNiceDuration() {
-        return isPermanent() ? "Permanent" : this.removed ? "Enlevé" : TimeUtil.formatDuration(Math.abs((System.currentTimeMillis() - (this.addedAt + this.duration))));
+        return this.removed ? "Removed" : isPermanent() ? "Permanent" : TimeUtil.getDuration(Math.abs((System.currentTimeMillis() - (this.addedAt + this.duration))));
     }
 
     public String getDurationString() {
         if(duration == -1) return ChatColor.DARK_PURPLE + "Permanent";
-        return TimeUtil.formatDuration(duration);
+        return TimeUtil.getDuration(duration);
     }
 
 
