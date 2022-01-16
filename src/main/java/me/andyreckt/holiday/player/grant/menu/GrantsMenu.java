@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.player.grant.menu;
 
 import io.github.zowpy.menu.Button;
+import io.github.zowpy.menu.buttons.EasyButton;
 import io.github.zowpy.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.Profile;
@@ -34,20 +35,10 @@ public class GrantsMenu extends PaginatedMenu {
     @Override
     public Map<Integer, Button> getAllPagesButtons(Player p0) {
         Map<Integer, Button> toReturn = new HashMap<>();
-        toReturn.put(4, new Button() {
-            @Override
-            public ItemStack getButtonItem(Player p0) {
-                return new ItemBuilder(Material.PAPER)
-                        .displayname(actives ? "&aActive grants" : "&bAll grants")
-                        .lore(actives ? "&7&oClick to switch to all grants" : "&7&oClick to switch to actives grants")
-                        .build();
-            }
-
-            @Override
-            public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-                new GrantsMenu(user, !actives).openMenu(player);
-            }
-        });
+        toReturn.put(4, new EasyButton(new ItemBuilder(Material.PAPER)
+                .displayname(actives ? "&aActive grants" : "&bAll grants")
+                .lore(actives ? "&7&oClick to switch to all grants" : "&7&oClick to switch to actives grants")
+                .build(), player -> new GrantsMenu(user, !actives).openMenu(player)));
 
         List<Grant> grants = actives ? user.getActiveGrants() : user.getGrants();
 
