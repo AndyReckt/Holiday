@@ -5,6 +5,7 @@ import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.ProfileHandler;
 import me.andyreckt.holiday.player.grant.Grant;
+import me.andyreckt.holiday.player.grant.menu.GrantsMenu;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.ItemBuilder;
 import me.andyreckt.holiday.utils.TimeUtil;
@@ -16,9 +17,13 @@ import org.bukkit.inventory.ItemStack;
 public class GrantButton extends Button {
 
     final Grant grant;
+    final Profile profile;
+    final boolean actives;
 
-    public GrantButton(Grant grant) {
+    public GrantButton(Grant grant, Profile profile, boolean actives) {
         this.grant = grant;
+        this.profile = profile;
+        this.actives = actives;
     }
 
     @Override
@@ -51,6 +56,7 @@ public class GrantButton extends Button {
 
         grant.setActive(false);
         grant.save();
+        new GrantsMenu(profile, actives).openMenu(player);
     }
 
     private String yesNo(boolean bool) {

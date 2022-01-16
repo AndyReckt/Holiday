@@ -3,7 +3,6 @@ package me.andyreckt.holiday.player.grant.menu;
 import io.github.zowpy.menu.Button;
 import io.github.zowpy.menu.buttons.EasyButton;
 import io.github.zowpy.menu.pagination.PaginatedMenu;
-import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.grant.Grant;
 import me.andyreckt.holiday.player.grant.menu.button.GrantButton;
@@ -11,8 +10,6 @@ import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -24,7 +21,6 @@ public class GrantsMenu extends PaginatedMenu {
     public GrantsMenu(Profile user, boolean actives) {
         this.user = user;
         this.actives = actives;
-        this.setUpdateAfterClick(true);
     }
 
     @Override
@@ -47,7 +43,7 @@ public class GrantsMenu extends PaginatedMenu {
 
         int i = 9;
         for (Grant grant : grants) {
-            toReturn.put(i++, new GrantButton(grant));
+            toReturn.put(i++, new GrantButton(grant, user, actives));
         }
         return toReturn;
     }
