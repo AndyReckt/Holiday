@@ -85,6 +85,11 @@ public class RankManageMenu extends Menu {
                 }
         ));
 
+        toReturn.put(18, new EasyButton(new ItemBuilder(Material.MAGMA_CREAM, "&dPermissions").build(),
+                player -> new RankPermissionMenu(rank).openMenu(player)));
+        toReturn.put(26, new EasyButton(new ItemBuilder(Material.MAGMA_CREAM, "&dChilds").build(),
+                player -> new RankChildMenu(rank).openMenu(player)));
+
         return toReturn;
     }
 
