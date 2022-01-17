@@ -117,8 +117,8 @@ public class RankCommands {
             sender.sendMessage(CC.translate("&cYou cannot delete the default rank!"));
             return;
         }
+        Holiday.getInstance().getGrantHandler().deleteGrantsFromRank(rank);
         rh.deleteRank(rank);
-
         sender.sendMessage(CC.translate("&aSuccessfully deleted the rank " + rank.getDisplayName()));
     }
 

@@ -59,6 +59,13 @@ public class GrantHandler {
         }
     }
 
+    public void deleteGrantsFromRank(Rank rank) {
+        for (Grant grant : grants()) {
+            if (grant.getRank().getUuid().toString().equalsIgnoreCase(rank.getUuid().toString())) {
+                grant.delete();
+            }
+        }
+    }
 
     public void removeFromCache(UUID id) {
         grantCache.remove(id);

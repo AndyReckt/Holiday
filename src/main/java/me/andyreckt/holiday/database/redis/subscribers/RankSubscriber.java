@@ -3,15 +3,11 @@ package me.andyreckt.holiday.database.redis.subscribers;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.redis.packet.PermissionChangePacket;
 import me.andyreckt.holiday.database.redis.packet.RankPacket;
-import me.andyreckt.holiday.other.enums.RankType;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.grant.Grant;
 import me.andyreckt.holiday.utils.PermissionUtils;
 import me.andyreckt.holiday.utils.packets.handler.IncomingPacketHandler;
 import me.andyreckt.holiday.utils.packets.listener.PacketListener;
-import org.bukkit.Bukkit;
-
-import java.util.Objects;
 
 public class RankSubscriber implements PacketListener {
 

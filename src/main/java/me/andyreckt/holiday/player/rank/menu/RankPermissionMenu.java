@@ -32,7 +32,7 @@ public class RankPermissionMenu extends PaginatedMenu {
         Map<Integer, Button> toReturn = new HashMap<>();
         int i = 0;
         for (String perm : rank.getPermissions()) {
-            toReturn.put(i++, new DisplayButton(new ItemBuilder(Material.WRITTEN_BOOK).glow().displayname("&e" + perm).build()));
+            toReturn.put(i++, new DisplayButton(new ItemBuilder(Material.BOOK).glow().displayname("&e" + perm).build()));
         }
         return toReturn;
     }

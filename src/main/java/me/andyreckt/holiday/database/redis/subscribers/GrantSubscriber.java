@@ -9,7 +9,16 @@ public class GrantSubscriber implements PacketListener {
 
     @IncomingPacketHandler
     public void update(GrantPacket packet) {
-        Holiday.getInstance().getGrantHandler().updateCache(packet.getGrant().getUuid(), packet.getGrant());
+        switch (packet.getUpdateType()) {
+            case UPDATE:
+            case ADD: {
+                Holiday.getInstance().getGrantHandler().updateCache(packet.getGrant().getUuid(), packet.getGrant());
+                break;
+            }
+            case DELETE: {
+                Holiday.getInstance().getGrantHandler().removeFromCache(packet.getGrant().getUuid());
+            }
+        }
     }
 
 }

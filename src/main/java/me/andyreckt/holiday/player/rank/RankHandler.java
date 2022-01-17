@@ -5,8 +5,7 @@ import com.mongodb.client.model.Filters;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.database.redis.packet.RankPacket;
-import me.andyreckt.holiday.other.enums.RankType;
-import me.andyreckt.holiday.player.punishments.PunishData;
+import me.andyreckt.holiday.other.enums.UpdateType;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 
@@ -110,6 +109,6 @@ public class RankHandler {
 
     public void deleteRank(Rank rank) {
         MongoUtils.getRankCollection().deleteOne(Filters.eq("_id", rank.getUuid().toString()));
-        Holiday.getInstance().getRedis().sendPacket(new RankPacket(rank, RankType.DELETE));
+        Holiday.getInstance().getRedis().sendPacket(new RankPacket(rank, UpdateType.DELETE));
     }
 }

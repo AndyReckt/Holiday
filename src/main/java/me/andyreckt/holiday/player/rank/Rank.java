@@ -8,7 +8,7 @@ import lombok.Setter;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.database.redis.packet.RankPacket;
-import me.andyreckt.holiday.other.enums.RankType;
+import me.andyreckt.holiday.other.enums.UpdateType;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 
@@ -70,7 +70,7 @@ public class Rank {
 
     public void save() {
         MongoUtils.submitToThread(() -> MongoUtils.getRankCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
-        Holiday.getInstance().getRedis().sendPacket(new RankPacket(this, RankType.UPDATE));
+        Holiday.getInstance().getRedis().sendPacket(new RankPacket(this, UpdateType.UPDATE));
     }
 
 

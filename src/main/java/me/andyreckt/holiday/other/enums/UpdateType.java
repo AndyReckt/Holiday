@@ -1,6 +1,6 @@
 package me.andyreckt.holiday.other.enums;
 
-public enum RankType {
+public enum UpdateType {
 
     ADD,
     UPDATE,
