@@ -41,7 +41,8 @@ import java.util.concurrent.*;
 @Getter
 public final class Holiday extends JavaPlugin {
 
-    @Getter static Holiday instance;
+    @Getter
+    private static Holiday instance;
 
     private boolean lunarEnabled = false, protocolEnabled = false;
     private Gson gson;
@@ -85,20 +86,25 @@ public final class Holiday extends JavaPlugin {
 
     private void loadPlugin() {
         instance = this;
-        this.gson  = new GsonBuilder().serializeNulls().create();
-        this.setupConfigFiles();
-        this.setupExecutors();
-        this.setupDatabases();
-        this.setupHandlers();
-        this.setupListeners();
-        this.setupRunnables();
-        this.setupCommands();
+        this.gson = new GsonBuilder().serializeNulls().create();
+        setupConfigFiles();
+        setupExecutors();
+        setupDatabases();
+        setupHandlers();
+        setupListeners();
+        setupRunnables();
+        setupCommands();
+        setupSoftDependencies();
 
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API")) lunarEnabled = true;
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib")) protocolEnabled = true;
 
         infoConsole(ChatColor.GREEN + "Successfully Loaded!");
-        this.sendServerStartup();
+        sendServerStartup();
+    }
+
+    @Override
+    public void onDisable() {
+        this.serverHandler.stop();
+        this.scheduledExecutor.shutdownNow();
     }
 
     private void setupCommands() {
@@ -109,9 +115,9 @@ public final class Holiday extends JavaPlugin {
 
     private void sendServerStartup() {
         Tasks.runAsyncLater(() -> redis.sendPacket(new StaffMessages.StaffMessagesPacket(StringUtil.addNetworkPlaceholder(
-                messages.getString("SERVER.STARTUP")
-                        .replace("<server>", settings.getString("SERVER.NAME"))),
-                StaffMessageType.ADMIN)),
+                        messages.getString("SERVER.STARTUP")
+                                .replace("<server>", settings.getString("SERVER.NAME"))),
+                        StaffMessageType.ADMIN)),
                 20 * 5L);
     }
 
@@ -161,14 +167,16 @@ public final class Holiday extends JavaPlugin {
         this.addListener(new PunishmentsListener());
         new StaffListeners(this);
     }
-    private void addListener(Listener listener){
-        this.getServer().getPluginManager().registerEvents(listener, this);
+
+    private void setupSoftDependencies() {
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API") && settings.getBoolean("LUNAR.ENABLED"))
+            lunarEnabled = true;
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib")) protocolEnabled = true;
     }
 
-    @Override
-    public void onDisable() {
-        this.serverHandler.stop();
-        this.scheduledExecutor.shutdownNow();
+
+    private void addListener(Listener listener) {
+        this.getServer().getPluginManager().registerEvents(listener, this);
     }
 
     public void infoConsole(String message) {

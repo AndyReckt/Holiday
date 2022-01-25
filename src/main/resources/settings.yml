@@ -61,3 +61,7 @@ NAMEMC:
   RANK:
     ENABLED: false
     NAME: "VOTER"
+
+LUNAR:
+  ENABLED: false
+  NAMETAGS: true

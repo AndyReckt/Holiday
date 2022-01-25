@@ -6,8 +6,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 public class StaffUpdateVisibilityEvent extends PlayerEvent implements Cancellable {
-   static HandlerList handlerList = new HandlerList();
-   static boolean cancelled = false;
+   private static final HandlerList handlerList = new HandlerList();
+   private static boolean cancelled = false;
 
    public StaffUpdateVisibilityEvent(Player player) {
       super(player);

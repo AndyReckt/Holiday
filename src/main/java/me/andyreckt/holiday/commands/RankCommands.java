@@ -41,8 +41,9 @@ public class RankCommands {
     @Command(names = {"rank list"}, perm = "op")
     public static void list(Player sender) {
         sender.sendMessage(CC.translate("&aRank list: "));
+        sender.sendMessage(CC.CHAT_BAR);
         for (Rank rank : rh.ranksSorted()) {
-            TextComponentBuilder builder = new TextComponentBuilder(CC.translate(rank.getDisplayName()));
+            TextComponentBuilder builder = new TextComponentBuilder(CC.translate(" " + rank.getDisplayName()));
             builder.setHoverEvent(HoverEvent.Action.SHOW_TEXT,
                     "&eDisplay Name: " + rank.getDisplayName() + "\n" +
                             "&ePrefix: " + rank.getPrefix() + "\n" +
@@ -61,6 +62,7 @@ public class RankCommands {
             builder.setClickEvent(ClickEvent.Action.RUN_COMMAND, "/rank manage " + rank.getName());
             sender.spigot().sendMessage(builder.toText());
         }
+        sender.sendMessage(CC.CHAT_BAR);
     }
 
     @Command(names = {"rank addperm", "rank perm add"}, perm = "op")

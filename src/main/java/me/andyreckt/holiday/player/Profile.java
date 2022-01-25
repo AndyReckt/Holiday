@@ -226,6 +226,9 @@ public class Profile {
         return color + name;
     }
 
+    public boolean isVanished() {
+        return isInStaffMode() && Holiday.getInstance().getStaffHandler().getStaffPlayer(getPlayer()) != null && Holiday.getInstance().getStaffHandler().getStaffPlayer(getPlayer()).isInVanish();
+    }
 
     public boolean hasEnoughCoins(int number) {
         return this.getCoins() >= number;

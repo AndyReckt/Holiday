@@ -4,10 +4,12 @@ import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.other.menu.InvseeMenu;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.staff.event.StaffUpdateVisibilityEvent;
+import me.andyreckt.holiday.player.staff.menu.StaffListMenu;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.Tasks;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -246,7 +248,10 @@ public class StaffListeners {
             ItemStack item = e.getItem();
             if(item == null) return;
             if(item.isSimilar(Items.GO_INVIS) || item.isSimilar(Items.GO_VIS)) {
-                sh.getStaffPlayer(e.getPlayer()).vanish();
+                sh.getStaffPlayer(player).vanish();
+            }
+            if (item.isSimilar(Items.STAFF_LIST)) {
+                new StaffListMenu().openMenu(player);
             }
         }
 

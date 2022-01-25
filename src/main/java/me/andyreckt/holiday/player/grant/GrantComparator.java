@@ -3,7 +3,7 @@ package me.andyreckt.holiday.player.grant;
 import java.util.Comparator;
 
 /**
- * This Class is from Zowpy
+ * This Class is initially from Zowpy
  * All credits to him
  *
  * @author Zowpy

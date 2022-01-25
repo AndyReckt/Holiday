@@ -15,7 +15,7 @@ import org.bukkit.ChatColor;
 import java.util.*;
 
 /**
- * This Class is from Zowpy
+ * This Class is initially from Zowpy
  * All credits to him
  *
  * @author Zowpy
