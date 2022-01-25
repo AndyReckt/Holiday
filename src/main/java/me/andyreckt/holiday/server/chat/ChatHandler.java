@@ -129,7 +129,7 @@ public class ChatHandler {
 
             if (settings.getBoolean("FILTERS.SENDTOSTAFF")) {
                 String toSend = settings.getString("FILTERS.MESSAGE")
-                                .replace("<server>", settings.getString("SERVER.NAME"))
+                                .replace("<server>", settings.getString("SERVER.NICENAME"))
                                 .replace("<player>", ph.getByUUID(player.getUniqueId()).getNameWithColor())
                                 .replace("<message>", message);
                 Holiday.getInstance().getRedis().sendPacket(new StaffMessages.StaffMessagesPacket(toSend, StaffMessageType.STAFF));
@@ -141,7 +141,7 @@ public class ChatHandler {
         if (lowFilter) {
             if (settings.getBoolean("FILTERS.SENDTOSTAFF")) {
                 String toSend = settings.getString("FILTERS.MESSAGE")
-                        .replace("<server>", settings.getString("SERVER.NAME"))
+                        .replace("<server>", settings.getString("SERVER.NICENAME"))
                         .replace("<player>", ph.getByUUID(player.getUniqueId()).getNameWithColor())
                         .replace("<message>", message);
                 Holiday.getInstance().getRedis().sendPacket(new StaffMessages.StaffMessagesPacket(toSend, StaffMessageType.STAFF));

@@ -20,11 +20,12 @@ NETWORK:
   TEAMSPEAK: "ts.example.com"
 
 SERVER:
-  NAME: "Lobby"
+  NAME: "hub-1"
+  NICENAME: "Hub 1"
   FALLBACKSERVERNAME: "Lobby" # The Bungee ServerName to send to in server shutdowns
   CHAT:
     ENABLED: true
-    FORMAT: "<prefix> <player> <suffix>&f: <message>" # Placeholders: <prefix> <player> <suffix> <message>
+    FORMAT: "<prefix><player><suffix>&f: <message>" # Placeholders: <prefix> <player> <suffix> <message>
   BANNEDJOIN: false
 
 STAFFMODE:
@@ -32,6 +33,9 @@ STAFFMODE:
   TELEPORTBACK: true
   VANISHONENABLE: true
   UPDATEVISIBILITY: false
+
+
+
 
 FILTERS:
   SENDTOSTAFF: true

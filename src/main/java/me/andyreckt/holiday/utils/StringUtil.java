@@ -139,9 +139,6 @@ public class StringUtil {
         return min + (int) (Math.random() * ((max - min) + 1));
     }
 
-
-
-
     public static String addNetworkPlaceholder(String string) {
         BasicConfigurationFile config = Holiday.getInstance().getSettings();
 
@@ -150,7 +147,7 @@ public class StringUtil {
         string = string.replace("<discord>", config.getString("NETWORK.DISCORD"));
         string = string.replace("<teamspeak>", config.getString("NETWORK.TEAMSPEAK"));
         string = string.replace("<website>", config.getString("NETWORK.WEBSITE"));
-        string = string.replace("<servername>", config.getString("SERVER.NAME"));
+        string = string.replace("<servername>", config.getString("SERVER.NICENAME"));
         string = string.replace("<store>", config.getString("NETWORK.STORE"));
         string = string.replace("<twitter>", config.getString("NETWORK.TWITTER"));
 

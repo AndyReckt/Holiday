@@ -25,7 +25,7 @@ public class InvseeMenu extends Menu {
 
     @Override
     public String getTitle(Player paramPlayer) {
-        return CC.GOLD + "Inventory of " + invMap.get(paramPlayer);
+        return CC.BLUE + "Inventory of " + invMap.get(paramPlayer);
     }
 
     @Override
@@ -66,10 +66,10 @@ public class InvseeMenu extends Menu {
         }
 
         for (int i = 0; i < 2; i++) {
-            toReturn.put(49 + i, new DisplayButton(new ItemBuilder(Material.STAINED_GLASS_PANE).durability((short) 14).displayname(" ").build()));
+            toReturn.put(49 + i, new DisplayButton(new ItemBuilder(Material.STAINED_GLASS_PANE).durability((short) 7).displayname(" ").build()));
         }
         for (int i = 0; i < 8; i++) {
-            toReturn.put(i, new DisplayButton(new ItemBuilder(Material.STAINED_GLASS_PANE).durability((short) 14).displayname(" ").build()));
+            toReturn.put(i, new DisplayButton(new ItemBuilder(Material.STAINED_GLASS_PANE).durability((short) 7).displayname(" ").build()));
         }
         toReturn.put(8, new DisplayButton(InvseeMenu.invMap.get(paramPlayer).getItemInHand()));
         for (int i = 0; i < armor.size(); i++) {
@@ -77,7 +77,7 @@ public class InvseeMenu extends Menu {
             if (item != null && item.getType() != Material.AIR) {
                 toReturn.put(45 + i, new DisplayButton(item));
             } else {
-                toReturn.put(45 + i, new DisplayButton(new ItemBuilder(Material.STAINED_GLASS_PANE).durability((short) 14).displayname(" ").build()));
+                toReturn.put(45 + i, new DisplayButton(new ItemBuilder(Material.STAINED_GLASS_PANE).durability((short) 7).displayname(" ").build()));
             }
         }
 

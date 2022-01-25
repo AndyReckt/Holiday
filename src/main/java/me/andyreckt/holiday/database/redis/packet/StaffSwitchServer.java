@@ -59,14 +59,14 @@ public class StaffSwitchServer {
 
     String applyPlaceholders(String message, String player) {
         message = message.replace("<player>", player);
-        message = message.replace("<server>", Holiday.getInstance().getSettings().getString("SERVER.NAME"));
+        message = message.replace("<server>", Holiday.getInstance().getSettings().getString("SERVER.NICENAME"));
         message = StringUtil.addNetworkPlaceholder(message);
         return message;
     }
 
     String applyPlaceholders(String message, String player, String oldServer) {
         message = message.replace("<player>", player);
-        message = message.replace("<server>", Holiday.getInstance().getSettings().getString("SERVER.NAME"));
+        message = message.replace("<server>", Holiday.getInstance().getSettings().getString("SERVER.NICENAME"));
         message = message.replace("<oldserver>", oldServer);
         message = StringUtil.addNetworkPlaceholder(message);
         return message;

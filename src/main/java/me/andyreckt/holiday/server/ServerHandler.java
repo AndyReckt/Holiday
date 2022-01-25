@@ -35,10 +35,11 @@ public class ServerHandler {
         servers = new HashMap<>();
 
         if (MongoUtils.getServersCollection().find(Filters.eq("_id", plugin.getSettings().getString("SERVER.NAME"))).first() == null) {
-            data = new Server(plugin.getSettings().getString("SERVER.NAME"), Bukkit.getOnlinePlayers().size(), 250, false, plugin.getRankHandler().getDefaultRank(), new ArrayList<>(), 3000, false);
+            data = new Server(plugin.getSettings().getString("SERVER.NAME"), Bukkit.getOnlinePlayers().size(), 250, false, plugin.getRankHandler().getDefaultRank(), new ArrayList<>(), 3000, false, System.currentTimeMillis());
             StringUtils.setSlots(250);
         } else {
             data = fromDocument((Document) MongoUtils.getServersCollection().find(Filters.eq("_id", plugin.getSettings().getString("SERVER.NAME"))).first());
+            StringUtils.setSlots(data.getMaxplayers());
         }
         MongoUtils.getServersCollection().replaceOne(Filters.eq("_id", data.getName()), toBson(data), new ReplaceOptions().upsert(true));
         thisServer = data;
@@ -48,6 +49,8 @@ public class ServerHandler {
                 .find()
                 .forEach((Block<Document>) docs::add);
         docs.forEach(d -> servers.put(fromDocument(d).getName(), fromDocument(d)));
+        thisServer.getWhitelistedPlayers().removeIf(uid -> !Holiday.getInstance().getProfileHandler().hasProfile(uid));
+        thisServer.setLastKeepAlive(System.currentTimeMillis());
         plugin.getRedis().sendPacket(new ServerPacket(thisServer, ServerPacketType.ADD));
     }
 
@@ -62,7 +65,8 @@ public class ServerHandler {
                 rh.getFromName(document.getString("whitelistRank")),
                 transform(document.getList("whitelistedPlayers", String.class)),
                 document.getLong("chatDelay"),
-                document.getBoolean("chatMuted")
+                document.getBoolean("chatMuted"),
+                document.getLong("keepAlive")
         );
     }
 
@@ -71,9 +75,9 @@ public class ServerHandler {
         strings.forEach(s -> toReturn.add(UUID.fromString(s)));
         return toReturn;
     }
-    private List<String> transforms(List<UUID> strings) {
+    private List<String> transforms(List<UUID> uuids) {
         List<String> toReturn = new ArrayList<>();
-        strings.forEach(s -> toReturn.add(s.toString()));
+        uuids.forEach(s -> toReturn.add(s.toString()));
         return toReturn;
     }
 
@@ -85,16 +89,18 @@ public class ServerHandler {
                 .append("whitelistRank", data.getWhitelistRank().getName())
                 .append("whitelistedPlayers", transforms(data.getWhitelistedPlayers()))
                 .append("chatDelay", data.getChatDelay())
-                .append("chatMuted", data.isChatMuted());
+                .append("chatMuted", data.isChatMuted())
+                .append("keepAlive", data.getLastKeepAlive());
     }
 
 
-    public void stop() { //TODO MESSAGE
+    public void stop() {
         thisServer.setPlayers(0);
+        thisServer.setLastKeepAlive(System.currentTimeMillis());
         plugin.getRedis().sendPacket(new ServerPacket(thisServer, ServerPacketType.REMOVE));
         Holiday.getInstance().getRedis().sendPacket(new StaffMessages.StaffMessagesPacket(
                 Holiday.getInstance().getMessages().getString("SERVER.SHUTDOWN")
-                        .replace("<server>", Holiday.getInstance().getSettings().getString("SERVER.NAME")),
+                        .replace("<server>", Holiday.getInstance().getSettings().getString("SERVER.NICENAME")),
                 StaffMessageType.ADMIN
         ));
     }
@@ -108,6 +114,13 @@ public class ServerHandler {
     private void update() {
         thisServer.setPlayers(Bukkit.getOnlinePlayers().size());
         thisServer.setMaxplayers(Bukkit.getMaxPlayers());
+        thisServer.setLastKeepAlive(System.currentTimeMillis());
+    }
+
+    public boolean isOnline(String serverName) {
+        if (!servers.containsKey(serverName)) return false;
+        Server server = servers.get(serverName);
+        return (System.currentTimeMillis() - server.getLastKeepAlive()) < 60_000;
     }
 
 }

@@ -14,7 +14,7 @@ public class Items {
     public static ItemStack BETTER_VIEW;
     public static ItemStack STAFF_LIST;
 
-    static { //TODO STAFF ONLINE
+    static {
         INVSEE = new ItemBuilder(Material.BOOK).displayname("&eInspect Player").build();
         GO_INVIS = new ItemBuilder(Material.INK_SACK).displayname("&eVanish").damage((short) 8).build();
         GO_VIS = new ItemBuilder(Material.INK_SACK).displayname("&eUnvanish").damage((short) 10).build();

@@ -116,7 +116,7 @@ public final class Holiday extends JavaPlugin {
     private void sendServerStartup() {
         Tasks.runAsyncLater(() -> redis.sendPacket(new StaffMessages.StaffMessagesPacket(StringUtil.addNetworkPlaceholder(
                         messages.getString("SERVER.STARTUP")
-                                .replace("<server>", settings.getString("SERVER.NAME"))),
+                                .replace("<server>", settings.getString("SERVER.NICENAME"))),
                         StaffMessageType.ADMIN)),
                 20 * 5L);
     }
@@ -158,7 +158,7 @@ public final class Holiday extends JavaPlugin {
         Runnable refreshServer = () -> this.serverHandler.save();
 
         this.scheduledExecutor.scheduleAtFixedRate(refreshGrants, 0, 1, TimeUnit.MINUTES);
-        this.scheduledExecutor.scheduleAtFixedRate(refreshServer, 25, 30, TimeUnit.SECONDS);
+        this.scheduledExecutor.scheduleAtFixedRate(refreshServer, 25, 25, TimeUnit.SECONDS);
     }
 
     private void setupListeners() {

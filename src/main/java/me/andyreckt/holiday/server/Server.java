@@ -3,6 +3,7 @@ package me.andyreckt.holiday.server;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import me.andyreckt.holiday.player.rank.Rank;
 
@@ -21,4 +22,5 @@ public class Server {
 
     private long chatDelay;
     private boolean chatMuted;
+    private long lastKeepAlive;
 }
