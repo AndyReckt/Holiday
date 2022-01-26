@@ -7,6 +7,7 @@ import lombok.Getter;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.rank.Rank;
+import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.Utilities;
 import me.andyreckt.holiday.utils.command.param.Param;
 import me.andyreckt.holiday.utils.command.param.ParameterData;
@@ -304,12 +305,25 @@ public final class CommandHandler implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     // Allow command cancellation.
     public void onCommandPreProcess(PlayerCommandPreprocessEvent event) {
-        if (event.getMessage().toLowerCase().startsWith("/bukkit:") || event.getMessage().toLowerCase().startsWith("/minecraft:") || event.getMessage().equalsIgnoreCase("/pl") || event.getMessage().toLowerCase().startsWith("/plugins")
-                || event.getMessage().toLowerCase().contains("readtext") || event.getMessage().toLowerCase().startsWith("/about ") || event.getMessage().toLowerCase().startsWith("/ver ") || event.getMessage().toLowerCase().startsWith("/icanhasbukkit") || event.getMessage().startsWith("/?") || event.getMessage().toLowerCase().startsWith("/version ") || event.getMessage().toLowerCase().startsWith("/me") || event.getMessage().split(" ")[0].substring(1).contains(":")) {
-            if (!event.getPlayer().isOp()) {
-                return;
+
+        boolean bool = false;
+
+        for (String s : Holiday.getInstance().getSettings().getStringList("DISABLEDCOMMANDS.CORE")) {
+            if (event.getMessage().toLowerCase().startsWith(s)) bool = true;
+        }
+        for (String s : Holiday.getInstance().getSettings().getStringList("DISABLEDCOMMANDS.OTHER")) {
+            if (Holiday.getInstance().getSettings().getBoolean("DISABLEDCOMMANDS.OPBYPASS") && event.getPlayer().isOp()) continue;
+            if (event.getMessage().toLowerCase().startsWith(s)) {
+                bool = true;
             }
         }
+
+        if (bool) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(CC.translate(Holiday.getInstance().getSettings().getString("DISABLEDCOMMANDS.MESSAGE")));
+            return;
+        }
+
         // The substring is to chop off the '/' that Bukkit gives us here.
         String command = event.getMessage().substring(1);
 

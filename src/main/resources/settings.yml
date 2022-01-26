@@ -38,6 +38,13 @@ COOLDOWNS: # In Seconds
   HELPOP: 150
   REPORT: 300
 
+DISABLEDCOMMANDS: # Lowercase
+  CORE: # Only put Holiday's commands here if you want to disable it
+    - ""
+  OTHER: # Put any plugins' command it to disable it
+    - ""
+  OPBYPASS: false # Only works for Other plugins' commands, not Holiday's commands
+  MESSAGE: "&cThis command is disabled."
 
 FILTERS:
   SENDTOSTAFF: true
