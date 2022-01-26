@@ -12,25 +12,24 @@ public class MessageSubscriber implements PacketListener {
 
     @IncomingPacketHandler
     public void onMessage(MessagePacket packet) { //TODO w/ SOCIALSPY
-        if (Bukkit.getPlayer(packet.getTarget().getUuid()) != null) {
-            packet.getTarget().getPlayer().sendMessage(CC.translate(
-                    Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.FORMAT.RECEIVED")
-                            .replace("<player>", packet.getSender().getDisplayNameWithColor())
-                            .replace("<message>", packet.getMessage()
-            )));
-            ConversationCommands.lastMessage.put(packet.getTarget().getUuid(), packet.getSender().getUuid());
+        if (Bukkit.getPlayer(packet.getTarget().getUuid()) == null) return;
+        packet.getTarget().getPlayer().sendMessage(CC.translate(
+                Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.FORMAT.RECEIVED")
+                        .replace("<player>", packet.getSender().getDisplayNameWithColor())
+                        .replace("<message>", packet.getMessage()
+                        )));
+        ConversationCommands.lastMessage.put(packet.getTarget().getUuid(), packet.getSender().getUuid());
 
-            Holiday.getInstance().getProfileHandler().getOnlineProfiles().forEach(profile -> {
-                if (!profile.isSocialSpy()) return;
-                if (!profile.isOnline()) return;
-                if (profile.getPlayer() == null) return;
-                profile.getPlayer().sendMessage(CC.translate(
-                        Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.FORMAT.SOCIALSPY")
-                                .replace("<sender>", packet.getSender().getDisplayNameWithColor())
-                                .replace("<target>", packet.getTarget().getDisplayNameWithColor())
-                                .replace("<message>", packet.getMessage()
-                )));
-            });
-        }
+        Holiday.getInstance().getProfileHandler().getOnlineProfiles().forEach(profile -> {
+            if (!profile.isSocialSpy()) return;
+            if (!profile.isOnline()) return;
+            if (profile.getPlayer() == null) return;
+            profile.getPlayer().sendMessage(CC.translate(
+                    Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.FORMAT.SOCIALSPY")
+                            .replace("<sender>", packet.getSender().getDisplayNameWithColor())
+                            .replace("<target>", packet.getTarget().getDisplayNameWithColor())
+                            .replace("<message>", packet.getMessage()
+                            )));
+        });
     }
 }
