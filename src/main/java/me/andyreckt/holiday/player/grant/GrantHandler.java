@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class GrantHandler {
@@ -20,7 +21,7 @@ public class GrantHandler {
     }
 
     private void init() {
-        grantCache = new HashMap<>();
+        grantCache = new ConcurrentHashMap<>();
         MongoUtils.getGrantCollection().find().forEach((Block<Document>) o -> {
             Grant grant = new Grant(o);
             grantCache.put(grant.getUuid(), grant);

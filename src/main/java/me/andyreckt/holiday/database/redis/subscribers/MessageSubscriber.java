@@ -11,7 +11,7 @@ public class MessageSubscriber implements PacketListener {
     @IncomingPacketHandler
     public void onMessage(MessagePacket packet) { //TODO w/ SOCIALSPY
         if (Bukkit.getPlayer(packet.getTarget().getUuid()) != null) {
-            packet.getTarget().getPlayer().sendMessage(CC.translate("&e(From " + packet.getSender().getDisplayNameWithColor() + "&e) " + packet.getMessage()));
+            //packet.getTarget().getPlayer().sendMessage(CC.translate("&e(From " + packet.getSender().getDisplayNameWithColor() + "&e) " + packet.getMessage()));
             //MessageCommands.lastMessage.put(packet.getTarget().getUuid(), packet.getSender().getUuid());
         }
     }
