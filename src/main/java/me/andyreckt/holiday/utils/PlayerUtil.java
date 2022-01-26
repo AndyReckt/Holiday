@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.utils;
 
 import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -17,6 +18,13 @@ import java.util.*;
  * Created by Marko on 01.03.2019.
  */
 public class PlayerUtil {
+
+    public static Comparator<Player> RANK_ORDER = ((o1, o2) -> {
+        Profile p1 = Holiday.getInstance().getProfileHandler().getByUUID(o1.getUniqueId());
+        Profile p2 = Holiday.getInstance().getProfileHandler().getByUUID(o2.getUniqueId());
+        return - (p1.getDisplayRank().getPriority() - p2.getDisplayRank().getPriority());
+    });
+
 
     public static void clearPlayer(Player player) {
         player.setHealth(20.0D);

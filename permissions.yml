@@ -6,3 +6,4 @@ Grant: "holiday.grants.edit"
 
 
 GarbageCommand: "holiday.garbage"
+RenameCommand: "holiday.rename"

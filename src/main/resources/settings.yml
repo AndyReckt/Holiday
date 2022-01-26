@@ -30,11 +30,13 @@ SERVER:
 
 STAFFMODE:
   ENABLED: true
-  TELEPORTBACK: true
+  TELEPORTBACK: true # Should leaving staffmode teleports you back to your entering location?
   VANISHONENABLE: true
-  UPDATEVISIBILITY: false
+  UPDATEVISIBILITY: false # Should The visibility be updated when a staff vanishes?
 
-
+COOLDOWNS: # In Seconds
+  HELPOP: 150
+  REPORT: 300
 
 
 FILTERS:

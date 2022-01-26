@@ -22,6 +22,7 @@ public class StaffMessagesSubscriber implements PacketListener {
         String msg = CC.translate(packet.getMessage());
         ProfileHandler ph = Holiday.getInstance().getProfileHandler();
         Holiday.getInstance().infoConsole(packet.getMessage());
+
         if (packet.getClickCmd() != null && !packet.getClickCmd().equalsIgnoreCase("")) {
             Clickable clickable = new Clickable(msg, packet.getHoverMsg(), packet.getClickCmd());
             if (packet.getChannel() == StaffMessageType.STAFF) {
@@ -56,7 +57,7 @@ public class StaffMessagesSubscriber implements PacketListener {
 
     @IncomingPacketHandler
     public void onReport(StaffMessages.ReportPacket packet) {
-        String[] message = Holiday.getInstance().getMessages().getString("REPORTS.MESSAGE")
+        String[] message = Holiday.getInstance().getMessages().getString("REPORTS.FORMAT")
                 .replace("<server>", packet.getServer())
                 .replace("<player>", packet.getReporter())
                 .replace("<target>", packet.getReported())
@@ -81,7 +82,7 @@ public class StaffMessagesSubscriber implements PacketListener {
 
     @IncomingPacketHandler
     public void onRequest(StaffMessages.HelpopPacket packet) {
-        String[] message = Holiday.getInstance().getMessages().getString("HELPOPS.MESSAGE")
+        String[] message = Holiday.getInstance().getMessages().getString("HELPOPS.FORMAT")
                 .replace("<server>", packet.getServer())
                 .replace("<player>", packet.getSender())
                 .replace("<reason>", packet.getRequest())

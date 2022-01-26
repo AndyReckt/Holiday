@@ -14,12 +14,12 @@ public class SettingsCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(sender);
         profile.setMessagesEnabled(!profile.isMessagesEnabled());
 
-        BasicConfigurationFile settings = Holiday.getInstance().getSettings();
+        BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
         if (!profile.isMessagesEnabled()) {
-            sender.sendMessage(CC.translate(settings.getString("COMMANDS.SETTINGS.PM.OFF")));
+            sender.sendMessage(CC.translate(messages.getString("COMMANDS.SETTINGS.PM.OFF")));
         } else {
-            sender.sendMessage(CC.translate(settings.getString("COMMANDS.SETTINGS.PM.ON")));
+            sender.sendMessage(CC.translate(messages.getString("COMMANDS.SETTINGS.PM.ON")));
         }
         profile.save();
     }

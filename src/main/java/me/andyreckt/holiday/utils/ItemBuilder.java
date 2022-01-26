@@ -587,7 +587,7 @@ public class ItemBuilder {
 	}
 
 	/** Contains NBT Tags Methods */
-	public class Unsafe {
+	public static class Unsafe {
 
 		/** Do not access using this Field*/
 		protected final ReflectionUtils utils = new ReflectionUtils();
@@ -848,7 +848,7 @@ public class ItemBuilder {
 			}
 
 			public Class<?> getCraftItemStackClass() {
-				String ver = Bukkit.getServer().getClass().getPackage().getName().split(".")[3];
+				String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 				try {
 					return Class.forName("org.bukkit.craftbukkit." + ver + ".inventory.CraftItemStack");
 				} catch (ClassNotFoundException ex) {

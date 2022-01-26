@@ -14,14 +14,10 @@ STAFF: # Placeholders: <player> <server>
 REPORTS:
   FORMAT: "&9[REPORT] &d[<server>] <player> &9reported <target> \n  &7» &9Reason: &3<reason>"# Placeholders: <server> <player> <target> <reason>
   CLICKMESSAGE: "&dClick to join <server>" # Placeholder <server>
-  COOLDOWN: "&cYou are still on report cooldown for another <time>" # Placeholder: <time>
-  MESSAGE: "&aYour report has been sent to all online staff"
 
 HELPOPS:
   FORMAT: "&2[HELPOP] &d[<server>] <player> &2needs help <target> \n  &7» &2Request: &a<reason>"# Placeholders: <server> <player><reason>
   CLICKMESSAGE: "&dClick to answer <player>" #Placeholder: <player>
-  COOLDOWN: "&cYou are still on helpop cooldown for another <time>" # Placeholder: <time>
-  MESSAGE: "&aYour helpop has been sent to all online staff"
 
 PUNISHMENTS: #Placeholders: <player> <executor> <reason> <duration>
   SILENTPREFIX: "&7(Silent) "
