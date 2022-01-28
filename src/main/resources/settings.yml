@@ -39,10 +39,10 @@ COOLDOWNS: # In Seconds
   REPORT: 300
 
 DISABLEDCOMMANDS: # Lowercase
-  CORE: # Only put Holiday's commands here if you want to disable it
+  CORE: # Only put Holiday's commands here if you want to disable it, you need to put all the aliases to fully disable a command.
     - ""
   OTHER: # Put any plugins' command it to disable it
-    - ""
+    - "/bukkit:"
   OPBYPASS: false # Only works for Other plugins' commands, not Holiday's commands
   MESSAGE: "&cThis command is disabled."
 

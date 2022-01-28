@@ -49,7 +49,7 @@ public class PlayerList { //PVPTEMPLE
 		return this.players.stream()
 				.map(Player::getUniqueId)
 				.map(uid -> Holiday.getInstance().getProfileHandler().getByUUID(uid))
-				.map(profile -> profile.getDisplayNameWithColor() + CC.R)
+				.map(profile -> profile.getDisplayNameWithColorAndVanish() + CC.GRAY)
 				.collect(Collectors.toList());
 	}
 

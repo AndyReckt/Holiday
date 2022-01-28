@@ -309,8 +309,9 @@ public final class CommandHandler implements Listener {
         boolean bool = false;
 
         for (String s : Holiday.getInstance().getSettings().getStringList("DISABLEDCOMMANDS.CORE")) {
-            if (event.getMessage().toLowerCase().startsWith(s)) bool = true;
+            if (event.getMessage().toLowerCase().startsWith(s)) return;
         }
+
         for (String s : Holiday.getInstance().getSettings().getStringList("DISABLEDCOMMANDS.OTHER")) {
             if (Holiday.getInstance().getSettings().getBoolean("DISABLEDCOMMANDS.OPBYPASS") && event.getPlayer().isOp()) continue;
             if (event.getMessage().toLowerCase().startsWith(s)) {

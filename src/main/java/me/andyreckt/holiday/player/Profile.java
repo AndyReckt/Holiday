@@ -302,6 +302,11 @@ public class Profile {
         return color + name;
     }
 
+    public String getDisplayNameWithColorAndVanish() {
+        String prefix = isVanished() ? CC.GRAY + "*" : "";
+        return prefix + getDisplayNameWithColor();
+    }
+
     public boolean isDisguised() {
         return Holiday.getInstance().getDisguiseHandler().isDisguised(uuid);
     }

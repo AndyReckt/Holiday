@@ -115,7 +115,7 @@ public class GeneralCommands {
         ArrayUtils.reverse(ranks);
 
         Arrays.stream(ranks).filter(Rank::isVisible).forEach(rank
-                -> builder.append(CC.translate(rank.getDisplayName())).append(CC.WHITE).append(", "));
+                -> builder.append(CC.translate(rank.getDisplayName())).append(CC.GRAY).append(", "));
 
         builder.setCharAt(builder.length() - 2, '.');
 
@@ -124,11 +124,11 @@ public class GeneralCommands {
         List<String> players = PlayerList.getVisiblyOnline(sender)
                 .visibleRankSorted().asColoredNames();
 
-        builder.append(CC.R).append("(").append(PlayerList.getVisiblyOnline(sender).getPlayers().size()).append("/")
+        builder.append(CC.GRAY).append("(").append(PlayerList.getVisiblyOnline(sender).getPlayers().size()).append("/")
                 .append(Holiday.getInstance().getServer().getMaxPlayers()).append("): ")
-                .append("&f[")
+                .append("&7[")
                 .append(players.toString().replace("[", "").replace("]", ""))
-                .append("&f]");
+                .append("&7]");
 
         sender.sendMessage(CC.translate(builder.toString()));
     }
