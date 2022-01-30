@@ -164,7 +164,6 @@ public class PunishmentUtils {
         return list;
     }
 
-
     public static List<PunishData> activesIpBans() {
         List<PunishData> list = new ArrayList<>();
 

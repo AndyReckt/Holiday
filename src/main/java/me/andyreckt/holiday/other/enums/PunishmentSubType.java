@@ -4,6 +4,7 @@ public enum PunishmentSubType {
 
     ADD,
     EDIT,
-    REMOVE;
+    REMOVE,
+    REMOVESILENT;
 
 }

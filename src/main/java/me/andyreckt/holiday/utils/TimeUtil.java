@@ -24,8 +24,6 @@ public class TimeUtil {
         return FORMAT.format(new Date(value));
     }
 
-
-
     public static String getDuration(long input) {
         return input == PERMANENT ? "Permanent" : formatDuration(input);
     }

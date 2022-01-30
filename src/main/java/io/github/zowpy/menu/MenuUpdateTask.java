@@ -13,8 +13,8 @@ public class MenuUpdateTask extends BukkitRunnable
     }
     
     public void run() {
-        for (final Map.Entry<String, Menu> entry : Menu.getCurrentlyOpenedMenus().entrySet()) {
-            final String key = entry.getKey();
+        for (final Map.Entry<UUID, Menu> entry : Menu.getCurrentlyOpenedMenus().entrySet()) {
+            final UUID key = entry.getKey();
             final Menu value = entry.getValue();
             final Player player = Bukkit.getPlayer(key);
             if (player != null && value.isAutoUpdate()) {

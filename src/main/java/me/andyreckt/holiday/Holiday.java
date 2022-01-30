@@ -103,9 +103,6 @@ public final class Holiday extends JavaPlugin {
         sendServerStartup();
     }
 
-    private void setupOthers() {
-        DisguiseCommands.setup(settings);
-    }
 
     @Override
     public void onDisable() {
@@ -117,6 +114,7 @@ public final class Holiday extends JavaPlugin {
         this.commandHandler = new CommandHandler(this);
         this.commandHandler.hook();
         CommandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands");
+        CommandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands.staff");
     }
 
     private void sendServerStartup() {
@@ -180,6 +178,9 @@ public final class Holiday extends JavaPlugin {
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib")) protocolEnabled = true;
     }
 
+    private void setupOthers() {
+        DisguiseCommands.setup(settings);
+    }
 
     private void addListener(Listener listener) {
         this.getServer().getPluginManager().registerEvents(listener, this);

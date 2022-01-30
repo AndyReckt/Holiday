@@ -1,9 +1,8 @@
-#This file is not used, its just for reference
+# This file is not used, it's just for reference
 
 StaffMode: "holiday.modmode"
 GrantsView: "holiday.grants.view"
 Grant: "holiday.grants.edit"
-
 
 GarbageCommand: "holiday.garbage"
 RenameCommand: "holiday.rename"
@@ -11,3 +10,15 @@ SocialSpy: "holiday.socialspy"
 Disguise: "holiday.disguise"
 ManualDisguise: "holiday.manualdisguise"
 DisguiseList: "holiday.disguiselist"
+
+Ban: "holiday.ban"
+Blacklist: "holiday.blacklist"
+IpBan: "holiday.ipban"
+TempBan: "holiday.tempban"
+Mute: "holiday.mute"
+TempMute: "holiday.tempmute"
+
+UnMute: "holiday.unmute"
+UnBan: "holiday.unban"
+UnIpBan: "holiday.unipban"
+UnBlacklist: "holiday.unblacklist"

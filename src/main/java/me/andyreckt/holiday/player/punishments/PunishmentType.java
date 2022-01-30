@@ -13,6 +13,7 @@ public enum PunishmentType {
     BLACKLIST(),
     UNBLACKLIST(),
     IP_BAN(),
+    UNIP_BAN(),
     BAN(),
     TEMP_BAN(),
     UNBAN(),

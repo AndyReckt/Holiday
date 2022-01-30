@@ -157,7 +157,7 @@ public class ItemBuilder {
 	 * @param amount Amount for the ItemStack
 	 */
 	public ItemBuilder amount(int amount) {
-		if(((amount > material.getMaxStackSize()) || (amount <= 0)) && (!unsafeStackSize)) amount = 1;
+		if((((amount > material.getMaxStackSize()) && (!unsafeStackSize)) || (amount <= 0)) && (!unsafeStackSize)) amount = 1;
 		this.amount = amount;
 		return this;
 	}

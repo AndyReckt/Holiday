@@ -18,7 +18,7 @@ public abstract class PaginatedMenu extends Menu
     
     @Override
     public String getTitle(final Player player) {
-        return ChatColor.translateAlternateColorCodes('&', this.getPrePaginatedTitle(player) + "  &8[" + this.page + "/" + this.getPages(player) + "]");
+        return ChatColor.translateAlternateColorCodes('&', this.getPrePaginatedTitle(player) + "  &8(" + this.page + "/" + this.getPages(player) + ")");
     }
     
     public final void modPage(final Player player, final int mod) {
@@ -59,7 +59,7 @@ public abstract class PaginatedMenu extends Menu
     }
     
     public int getMaxItemsPerPage(final Player player) {
-        return 18;
+        return 45;
     }
     
     public Map<Integer, Button> getGlobalButtons(final Player player) {

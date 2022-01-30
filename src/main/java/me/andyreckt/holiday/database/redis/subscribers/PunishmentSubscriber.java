@@ -119,7 +119,7 @@ public class PunishmentSubscriber implements PacketListener {
 
     @IncomingPacketHandler
     public void remove(PunishmentPacket packet) {
-        if (!(packet.getSubType() == PunishmentSubType.REMOVE)) return;
+        if (!(packet.getSubType() == PunishmentSubType.REMOVE) || packet.getSubType().equals(PunishmentSubType.REMOVESILENT)) return;
 
         PunishmentHandler ph = Holiday.getInstance().getPunishmentHandler();
         PunishData data = packet.getPunishData();
@@ -152,7 +152,15 @@ public class PunishmentSubscriber implements PacketListener {
         message = message.replace("<reason>", data.getAddedReason());
         message = message.replace("<duration>", TimeUtil.getDuration(data.getDuration()));
 
-        Bukkit.broadcastMessage(CC.translate(message));
+        if (packet.getSubType() == PunishmentSubType.REMOVESILENT) {
+            String finalMessage = message;
+            Holiday.getInstance().getProfileHandler().getOnlineProfiles().stream()
+                    .filter(Profile::isStaff)
+                    .map(Profile::getPlayer)
+                    .forEach(player -> player.sendMessage(CC.translate(messages.getString("PUNISHMENTS.SILENTPREFIX") + finalMessage)));
+        } else {
+            Bukkit.broadcastMessage(CC.translate(message));
+        }
     }
 
     @IncomingPacketHandler

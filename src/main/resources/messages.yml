@@ -34,7 +34,7 @@ PUNISHMENTS: #Placeholders: <player> <executor> <reason> <duration>
     BLACKLIST: "&c<player> &chas been blacklisted by <executor> &cfor <reason>."
     UNBLACKLIST: "&a<player> &ahas been unblacklisted by <executor> &afor <reason>."
   KICKMESSAGE:
-    KICK: "&cYou have been kick by <executor> &cfor <reason>."
+    KICK: "&cYou have been kicked by <executor> &cfor <reason>."
     BAN: "&cYou have been permanently banned from <network_name> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>."
     TEMPBAN: "&cYou have been temporarily banned from <network_name> for a duration of <duration> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>."
     IPBAN: "&cYou have been permanently ip-banned from <network_name>. \n &cAppeal at <discord> or buy an unban at <store>."

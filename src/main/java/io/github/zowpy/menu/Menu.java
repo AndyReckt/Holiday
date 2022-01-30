@@ -12,10 +12,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 public abstract class Menu {
-    public static Map<String, Menu> currentlyOpenedMenus = new HashMap<>();
+    public static Map<UUID, Menu> currentlyOpenedMenus = new HashMap<>();
     private Map<Integer, Button> buttons = new HashMap<>();
     private boolean autoUpdate = false;
     private boolean updateAfterClick = true;
@@ -24,7 +25,7 @@ public abstract class Menu {
     private Button placeholderButton = Button.placeholder(Material.STAINED_GLASS_PANE, (byte) 15, " ");
     private Inventory inventory;
 
-    public static Map<String, Menu> getCurrentlyOpenedMenus() {
+    public static Map<UUID, Menu> getCurrentlyOpenedMenus() {
         return currentlyOpenedMenus;
     }
 
@@ -107,7 +108,7 @@ public abstract class Menu {
 
     public void openMenu(Player player) {
         this.buttons = getButtons(player);
-        Menu previousMenu = currentlyOpenedMenus.get(player.getName());
+        Menu previousMenu = currentlyOpenedMenus.get(player.getUniqueId());
         this.inventory = null;
         int size = (getSize() == -1) ? size(this.buttons) : getSize();
         boolean update = false;
@@ -116,7 +117,7 @@ public abstract class Menu {
             title = title.substring(0, 32);
         if (player.getOpenInventory() != null)
             if (previousMenu == null) {
-                player.closeInventory();
+                ButtonListener.onInventoryClose(player);
             } else {
                 int previousSize = player.getOpenInventory().getTopInventory().getSize();
                 if (previousSize == size && player.getOpenInventory().getTopInventory().getTitle().equals(title)) {
@@ -124,13 +125,13 @@ public abstract class Menu {
                     update = true;
                 } else {
                     previousMenu.setClosedByMenu(true);
-                    player.closeInventory();
+                    ButtonListener.onInventoryClose(player);
                 }
             }
         if (this.inventory == null)
             this.inventory = Bukkit.createInventory(player, size, ChatColor.translateAlternateColorCodes('&', title));
         this.inventory.setContents(new ItemStack[this.inventory.getSize()]);
-        currentlyOpenedMenus.put(player.getName(), this);
+        currentlyOpenedMenus.put(player.getUniqueId(), this);
         for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet())
             this.inventory.setItem(buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
         if (isPlaceholder())
