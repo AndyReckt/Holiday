@@ -4,8 +4,10 @@ import io.github.zowpy.menu.Button;
 import io.github.zowpy.menu.buttons.DisplayButton;
 import io.github.zowpy.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.ItemBuilder;
+import me.andyreckt.holiday.utils.StringUtils;
 import me.andyreckt.holiday.utils.command.Command;
 import me.andyreckt.holiday.utils.command.param.Param;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
@@ -32,7 +34,13 @@ public class OtherCommands {
     @Command(names = "fly", perm = "holiday.fly")
     public static void fly(Player sender) {
         sender.setAllowFlight(!sender.getAllowFlight());
-        sender.sendMessage(sender.getAllowFlight() ? messages.getString("COMMANDS.GENERAL.FLY.ON") : messages.getString("COMMANDS.GENERAL.FLY.OFF"));
+
+        String msg = "";
+        if (sender.getAllowFlight()) {
+            sender.sendMessage(messages.getString("COMMANDS.GENERAL.FLY.ON"));
+        } else {
+            sender.sendMessage(messages.getString("COMMANDS.GENERAL.FLY.OFF"));
+        }
     }
 
     @Command(names = {"give"}, perm = "holiday.give")
@@ -110,10 +118,14 @@ public class OtherCommands {
         }
     }
 
-
     private static void clearPlayer(Player player) {
         player.getInventory().clear();
         player.getInventory().setArmorContents(null);
     }
+
+
+
+
+
 
 }

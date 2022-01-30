@@ -1,4 +1,4 @@
-package me.andyreckt.holiday.commands;
+package me.andyreckt.holiday.commands.staff;
 
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.redis.packet.ProfilePacket;
