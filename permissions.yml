@@ -24,4 +24,7 @@ UnIpBan: "holiday.unipban"
 UnBlacklist: "holiday.unblacklist"
 Alts: "holiday.alts"
 Clear: "holiday.clear"
+Heal: "holiday.heal"
+Feed: "holiday.feed"
+KillAll: "holiday.killall"
 

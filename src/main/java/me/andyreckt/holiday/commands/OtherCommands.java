@@ -87,6 +87,29 @@ public class OtherCommands {
 
     }
 
+    @Command(names = "heal", perm = "holiday.heal")
+    public static void heal(CommandSender sender, @Param(name = "target", defaultValue = "self") Player target) {
+        target.setHealth(target.getMaxHealth());
+        if (sender == target) {
+            sender.sendMessage(messages.getString("COMMANDS.GENERAL.HEAL.YOURSELF"));
+        } else {
+            target.sendMessage(messages.getString("COMMANDS.GENERAL.HEAL.TARGET").replace("<player>", sender.getName()));
+            sender.sendMessage(messages.getString("COMMANDS.GENERAL.HEAL.SENDER").replace("<player>", target.getName()));
+        }
+    }
+
+    @Command(names = "feed", perm = "holiday.feed")
+    public static void feed(CommandSender sender, @Param(name = "target", defaultValue = "self") Player target) {
+        target.setSaturation(20);
+        target.setFoodLevel(20);
+        if (sender == target) {
+            sender.sendMessage(messages.getString("COMMANDS.GENERAL.FEED.YOURSELF"));
+        } else {
+            target.sendMessage(messages.getString("COMMANDS.GENERAL.FEED.TARGET").replace("<player>", sender.getName()));
+            sender.sendMessage(messages.getString("COMMANDS.GENERAL.FEED.SENDER").replace("<player>", target.getName()));
+        }
+    }
+
 
     private static void clearPlayer(Player player) {
         player.getInventory().clear();
