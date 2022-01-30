@@ -22,10 +22,10 @@ NETWORK:
 SERVER:
   NAME: "hub-1"
   NICENAME: "Hub 1"
-  FALLBACKSERVERNAME: "Lobby" # The Bungee ServerName to send to in server shutdowns
+  FALLBACKSERVERNAME: "hub-1" # The Bungee ServerName to send to in server shutdowns
   CHAT:
     ENABLED: true
-    FORMAT: "<prefix><player><suffix>&f: <message>" # Placeholders: <prefix> <player> <suffix> <message>
+    FORMAT: "<prefix><player><suffix>&7: <message>" # Placeholders: <prefix> <player> <suffix> <message>
   BANNEDJOIN: false
 
 STAFFMODE:
@@ -40,7 +40,7 @@ COOLDOWNS: # In Seconds
 
 DISABLEDCOMMANDS: # Lowercase
   CORE: # Only put Holiday's commands here if you want to disable it, you need to put all the aliases to fully disable a command.
-    - ""
+    - "none" # Set this to none if you don't want any command to be disabled
   OTHER: # Put any plugins' command it to disable it
     - "/bukkit:"
   OPBYPASS: false # Only works for Other plugins' commands, not Holiday's commands
@@ -78,3 +78,48 @@ NAMEMC:
 LUNAR:
   ENABLED: false
   NAMETAGS: true
+
+DISGUISE:
+  NAMES:
+    - "Stompaay"
+    - "nepheloid"
+    - "TheKEKS"
+    - "Lyrik"
+    - "KleinEsmeree"
+    - "HANDSOMEPLT445"
+    - "Garfi3Id"
+    - "latteishorse12"
+    - "Glueckspilz1"
+    - "wxszz"
+    - "CabotBoy13"
+    - "NeoPlayZ_"
+    - "EICushWaffel"
+    - "Ender_Leon"
+    - "SHAWTYSPAT"
+    - "baxikkAngel__"
+    - "pokeopoly85"
+    - "DiamondDamonen"
+    - "KingOfFire1334"
+    - "MaliessIlmig"
+    - "xxClementxx2002"
+  SKINS:
+    - "Hiss_Y"
+    - "ka_0221"
+    - "_BrokenMouse_"
+    - "zacles"
+    - "badpoo"
+    - "younbuffalo"
+    - "Fruitberry"
+    - "uchtiv"
+    - "iil"
+    - "tartzy"
+    - "Dawnlend"
+    - "zombeep"
+    - "Nexo_Craft"
+    - "M4xtern"
+    - "mxyrey"
+    - "tooty22"
+    - "oT4q"
+    - "VerifiedMoves"
+    - "Ducksolz"
+    - "7922"

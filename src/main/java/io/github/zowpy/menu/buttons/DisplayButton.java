@@ -41,11 +41,7 @@ public class DisplayButton extends Button
     public boolean isCancel() {
         return this.cancel;
     }
-    
-    public void setItemStack(final ItemStack itemStack) {
-        this.itemStack = itemStack;
-    }
-    
+
     public void setCancel(final boolean cancel) {
         this.cancel = cancel;
     }

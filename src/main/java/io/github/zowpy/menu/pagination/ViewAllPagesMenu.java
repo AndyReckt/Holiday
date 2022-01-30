@@ -30,15 +30,7 @@ public class ViewAllPagesMenu extends Menu
         return buttons;
     }
     
-    @Override
-    public boolean isAutoUpdate() {
-        return true;
-    }
-    
     public ViewAllPagesMenu(@NonNull final PaginatedMenu menu) {
-        if (menu == null) {
-            throw new NullPointerException("menu is marked non-null but is null");
-        }
         this.menu = menu;
     }
     

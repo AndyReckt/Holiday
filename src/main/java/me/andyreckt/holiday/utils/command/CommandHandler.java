@@ -316,6 +316,7 @@ public final class CommandHandler implements Listener {
             if (Holiday.getInstance().getSettings().getBoolean("DISABLEDCOMMANDS.OPBYPASS") && event.getPlayer().isOp()) continue;
             if (event.getMessage().toLowerCase().startsWith(s)) {
                 bool = true;
+                break;
             }
         }
 

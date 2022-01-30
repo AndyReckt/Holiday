@@ -66,7 +66,7 @@ public class ServerHandler {
                 transform(document.getList("whitelistedPlayers", String.class)),
                 document.getLong("chatDelay"),
                 document.getBoolean("chatMuted"),
-                document.getLong("keepAlive")
+                (Long) document.getOrDefault("keepAlive",0L)
         );
     }
 

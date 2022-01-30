@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ProfileHandler {
 
-    private Map<UUID, Profile> profileCache;
+    private final Map<UUID, Profile> profileCache;
 
     public ProfileHandler() {
         this.profileCache = new ConcurrentHashMap<>();

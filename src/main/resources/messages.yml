@@ -16,7 +16,7 @@ REPORTS:
   CLICKMESSAGE: "&dClick to join <server>" # Placeholder <server>
 
 HELPOPS:
-  FORMAT: "&2[HELPOP] &d[<server>] <player> &2needs help <target> \n  &7» &2Request: &a<reason>"# Placeholders: <server> <player><reason>
+  FORMAT: "&2[HELPOP] &d[<server>] <player> &2needs help \n  &7» &2Request: &a<reason>"# Placeholders: <server> <player> <reason>
   CLICKMESSAGE: "&dClick to answer <player>" #Placeholder: <player>
 
 PUNISHMENTS: #Placeholders: <player> <executor> <reason> <duration>

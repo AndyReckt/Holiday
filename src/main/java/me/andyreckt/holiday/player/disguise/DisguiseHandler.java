@@ -20,6 +20,7 @@ import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.GameProfileUtil;
 import me.andyreckt.holiday.utils.UUIDFetcher;
+import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bson.Document;
 import org.bukkit.Bukkit;
@@ -64,9 +65,10 @@ public class DisguiseHandler {
 	}
 
 	public void disguise(Player player, Rank rank, String skin, String name, boolean sendRequest) throws Exception {
+		BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 		if(sendRequest) {
 			if (Bukkit.getPlayer(name) != null || DisguiseRequest.alreadyUsed(name)) {
-				player.sendMessage(CC.RED + "This name is already in use.");
+				player.sendMessage(CC.translate(messages.getString("COMMANDS.DISGUISE.INUSE")));
 				return;
 			}
 		}
@@ -100,7 +102,9 @@ public class DisguiseHandler {
 
 		if (sendRequest) {
 			DisguiseRequest.addDisguise(profile);
-			player.sendMessage(CC.translate("&eYou are now disguised to &d" + name + "&e with the skin of &d" + skin + "&e."));
+			player.sendMessage(messages.getString("COMMANDS.DISGUISE.DISGUISED")
+					.replace("<name>", name)
+					.replace("<skin>", skin));
 		}
 
 		// Make sure we don't cache another game profile that isn't actually theirs
@@ -112,18 +116,19 @@ public class DisguiseHandler {
 	}
 
 	public void undisguise(Player player, boolean sendRequest) {
+		BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 		GameProfile originalProfile = this.originalCache.remove(player.getUniqueId());
 		if (originalProfile != null) {
 			new UpdateSkinTask(this.plugin, player, originalProfile, originalProfile.getName()).runTask(this.plugin);
-			Profile mineman = plugin.getProfileHandler().getByUUID(player.getUniqueId());
+			Profile profile = plugin.getProfileHandler().getByUUID(player.getUniqueId());
 
 			if (sendRequest) {
-				DisguiseRequest.removeDisguise(mineman);
-				player.sendMessage(CC.translate("&eYou are no longer disguised."));
+				DisguiseRequest.removeDisguise(profile);
+				player.sendMessage(messages.getString("COMMANDS.DISGUISE.UNDISGUISED"));
 			}
 
-			mineman.setDisguiseData(null);
-			mineman.save();
+			profile.setDisguiseData(null);
+			profile.save();
 			disguiseData.remove(player.getUniqueId());
 		}
 	}

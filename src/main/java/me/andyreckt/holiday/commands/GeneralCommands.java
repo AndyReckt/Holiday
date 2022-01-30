@@ -111,8 +111,7 @@ public class GeneralCommands {
     public static void list(CommandSender sender) {
         StringBuilder builder = new StringBuilder();
 
-        Rank[] ranks = (Rank[]) Arrays.copyOf(Holiday.getInstance().getRankHandler().ranks().toArray(), Holiday.getInstance().getRankHandler().ranks().size());
-        ArrayUtils.reverse(ranks);
+        Rank[] ranks = Holiday.getInstance().getRankHandler().ranks().toArray(new Rank[]{});
 
         Arrays.stream(ranks).filter(Rank::isVisible).forEach(rank
                 -> builder.append(CC.translate(rank.getDisplayName())).append(CC.GRAY).append(", "));

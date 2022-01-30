@@ -19,6 +19,7 @@ public class RankParameterType implements ParameterType<Rank> {
         if (sender instanceof Player && source.equals("")) {
             return Holiday.getInstance().getProfileHandler().getByPlayer(((Player) sender)).getHighestRank();
         }
+        if (source.equalsIgnoreCase("default")) return Holiday.getInstance().getRankHandler().getDefaultRank();
 
         Rank rank = Holiday.getInstance().getRankHandler().getFromName(source);
 

@@ -195,7 +195,6 @@ public class Profile {
 
     public Document toBson() {
         Profile profile = this;
-
         return new Document("_id", profile.getUuid().toString())
                 .append("name", profile.getName())
                 .append("ip", profile.getIp())

@@ -6,6 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import io.github.zowpy.menu.MenuAPI;
 import lombok.Getter;
 import lombok.Setter;
+import me.andyreckt.holiday.commands.DisguiseCommands;
 import me.andyreckt.holiday.database.mongo.MongoDB;
 import me.andyreckt.holiday.database.redis.Redis;
 import me.andyreckt.holiday.database.redis.packet.StaffMessages;
@@ -95,10 +96,15 @@ public final class Holiday extends JavaPlugin {
         setupRunnables();
         setupCommands();
         setupSoftDependencies();
+        setupOthers();
 
 
         infoConsole(ChatColor.GREEN + "Successfully Loaded!");
         sendServerStartup();
+    }
+
+    private void setupOthers() {
+        DisguiseCommands.setup(settings);
     }
 
     @Override
