@@ -243,7 +243,6 @@ public class DisguiseHandler {
 
 			MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().replaceOne(Filters.eq("_id", profile.getUuid().toString()), document, new ReplaceOptions().upsert(true)));
 			Holiday.getInstance().getRedis().sendPacket(new DisguisePacket(profile.getDisguiseData().displayName(), DisguiseType.ADD));
-			if(!dis.getUsedNames().contains(profile.getDisguiseData().displayName().toLowerCase())) dis.usedNames.add(profile.getDisguiseData().displayName().toLowerCase());
 			MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().replaceOne(Filters.eq("_id", "names"), new Document("_id", "names")
 					.append("list", dis.getUsedNames())));
 		}

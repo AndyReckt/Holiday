@@ -33,8 +33,7 @@ public class BasicConfigurationFile extends AbstractConfigurationFile {
   }
   
   public String getString(String path) {
-    if (this.configuration.contains(path))
-      return ChatColor.translateAlternateColorCodes('&', this.configuration.getString(path)); 
+    if (this.configuration.contains(path)) return ChatColor.translateAlternateColorCodes('&', this.configuration.getString(path));
     return null;
   }
   

@@ -34,8 +34,6 @@ public class OtherCommands {
     @Command(names = "fly", perm = "holiday.fly")
     public static void fly(Player sender) {
         sender.setAllowFlight(!sender.getAllowFlight());
-
-        String msg = "";
         if (sender.getAllowFlight()) {
             sender.sendMessage(messages.getString("COMMANDS.GENERAL.FLY.ON"));
         } else {
@@ -52,9 +50,9 @@ public class OtherCommands {
             inv.addItem(Item);
             target.updateInventory();
             sender.sendMessage(messages.getString("COMMANDS.GENERAL.GIVE.SENDER")
-                    .replace("<material>", material).replace("<amount>", String.valueOf(amount)).replace("<target>", target.getName()));
+                    .replace("<material>", mat.name()).replace("<amount>", String.valueOf(amount)).replace("<target>", target.getName()));
             target.sendMessage(messages.getString("COMMANDS.GENERAL.GIVE.TARGET")
-                    .replace("<material>", material).replace("<amount>", String.valueOf(amount)).replace("<player>", sender.getName()));
+                    .replace("<material>", mat.name()).replace("<amount>", String.valueOf(amount)).replace("<player>", sender.getName()));
         }
     }
 
@@ -67,7 +65,7 @@ public class OtherCommands {
             inv.addItem(Item);
             sender.updateInventory();
             sender.sendMessage(messages.getString("COMMANDS.GENERAL.GIVE.YOURSELF")
-                    .replace("<material>", material).replace("<amount>", String.valueOf(amount)));
+                    .replace("<material>", mat.name()).replace("<amount>", String.valueOf(amount)));
         }
     }
 
