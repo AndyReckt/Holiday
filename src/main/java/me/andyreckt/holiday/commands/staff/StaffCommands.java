@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.commands.staff;
 
 import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.other.menu.InvseeMenu;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.PunishmentUtils;
@@ -143,11 +144,11 @@ public class StaffCommands {
         sender.sendMessage(CC.translate("&aYou forced everyone to say \"" + msg + "\""));
     }
 
-    @Command(names = {"tpall"}, perm = "holiday.tpall")
-    public static void tpall(Player sender) {
-        Bukkit.getOnlinePlayers().forEach(player -> player.teleport(sender));
-        sender.sendMessage(CC.translate("&aTeleported everyone to yourself."));
+    @Command(names = {"invsee", "inv"}, perm = "holiday.invsee")
+    public static void execute(Player player, @Param(name = "player") Player target) throws Exception {
+        new InvseeMenu(player, target).openMenu(player);
     }
+
 
 
 

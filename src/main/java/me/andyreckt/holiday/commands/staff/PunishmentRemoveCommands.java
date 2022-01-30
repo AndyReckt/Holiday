@@ -18,7 +18,7 @@ public class PunishmentRemoveCommands {
 
     private static final BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
-    @Command(names = "unban", async = true, perm = "holiday.unban")
+    @Command(names = {"unban", "pardon"}, async = true, perm = "holiday.unban")
     private void unban(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");

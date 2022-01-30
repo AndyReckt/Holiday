@@ -1,13 +1,21 @@
 package me.andyreckt.holiday.listeners;
 
 import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.database.redis.packet.ClickablePacket;
+import me.andyreckt.holiday.other.enums.BroadcastType;
+import me.andyreckt.holiday.other.menu.InvseeMenu;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.utils.CC;
+import net.md_5.bungee.api.chat.ClickEvent;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class OtherListeners implements Listener {
 
@@ -34,6 +42,28 @@ public class OtherListeners implements Listener {
         if (Holiday.getInstance().getSettings().getBoolean("SERVER.DONATORJOINFULL")
         && profile.hasPermission("holiday.joinfull")) event.setResult(PlayerLoginEvent.Result.ALLOWED);
     }
+    @EventHandler
+    public void invseeClose(InventoryCloseEvent event) {
+        InvseeMenu.invMap.remove((Player) event.getPlayer());
+    }
 
+    @EventHandler
+    public void onLogout(PlayerQuitEvent event) {
+        if (!event.getPlayer().hasMetadata("frozen")) return;
+        Holiday.getInstance().getRedis().sendPacket(new ClickablePacket(
+                "&c" + event.getPlayer().getName() + " has logged out whilst frozen",
+                "&7&oClick here to ban",
+                ClickEvent.Action.RUN_COMMAND,
+                "/ban " + event.getPlayer().getName() + " Logged out whilst frozen -s",
+                BroadcastType.STAFF
+        ));
+    }
 
+    @EventHandler
+    public void onLoginFrozen(PlayerJoinEvent event) {
+        if (event.getPlayer().hasMetadata("frozen")) {
+            event.getPlayer().removeMetadata("frozen", Holiday.getInstance());
+            event.getPlayer().getActivePotionEffects().clear();
+        }
+    }
 }

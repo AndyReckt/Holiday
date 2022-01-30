@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.database.redis.packet;
 
+import me.andyreckt.holiday.other.enums.BroadcastType;
 import me.andyreckt.holiday.utils.packets.Packet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,5 +13,6 @@ public class ClickablePacket implements Packet {
     String hoverMessage;
     ClickEvent.Action clickAction;
     String clickCmd;
+    BroadcastType type;
 
 }
