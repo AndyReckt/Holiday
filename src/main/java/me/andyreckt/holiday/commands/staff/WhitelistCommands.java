@@ -35,18 +35,11 @@ public class WhitelistCommands {
 
 
     @Command(names = {"whitelist", "wl"}, perm = "holiday.whitelist", async = true)
-    public static void onToggleOn(CommandSender sender, @Param(name = "value") Boolean bool) {
+    public static void onToggleOn(CommandSender sender, @Param(name = "value") boolean bool) {
         sh.getThisServer().setWhitelisted(bool);
         sh.save();
         sender.sendMessage(CC.translate("&aSuccessfully toggled the whitelist " + (bool ? "on" : "off")));
     }
-
-//    @Command(names = {"whitelist on", "wl on"}, perm = "holiday.whitelist", async = true)
-//    public static void onToggleOff(CommandSender sender) {
-//        sh.getThisServer().setWhitelisted(true);
-//        sh.save();
-//        sender.sendMessage(CC.translate("&eSuccessfully toggled the whitelist " + "&aOn" + "&e."));
-//    }
 
 
     @Command(names = {"whitelist rank", "wl rank"}, perm = "holiday.whitelist", async = true)

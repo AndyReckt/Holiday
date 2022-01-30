@@ -11,6 +11,7 @@ import me.andyreckt.holiday.database.mongo.MongoDB;
 import me.andyreckt.holiday.database.redis.Redis;
 import me.andyreckt.holiday.database.redis.packet.StaffMessages;
 import me.andyreckt.holiday.listeners.ChatListener;
+import me.andyreckt.holiday.listeners.OtherListeners;
 import me.andyreckt.holiday.listeners.ProfileListener;
 import me.andyreckt.holiday.listeners.PunishmentsListener;
 import me.andyreckt.holiday.other.enums.StaffMessageType;
@@ -169,6 +170,7 @@ public final class Holiday extends JavaPlugin {
         this.addListener(new ProfileListener());
         this.addListener(new ChatListener());
         this.addListener(new PunishmentsListener());
+        this.addListener(new OtherListeners());
         new StaffListeners(this);
     }
 

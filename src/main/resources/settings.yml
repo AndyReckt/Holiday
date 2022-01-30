@@ -27,6 +27,8 @@ SERVER:
     ENABLED: true
     FORMAT: "<prefix><player><suffix>&7: <message>" # Placeholders: <prefix> <player> <suffix> <message>
   BANNEDJOIN: false
+  DONATORJOINFULL: true
+  WHITELISTMESAGE: "&eThe server is currently &cWhitelisted&e. \n &eYou need <rank> &eor above to be able to log into the server." # Placeholder: <rank>
 
 STAFFMODE:
   ENABLED: true

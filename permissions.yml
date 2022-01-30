@@ -34,3 +34,4 @@ Sudoall: "holiday.sudoall"
 Tpall: "holiday.tpall"
 Whitelists: "holiday.whitelist"
 
+DonatorJoinWhenFull: "holiday.joinfull"

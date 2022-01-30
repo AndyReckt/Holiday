@@ -17,6 +17,7 @@ import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.*;
 import org.bson.Document;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
@@ -394,6 +395,18 @@ public class Profile {
     public void delete() {
         MongoUtils.getProfileCollection().deleteOne(Filters.eq("_id", uuid.toString()));
         Holiday.getInstance().getRedis().sendPacket(new ProfilePacket.ProfileDeletePacket(this));
+    }
+
+    public boolean hasPermission(String perm) {
+        if (getPermissions().contains(perm)) return true;
+        for (Grant o : getActiveGrants()) {
+            if (o.getRank().getPermissions().contains(perm)) return true;
+            if (o.getRank().getPermissions().contains("*")) return true;
+        }
+        for (OfflinePlayer player : Bukkit.getOperators()) {
+            if (player.getUniqueId() == uuid) return true;
+        }
+        return false;
     }
 
 }

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class PunishmentHandler {
 
     private Map<String, PunishData> punishments;
