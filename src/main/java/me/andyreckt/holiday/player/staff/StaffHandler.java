@@ -48,6 +48,10 @@ public class StaffHandler {
         else return holiday.getProfileHandler().getByUUIDFor5Minutes(uuid).isInStaffMode();
     }
 
+    public boolean isInStaffMode(Player player) {
+        return isInStaffMode(player.getUniqueId());
+    }
+
     public boolean canSee(Player viewer, Player player) {
         ProfileHandler ph = holiday.getProfileHandler();
         Profile vProfile = ph.getByPlayer(viewer);
@@ -99,8 +103,6 @@ public class StaffHandler {
             PlayerUtil.freeze(player, true);
         }
     }
-
-
 
     public boolean hasPerm(Player player) {
         return player.hasPermission("holiday.staffmode");

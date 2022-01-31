@@ -14,6 +14,7 @@ import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -113,6 +114,43 @@ public class OtherCommands {
         } else {
             target.sendMessage(messages.getString("COMMANDS.GENERAL.FEED.TARGET").replace("<player>", sender.getName()));
             sender.sendMessage(messages.getString("COMMANDS.GENERAL.FEED.SENDER").replace("<player>", target.getName()));
+        }
+    }
+
+    @Command(names = {"enchant"}, perm = "holiday.enchant")
+    public static void enchant(Player sender, @Param(name = "enchantment") String enchant, @Param(name = "level") int level) {
+        ItemStack item = sender.getItemInHand();
+
+        if(item == null || item.getType() == Material.AIR) {
+            sender.sendMessage(CC.translate("&cYou need to have the item in your hand."));
+            return;
+        }
+
+        if(level < 0) {
+            sender.sendMessage(CC.translate("&cThe level must be equal or greater than 0."));
+            return;
+        }
+
+        if (level > 10 && !sender.isOp()) {
+            sender.sendMessage(CC.translate("&cThe level cant be greater than 10."));
+            return;
+        }
+
+
+        String enchantment = StringUtils.getEnchantment(enchant);
+
+        if(level == 0) {
+            if(item.containsEnchantment(Enchantment.getByName(enchantment))) {
+                item.removeEnchantment(Enchantment.getByName(enchantment));
+
+                sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.ENCHANT.REMOVED").replace("<enchant>", enchant.toUpperCase()));
+            } else {
+                sender.sendMessage(CC.translate("&cThis item does not contain the enchantement " + enchant.toUpperCase() + "&c."));
+            }
+        } else {
+            item.addUnsafeEnchantment(Enchantment.getByName(enchantment), level);
+
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.ENCHANT.ADDED").replace("<item>", item.getType().name()));
         }
     }
 

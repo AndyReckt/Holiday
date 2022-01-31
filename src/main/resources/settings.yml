@@ -29,6 +29,7 @@ SERVER:
   BANNEDJOIN: false
   DONATORJOINFULL: true
   WHITELISTMESAGE: "&eThe server is currently &cWhitelisted&e. \n &eYou need <rank> &eor above to be able to log into the server." # Placeholder: <rank>
+  STAFFCHATPREFIX: '@' # Use only one Symbol
 
 STAFFMODE:
   ENABLED: true

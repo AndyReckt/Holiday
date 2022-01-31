@@ -2,13 +2,10 @@ package me.andyreckt.holiday.utils;
 
 import com.google.common.collect.ImmutableSet;
 import me.andyreckt.holiday.Holiday;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.MathHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -20,7 +17,6 @@ import java.security.CodeSource;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.stream.Collectors;
 
 public class Utilities {
     public static List<Player> getOnlinePlayers() {
@@ -34,11 +30,9 @@ public class Utilities {
          try {
            player.playSound(player.getLocation(), Sound.valueOf(sound), 2.0F, 2.0F);
          } catch (Exception ignored) {}
-
     }
     public static int getPing(Player player) {
-        EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-        return entityPlayer.ping;
+        return BukkitReflection.getPing(player);
     }
     public static void sendToServer(Player player, String server) {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -106,14 +100,6 @@ public class Utilities {
     }
 
 
-
-    public static List<EntityPlayer> getEntityPlayers(List<Player> players) {
-        return players.stream().filter(Objects::nonNull).map(player -> ((CraftPlayer) player).getHandle()).collect(Collectors.toList());
-    }
-
-    public static int niceLocation(double pos){
-        return MathHelper.floor(pos * 32.0D);
-    }
 
     public static byte niceRotation(float yawpitch){
         return (byte) ((int) (yawpitch * 256.0F / 360.0F));

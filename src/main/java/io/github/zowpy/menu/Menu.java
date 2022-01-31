@@ -150,6 +150,10 @@ public abstract class Menu {
         setClosedByMenu(false);
     }
 
+    public void open(Player player) {
+        openMenu(player);
+    }
+
     public int size(Map<Integer, Button> buttons) {
         int highest = 0;
         for (Iterator<Integer> iterator = buttons.keySet().iterator(); iterator.hasNext(); ) {

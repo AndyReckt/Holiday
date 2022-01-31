@@ -1,6 +1,8 @@
 package me.andyreckt.holiday.player.staff;
 
 import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.database.redis.packet.StaffMessages;
+import me.andyreckt.holiday.other.enums.StaffMessageType;
 import me.andyreckt.holiday.other.menu.InvseeMenu;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.staff.event.StaffUpdateVisibilityEvent;
@@ -39,13 +41,15 @@ public class StaffListeners {
             Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(event.getPlayer());
 
             if (!profile.isStaff()) return;
-            if (!event.getMessage().startsWith("@")) return;
+            if (!event.getMessage().startsWith(Holiday.getInstance().getSettings().getString("SERVER.STAFFCHATPREFIX"))) return;
 
             String message = event.getMessage().substring(1);
-            String playerName = profile.getNameWithColor(); //TODO STAFF CHAT
-            // StaffUtils.Staff.sendStaffChatMessage(playerName, message);
-            // Redis.getPidgin().sendPacket(new BroadcastPacket(CC.translate("&d[S] &5[" + Loader.getServerName() + "] " + playerName + "&7: &e" + message), BroadcastType.STAFF));
-
+            String playerName = profile.getNameWithColor();
+            String server = Holiday.getInstance().getSettings().getString("SERVER.NICENAME");
+            Holiday.getInstance().getRedis().sendPacket(new StaffMessages.StaffMessagesPacket(
+                    Holiday.getInstance().getMessages().getString("STAFF.CHAT").replace("<server>", server).replace("<player>", playerName).replace("<message>", message),
+                    StaffMessageType.STAFF
+            ));
             event.setCancelled(true);
         }
 
