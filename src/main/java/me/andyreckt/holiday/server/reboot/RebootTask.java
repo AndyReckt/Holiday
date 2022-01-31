@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.server.reboot;
 
+import lombok.Getter;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.TimeUtil;
@@ -20,7 +21,7 @@ public class Reboot extends BukkitRunnable {
     List<Long> rebootTimes = new ArrayList<>(Arrays.asList(10000L, 15000L, 30000L, 60000L, 120000L, 300000L, 600000L, 1200000L, 1800000L, 3600000L));
 
     public RebootTask(long millis) {
-
+        BasicConfigurationFile messages = Holiday.getInstance().getMessages();
         time = millis;
         active = true;
         executor = Executors.newSingleThreadScheduledExecutor();
@@ -34,7 +35,7 @@ public class Reboot extends BukkitRunnable {
 
     public Runnable runnable() {
         return () -> {
-        time -= 100;
+        time -= 250;
 
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 

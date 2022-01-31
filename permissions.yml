@@ -38,5 +38,6 @@ Teleport: "holiday.teleport"
 TeleportHere: "holiday.teleporthere"
 TpPos: "holiday.tppos"
 Gamemode: "holiday.gamemode"
+Reboot: "holiday.reboot"
 
 DonatorJoinWhenFull: "holiday.joinfull"

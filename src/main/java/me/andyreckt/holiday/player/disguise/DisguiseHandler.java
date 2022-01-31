@@ -19,6 +19,7 @@ import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.GameProfileUtil;
+import me.andyreckt.holiday.utils.Tasks;
 import me.andyreckt.holiday.utils.UUIDFetcher;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
@@ -243,18 +244,19 @@ public class DisguiseHandler {
 
 			MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().replaceOne(Filters.eq("_id", profile.getUuid().toString()), document, new ReplaceOptions().upsert(true)));
 			Holiday.getInstance().getRedis().sendPacket(new DisguisePacket(profile.getDisguiseData().displayName(), DisguiseType.ADD));
-			MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().replaceOne(Filters.eq("_id", "names"), new Document("_id", "names")
-					.append("list", dis.getUsedNames())));
+			Tasks.runAsyncLater(() -> MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().replaceOne(Filters.eq("_id", "names"), new Document("_id", "names")
+					.append("list", dis.getUsedNames()))), 10L);
+
 		}
 
 		public static void removeDisguise(Profile profile) {
 			Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", profile.getUuid().toString())).first();
+			Holiday.getInstance().getRedis().sendPacket(new DisguisePacket(profile.getDisguiseData().displayName(), DisguiseType.REMOVE));
 			if(document != null) {
 				MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().deleteOne(Filters.eq("_id", profile.getUuid().toString())));
 			}
-			Holiday.getInstance().getRedis().sendPacket(new DisguisePacket(profile.getDisguiseData().displayName(), DisguiseType.REMOVE));
-			MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().replaceOne(Filters.eq("_id", "names"), new Document("_id", "names")
-					.append("list", dis.getUsedNames())));
+			Tasks.runAsyncLater(() -> MongoUtils.submitToThread(() -> MongoUtils.getDisguiseCollection().replaceOne(Filters.eq("_id", "names"), new Document("_id", "names")
+					.append("list", dis.getUsedNames()))), 10L);
 		}
 
 		public static DisguiseData getDataFromName(String name) {
