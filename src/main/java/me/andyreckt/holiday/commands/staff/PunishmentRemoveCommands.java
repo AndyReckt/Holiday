@@ -19,7 +19,7 @@ public class PunishmentRemoveCommands {
     private static final BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
     @Command(names = {"unban", "pardon"}, async = true, perm = "holiday.unban")
-    private void unban(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
+    public static void unban(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
@@ -27,7 +27,7 @@ public class PunishmentRemoveCommands {
         unPunish(profile, target, PunishmentType.UNBAN, fReason, silent, sender);
     }
     @Command(names = "unipban", async = true, perm = "holiday.unipban")
-    private void unipban(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
+    public static void unipban(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
@@ -35,7 +35,7 @@ public class PunishmentRemoveCommands {
         unPunish(profile, target, PunishmentType.UNIP_BAN, fReason, silent, sender);
     }
     @Command(names = "unmute", async = true, perm = "holiday.unmute")
-    private void unmute(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
+    public static void unmute(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
@@ -43,7 +43,7 @@ public class PunishmentRemoveCommands {
         unPunish(profile, target, PunishmentType.UNMUTE, fReason, silent, sender);
     }
     @Command(names = "unmute", async = true, perm = "holiday.unblacklist")
-    private void unblacklist(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
+    public static void unblacklist(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");

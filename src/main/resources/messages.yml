@@ -27,7 +27,7 @@ PUNISHMENTS: #Placeholders: <player> <executor> <reason> <duration>
     TEMPMUTE: "&c<player> &chas been temporarily muted by <executor> &cfor <reason> for a duration of <duration>."
     UNMUTE: "&a<player> &ahas been unmuted by <executor> &afor <reason>."
     BAN: "&c<player> &chas been permanently banned by <executor> &cfor <reason>."
-    TEMPBAN: "&c<player> &chas been unblacklisted by <executor> &cfor <reason> for a duration of <duration>."
+    TEMPBAN: "&c<player> &chas been temporarily banned by <executor> &cfor <reason> for a duration of <duration>."
     UNBAN: "&a<player> &ahas been unbanned by <executor> for &a<reason>."
     IPBAN: "&c<player> &chas been permanently ip-banned by <executor> &cfor <reason>."
     UNIPBAN: "&a<player> &ahas been unip-banned by <executor> &afor <reason>."

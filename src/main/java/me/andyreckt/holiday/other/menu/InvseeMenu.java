@@ -94,7 +94,9 @@ public class InvseeMenu extends Menu {
         ItemStack effects = new ItemBuilder(Material.POTION).displayname(CC.RED + (InvseeMenu.invMap.get(paramPlayer).getActivePotionEffects().isEmpty() ? "No Potion Effects" : InvseeMenu.invMap.get(paramPlayer).getActivePotionEffects().size() + " Effect" + (InvseeMenu.invMap.get(paramPlayer).getActivePotionEffects().size() == 1 ? "" : "s"))).lore(lore).build();
 
         String health = new DecimalFormat("0.0").format(InvseeMenu.invMap.get(paramPlayer).getHealth());
-        toReturn.put(51, new DisplayButton(new ItemBuilder(Material.APPLE, Integer.parseInt(health.split("\\.")[0])).displayname(CC.RED + "Health: " + CC.GOLD + health).build()));
+        int x = (int) Math.round(InvseeMenu.invMap.get(paramPlayer).getHealth());
+
+        toReturn.put(51, new DisplayButton(new ItemBuilder(Material.SPECKLED_MELON, x).displayname(CC.RED + "Health: " + CC.GOLD + health).build()));
         toReturn.put(52, new DisplayButton(new ItemBuilder(Material.PUMPKIN_PIE, InvseeMenu.invMap.get(paramPlayer).getFoodLevel() / 2).displayname(CC.RED + "Saturation: " + CC.GOLD + (InvseeMenu.invMap.get(paramPlayer).getFoodLevel() / 2)).build()));
         toReturn.put(53, new DisplayButton(effects));
 

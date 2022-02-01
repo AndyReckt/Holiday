@@ -6,6 +6,7 @@ import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.ProfileHandler;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -19,7 +20,7 @@ public class PunishmentHandler {
         init();
     }
 
-    public List<Document> getAllPunishments() {
+    private List<Document> getAllPunishments() {
         List<Document> list = new ArrayList<>();
         MongoUtils.getPunishmentsCollection()
                 .find()
@@ -67,9 +68,13 @@ public class PunishmentHandler {
 
     public List<PunishData> getAllPunishmentsProfile(Profile profile) {
         List<PunishData> list = new ArrayList<>();
-        punishments().stream().filter(data -> data.getPunished().getIp().equalsIgnoreCase(profile.getIp())).forEach(list::add);
-        punishments().stream().filter(data -> data.getPunished().getName().equalsIgnoreCase(profile.getName())).forEach(list::add);
-        punishments().stream().filter(data -> data.getPunished().getUuid() == profile.getUuid()).forEach(list::add);
+
+        for (PunishData data : punishments.values()) {
+            if (data.getPunished().getUuid() == null) continue;
+            if (data.getIp().equalsIgnoreCase(profile.getIp())) list.add(data);
+            if ((data.getPunished().getUuid() == profile.getUuid()) && (!list.contains(data))) list.add(data);
+        }
+
         return list;
     }
 
@@ -97,7 +102,6 @@ public class PunishmentHandler {
 
     public PunishData getFromDocument(Document document) {
         ProfileHandler ph = Holiday.getInstance().getProfileHandler();
-
         String id = document.getString("_id");
         Profile punished = ph.getByUUIDFor5Minutes(UUID.fromString(document.getString("punished")));
         Profile issuer = ph.getByUUIDFor5Minutes(UUID.fromString(document.getString("addedBy")));

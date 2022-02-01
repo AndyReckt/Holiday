@@ -200,6 +200,7 @@ public class StaffHandler {
                 player.getInventory().setItem(4, Items.FREEZE);
                 player.getInventory().setItem(0, Items.INVSEE);
                 player.getInventory().setItem(1, Items.BETTER_VIEW);
+                player.getInventory().setItem(7, Items.STAFF_LIST);
                 player.getInventory().setItem(8, Items.GO_VIS);
             } else {
                 if (inVanish) {

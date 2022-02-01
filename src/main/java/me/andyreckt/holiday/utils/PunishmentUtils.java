@@ -17,6 +17,7 @@ public class PunishmentUtils {
     public static boolean checkBlacklisted(Profile profile) {
         return handler.getAllPunishmentsProfile(profile).stream()
                 .filter(PunishData::isActive)
+                .filter(data -> data.getPunished().getUuid() != null)
                 .anyMatch(data -> data.getType().equals(PunishmentType.BLACKLIST));
     }
 
@@ -24,6 +25,7 @@ public class PunishmentUtils {
         if(checkBlacklisted(profile))
         return handler.getAllPunishmentsProfile(profile).stream()
                 .filter(PunishData::isActive)
+                .filter(data -> data.getPunished().getUuid() != null)
                 .filter(data -> data.getType().equals(PunishmentType.BLACKLIST))
                 .findFirst().get();
         else return null;
@@ -46,6 +48,7 @@ public class PunishmentUtils {
         if(checkIPBanned(profile))
             return handler.getAllPunishmentsProfile(profile).stream()
                     .filter(PunishData::isActive)
+                    .filter(data -> data.getPunished().getUuid() != null)
                     .filter(data -> data.getType().equals(PunishmentType.IP_BAN))
                     .findFirst().get();
         else return null;
@@ -54,6 +57,7 @@ public class PunishmentUtils {
     public static boolean checkIPBanned(Profile profile) {
         return handler.getAllPunishmentsProfile(profile).stream()
                 .filter(PunishData::isActive)
+                .filter(data -> data.getPunished().getUuid() != null)
                 .anyMatch(data -> data.getType().equals(PunishmentType.IP_BAN));
     }
 
@@ -74,6 +78,7 @@ public class PunishmentUtils {
         if(checkBanned(profile))
             return handler.getAllPunishmentsProfile(profile).stream()
                     .filter(PunishData::isActive)
+                    .filter(data -> data.getPunished().getUuid() != null)
                     .filter(data -> data.getType().equals(PunishmentType.BAN) || data.getType().equals(PunishmentType.TEMP_BAN))
                     .findFirst().get();
         else return null;
@@ -82,7 +87,8 @@ public class PunishmentUtils {
     public static boolean checkBanned(Profile profile) {
         return handler.getAllPunishmentsProfile(profile).stream()
                 .filter(PunishData::isActive)
-                .filter(data -> data.getPunished().getUuid().toString().equals(profile.getUuid().toString()))
+                .filter(data -> data.getPunished().getUuid() != null)
+                .filter(data -> data.getPunished().getUuid().equals(profile.getUuid()))
                 .anyMatch(data -> (data.getType() == PunishmentType.BAN || data.getType() == PunishmentType.TEMP_BAN));
     }
 
@@ -105,6 +111,7 @@ public class PunishmentUtils {
         if(checkMuted(profile))
             return handler.getAllPunishmentsProfile(profile).stream()
                     .filter(PunishData::isActive)
+                    .filter(data -> data.getPunished().getUuid() != null)
                     .filter(data -> data.getType().equals(PunishmentType.MUTE) || data.getType().equals(PunishmentType.TEMP_MUTE))
                     .findFirst().get();
         else return null;
@@ -113,7 +120,8 @@ public class PunishmentUtils {
     public static boolean checkMuted(Profile profile) {
         return handler.getAllPunishmentsProfile(profile).stream()
                 .filter(PunishData::isActive)
-                .filter(data -> data.getPunished().getUuid().toString().equals(profile.getUuid().toString()))
+                .filter(data -> data.getPunished().getUuid() != null)
+                .filter(data -> data.getPunished().getUuid().equals(profile.getUuid()))
                 .anyMatch(data -> (data.getType() == PunishmentType.MUTE || data.getType() == PunishmentType.TEMP_MUTE));
     }
 
@@ -138,6 +146,7 @@ public class PunishmentUtils {
 
         handler.punishments().stream()
                 .filter(PunishData::isActive)
+                .filter(data -> data.getPunished().getUuid() != null)
                 .forEach(list::add);
 
         return list;
@@ -148,6 +157,7 @@ public class PunishmentUtils {
 
         handler.punishments().stream()
                 .filter(PunishData::isActive)
+                .filter(data -> data.getPunished().getUuid() != null)
                 .filter(punishData -> punishData.getType() == PunishmentType.BLACKLIST)
                 .forEach(list::add);
 
@@ -158,6 +168,7 @@ public class PunishmentUtils {
         List<PunishData> list = new ArrayList<>();
 
         handler.punishments().stream()
+                .filter(data -> data.getPunished().getUuid() != null)
                 .filter(punishData -> punishData.getType() == PunishmentType.BLACKLIST)
                 .forEach(list::add);
 
@@ -168,6 +179,7 @@ public class PunishmentUtils {
         List<PunishData> list = new ArrayList<>();
 
         handler.punishments().stream()
+                .filter(data -> data.getPunished().getUuid() != null)
                 .filter(punishData -> punishData.getType() == PunishmentType.IP_BAN)
                 .forEach(list::add);
 
@@ -178,6 +190,7 @@ public class PunishmentUtils {
         List<PunishData> list = new ArrayList<>();
 
         handler.punishments().stream()
+                .filter(data -> data.getPunished().getUuid() != null)
                 .filter(punishData -> punishData.getType() == PunishmentType.IP_BAN)
                 .forEach(list::add);
 
@@ -189,6 +202,7 @@ public class PunishmentUtils {
 
         handler.punishments().stream()
                 .filter(PunishData::isActive)
+                .filter(data -> data.getPunished().getUuid() != null)
                 .filter(punishData -> (punishData.getType() == PunishmentType.TEMP_BAN) || (punishData.getType() == PunishmentType.BAN))
                 .forEach(list::add);
 
@@ -199,6 +213,7 @@ public class PunishmentUtils {
         List<PunishData> list = new ArrayList<>();
 
         handler.punishments().stream()
+                .filter(data -> data.getPunished().getUuid() != null)
                 .filter(punishData -> (punishData.getType() == PunishmentType.TEMP_BAN) || (punishData.getType() == PunishmentType.BAN))
                 .forEach(list::add);
 
@@ -210,6 +225,7 @@ public class PunishmentUtils {
 
         handler.punishments().stream()
                 .filter(PunishData::isActive)
+                .filter(data -> data.getPunished().getUuid() != null)
                 .filter(punishData -> (punishData.getType() == PunishmentType.TEMP_MUTE) || (punishData.getType() == PunishmentType.MUTE))
                 .forEach(list::add);
 
@@ -220,6 +236,7 @@ public class PunishmentUtils {
         List<PunishData> list = new ArrayList<>();
 
         handler.punishments().stream()
+                .filter(data -> data.getPunished().getUuid() != null)
                 .filter(punishData -> (punishData.getType() == PunishmentType.TEMP_MUTE) || (punishData.getType() == PunishmentType.MUTE))
                 .forEach(list::add);
 

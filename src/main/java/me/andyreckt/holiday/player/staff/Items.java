@@ -20,7 +20,7 @@ public class Items {
         GO_VIS = new ItemBuilder(Material.INK_SACK).displayname("&eUnvanish").damage((short) 10).build();
         FREEZE = new ItemBuilder(Material.PACKED_ICE).displayname("&eFreeze").build();
         BETTER_VIEW = new ItemBuilder(Material.CARPET).displayname("&eBetter View").damage((short) 4).build();
-        STAFF_LIST = new ItemBuilder(Material.SKULL).displayname("&eStaff List").damage(SkullType.PLAYER.ordinal()).build();
+        STAFF_LIST = new ItemBuilder(Material.SKULL_ITEM).displayname("&eStaff List").damage(SkullType.PLAYER.ordinal()).build();
     }
 
 }

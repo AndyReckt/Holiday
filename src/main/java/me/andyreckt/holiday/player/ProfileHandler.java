@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class ProfileHandler {
 
@@ -90,6 +91,10 @@ public class ProfileHandler {
 
     public void removeFromCache(UUID uuid) {
         profileCache.remove(uuid);
+    }
+
+    public List<Profile> cachedProfiles() {
+        return new ArrayList<>(profileCache.values());
     }
 
 }

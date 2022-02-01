@@ -76,7 +76,7 @@ public class PunishmentCommands {
         String fReason = reason.replace("-s", "");
         if (fReason.equals("")) fReason = "Cheating";
 
-        punish(profile, target, "mute", PunishmentType.TEMP_BAN, fReason, silent, sender);
+        punish(profile, target, "mute", PunishmentType.MUTE, fReason, silent, sender);
     }
     @Command(names = {"tempmute", "tmute"}, async = true, perm = "holiday.tempmute")
     public static void tempmute(CommandSender sender,

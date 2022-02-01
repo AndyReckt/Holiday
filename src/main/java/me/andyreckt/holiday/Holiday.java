@@ -15,6 +15,7 @@ import me.andyreckt.holiday.listeners.OtherListeners;
 import me.andyreckt.holiday.listeners.ProfileListener;
 import me.andyreckt.holiday.listeners.PunishmentsListener;
 import me.andyreckt.holiday.other.enums.StaffMessageType;
+import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.ProfileHandler;
 import me.andyreckt.holiday.player.disguise.DisguiseHandler;
 import me.andyreckt.holiday.player.grant.GrantHandler;
@@ -109,6 +110,7 @@ public final class Holiday extends JavaPlugin {
     public void onDisable() {
         this.serverHandler.stop();
         this.scheduledExecutor.shutdownNow();
+        this.profileHandler.cachedProfiles().forEach(Profile::saveOnStop);
     }
 
     private void setupCommands() {
@@ -146,12 +148,12 @@ public final class Holiday extends JavaPlugin {
     }
 
     private void setupHandlers() {
-        this.punishmentHandler = new PunishmentHandler();
-        this.profileHandler = new ProfileHandler();
         this.rankHandler = new RankHandler();
-        this.disguiseHandler = new DisguiseHandler(this);
-        this.serverHandler = new ServerHandler(this);
         this.grantHandler = new GrantHandler();
+        this.disguiseHandler = new DisguiseHandler(this);
+        this.profileHandler = new ProfileHandler();
+        this.punishmentHandler = new PunishmentHandler();
+        this.serverHandler = new ServerHandler(this);
         this.chatHandler = new ChatHandler(this.settings, serverHandler.getThisServer());
         this.staffHandler = new StaffHandler(this);
         this.menuAPI = new MenuAPI(this);
@@ -182,6 +184,7 @@ public final class Holiday extends JavaPlugin {
 
     private void setupOthers() {
         DisguiseCommands.setup(settings);
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     private void addListener(Listener listener) {

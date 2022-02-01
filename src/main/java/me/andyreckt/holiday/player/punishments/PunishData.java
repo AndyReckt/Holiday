@@ -83,19 +83,19 @@ public class PunishData {
     }
 
     public Document toBson() {
-        return new Document("_id", getId())
-                .append("punished", getPunished().getUuid().toString())
-                .append("addedBy", getAddedBy().getUuid().toString())
-                .append("type", getType().getName())
-                .append("addedReason", getAddedReason())
-                .append("addedAt", getAddedAt())
-                .append("duration", getDuration())
-                .append("ip", getIp())
-                .append("silent", isSilent())
-                .append("removed", isRemoved())
-                .append("removedAt", getRemovedAt())
-                .append("removedBy", getRemovedBy().getUuid().toString())
-                .append("removedReason", getRemovedReason());
+        return new Document("_id", id)
+                .append("punished", punished.getUuid().toString())
+                .append("addedBy", addedBy.getUuid().toString())
+                .append("type", type.getName())
+                .append("addedReason", addedReason)
+                .append("addedAt", addedAt)
+                .append("duration", duration)
+                .append("ip", ip)
+                .append("silent", silent)
+                .append("removed", removed)
+                .append("removedAt", removedAt)
+                .append("removedBy", removedBy.getUuid().toString())
+                .append("removedReason", removedReason);
     }
 
 

@@ -122,19 +122,19 @@
                     <relocations>
                         <relocation>
                             <pattern>com.mongodb</pattern>
-                            <shadedPattern>me.andyreckt.libs.com.mongodb</shadedPattern>
+                            <shadedPattern>me.andyreckt.relocations.com.mongodb</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.google.gson</pattern>
-                            <shadedPattern>me.andyreckt.libs.com.google.gson</shadedPattern>
+                            <shadedPattern>me.andyreckt.relocations.com.google.gson</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.bson</pattern>
-                            <shadedPattern>me.andyreckt.libs.org.bson</shadedPattern>
+                            <shadedPattern>me.andyreckt.relocations.org.bson</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>io.github.zowpy.jedisapi</pattern>
-                            <shadedPattern>me.andyreckt.libs.io.github.zowpy.jedisapi</shadedPattern>
+                            <shadedPattern>me.andyreckt.relocations.io.github.zowpy.jedisapi</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

@@ -51,7 +51,6 @@ public class ProfileListener implements Listener {
         event.setJoinMessage(null);
 
         Holiday.getInstance().getExecutor().execute(() -> {
-
             ProfileHandler ph = Holiday.getInstance().getProfileHandler();
             Profile p = ph.getByPlayer(event.getPlayer());
             RankHandler rh = Holiday.getInstance().getRankHandler();

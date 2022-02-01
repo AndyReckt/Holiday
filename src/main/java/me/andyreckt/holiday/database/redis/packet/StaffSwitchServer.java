@@ -15,8 +15,8 @@ import java.util.UUID;
 
 
 public class StaffSwitchServer {
-
-    Map<UUID, StaffSwitchData> staffChange = new HashMap<>();
+    @Getter
+    public static final Map<UUID, StaffSwitchData> staffChange = new HashMap<>(); //yes its static ok ik its bad
 
     public StaffSwitchServer(Profile p1, boolean leave) {
 

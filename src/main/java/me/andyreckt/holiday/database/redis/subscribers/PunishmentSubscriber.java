@@ -95,7 +95,7 @@ public class PunishmentSubscriber implements PacketListener {
         string = string.replace("<duration>", TimeUtil.getDuration(data.getDuration()));
 
         if (data.isSilent()) {
-            String fString = message = messages.getString("PUNISHMENTS.SILENTPREFIX") + string;
+            String fString = messages.getString("PUNISHMENTS.SILENTPREFIX") + string;
             prh.getOnlineProfiles().forEach(profile -> {
                 if (profile.isStaff()) {
                     profile.getPlayer().sendMessage(CC.translate(fString));
@@ -112,7 +112,6 @@ public class PunishmentSubscriber implements PacketListener {
             message = message.replace("<reason>", data.getAddedReason());
             message = message.replace("<duration>", TimeUtil.getDuration(data.getDuration()));
             kickPlayer(data.getPunished().getUuid(), message);
-            Holiday.getInstance().infoConsole(message);
         }
 
     }

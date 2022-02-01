@@ -2,7 +2,9 @@ package io.github.zowpy.menu;
 
 import io.github.zowpy.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.utils.Tasks;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,6 +18,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
+
+import javax.swing.text.TabableView;
 
 public class ButtonListener implements Listener {
     private final Plugin plugin;
@@ -68,6 +72,14 @@ public class ButtonListener implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onClose(InventoryCloseEvent event) {
+        Tasks.runLater(() -> {
+            if ((event.getPlayer().getOpenInventory() == null) || (event.getPlayer().getOpenInventory().getTopInventory() == null)) onInventoryClose((Player) event.getPlayer());
+        }, 5L);
+    }
+
 
     public static void onInventoryClose(Player player) {
         final Menu openMenu = Menu.currentlyOpenedMenus.get(player.getUniqueId());
