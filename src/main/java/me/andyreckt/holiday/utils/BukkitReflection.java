@@ -56,16 +56,6 @@ public class BukkitReflection
         }
     }
     
-    public static boolean isBungeeServer() {
-        try {
-            return (boolean)BukkitReflection.SPIGOT_CONFIG_BUNGEE_FIELD.get(null);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
     static {
         try {
             final String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];

@@ -2,9 +2,9 @@ package me.andyreckt.holiday.commands;
 
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.Profile;
-import me.andyreckt.holiday.player.ProfileHandler;
 import me.andyreckt.holiday.player.disguise.DisguiseHandler;
 import me.andyreckt.holiday.player.rank.Rank;
+import me.andyreckt.holiday.server.nms.impl.NMS_v1_7;
 import me.andyreckt.holiday.utils.*;
 import me.andyreckt.holiday.utils.command.Command;
 import me.andyreckt.holiday.utils.command.param.Param;
@@ -25,6 +25,11 @@ public class DisguiseCommands {
                               @Param(name = "name") String name,
                               @Param(name = "skin") String skin,
                               @Param(name = "rank", defaultValue = "default") Rank rank) {
+
+        if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_7) {
+            player.sendMessage(CC.translate("&cNOT IMPLEMENTED FOR 1.7")); //TODO IMPLEMENT FOR 1.7
+            return;
+        }
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(player);
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
@@ -56,6 +61,11 @@ public class DisguiseCommands {
 
     @Command(names = {"nick", "disguise", "dis"}, perm = "holiday.disguise")
     public static void nick(Player player) {
+
+        if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_7) {
+            player.sendMessage(CC.translate("&cNOT IMPLEMENTED FOR 1.7")); //TODO IMPLEMENT FOR 1.7
+            return;
+        }
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(player);
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
@@ -114,7 +124,7 @@ public class DisguiseCommands {
         StringBuilder sb = new StringBuilder();
         if (!Holiday.getInstance().getDisguiseHandler().usedNames.isEmpty()) {
             Holiday.getInstance().getDisguiseHandler().usedNames.forEach(n -> {
-                Profile profile = Holiday.getInstance().getProfileHandler().getByNameFor5Minute(n);
+                Profile profile = Holiday.getInstance().getProfileHandler().getByName(n);
                 if (profile != null) {
                     String server = (profile.getCurrentServer() == null) ? "&coffline" : profile.getCurrentServer();
 

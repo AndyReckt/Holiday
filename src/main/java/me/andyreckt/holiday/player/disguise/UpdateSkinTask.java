@@ -6,12 +6,9 @@ import com.mojang.authlib.properties.Property;
 import lombok.RequiredArgsConstructor;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.utils.GameProfileUtil;
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
@@ -30,12 +27,19 @@ public class UpdateSkinTask extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		final EntityPlayer entityPlayer = ((CraftPlayer) this.player).getHandle();
-
-	//	this.setPlayerNames();
 
 		try {
-			Field field = EntityHuman.class.getDeclaredField("bH");
+			final Object entityPlayer = player.getClass().getMethod("getHandle", (Class<?>[])null).invoke(player);
+			final Class<?> entityHuman = entityPlayer.getClass().getSuperclass();
+			final int maxVersion = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].replaceAll("(v|R[0-9]+)", "").split("_")[0]);
+			final int minVersion = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].replaceAll("(v|R[0-9]+)", "").split("_")[1]);
+			Field field;
+			if (maxVersion >= 1 && minVersion >= 9) {
+				field = entityHuman.getDeclaredField("bS");
+			}
+			else {
+				field = entityHuman.getDeclaredField("bH");
+			}
 			field.setAccessible(true);
 
 			GameProfile currentProfile = (GameProfile) field.get(entityPlayer);
@@ -55,11 +59,6 @@ public class UpdateSkinTask extends BukkitRunnable {
 
 		this.sendPlayerUpdate();
 	}
-	/*
-	private void setPlayerNames() {
-		MinecraftServer.getServer().getPlayerList().removeFromPlayerNames(player.getName());
-		MinecraftServer.getServer().getPlayerList().setPlayerName(displayName, ((CraftPlayer) player).getHandle());
-	}*/
 
 	private void sendPlayerUpdate() {
 		new BukkitRunnable() {
@@ -79,56 +78,25 @@ public class UpdateSkinTask extends BukkitRunnable {
 	}
 
 	private void sendUpdateToPlayer() {
-		final Entity vehicle = this.player.getVehicle();
+
+		final Entity vehicle = player.getVehicle();
 		if (vehicle != null) {
 			vehicle.eject();
 		}
 
 		this.sendPackets();
 
-		this.player.updateInventory();
-		this.player.setGameMode(this.player.getGameMode());
+		Holiday.getInstance().getNmsHandler().updatePlayer(this.player);
+		player.setDisplayName(this.displayName);
 
-		PlayerInventory inventory = this.player.getInventory();
-		inventory.setHeldItemSlot(inventory.getHeldItemSlot());
-
-		double oldHealth = this.player.getHealth();
-
-		int oldFood = this.player.getFoodLevel();
-		float oldSat = this.player.getSaturation();
-		this.player.setFoodLevel(20);
-		this.player.setFoodLevel(oldFood);
-		this.player.setSaturation(5.0F);
-		this.player.setSaturation(oldSat);
-
-		this.player.setMaxHealth(this.player.getMaxHealth());
-
-		this.player.setHealth(20.0F);
-		this.player.setHealth(oldHealth);
-
-		float experience = this.player.getExp();
-		int totalExperience = this.player.getTotalExperience();
-		this.player.setExp(experience);
-		this.player.setTotalExperience(totalExperience);
-
-		this.player.setWalkSpeed(this.player.getWalkSpeed());
-		this.player.setDisplayName(this.displayName);
 	}
 
 	private void sendPackets() {
-		final EntityPlayer entityPlayer = ((CraftPlayer) this.player).getHandle();
-		Location previousLocation = this.player.getLocation().clone();
 
-		entityPlayer.playerConnection.sendPacket(
-				new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
-		entityPlayer.playerConnection.sendPacket(
-				new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
-		entityPlayer.playerConnection.sendPacket(
-				new PacketPlayOutRespawn(entityPlayer.getWorld().worldProvider.getDimension(),
-						entityPlayer.getWorld().worldData.getDifficulty(),
-						entityPlayer.getWorld().worldData.getType(),
-						WorldSettings.EnumGamemode.valueOf(entityPlayer.getBukkitEntity().getGameMode().name())));
-		this.player.teleport(previousLocation);
+		Holiday.getInstance().getNmsHandler().removeExecute(this.player);
+		Holiday.getInstance().getNmsHandler().addExecute(this.player);
+		Holiday.getInstance().getNmsHandler().respawnPlayer(this.player);
+
 	}
 }
 

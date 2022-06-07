@@ -15,8 +15,6 @@ import org.bukkit.command.CommandSender;
 
 public class PunishmentCommands {
 
-    private static final BasicConfigurationFile messages = Holiday.getInstance().getMessages();
-
     @Command(names = {"ban", "b"}, async = true, perm = "holiday.ban")
     public static void ban(CommandSender sender,
                            @Param(name = "name") Profile target,
@@ -94,11 +92,11 @@ public class PunishmentCommands {
 
     private static void punish(Profile issuer, Profile target, String type, PunishmentType punishmentType, String reason, boolean silent, CommandSender sender) {
         if (!CommandUtils.canPunish(issuer, target)) {
-            sender.sendMessage(messages.getString("COMMANDS.PUNISHMENT.CANNOT").replace("<type>", type));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.PUNISHMENT.CANNOT").replace("<type>", type));
             return;
         }
         if (alreadyPunished(target, punishmentType)) {
-            sender.sendMessage(messages.getString("COMMANDS.PUNISHMENT.ALREADY"));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.PUNISHMENT.ALREADY"));
             return;
         }
         new Punishment(issuer, target, punishmentType, reason, silent);
@@ -111,11 +109,11 @@ public class PunishmentCommands {
             return;
         }
         if (!CommandUtils.canPunish(issuer, target)) {
-            sender.sendMessage(messages.getString("COMMANDS.PUNISHMENT.CANNOT").replace("<type>", type));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.PUNISHMENT.CANNOT").replace("<type>", type));
             return;
         }
         if (alreadyPunished(target, punishmentType)) {
-            sender.sendMessage(messages.getString("COMMANDS.PUNISHMENT.ALREADY"));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.PUNISHMENT.ALREADY"));
             return;
         }
         new Punishment(issuer, target, punishmentType, duration, reason, silent);

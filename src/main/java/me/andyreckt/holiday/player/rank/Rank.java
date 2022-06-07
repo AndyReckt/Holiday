@@ -116,9 +116,11 @@ public class Rank {
         this.priority = document.getInteger("priority");
         this.permissions = document.getList("permissions", String.class);
 
-        if (!document.getList("childs", String.class).isEmpty() && !(document.getList("childs", String.class) == null))
-        for (String child : document.getList("childs", String.class)) {
-            this.childs.add(UUID.fromString(child));
+        if (!document.getList("childs", String.class).isEmpty() && !(document.getList("childs", String.class) == null)) {
+            this.childs = new ArrayList<>();
+            for (String child : document.getList("childs", String.class)) {
+                this.childs.add(UUID.fromString(child));
+            }
         }
         else this.childs = new ArrayList<>();
     }

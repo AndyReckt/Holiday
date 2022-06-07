@@ -12,6 +12,7 @@ import me.andyreckt.holiday.other.enums.ServerPacketType;
 import me.andyreckt.holiday.other.enums.StaffMessageType;
 import me.andyreckt.holiday.player.rank.RankHandler;
 import me.andyreckt.holiday.utils.StringUtils;
+import me.andyreckt.holiday.utils.Tasks;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 
@@ -51,7 +52,7 @@ public class ServerHandler {
         docs.forEach(d -> servers.put(fromDocument(d).getName(), fromDocument(d)));
         thisServer.getWhitelistedPlayers().removeIf(uid -> !Holiday.getInstance().getProfileHandler().hasProfile(uid));
         thisServer.setLastKeepAlive(System.currentTimeMillis());
-        plugin.getRedis().sendPacket(new ServerPacket(thisServer, ServerPacketType.ADD));
+        Tasks.runAsyncLater(() -> plugin.getRedis().sendPacket(new ServerPacket(thisServer, ServerPacketType.ADD)), 30L);
     }
 
 

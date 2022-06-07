@@ -15,6 +15,7 @@ import me.andyreckt.holiday.utils.TimeUtil;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class PunishData {
+public class    PunishData {
 
     private final String id;
     private final Profile punished;
@@ -34,8 +35,9 @@ public class PunishData {
     private final boolean silent;
     private final String ip;
 
-    private Profile removedBy;
-    private String removedReason;
+
+    @Nullable private Profile removedBy;
+    @Nullable private String removedReason;
     private long removedAt;
     private boolean removed;
 
@@ -83,9 +85,19 @@ public class PunishData {
     }
 
     public Document toBson() {
+
+        String idd;
+        if (addedBy == null || addedBy.getUuid() == null) idd = Holiday.getInstance().getProfileHandler().getConsoleProfile().getUuid().toString();
+        else idd = addedBy.getUuid().toString();
+
+        String rBy;
+        if ((removedBy == null || removedBy.getUuid() == null) && removed) rBy = new Profile().getUuid().toString();
+        else if ((removedBy == null || removedBy.getUuid() == null) && !removed) rBy = "null";
+        else if (removed && removedBy.getUuid() != null) rBy = removedBy.getUuid().toString();
+        else rBy = Holiday.getInstance().getProfileHandler().getConsoleProfile().getUuid().toString();
         return new Document("_id", id)
                 .append("punished", punished.getUuid().toString())
-                .append("addedBy", addedBy.getUuid().toString())
+                .append("addedBy", idd)
                 .append("type", type.getName())
                 .append("addedReason", addedReason)
                 .append("addedAt", addedAt)
@@ -94,7 +106,7 @@ public class PunishData {
                 .append("silent", silent)
                 .append("removed", removed)
                 .append("removedAt", removedAt)
-                .append("removedBy", removedBy.getUuid().toString())
+                .append("removedBy", rBy)
                 .append("removedReason", removedReason);
     }
 

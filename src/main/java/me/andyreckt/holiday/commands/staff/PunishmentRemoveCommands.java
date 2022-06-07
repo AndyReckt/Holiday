@@ -6,17 +6,17 @@ import me.andyreckt.holiday.other.enums.PunishmentSubType;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.punishments.PunishData;
 import me.andyreckt.holiday.player.punishments.PunishmentType;
+import me.andyreckt.holiday.utils.BungeeUtil;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.PunishmentUtils;
 import me.andyreckt.holiday.utils.command.Command;
 import me.andyreckt.holiday.utils.command.param.Param;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class PunishmentRemoveCommands {
-
-    private static final BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
     @Command(names = {"unban", "pardon"}, async = true, perm = "holiday.unban")
     public static void unban(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
@@ -42,7 +42,7 @@ public class PunishmentRemoveCommands {
         if (fReason.equals("")) fReason = "Appealed";
         unPunish(profile, target, PunishmentType.UNMUTE, fReason, silent, sender);
     }
-    @Command(names = "unmute", async = true, perm = "holiday.unblacklist")
+    @Command(names = "unblacklist", async = true, perm = "holiday.unblacklist")
     public static void unblacklist(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
@@ -55,25 +55,25 @@ public class PunishmentRemoveCommands {
         PunishData data = null;
         switch (type) {
             case UNBAN: {
-                if (PunishmentUtils.checkBanned(target)) data = PunishmentUtils.getBan(profile);
+                if (PunishmentUtils.checkBanned(target)) data = PunishmentUtils.getBan(target);
                 break;
             }
             case UNMUTE: {
-                if (PunishmentUtils.checkMuted(target)) data = PunishmentUtils.getMute(profile);
+                if (PunishmentUtils.checkMuted(target)) data = PunishmentUtils.getMute(target);
                 break;
             }
             case UNBLACKLIST: {
-                if (PunishmentUtils.checkBlacklisted(target)) data = PunishmentUtils.getBlacklist(profile);
+                if (PunishmentUtils.checkBlacklisted(target)) data = PunishmentUtils.getBlacklist(target);
                 break;
             }
             case UNIP_BAN: {
-                if (PunishmentUtils.checkIPBanned(target)) data = PunishmentUtils.getIPBan(profile);
+                if (PunishmentUtils.checkIPBanned(target)) data = PunishmentUtils.getIPBan(target);
                 break;
             }
         }
 
         if (data == null) {
-            sender.sendMessage(messages.getString("COMMANDS.PUNISHMENT.NOTPUNISHED"));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.PUNISHMENT.NOTPUNISHED"));
             return;
         }
 

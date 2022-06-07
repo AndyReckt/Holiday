@@ -17,6 +17,8 @@ import me.andyreckt.holiday.utils.Utilities;
 import me.andyreckt.holiday.utils.command.Command;
 import me.andyreckt.holiday.utils.command.param.Param;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
+import net.minecraft.server.v1_8_R3.MinecraftServer;
+import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -24,9 +26,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.management.ManagementFactory;
+
 public class StaffCommands {
 
-    private static final BasicConfigurationFile messages = Holiday.getInstance().getMessages();
     private static final StaffHandler sh = Holiday.getInstance().getStaffHandler();
 
     @Command(names = {"alts", "alt", "accounts", "associatedaccounts", "listallaccounts"}, perm = "holiday.alts", async = true)
@@ -164,11 +167,11 @@ public class StaffCommands {
 
         if(sh.isInStaffMode(player)) {
             sh.destroy(player);
-            player.sendMessage(messages.getString("COMMANDS.STAFF.STAFFMODE.OFF"));
+            player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.STAFF.STAFFMODE.OFF"));
         }
         else {
             sh.init(player);
-            player.sendMessage(messages.getString("COMMANDS.STAFF.STAFFMODE.ON"));
+            player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.STAFF.STAFFMODE.ON"));
         }
     }
 
@@ -263,6 +266,59 @@ public class StaffCommands {
         sender.sendMessage(CC.translate("&aSending " + player.getName() + " to " + server + "..."));
         Utilities.sendToServer(player, server);
 
+    }
+
+    @Command(names = {"find", "search"}, perm = "holiday.find")
+    public static void find(CommandSender sender, @Param(name = "player") Profile player) {
+        if (player.isOnline()) {
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.FIND.ONLINE")
+                    .replace("<server>", player.getCurrentServer() == null ? "&cUnknown Server" : player.getCurrentServer())
+                    .replace("<target>", player.getNameWithColor()));
+        } else {
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.FIND.OFFLINE")
+                    .replace("<target>", player.getNameWithColor()));
+        }
+    }
+
+    @Command(names = {"lag", "serverlag"}, perm = "holiday.lag")
+    public static void lag(CommandSender sender) {
+        StringBuilder sb = new StringBuilder(" ");
+        for (double tps : MinecraftServer.getServer().recentTps)
+        {
+            sb.append(format(tps));
+            sb.append( ", " );
+        }
+
+        long serverTime = ManagementFactory.getRuntimeMXBean().getStartTime();
+        String uptime = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - serverTime, true, true);
+        String tps = sb.substring(0, sb.length() - 2);
+
+        Holiday.getInstance().getMessages().getStringList("COMMANDS.LAG.MESSAGE").forEach(s -> {
+            if (s.equalsIgnoreCase("<worlds>")) {
+                for (World world : Bukkit.getWorlds()) {
+                    sender.sendMessage(CC.translate(
+                            Holiday.getInstance().getMessages().getString("COMMANDS.LAG.WORLDS")
+                                    .replace("<name>", world.getName())
+                                    .replace("<chunks>", String.valueOf(world.getLoadedChunks().length))
+                                    .replace("<entities>", String.valueOf(world.getEntities().size())))
+                    );
+                }
+            } else
+            sender.sendMessage(CC.translate(s
+                    .replace("<bar>", CC.CHAT_BAR)
+                    .replace("<tps>", tps)
+                    .replace("<uptime>", uptime)
+                    .replace("<mem_max>", String.valueOf(Runtime.getRuntime().maxMemory() / 1024 / 1024))
+                    .replace("<mem_allocated>", String.valueOf(Runtime.getRuntime().totalMemory() / 1024 / 1024))
+                    .replace("<mem_available>", String.valueOf(Runtime.getRuntime().freeMemory() / 1024 / 1024))
+            ));
+
+
+        });
+    }
+    static String format(double tps) {
+        return ( ( tps > 18.0 ) ? CC.GREEN : ( tps > 16.0 ) ? CC.YELLOW : CC.RED )
+                + ( ( tps > 20.0 ) ? "*" : "" ) + Math.min( Math.round( tps * 100.0 ) / 100.0, 20.0 );
     }
 
 }

@@ -1,13 +1,13 @@
 package me.andyreckt.holiday.player.punishments;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.Arrays;
 
-@Getter
-@AllArgsConstructor
+
+@NoArgsConstructor
 public enum PunishmentType {
 
     BLACKLIST(),
@@ -31,26 +31,6 @@ public enum PunishmentType {
         }
 
         return WordUtils.capitalizeFully(this.name());
-    }
-
-    public String getMessage(PunishmentType type) {
-        String string = null;
-        switch (type) {
-            case BAN: string = "Banned";
-            case KICK: string = "Kicked";
-            case MUTE: string = "Muted";
-            case WARN: string = "Warned";
-            case UNBAN: string = "Unbanned";
-            case IP_BAN: string = "IP Banned";
-            case UNMUTE: string = "Unmuted";
-            case UNWARN: string = "Removed the warn of";
-            case TEMP_BAN: string = "Temporarly Banned";
-            case TEMP_MUTE: string = "Temporarly Muted";
-            case BLACKLIST: string = "Blacklisted";
-            case UNBLACKLIST: string = "Unblacklisted";
-            default: string = null;
-        }
-        return string;
     }
 
     public static PunishmentType getByName(String name) {

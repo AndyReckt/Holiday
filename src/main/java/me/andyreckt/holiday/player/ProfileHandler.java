@@ -11,15 +11,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 public class ProfileHandler {
 
     private final Map<UUID, Profile> profileCache;
 
     public ProfileHandler() {
-        this.profileCache = new ConcurrentHashMap<>();
+        this.profileCache = new HashMap<>();
     }
 
     public List<Profile> getOnlineProfiles() {
@@ -47,7 +45,7 @@ public class ProfileHandler {
     }
 
     public Profile getByCommandSender(CommandSender sender) {
-        if (sender instanceof Player) return getByUUID(((Player) sender).getUniqueId());
+        if (sender instanceof Player) return getByPlayer(((Player) sender));
         else return getConsoleProfile();
     }
 
@@ -55,13 +53,16 @@ public class ProfileHandler {
         return getByUUID(player.getUniqueId());
     }
 
-    public Profile getByNameFor5Minute(String name) {
+    public Profile getByName(String name) {
         if(DisguiseHandler.DisguiseRequest.alreadyUsed(name)) {
             return Holiday.getInstance().getProfileHandler().getByUUIDFor5Minutes(DisguiseHandler.DisguiseRequest.getDataFromName(name).uuid());
         }
-        Profile profile = new Profile(name.toLowerCase());
-        Tasks.runAsyncLater(() -> profileCache.remove(profile.getUuid()), 5*60*20);
-        return profile;
+        if (hasProfile(name)) {
+            Profile profile = new Profile(name);
+            Tasks.runAsyncLater(() -> profileCache.remove(profile.getUuid()), 5*60*20);
+            return profile;
+        } else return null;
+
     }
 
     public boolean hasProfile(UUID uuid) {

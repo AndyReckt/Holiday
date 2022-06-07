@@ -58,8 +58,19 @@ public class Profile {
     public Profile() {
         this.uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
         this.name = "&4Console";
+        this.ip = "0";
+        this.lowerCaseName = "&4CONSOLE";
+        this.ips = new ArrayList<>();
+        this.permissions = Collections.singletonList("*");
         this.online = true;
-        console = true;
+        this.firstLogin = 0L;
+        this.lastSeen = 0L;
+        this.console = true;
+        this.coins = 0;
+        this.liked = false;
+        this.inStaffMode = false;
+        this.messagesEnabled = false;
+        this.socialSpy = false;
     }
 
     public Profile(UUID uuid) {
@@ -103,11 +114,9 @@ public class Profile {
     }
 
     private void getProfileFromDb(String name) {
-        if (hasProfile(name)) {
-            Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
-            assert document != null;
-            new Profile(document);
-        } else Holiday.getInstance().getLogger().warning("Couldnt find " + name + "'s profile");
+        Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
+        assert document != null;
+        loadFromDocument(document);
     }
 
     public void save() {
@@ -409,4 +418,8 @@ public class Profile {
         return false;
     }
 
+
+    public String getName() {
+        return name == null ? "CONSOLE" : name;
+    }
 }

@@ -25,6 +25,9 @@ import me.andyreckt.holiday.player.staff.StaffHandler;
 import me.andyreckt.holiday.player.staff.StaffListeners;
 import me.andyreckt.holiday.server.ServerHandler;
 import me.andyreckt.holiday.server.chat.ChatHandler;
+import me.andyreckt.holiday.server.nms.INMS;
+import me.andyreckt.holiday.server.nms.impl.NMS_v1_7;
+import me.andyreckt.holiday.server.nms.impl.NMS_v1_8;
 import me.andyreckt.holiday.server.reboot.RebootTask;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.StringUtil;
@@ -32,9 +35,14 @@ import me.andyreckt.holiday.utils.Tasks;
 import me.andyreckt.holiday.utils.command.CommandHandler;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import me.andyreckt.holiday.utils.packets.Pidgin;
+import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.JedisPool;
 
@@ -42,7 +50,7 @@ import java.util.concurrent.*;
 
 
 @Getter
-public final class Holiday extends JavaPlugin {
+public final class Holiday extends JavaPlugin implements Listener{
 
     @Getter
     private static Holiday instance;
@@ -68,12 +76,14 @@ public final class Holiday extends JavaPlugin {
     private ChatHandler chatHandler;
     private StaffHandler staffHandler;
     private MenuAPI menuAPI;
+    private INMS nmsHandler;
 
     private Executor dbExecutor, executor;
     private ScheduledExecutorService scheduledExecutor;
 
     @Setter
     private RebootTask rebootTask;
+    private boolean joinable = false;
 
 
     @Override
@@ -89,10 +99,12 @@ public final class Holiday extends JavaPlugin {
 
     private void loadPlugin() {
         instance = this;
+        long time = System.currentTimeMillis();
         this.gson = new GsonBuilder().serializeNulls().create();
         setupConfigFiles();
         setupExecutors();
         setupDatabases();
+        setupNms();
         setupHandlers();
         setupListeners();
         setupRunnables();
@@ -100,10 +112,11 @@ public final class Holiday extends JavaPlugin {
         setupSoftDependencies();
         setupOthers();
 
-
-        infoConsole(ChatColor.GREEN + "Successfully Loaded!");
+        logInformation(time);
         sendServerStartup();
     }
+
+
 
 
     @Override
@@ -120,11 +133,28 @@ public final class Holiday extends JavaPlugin {
         CommandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands.staff");
     }
 
+    private void setupNms() {
+        if (this.getServer().getVersion().contains("1.7")) {
+            this.nmsHandler = new NMS_v1_7();
+            infoConsole(ChatColor.GOLD + "FOUND NOT FULLY COMPATIBLE SPIGOT VERSION, IT IS RECOMMENDED TO CHANGE TO 1.8.8");
+        }
+        else if (this.getServer().getVersion().contains("1.8")) {
+            this.nmsHandler = new NMS_v1_8();
+            infoConsole(ChatColor.GREEN + "FOUND COMPATIBLE SPIGOT VERSION, LOADING PLUGIN");
+        } else {
+            infoConsole(ChatColor.RED + "FOUND IMCOMPATIBLE/UNKNOWN VERSION, DISABLING");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+    }
+
     private void sendServerStartup() {
-        Tasks.runAsyncLater(() -> redis.sendPacket(new StaffMessages.StaffMessagesPacket(StringUtil.addNetworkPlaceholder(
-                        messages.getString("SERVER.STARTUP")
-                                .replace("<server>", settings.getString("SERVER.NICENAME"))),
-                        StaffMessageType.ADMIN)),
+        Tasks.runAsyncLater(() -> {
+                    this.joinable = true;
+                    redis.sendPacket(new StaffMessages.StaffMessagesPacket(StringUtil.addNetworkPlaceholder(
+                            messages.getString("SERVER.STARTUP")
+                                    .replace("<server>", settings.getString("SERVER.NICENAME"))),
+                            StaffMessageType.ADMIN));
+                },
                 20 * 5L);
     }
 
@@ -152,8 +182,8 @@ public final class Holiday extends JavaPlugin {
         this.grantHandler = new GrantHandler();
         this.disguiseHandler = new DisguiseHandler(this);
         this.profileHandler = new ProfileHandler();
-        this.punishmentHandler = new PunishmentHandler();
         this.serverHandler = new ServerHandler(this);
+        this.punishmentHandler = new PunishmentHandler();
         this.chatHandler = new ChatHandler(this.settings, serverHandler.getThisServer());
         this.staffHandler = new StaffHandler(this);
         this.menuAPI = new MenuAPI(this);
@@ -169,6 +199,7 @@ public final class Holiday extends JavaPlugin {
     }
 
     private void setupListeners() {
+        this.addListener(this);
         this.addListener(new ProfileListener());
         this.addListener(new ChatListener());
         this.addListener(new PunishmentsListener());
@@ -193,5 +224,17 @@ public final class Holiday extends JavaPlugin {
 
     public void infoConsole(String message) {
         Bukkit.getConsoleSender().sendMessage(CC.translate(message));
+    }
+
+    private void logInformation(final long milli) {
+        infoConsole(ChatColor.GREEN + "Initialized Holiday in " + (System.currentTimeMillis() - milli) + "ms (" + DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - milli, true, true) + ").");
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void startupCheck(PlayerLoginEvent event) {
+        if (!this.joinable) {
+            event.setKickMessage(CC.translate("&cServer is still starting up."));
+            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
+        }
     }
 }

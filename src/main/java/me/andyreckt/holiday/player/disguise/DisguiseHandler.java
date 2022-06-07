@@ -22,12 +22,9 @@ import me.andyreckt.holiday.utils.GameProfileUtil;
 import me.andyreckt.holiday.utils.Tasks;
 import me.andyreckt.holiday.utils.UUIDFetcher;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bson.Document;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -110,7 +107,7 @@ public class DisguiseHandler {
 
 		// Make sure we don't cache another game profile that isn't actually theirs
 		if (!this.originalCache.containsKey(player.getUniqueId())) {
-			this.originalCache.put(player.getUniqueId(), GameProfileUtil.clone(((CraftPlayer) player).getHandle().getProfile()));
+			this.originalCache.put(player.getUniqueId(), GameProfileUtil.clone(Holiday.getInstance().getNmsHandler().getGameProfile(player)));
 		}
 
 		new UpdateSkinTask(this.plugin, player, targetProfile, name).runTask(this.plugin);
@@ -165,7 +162,7 @@ public class DisguiseHandler {
 					}
 
 					this.skinCache.put(skinName.toLowerCase(), profile);
-					MinecraftServer.getServer().getUserCache().a(profile);
+					Holiday.getInstance().getNmsHandler().updateCache(profile);
 				}
 			}
 		} catch (Exception e) {

@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.andyreckt</groupId>
-    <artifactId>Holiday</artifactId>
-    <version>0.1</version>
+    <artifactId>holiday</artifactId>
+    <version>PRE-1.0</version>
     <packaging>jar</packaging>
 
     <name>Holiday</name>
@@ -21,6 +21,11 @@
 
     <repositories>
         <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -28,15 +33,29 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>funkemunkey</id>
+            <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>https://repo.dmulloy2.net/repository/public/</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
-        <!--PaperSpigot-->
+        <!--Spigot 1.8-->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.github.spigot</groupId>
+            <artifactId>1.7.10</artifactId>
+            <version>1.7.10</version>
         </dependency>
         <!--Lombok-->
         <dependency>
@@ -80,9 +99,15 @@
             <version>2.8.9</version>
             <scope>compile</scope>
         </dependency>
+        <!--ProtocolLib-->
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.7.0</version>
+        </dependency>
     </dependencies>
     <build>
-        <finalName>${project.name}-${project.version}</finalName>
+        <finalName>${project.name}</finalName>
         <defaultGoal>clean install</defaultGoal>
 
         <resources>
@@ -122,19 +147,19 @@
                     <relocations>
                         <relocation>
                             <pattern>com.mongodb</pattern>
-                            <shadedPattern>me.andyreckt.relocations.com.mongodb</shadedPattern>
+                            <shadedPattern>me.andyreckt.holiday.relocations.com.mongodb</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.google.gson</pattern>
-                            <shadedPattern>me.andyreckt.relocations.com.google.gson</shadedPattern>
+                            <shadedPattern>me.andyreckt.holiday.relocations.com.google.gson</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.bson</pattern>
-                            <shadedPattern>me.andyreckt.relocations.org.bson</shadedPattern>
+                            <shadedPattern>me.andyreckt.holiday.relocations.org.bson</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>io.github.zowpy.jedisapi</pattern>
-                            <shadedPattern>me.andyreckt.relocations.io.github.zowpy.jedisapi</shadedPattern>
+                            <shadedPattern>me.andyreckt.holiday.relocations.io.github.zowpy.jedisapi</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

@@ -1,10 +1,14 @@
 package me.andyreckt.holiday.commands;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketContainer;
 import io.github.zowpy.menu.Button;
 import io.github.zowpy.menu.buttons.DisplayButton;
 import io.github.zowpy.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.server.Server;
+import me.andyreckt.holiday.server.nms.impl.NMS_v1_8;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.ItemBuilder;
 import me.andyreckt.holiday.utils.StringUtils;
@@ -24,8 +28,6 @@ import java.util.Map;
 
 public class OtherCommands {
 
-    private static final BasicConfigurationFile messages = Holiday.getInstance().getMessages();
-
     @Command(names = {"garbage"}, perm = "holiday.garbage", async = true)
     public static void gc(CommandSender sender) {
         System.gc();
@@ -36,9 +38,9 @@ public class OtherCommands {
     public static void fly(Player sender) {
         sender.setAllowFlight(!sender.getAllowFlight());
         if (sender.getAllowFlight()) {
-            sender.sendMessage(messages.getString("COMMANDS.GENERAL.FLY.ON"));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.FLY.ON"));
         } else {
-            sender.sendMessage(messages.getString("COMMANDS.GENERAL.FLY.OFF"));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.FLY.OFF"));
         }
     }
 
@@ -50,9 +52,9 @@ public class OtherCommands {
             PlayerInventory inv = target.getInventory();
             inv.addItem(Item);
             target.updateInventory();
-            sender.sendMessage(messages.getString("COMMANDS.GENERAL.GIVE.SENDER")
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.GIVE.SENDER")
                     .replace("<material>", mat.name()).replace("<amount>", String.valueOf(amount)).replace("<target>", target.getName()));
-            target.sendMessage(messages.getString("COMMANDS.GENERAL.GIVE.TARGET")
+            target.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.GIVE.TARGET")
                     .replace("<material>", mat.name()).replace("<amount>", String.valueOf(amount)).replace("<player>", sender.getName()));
         }
     }
@@ -65,7 +67,7 @@ public class OtherCommands {
             PlayerInventory inv = sender.getInventory();
             inv.addItem(Item);
             sender.updateInventory();
-            sender.sendMessage(messages.getString("COMMANDS.GENERAL.GIVE.YOURSELF")
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.GIVE.YOURSELF")
                     .replace("<material>", mat.name()).replace("<amount>", String.valueOf(amount)));
         }
     }
@@ -81,15 +83,15 @@ public class OtherCommands {
             Player player = (Player) sender;
             if(target == player) {
                 clearPlayer(player);
-                player.sendMessage(messages.getString("COMMANDS.GENERAL.CLEAR.YOURSELF"));
+                player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.CLEAR.YOURSELF"));
             } else {
                 clearPlayer(target);
-                target.sendMessage(messages.getString("COMMANDS.GENERAL.CLEAR.TARGET").replace("<player>", sender.getName()));
-                player.sendMessage(messages.getString("COMMANDS.GENERAL.CLEAR.SENDER").replace("<player>", target.getName()));
+                target.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.CLEAR.TARGET").replace("<player>", sender.getName()));
+                player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.CLEAR.SENDER").replace("<player>", target.getName()));
             }
         } else {
             clearPlayer(target);
-            target.sendMessage(messages.getString("COMMANDS.GENERAL.CLEAR.TARGET").replace("<player>", "&4CONSOLE"));
+            target.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.CLEAR.TARGET").replace("<player>", "&4CONSOLE"));
         }
 
     }
@@ -98,10 +100,10 @@ public class OtherCommands {
     public static void heal(CommandSender sender, @Param(name = "target", defaultValue = "self") Player target) {
         target.setHealth(target.getMaxHealth());
         if (sender == target) {
-            sender.sendMessage(messages.getString("COMMANDS.GENERAL.HEAL.YOURSELF"));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.HEAL.YOURSELF"));
         } else {
-            target.sendMessage(messages.getString("COMMANDS.GENERAL.HEAL.TARGET").replace("<player>", sender.getName()));
-            sender.sendMessage(messages.getString("COMMANDS.GENERAL.HEAL.SENDER").replace("<player>", target.getName()));
+            target.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.HEAL.TARGET").replace("<player>", sender.getName()));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.HEAL.SENDER").replace("<player>", target.getName()));
         }
     }
 
@@ -110,10 +112,10 @@ public class OtherCommands {
         target.setSaturation(20);
         target.setFoodLevel(20);
         if (sender == target) {
-            sender.sendMessage(messages.getString("COMMANDS.GENERAL.FEED.YOURSELF"));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.FEED.YOURSELF"));
         } else {
-            target.sendMessage(messages.getString("COMMANDS.GENERAL.FEED.TARGET").replace("<player>", sender.getName()));
-            sender.sendMessage(messages.getString("COMMANDS.GENERAL.FEED.SENDER").replace("<player>", target.getName()));
+            target.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.FEED.TARGET").replace("<player>", sender.getName()));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.FEED.SENDER").replace("<player>", target.getName()));
         }
     }
 
@@ -153,6 +155,30 @@ public class OtherCommands {
             sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.ENCHANT.ADDED").replace("<item>", item.getType().name()));
         }
     }
+
+    @Command(names = {"demomode", "demo"}, perm = "holiday.demomode")
+    public static void demo(CommandSender sender, @Param(name = "player", defaultValue = "self") Player target) {
+        if (!Holiday.getInstance().isProtocolEnabled()) {
+            sender.sendMessage(CC.translate("&cYou need ProtocolLib in order to run this command"));
+            return;
+        }
+
+        if (!(Holiday.getInstance().getNmsHandler() instanceof NMS_v1_8)) {
+            sender.sendMessage(CC.translate("&cYou need to be in 1.8 in order to use this command for compatibility reasons"));
+            return; //TODO Add this to NMS handler so its usable in 1.7 too
+        }
+
+        final PacketContainer packet = new PacketContainer(PacketType.Play.Server.GAME_STATE_CHANGE);
+        packet.getIntegers().write(0, 5);
+        packet.getFloat().write(0, 0.0f);
+        try {
+            ProtocolLibrary.getProtocolManager().sendServerPacket(target, packet);
+            sender.sendMessage(CC.translate("&eSuccessfully sent the demo screen to &d" + target.getName()));
+        } catch (Exception ignored) {
+            sender.sendMessage(CC.translate("&cFailed to send the demo screen to that player."));
+        }
+    }
+
 
     private static void clearPlayer(Player player) {
         player.getInventory().clear();

@@ -37,7 +37,7 @@ public class ProfileParameterType implements ParameterType<Profile> {
             return (null);
         }
 
-        return (ph.getByNameFor5Minute(source));
+        return (ph.getByName(source)); //Seems to work
     }
 
     public List<String> tabComplete(Player sender, Set<String> flags, String source) {

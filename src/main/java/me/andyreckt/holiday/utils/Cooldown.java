@@ -26,7 +26,6 @@ public class Cooldown {
         return new Cooldown(hours * 24 * 60 * 1000L);
     }
 
-
     public long getPassed() {
         return System.currentTimeMillis() - this.start;
     }
@@ -42,7 +41,6 @@ public class Cooldown {
     public String getTimeLeft() {
         return formatSeconds(this.getRemaining());
     }
-
 
     public String formatSeconds(long time) {
         return new DecimalFormat("#0.0").format(time / 1000.0F);

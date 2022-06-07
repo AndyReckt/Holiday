@@ -341,7 +341,6 @@ public final class CommandHandler implements Listener {
         if (evalCommand(event.getSender(), event.getCommand()) != null) {
             event.setCancelled(true);
         }
-
     }
 
 }

@@ -24,10 +24,10 @@ public class RankCommands {
 
         String[] message = {
                 "&cUsage: /rank manage <rank>",
-                "&cUsage: /rank <addperm/removeperm> <permission>",
-                "&cUsage: /rank <addchild/removechild> <childRank>",
-                "&cUsage: /rank <setpriority> <priority>",
-                "&cUsage: /rank <create/delete> <name>",
+                "&cUsage: /rank addperm/removeperm <rank> <permission>",
+                "&cUsage: /rank addchild/removechild <rank> <child>",
+                "&cUsage: /rank setpriority <priority>",
+                "&cUsage: /rank create/delete <name>",
                 "&cUsage: /rank list"
         };
 

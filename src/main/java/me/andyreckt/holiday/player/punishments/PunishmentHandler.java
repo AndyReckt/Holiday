@@ -69,11 +69,13 @@ public class PunishmentHandler {
     public List<PunishData> getAllPunishmentsProfile(Profile profile) {
         List<PunishData> list = new ArrayList<>();
 
-        for (PunishData data : punishments.values()) {
-            if (data.getPunished().getUuid() == null) continue;
-            if (data.getIp().equalsIgnoreCase(profile.getIp())) list.add(data);
-            if ((data.getPunished().getUuid() == profile.getUuid()) && (!list.contains(data))) list.add(data);
-        }
+        punishments.values().stream().filter(data -> data.getPunished().getIp().equalsIgnoreCase(profile.getIp())).forEach(list::add);
+        punishments.values().stream().filter(data -> data.getPunished().getName().equalsIgnoreCase(profile.getName())).forEach(data -> {
+            if (!list.contains(data)) list.add(data);
+        });
+        punishments.values().stream().filter(data -> data.getPunished().getUuid() == profile.getUuid()).forEach(data -> {
+            if (!list.contains(data)) list.add(data);
+        });
 
         return list;
     }
@@ -102,22 +104,31 @@ public class PunishmentHandler {
 
     public PunishData getFromDocument(Document document) {
         ProfileHandler ph = Holiday.getInstance().getProfileHandler();
+
         String id = document.getString("_id");
-        Profile punished = ph.getByUUIDFor5Minutes(UUID.fromString(document.getString("punished")));
-        Profile issuer = ph.getByUUIDFor5Minutes(UUID.fromString(document.getString("addedBy")));
+
+        Profile punished = ph.getByUUID(UUID.fromString(document.getString("punished")), false);
+        Profile issuer = ph.getByUUID(UUID.fromString(document.getString("addedBy")));
+
         PunishmentType type = PunishmentType.getByName(document.getString("type"));
         String reason = document.getString("addedReason");
+
         long addedAt = document.getLong("addedAt");
         long duration = document.getLong("duration");
+
         String ip = document.getString("ip");
+
         boolean silent = document.getBoolean("silent");
         boolean removed = document.getBoolean("removed");
+
         PunishData data = new PunishData(id, punished, type, issuer, reason, addedAt, duration, silent, ip);
+
         data.setRemoved(removed);
         if (removed) {
             long removedAt = document.getLong("removedAt");
             Profile removedBy = ph.getByUUIDFor5Minutes(UUID.fromString(document.getString("removedBy")));
             String removedReason = document.getString("removedReason");
+
             data.setRemovedAt(removedAt);
             data.setRemovedBy(removedBy);
             data.setRemovedReason(removedReason);
