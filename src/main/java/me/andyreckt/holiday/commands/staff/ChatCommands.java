@@ -10,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ChatCommands { //TODO MESSAGES
+public class ChatCommands {
 
 	@Command(names = {"clearchat"}, perm = "holiday.clearchat", async = true)
 	public static void execute(CommandSender sender) {

@@ -11,14 +11,21 @@ import org.bukkit.Bukkit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public class Reboot extends BukkitRunnable {
+@Getter
+public class RebootTask {
 
-    public static long time;
-    public static Reboot currentReboot;
-    public static boolean active;
+    private long time;
+    private boolean active;
 
-    List<Long> rebootTimes = new ArrayList<>(Arrays.asList(10000L, 15000L, 30000L, 60000L, 120000L, 300000L, 600000L, 1200000L, 1800000L, 3600000L));
+    private Runnable runnable;
+
+    private final List<Long> rebootTimes = new ArrayList<>(Arrays.asList(1000L, 2000L, 3000L, 4000L, 5000L, 10000L, 15000L, 30000L, 60000L, 120000L, 300000L, 600000L, 1200000L, 1800000L, 3600000L));
+
+    private final ScheduledExecutorService executor;
 
     public RebootTask(long millis) {
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
@@ -27,8 +34,10 @@ public class Reboot extends BukkitRunnable {
         executor = Executors.newSingleThreadScheduledExecutor();
         runnable = runnable();
 
-        Bukkit.broadcastMessage(CC.translate("&eThe server will reboot in: &d" + TimeUtil.formatDuration(time)));
-        this.runTaskTimerAsynchronously(Holiday.getInstance(), 0, 20L);
+        Bukkit.broadcastMessage(messages.getString("REBOOT.REBOOTIN").replace("<time>", TimeUtil.getDuration(time)));
+
+        executor.scheduleAtFixedRate(runnable, 0, 250, TimeUnit.MILLISECONDS);
+        Holiday.getInstance().setRebootTask(this);
 
     }
 
@@ -44,8 +53,8 @@ public class Reboot extends BukkitRunnable {
         String restart = messages.getString("REBOOT.RESTART");
 
         if (time == 0) {
-            Bukkit.broadcastMessage(CC.translate("&4Server is rebooting."));
-            Bukkit.getOnlinePlayers().forEach(player -> Utilities.sendToServer(player, "Hub-1"));
+            Bukkit.broadcastMessage(CC.translate(restart));
+            Bukkit.getOnlinePlayers().forEach(player -> Utilities.sendToServer(player, fallbackServer));
             Bukkit.getServer().shutdown();
             active = false;
             cancel();

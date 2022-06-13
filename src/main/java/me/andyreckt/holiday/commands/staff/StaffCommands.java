@@ -10,13 +10,9 @@ import me.andyreckt.holiday.player.punishments.menu.check.CheckMenu;
 import me.andyreckt.holiday.player.punishments.menu.list.ListMenu;
 import me.andyreckt.holiday.player.staff.StaffHandler;
 import me.andyreckt.holiday.server.Server;
-import me.andyreckt.holiday.utils.CC;
-import me.andyreckt.holiday.utils.PunishmentUtils;
-import me.andyreckt.holiday.utils.StringUtils;
-import me.andyreckt.holiday.utils.Utilities;
+import me.andyreckt.holiday.utils.*;
 import me.andyreckt.holiday.utils.command.Command;
 import me.andyreckt.holiday.utils.command.param.Param;
-import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
@@ -29,8 +25,6 @@ import org.bukkit.inventory.ItemStack;
 import java.lang.management.ManagementFactory;
 
 public class StaffCommands {
-
-    private static final StaffHandler sh = Holiday.getInstance().getStaffHandler();
 
     @Command(names = {"alts", "alt", "accounts", "associatedaccounts", "listallaccounts"}, perm = "holiday.alts", async = true)
     public static void alts(CommandSender sender, @Param(name = "player") Profile target) {
@@ -124,7 +118,7 @@ public class StaffCommands {
     }
 
     @Command(names = {"more"}, perm = "holiday.more")
-    public static void more(Player sender) throws Exception {
+    public static void more(Player sender) {
         ItemStack item = sender.getItemInHand();
         if(item == null || item.getType() == Material.AIR) {
             sender.sendMessage(CC.translate("&cYou need to have an item in your hand."));
@@ -157,27 +151,26 @@ public class StaffCommands {
     }
 
     @Command(names = {"invsee", "inv"}, perm = "holiday.invsee")
-    public static void invsee(Player player, @Param(name = "player") Player target) throws Exception {
+    public static void invsee(Player player, @Param(name = "player") Player target) {
         new InvseeMenu(player, target).openMenu(player);
     }
 
     @Command(names = {"staff", "staffmode", "modmode", "mod"}, perm = "holiday.modmode")
     public static void staff(Player player) {
 
-
-        if(sh.isInStaffMode(player)) {
-            sh.destroy(player);
-            player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.STAFF.STAFFMODE.OFF"));
+        if(Holiday.getInstance().getStaffHandler().isInStaffMode(player)) {
+            Tasks.runAsync(() -> player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("STAFF.MODMODE.DISABLED"))));
+            Holiday.getInstance().getStaffHandler().destroy(player);
         }
         else {
-            sh.init(player);
-            player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.STAFF.STAFFMODE.ON"));
+            Tasks.runAsync(() -> player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("STAFF.MODMODE.ENABLED"))));
+            Holiday.getInstance().getStaffHandler().init(player);
         }
     }
 
     @Command(names = {"vanish", "v", "poof"}, perm = "holiday.modmode")
     public static void vanish(Player player) {
-        if(sh.isInStaffMode(player)) sh.getStaffPlayer(player).vanish();
+        if(Holiday.getInstance().getStaffHandler().isInStaffMode(player)) Holiday.getInstance().getStaffHandler().getStaffPlayer(player).vanish();
         else player.sendMessage(CC.translate("&cYou need to be in staff mode to be able to vanish."));
     }
     @Command(names = {"check", "c", "checkban", "checkpun", "checkpunishments", "punishments", "bancheck", "mutecheck", "punishmentcheck", "punishcheck", "pcheck"}, perm = "holiday.checkpunishments")
@@ -186,7 +179,7 @@ public class StaffCommands {
     }
     @Command(names = {"freeze", "ss"}, perm = "holiday.freeze")
     public static void execute(Player player, @Param(name = "player") Player target) {
-        sh.handleFreeze(target);
+        Holiday.getInstance().getStaffHandler().handleFreeze(target);
         if (target.hasMetadata("frozen")) {
             player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("FREEZE.STAFF.FROZEN").replace("<player>", target.getName())));
         } else {

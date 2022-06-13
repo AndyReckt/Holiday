@@ -10,16 +10,19 @@ STAFF: # Placeholders: <player> <server>
   JOIN: "&5[S] <player> &econnected to <server>."
   SWITCH: "&5[S] <player> &ejoined <server> from <oldserver>." # Placeholder: <oldserver>
   LEAVE: "&5[S] <player> &edisconnected from <server>."
+  MODMODE:
+    DISABLED: "&d[ModMode] &cDisabled."
+    ENABLED: "&d[ModMode] &cEnabled."
 
 REPORTS:
-  FORMAT: "&9[REPORT] &d[<server>] <player> &9reported <target> \n  &7» &9Reason: &3<reason>"# Placeholders: <server> <player> <target> <reason>
+  FORMAT: "&9[REPORT] &d[<server>] <player> &9reported <target> \n  &7» &9Reason: &3<reason>" # Placeholders: <server> <player> <target> <reason>
   CLICKMESSAGE: "&dClick to join <server>" # Placeholder <server>
 
 HELPOPS:
-  FORMAT: "&2[HELPOP] &d[<server>] <player> &2needs help \n  &7» &2Request: &a<reason>"# Placeholders: <server> <player> <reason>
-  CLICKMESSAGE: "&dClick to answer <player>" #Placeholder: <player>
+  FORMAT: "&2[HELPOP] &d[<server>] <player> &2needs help \n  &7» &2Request: &a<reason>" # Placeholders: <server> <player> <reason>
+  CLICKMESSAGE: "&dClick to answer <player>" # Placeholder: <player>
 
-PUNISHMENTS: #Placeholders: <player> <executor> <reason> <duration>
+PUNISHMENTS: # Placeholders: <player> <executor> <reason> <duration>
   SILENTPREFIX: "&7(Silent) "
   MESSAGES:
     KICK: "&c<executor> kicked <player> &cfor <reason>."

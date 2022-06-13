@@ -11,7 +11,7 @@ import org.bukkit.Bukkit;
 public class MessageSubscriber implements PacketListener {
 
     @IncomingPacketHandler
-    public void onMessage(MessagePacket packet) { //TODO w/ SOCIALSPY
+    public void onMessage(MessagePacket packet) {
         if (Bukkit.getPlayer(packet.getTarget().getUuid()) == null) return;
         packet.getTarget().getPlayer().sendMessage(CC.translate(
                 Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.FORMAT.RECEIVED")
