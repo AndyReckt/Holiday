@@ -14,6 +14,7 @@ import me.andyreckt.holiday.listeners.ChatListener;
 import me.andyreckt.holiday.listeners.OtherListeners;
 import me.andyreckt.holiday.listeners.ProfileListener;
 import me.andyreckt.holiday.listeners.PunishmentsListener;
+import me.andyreckt.holiday.other.LunarNametagsTask;
 import me.andyreckt.holiday.other.enums.StaffMessageType;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.ProfileHandler;
@@ -211,6 +212,8 @@ public final class Holiday extends JavaPlugin implements Listener{
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API") && settings.getBoolean("LUNAR.ENABLED"))
             lunarEnabled = true;
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib")) protocolEnabled = true;
+
+        new LunarNametagsTask(this);
     }
 
     private void setupOthers() {

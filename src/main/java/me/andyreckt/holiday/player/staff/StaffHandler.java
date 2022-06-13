@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.player.staff;
 
+import com.lunarclient.bukkitapi.LunarClientAPI;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,7 +29,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class StaffHandler {
-
+    @Getter
     private static Map<UUID, StaffData> staffs = new HashMap<>();
 
     private final Holiday holiday;
@@ -90,6 +91,8 @@ public class StaffHandler {
         Bukkit.getServer().getPluginManager().callEvent(new StaffModeEnterEvent(player));
         player.setGameMode(GameMode.CREATIVE);
         staffs.put(player.getUniqueId(), data);
+
+        if (holiday.isLunarEnabled() && LunarClientAPI.getInstance().isRunningLunarClient(player)) LunarClientAPI.getInstance().giveAllStaffModules(player);
     }
 
     public void handleFreeze(Player player) {
@@ -130,6 +133,12 @@ public class StaffHandler {
 
         Bukkit.getServer().getPluginManager().callEvent(new StaffModeLeaveEvent(player));
         staffs.remove(player.getUniqueId());
+
+        if (holiday.isLunarEnabled() && LunarClientAPI.getInstance().isRunningLunarClient(player)) LunarClientAPI.getInstance().disableAllStaffModules(player);
+
+        if (holiday.isLunarEnabled() && holiday.getSettings().getBoolean("LUNAR.NAMETAGS")) {
+            Bukkit.getOnlinePlayers().forEach(target -> LunarClientAPI.getInstance().resetNametag(player, target));
+        }
     }
 
     public void destroyWithoutSave(Player player) {
@@ -149,6 +158,12 @@ public class StaffHandler {
         player.addPotionEffects(data.effects);
         player.setAllowFlight(data.flying);
         staffs.remove(player.getUniqueId());
+
+        if (holiday.isLunarEnabled() && LunarClientAPI.getInstance().isRunningLunarClient(player)) LunarClientAPI.getInstance().disableAllStaffModules(player);
+
+        if (holiday.isLunarEnabled() && holiday.getSettings().getBoolean("LUNAR.NAMETAGS")) {
+            Bukkit.getOnlinePlayers().forEach(target -> LunarClientAPI.getInstance().resetNametag(player, target));
+        }
     }
 
     private void updateProfile(Player player, boolean enabled) {

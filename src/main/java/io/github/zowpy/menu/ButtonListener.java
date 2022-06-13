@@ -31,6 +31,7 @@ public class ButtonListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onButtonPress(final InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
+        if (event.getInventory() == player.getInventory()) return;
         final Menu openMenu = Menu.currentlyOpenedMenus.get(player.getUniqueId());
         if (openMenu != null) {
             if (event.getSlot() != event.getRawSlot()) {
