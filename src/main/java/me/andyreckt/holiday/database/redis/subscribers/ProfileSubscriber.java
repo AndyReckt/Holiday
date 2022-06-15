@@ -5,8 +5,10 @@ import me.andyreckt.holiday.database.redis.packet.ProfilePacket;
 import me.andyreckt.holiday.database.redis.packet.StaffSwitchServer;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.ProfileHandler;
+import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.packets.handler.IncomingPacketHandler;
 import me.andyreckt.holiday.utils.packets.listener.PacketListener;
+import org.bukkit.Bukkit;
 
 public class ProfileSubscriber implements PacketListener {
 
@@ -15,6 +17,18 @@ public class ProfileSubscriber implements PacketListener {
         ProfileHandler ph = Holiday.getInstance().getProfileHandler();
         if (ph.isCached(packet.getProfile().getUuid())) ph.updateProfile(packet.getProfile());
     }
+
+    @IncomingPacketHandler
+    public void onDelete(ProfilePacket.ProfileDeletePacket packet) {
+        Holiday.getInstance().getProfileHandler().removeFromCache(packet.getProfile().getUuid());
+    }
+
+    @IncomingPacketHandler
+    public void onMessage(ProfilePacket.ProfileMessagePacket packet) {
+        if (Bukkit.getPlayer(packet.getProfile().getUuid()) != null) packet.getProfile().getPlayer().sendMessage(CC.translate(packet.getMessage()));
+    }
+
+
 
     @IncomingPacketHandler
     public void onStaffChange(StaffSwitchServer.StaffPacket packet) {
