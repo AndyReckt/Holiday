@@ -26,6 +26,10 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         return plugin.getDescription().getVersion();
     }
 
+    @Override
+    public String getRequiredPlugin() {
+        return null;
+    }
 
     @Override
     public String onPlaceholderRequest(Player player, String param) {
