@@ -28,7 +28,6 @@ public class PunishmentSubscriber implements PacketListener {
         PunishData data = packet.getPunishData();
         PunishmentHandler ph = Holiday.getInstance().getPunishmentHandler();
         ProfileHandler prh = Holiday.getInstance().getProfileHandler();
-        BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
         if (!ph.cacheContains(data.getId())) ph.updateCache(data.getId(), data);
 
@@ -38,47 +37,47 @@ public class PunishmentSubscriber implements PacketListener {
 
         switch (data.getType()) {
             case BAN: {
-                string = messages.getString("PUNISHMENTS.MESSAGES.BAN");
+                string = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.BAN");
                 kick = true;
-                message = messages.getString("PUNISHMENTS.KICKMESSAGE.BAN");
+                message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.KICKMESSAGE.BAN");
                 break;
             }
 
             case KICK: {
-                string = messages.getString("PUNISHMENTS.MESSAGES.KICK");
+                string = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.KICK");
                 kick = true;
-                message = messages.getString("PUNISHMENTS.KICKMESSAGE.KICK");
+                message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.KICKMESSAGE.KICK");
                 break;
             }
 
             case MUTE: {
-                string = messages.getString("PUNISHMENTS.MESSAGES.MUTE");
+                string = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.MUTE");
                 break;
             }
 
             case IP_BAN: {
-                string = messages.getString("PUNISHMENTS.MESSAGES.IPBAN");
+                string = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.IPBAN");
                 kick = true;
-                message = messages.getString("PUNISHMENTS.KICKMESSAGE.IPBAN");
+                message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.KICKMESSAGE.IPBAN");
                 break;
             }
 
             case TEMP_BAN: {
-                string = messages.getString("PUNISHMENTS.MESSAGES.TEMPBAN");
+                string = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.TEMPBAN");
                 kick = true;
-                message = messages.getString("PUNISHMENTS.KICKMESSAGE.TEMPBAN");
+                message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.KICKMESSAGE.TEMPBAN");
                 break;
             }
 
             case TEMP_MUTE: {
-                string = messages.getString("PUNISHMENTS.MESSAGES.TEMPMUTE");
+                string = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.TEMPMUTE");
                 break;
             }
 
             case BLACKLIST: {
-                string = messages.getString("PUNISHMENTS.MESSAGES.BLACKLIST");
+                string = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.BLACKLIST");
                 kick = true;
-                message = messages.getString("PUNISHMENTS.KICKMESSAGE.BLACKLIST");
+                message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.KICKMESSAGE.BLACKLIST");
                 break;
             }
         }
@@ -95,13 +94,13 @@ public class PunishmentSubscriber implements PacketListener {
         string = string.replace("<duration>", TimeUtil.getDuration(data.getDuration()));
 
         if (data.isSilent()) {
-            String fString = messages.getString("PUNISHMENTS.SILENTPREFIX") + string;
+            String fString = Holiday.getInstance().getMessages().getString("PUNISHMENTS.SILENTPREFIX") + string;
             prh.getOnlineProfiles().forEach(profile -> {
                 if (profile.isStaff()) {
                     profile.getPlayer().sendMessage(CC.translate(fString));
-                    Holiday.getInstance().getLogger().info(CC.translate(fString));
                 }
             });
+            Holiday.getInstance().getLogger().info(CC.translate(fString));
         } else {
             Bukkit.broadcastMessage(CC.translate(string));
         }
@@ -118,26 +117,29 @@ public class PunishmentSubscriber implements PacketListener {
 
     @IncomingPacketHandler
     public void remove(PunishmentPacket packet) {
-        if (!(packet.getSubType() == PunishmentSubType.REMOVE) || packet.getSubType().equals(PunishmentSubType.REMOVESILENT)) return;
+        if (!(packet.getSubType() == PunishmentSubType.REMOVE || packet.getSubType().equals(PunishmentSubType.REMOVESILENT))) return;
 
         PunishmentHandler ph = Holiday.getInstance().getPunishmentHandler();
         PunishData data = packet.getPunishData();
-        BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
         ph.updateCache(data.getId(), data);
 
         String message = "";
         switch (data.getType()) {
-            case UNBAN: {
-                message = messages.getString("PUNISHMENTS.MESSAGES.UNBAN");
+            case BAN: {
+                message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.UNBAN");
                 break;
             }
-            case UNBLACKLIST: {
-                message = messages.getString("PUNISHMENTS.MESSAGES.UNIPBAN");
+            case IP_BAN: {
+                message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.UNIPBAN");
                 break;
             }
-            case UNMUTE: {
-                message = messages.getString("PUNISHMENTS.MESSAGES.UNBLACKLIST");
+            case MUTE: {
+                message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.UNMUTE");
+                break;
+            }
+            case BLACKLIST: {
+                message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.UNBLACKLIST");
                 break;
             }
         }
@@ -152,11 +154,13 @@ public class PunishmentSubscriber implements PacketListener {
         message = message.replace("<duration>", TimeUtil.getDuration(data.getDuration()));
 
         if (packet.getSubType() == PunishmentSubType.REMOVESILENT) {
-            String finalMessage = message;
-            Holiday.getInstance().getProfileHandler().getOnlineProfiles().stream()
-                    .filter(Profile::isStaff)
-                    .map(Profile::getPlayer)
-                    .forEach(player -> player.sendMessage(CC.translate(messages.getString("PUNISHMENTS.SILENTPREFIX") + finalMessage)));
+            String finalMessage = Holiday.getInstance().getMessages().getString("PUNISHMENTS.SILENTPREFIX") + message;
+            Holiday.getInstance().getProfileHandler().getOnlineProfiles().forEach(profile -> {
+                       if (profile.isStaff()) {
+                           profile.getPlayer().sendMessage(CC.translate(finalMessage));
+                       }
+                    });
+            System.out.println(finalMessage);
         } else {
             Bukkit.broadcastMessage(CC.translate(message));
         }

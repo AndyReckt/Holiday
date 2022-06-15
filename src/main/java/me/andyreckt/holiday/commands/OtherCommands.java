@@ -38,9 +38,9 @@ public class OtherCommands {
     public static void fly(Player sender) {
         sender.setAllowFlight(!sender.getAllowFlight());
         if (sender.getAllowFlight()) {
-            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.FLY.ON"));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.FLY.ENABLED"));
         } else {
-            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.FLY.OFF"));
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.FLY.DISABLED"));
         }
     }
 

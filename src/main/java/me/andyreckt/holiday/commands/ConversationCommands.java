@@ -20,28 +20,26 @@ public class ConversationCommands {
     @Command(names = {"message", "msg", "pm", "tell"}, async = true)
     public static void sendMessage(Player player, @Param(name = "target") Profile target, @Param(name = "message", wildcard = true) String message) {
 
-        BasicConfigurationFile messages = Holiday.getInstance().getMessages();
-
         Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(player);
         boolean bypass = profile.isStaff();
 
         if (!profile.isMessagesEnabled()) {
-            player.sendMessage(CC.translate(messages.getString("COMMANDS.CONVERSATION.TOGGLED")));
+            player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.TOGGLED")));
             return;
         }
 
         if (!target.isOnline()) {
-            player.sendMessage(CC.translate(messages.getString("COMMANDS.CONVERSATION.TARGETNOTONLINE")));
+            player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.TARGETNOTONLINE")));
             return;
         }
 
         if (!target.isMessagesEnabled() && !bypass) {
-            player.sendMessage(CC.translate(messages.getString("COMMANDS.CONVERSATION.TARGETTOGGLED")));
+            player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.TARGETTOGGLED")));
             return;
         }
 
         player.sendMessage(CC.translate(
-                messages.getString("COMMANDS.CONVERSATION.FORMAT.SENT")
+                Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.FORMAT.SENT")
                         .replace("<player>", target.getDisplayNameWithColor())
                         .replace("<message>", message)
         ));
@@ -52,7 +50,6 @@ public class ConversationCommands {
 
     @Command(names = {"reply", "r"}, async = true)
     public static void reply(Player player, @Param(name = "message", wildcard = true) String message) {
-        BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
         ProfileHandler ph = Holiday.getInstance().getProfileHandler();
 
@@ -61,29 +58,29 @@ public class ConversationCommands {
 
 
         if (!profile.isMessagesEnabled()) {
-            player.sendMessage(CC.translate(messages.getString("COMMANDS.CONVERSATION.TOGGLED")));
+            player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.TOGGLED")));
             return;
         }
 
         if (!lastMessage.containsKey(player.getUniqueId())) {
-            player.sendMessage(CC.translate(messages.getString("COMMANDS.CONVERSATION.NOBODYTOREPLY")));
+            player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.NOBODYTOREPLY")));
             return;
         }
 
         Profile target = ph.getByUUID(lastMessage.get(player.getUniqueId()));
 
         if (!target.isOnline()) {
-            player.sendMessage(CC.translate(messages.getString("COMMANDS.CONVERSATION.TARGETNOTONLINE")));
+            player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.TARGETNOTONLINE")));
             return;
         }
 
         if (!target.isMessagesEnabled() &&!bypass) {
-            player.sendMessage(CC.translate(messages.getString("COMMANDS.CONVERSATION.TARGETTOGGLED")));
+            player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.TARGETTOGGLED")));
             return;
         }
 
         player.sendMessage(CC.translate(
-                messages.getString("COMMANDS.CONVERSATION.FORMAT.SENT")
+                Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.FORMAT.SENT")
                         .replace("<player>", target.getDisplayNameWithColor())
                         .replace("<message>", message)
         ));
@@ -97,12 +94,10 @@ public class ConversationCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByUUID(sender.getUniqueId());
         profile.setSocialSpy(!profile.isSocialSpy());
 
-        BasicConfigurationFile messages = Holiday.getInstance().getMessages();
-
         if (!profile.isSocialSpy()) {
-            sender.sendMessage(CC.translate(messages.getString("COMMANDS.CONVERSATION.SOCIALSPY.OFF")));
+            sender.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.SOCIALSPY.DISABLED")));
         } else {
-            sender.sendMessage(CC.translate(messages.getString("COMMANDS.CONVERSATION.SOCIALSPY.ON")));
+            sender.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.SOCIALSPY.ENABLED")));
         }
         profile.save();
     }

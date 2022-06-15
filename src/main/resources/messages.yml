@@ -12,7 +12,7 @@ STAFF: # Placeholders: <player> <server>
   LEAVE: "&5[S] <player> &edisconnected from <server>."
   MODMODE:
     DISABLED: "&d[ModMode] &cDisabled."
-    ENABLED: "&d[ModMode] &cEnabled."
+    ENABLED: "&d[ModMode] &aEnabled."
 
 REPORTS:
   FORMAT: "&9[REPORT] &d[<server>] <player> &9reported <target> \n  &7» &9Reason: &3<reason>" # Placeholders: <server> <player> <target> <reason>
