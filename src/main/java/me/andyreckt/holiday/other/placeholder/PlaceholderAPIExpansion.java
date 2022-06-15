@@ -42,6 +42,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "player_highest_rank_name": return plugin.getProfileHandler().getByPlayer(player).getHighestRank().getName();
             case "player_highest_rank_displayname": return plugin.getProfileHandler().getByPlayer(player).getHighestRank().getDisplayName();
             case "player_highest_visible_grant_remaining_time": return TimeUtil.getDuration(plugin.getProfileHandler().getByPlayer(player).getHighestVisibleGrant().getRemainingTime());
+            case "player_highest_visible_grant_remaining_time_rounded": return TimeUtil.millisToRoundedTime(plugin.getProfileHandler().getByPlayer(player).getHighestVisibleGrant().getRemainingTime());
             case "player_highest_visible_grant_remaining_time_shortened": return TimeUtil.millisToSmallRoundedTime(plugin.getProfileHandler().getByPlayer(player).getHighestVisibleGrant().getRemainingTime());
             case "player_prefix": return plugin.getProfileHandler().getByPlayer(player).getHighestVisibleRank().getPrefix();
             case "player_suffix": return plugin.getProfileHandler().getByPlayer(player).getHighestVisibleRank().getSuffix();
