@@ -99,5 +99,10 @@ public class Grant {
         return !expired() && active;
     }
 
+    public long getRemainingTime() {
+        if (duration == TimeUtil.PERMANENT) return TimeUtil.PERMANENT;
+        else return (duration + executedAt) - System.currentTimeMillis();
+    }
+
 
 }
