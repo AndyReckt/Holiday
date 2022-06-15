@@ -6,15 +6,10 @@ import me.andyreckt.holiday.other.enums.PunishmentSubType;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.punishments.PunishData;
 import me.andyreckt.holiday.player.punishments.PunishmentType;
-import me.andyreckt.holiday.utils.BungeeUtil;
-import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.PunishmentUtils;
 import me.andyreckt.holiday.utils.command.Command;
 import me.andyreckt.holiday.utils.command.param.Param;
-import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class PunishmentRemoveCommands {
 

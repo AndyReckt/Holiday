@@ -71,9 +71,8 @@ public class PlayerUtil {
     }
 
     public static boolean hasVotedOnNameMC(UUID uuid) {
-        BasicConfigurationFile config = Holiday.getInstance().getSettings();
         try (Scanner scanner = new Scanner(
-                new URL("https://api.namemc.com/server/" + config.getString("NETWORK.IP") + "/likes?profile=" + uuid.toString())
+                new URL("https://api.namemc.com/server/" + Holiday.getInstance().getSettings().getString("NETWORK.IP") + "/likes?profile=" + uuid.toString())
                         .openStream()).useDelimiter("\\A")) {
             return Boolean.parseBoolean(scanner.next());
         } catch (IOException e) {
