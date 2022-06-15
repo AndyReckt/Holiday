@@ -213,7 +213,7 @@ public final class Holiday extends JavaPlugin implements Listener{
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("LunarClient-API") && settings.getBoolean("LUNAR.ENABLED"))
             lunarEnabled = true;
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib")) protocolEnabled = true;
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) new PlaceholderAPIExpansion(this);
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) new PlaceholderAPIExpansion(this).register();
 
         if (lunarEnabled) new LunarNametagsTask(this);
     }
