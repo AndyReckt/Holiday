@@ -5,6 +5,8 @@ import io.github.zowpy.menu.Menu;
 import io.github.zowpy.menu.buttons.ConfirmationButton;
 import io.github.zowpy.menu.buttons.DisplayButton;
 import io.github.zowpy.menu.buttons.EasyButton;
+import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.database.redis.packet.ProfilePacket;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.grant.Grant;
 import me.andyreckt.holiday.player.rank.Rank;
@@ -55,6 +57,7 @@ public class GrantConfirmMenu extends Menu {
             Grant grant = new Grant(profile.getUuid(), paramPlayer.getUniqueId(), rank, time);
             grant.save();
             paramPlayer.sendMessage(CC.translate("&aYou have granted the rank " + rank.getDisplayName() + " &ato " + profile.getNameWithColor() + " &afor a duration of " + ti));
+            Holiday.getInstance().getRedis().sendPacket(new ProfilePacket.ProfileMessagePacket(profile, "&aYou have been granted " + rank.getDisplayName() + "&a for a duration of " + ti));
         } , true);
         Button finallyImFine = new ConfirmationButton(false, (bool) -> paramPlayer.sendMessage(CC.translate("&cCancelled.")), true);
 
