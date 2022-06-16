@@ -2,7 +2,7 @@
 # Network Placeholders: <network_name> <network_ip> <discord> <teamspeak> <website> <servername> <teamspeak> <store>
 
 SERVER: # Placeholder: <server>
-  STARTUP: "&c[A] &a<server> has just started and will soon be joinable!"
+  STARTUP: "&c[A] &a<server> has just started and is now joinable!"
   SHUTDOWN: "&c[A] &c<server> just went offline and is no longer joinable!"
 
 STAFF: # Placeholders: <player> <server>
