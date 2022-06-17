@@ -108,7 +108,7 @@ public class StaffHandler {
     }
 
     public boolean hasPerm(Player player) {
-        return player.hasPermission("holiday.staffmode");
+        return player.hasPermission("holiday.staffmode") || player.hasPermission("*") || player.hasPermission("*.*") || player.hasPermission("holiday.*");
     }
 
     public void destroy(Player player) {

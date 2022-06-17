@@ -113,7 +113,7 @@ public class GeneralCommands {
 
         Rank[] ranks = Holiday.getInstance().getRankHandler().ranks().toArray(new Rank[]{});
 
-        Arrays.stream(ranks).filter(Rank::isVisible).forEach(rank
+        Arrays.stream(ranks).sorted((o1, o2) -> -(o1.getPriority() - o2.getPriority())).filter(Rank::isVisible).forEach(rank
                 -> builder.append(CC.translate(rank.getDisplayName())).append(CC.GRAY).append(", "));
 
         builder.setCharAt(builder.length() - 2, '.');
