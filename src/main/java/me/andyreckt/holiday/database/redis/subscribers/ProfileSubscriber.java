@@ -16,6 +16,8 @@ public class ProfileSubscriber implements PacketListener {
     public void onChange(ProfilePacket packet) {
         ProfileHandler ph = Holiday.getInstance().getProfileHandler();
         if (ph.isCached(packet.getProfile().getUuid())) ph.updateProfile(packet.getProfile());
+        packet.getProfile().setPlayerListName();
+        packet.getProfile().setBukkitDisplayName();
     }
 
     @IncomingPacketHandler
@@ -26,6 +28,8 @@ public class ProfileSubscriber implements PacketListener {
     @IncomingPacketHandler
     public void onMessage(ProfilePacket.ProfileMessagePacket packet) {
         if (Bukkit.getPlayer(packet.getProfile().getUuid()) != null) packet.getProfile().getPlayer().sendMessage(CC.translate(packet.getMessage()));
+        packet.getProfile().setPlayerListName();
+        packet.getProfile().setBukkitDisplayName();
     }
 
 

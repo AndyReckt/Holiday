@@ -110,7 +110,7 @@ public class RankCommands {
 
         Holiday.getInstance().getRedis().sendPacket(new PermissionChangePacket(rank));
 
-        sender.sendMessage(CC.translate("&aSuccessfully added the child \"" + child.getDisplayName() + "\" to the rank " + rank.getDisplayName()));
+        sender.sendMessage(CC.translate("&aSuccessfully added the child \"" + child.getDisplayName() + "\"&a to the rank " + rank.getDisplayName()));
     }
 
     @Command(names = {"rank removechild", "rank remchild", "rank child rem", "rank child remove"}, perm = "op", async = true)

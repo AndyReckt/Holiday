@@ -23,6 +23,11 @@ public class ConversationCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(player);
         boolean bypass = profile.isStaff();
 
+        if (target.getUuid().equals(player.getUniqueId())) {
+            player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.YOURSELF"));
+            return;
+        }
+
         if (!profile.isMessagesEnabled()) {
             player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.TOGGLED")));
             return;
@@ -68,6 +73,11 @@ public class ConversationCommands {
         }
 
         Profile target = ph.getByUUID(lastMessage.get(player.getUniqueId()));
+
+        if (target.getUuid().equals(player.getUniqueId())) {
+            player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.YOURSELF"));
+            return;
+        }
 
         if (!target.isOnline()) {
             player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.TARGETNOTONLINE")));

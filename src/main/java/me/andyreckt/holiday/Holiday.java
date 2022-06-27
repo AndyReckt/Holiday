@@ -167,7 +167,7 @@ public final class Holiday extends JavaPlugin implements Listener{
     }
 
 
-    private void setupConfigFiles() {
+    public void setupConfigFiles() {
         this.settings = new BasicConfigurationFile(this, "settings");
         this.messages = new BasicConfigurationFile(this, "messages");
     }

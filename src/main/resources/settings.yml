@@ -31,6 +31,10 @@ SERVER:
   WHITELISTMESAGE: "&eThe server is currently &cWhitelisted&e. \n &eYou need <rank> &eor above to be able to log into the server." # Placeholder: <rank>
   STAFFCHATPREFIX: '@' # Use only one Symbol
 
+PLAYER:
+  DISPLAYNAME: true
+  PLAYERLISTNAME: false
+
 STAFFMODE:
   ENABLED: true
   TELEPORTBACK: true # Should leaving staffmode teleports you back to your entering location?

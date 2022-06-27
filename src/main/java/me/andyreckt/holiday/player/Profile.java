@@ -105,6 +105,11 @@ public class Profile {
     public void load(boolean cache) {
         getProfileFromDb(uuid);
         if (cache) Holiday.getInstance().getProfileHandler().updateProfile(this);
+
+        Tasks.runLater(() -> {
+            setBukkitDisplayName();
+            setPlayerListName();
+        }, 20L);
     }
 
     private void getProfileFromDb(UUID uuid) {
@@ -197,6 +202,10 @@ public class Profile {
             save();
         }
 
+        Tasks.runLater(() -> {
+            setBukkitDisplayName();
+            setPlayerListName();
+        }, 20L);
     }
 
     public boolean isFrozen() {
@@ -421,5 +430,20 @@ public class Profile {
 
     public String getName() {
         return name == null ? "CONSOLE" : name;
+    }
+
+
+    public void setBukkitDisplayName() {
+        Player player = Bukkit.getPlayer(this.uuid);
+        if (player == null) return;
+        if (Holiday.getInstance().getSettings().getBoolean("PLAYER.DISPLAYNAME"))
+            player.setDisplayName(getDisplayRank().getPrefix() + getDisplayNameWithColor());
+    }
+
+    public void setPlayerListName() {
+        Player player = Bukkit.getPlayer(this.uuid);
+        if (player == null) return;
+        if (Holiday.getInstance().getSettings().getBoolean("PLAYER.PLAYERLISTNAME"))
+            player.setPlayerListName(getDisplayNameWithColor());
     }
 }

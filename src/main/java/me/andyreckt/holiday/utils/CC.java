@@ -14,8 +14,9 @@ import org.bukkit.entity.Player;
  */
 public final class CC {
 
-	public static final String PRIMARY = ChatColor.DARK_RED.toString(); // DARK_AQUA
-	public static final String SECONDARY = ChatColor.RED.toString(); // AQUA
+	public static final String PRIMARY = ChatColor.LIGHT_PURPLE.toString();
+	public static final String SECONDARY = ChatColor.DARK_PURPLE.toString();
+	public static final String CHAT = ChatColor.YELLOW.toString(); // TODO MAKE THESE 3 TAKE FROM CONFIG AND USE THEM IN MENUS
 
 	public static final String B_PRIMARY = PRIMARY + ChatColor.BOLD;
 	public static final String B_SECONDARY = SECONDARY + ChatColor.BOLD;
@@ -118,7 +119,7 @@ public final class CC {
 	public static void sendFrozenMessage(Player player, boolean frozen) {
 		List<String> messages = frozen ? Holiday.getInstance().getMessages().getStringList("FREEZE.FROZEN") : Holiday.getInstance().getMessages().getStringList("FREEZE.UNFROZEN");
 		List<String> toSend = translate(messages);
-		toSend.forEach(player::sendMessage);
+		toSend.forEach(s -> player.sendMessage(StringUtil.addNetworkPlaceholder(s)));
 	}
 
 }

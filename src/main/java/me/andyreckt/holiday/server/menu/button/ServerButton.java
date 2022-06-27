@@ -6,6 +6,7 @@ import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 public class ServerButton extends Button {
@@ -28,8 +29,15 @@ public class ServerButton extends Button {
                 "&ePlayers: &d" + serverData.getPlayers(),
                 "&eMax Players: &d" + serverData.getMaxplayers(),
                 "&eStatus: " + status,
+                " ",
+                "&7&oClick to connect...",
                 CC.MENU_BAR);
 
         return ib.build();
+    }
+
+    @Override
+    public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
+        player.chat("/join " + serverData.getName());
     }
 }
