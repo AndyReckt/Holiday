@@ -56,10 +56,12 @@
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!--Spigot 1.7-->
         <dependency>
             <groupId>org.github.spigot</groupId>
             <artifactId>1.7.10</artifactId>
             <version>1.7.10</version>
+            <scope>provided</scope>
         </dependency>
         <!--Lombok-->
         <dependency>
@@ -108,6 +110,7 @@
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>4.7.0</version>
+            <scope>provided</scope>
         </dependency>
         <!--PlaceHolderAPI-->
         <dependency>

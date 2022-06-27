@@ -41,7 +41,6 @@ public class UpdateSkinTask_1_8 extends BukkitRunnable {
 				field = entityHuman.getDeclaredField("bH");
 			}
 			field.setAccessible(true);
-
 			GameProfile currentProfile = (GameProfile) field.get(entityPlayer);
 
 			currentProfile.getProperties().clear();

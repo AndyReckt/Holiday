@@ -24,6 +24,7 @@ import me.andyreckt.holiday.utils.GameProfileUtil;
 import me.andyreckt.holiday.utils.Tasks;
 import me.andyreckt.holiday.utils.UUIDFetcher;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
+import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bson.Document;
 import org.bukkit.Bukkit;
@@ -51,7 +52,6 @@ public class DisguiseHandler_1_8 implements IDisguiseHandler {
 	private final Map<UUID, DisguiseData> disguiseData = new HashMap<>();
 	@Getter
 	public List<String> usedNames = new ArrayList<>();
-
 
 	public DisguiseHandler_1_8(Holiday plugin) {
 		this.plugin = plugin;

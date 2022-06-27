@@ -12,5 +12,6 @@ public interface INMS {
 
     void updatePlayer(final Player p0);
 
+    void clearDataWatcher(final Player p0);
 
 }

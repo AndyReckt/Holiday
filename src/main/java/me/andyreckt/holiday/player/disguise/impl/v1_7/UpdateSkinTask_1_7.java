@@ -4,9 +4,12 @@ package me.andyreckt.holiday.player.disguise.impl.v1_7;
 import lombok.RequiredArgsConstructor;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.utils.GameProfileUtil;
+import net.minecraft.server.v1_7_R4.EntityHuman;
+import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.util.com.mojang.authlib.GameProfile;
 import net.minecraft.util.com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,17 +32,8 @@ public class UpdateSkinTask_1_7 extends BukkitRunnable {
 	public void run() {
 
 		try {
-			final Object entityPlayer = player.getClass().getMethod("getHandle", (Class<?>[])null).invoke(player);
-			final Class<?> entityHuman = entityPlayer.getClass().getSuperclass();
-			final int maxVersion = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].replaceAll("(v|R[0-9]+)", "").split("_")[0]);
-			final int minVersion = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].replaceAll("(v|R[0-9]+)", "").split("_")[1]);
-			Field field;
-			if (maxVersion >= 1 && minVersion >= 9) {
-				field = entityHuman.getDeclaredField("bS");
-			}
-			else {
-				field = entityHuman.getDeclaredField("bH");
-			}
+			final EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
+			Field field = EntityHuman.class.getDeclaredField("i");
 			field.setAccessible(true);
 
 			GameProfile currentProfile = (GameProfile) field.get(entityPlayer);

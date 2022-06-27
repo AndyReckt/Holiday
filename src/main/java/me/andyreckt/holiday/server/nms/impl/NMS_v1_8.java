@@ -66,4 +66,9 @@ public class NMS_v1_8 implements INMS {
         player.setWalkSpeed(player.getWalkSpeed());
 
     }
+
+    @Override
+    public void clearDataWatcher(Player player) {
+        ((CraftPlayer) player).getHandle().getDataWatcher().watch(9, (byte) 0);
+    }
 }

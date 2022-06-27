@@ -44,7 +44,7 @@ public class PlayerUtil {
         player.closeInventory();
         player.setGameMode(GameMode.SURVIVAL);
         player.getActivePotionEffects().stream().map(PotionEffect::getType).forEach(player::removePotionEffect);
-        ((CraftPlayer) player).getHandle().getDataWatcher().watch(9, (byte) 0);
+        Holiday.getInstance().getNmsHandler().clearDataWatcher(player);
         player.getOpenInventory().getTopInventory().clear();
         player.updateInventory();
     }

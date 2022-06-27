@@ -35,4 +35,9 @@ public class NMS_v1_7 implements INMS {
         player.teleport(previousLocation);
     }
 
+    @Override
+    public void clearDataWatcher(Player player) {
+        ((CraftPlayer) player).getHandle().getDataWatcher().watch(9, (byte) 0);
+    }
+
 }

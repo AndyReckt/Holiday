@@ -58,11 +58,6 @@ public class DisguiseCommands {
     @Command(names = {"nick", "disguise", "dis"}, perm = "holiday.disguise")
     public static void nick(Player player) {
 
-        if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_7) {
-            player.sendMessage(CC.translate("&cNOT IMPLEMENTED FOR 1.7")); //TODO IMPLEMENT FOR 1.7
-            return;
-        }
-
         Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(player);
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
@@ -82,7 +77,11 @@ public class DisguiseCommands {
         String name, skin;
 
         name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
-        while (DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
+        if (Holiday.getInstance().getDisguiseHandler() instanceof DisguiseHandler_1_7) {
+            while (DisguiseHandler_1_7.DisguiseRequest.alreadyUsed(name)) name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
+        } else {
+            while (DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
+        }
 
         final String namef = name;
 
@@ -119,7 +118,7 @@ public class DisguiseCommands {
 
         StringBuilder sb = new StringBuilder();
         if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_7) {
-            DisguiseHandler_1_7 handler = (DisguiseHandler_1_7  ) Holiday.getInstance().getDisguiseHandler();
+            DisguiseHandler_1_7 handler = (DisguiseHandler_1_7 ) Holiday.getInstance().getDisguiseHandler();
 
             if (!handler.usedNames.isEmpty()) {
                 handler.usedNames.forEach(n -> {
