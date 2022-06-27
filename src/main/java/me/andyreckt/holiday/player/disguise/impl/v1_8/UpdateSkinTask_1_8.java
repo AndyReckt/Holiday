@@ -1,4 +1,4 @@
-package me.andyreckt.holiday.player.disguise;
+package me.andyreckt.holiday.player.disguise.impl.v1_8;
 
 
 import com.mojang.authlib.GameProfile;
@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
  * @author ConaxGames
  */
 @RequiredArgsConstructor
-public class UpdateSkinTask extends BukkitRunnable {
+public class UpdateSkinTask_1_8 extends BukkitRunnable {
 
 	private final Holiday plugin;
 	private final Player player;
@@ -49,7 +49,7 @@ public class UpdateSkinTask extends BukkitRunnable {
 				currentProfile.getProperties().put(property.getName(), property);
 			}
 
-			GameProfileUtil.setName(currentProfile, this.displayName);
+			GameProfileUtil.v1_8.setName(currentProfile, this.displayName);
 
 			field.set(entityPlayer, currentProfile);
 		} catch (Exception e) {

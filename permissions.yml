@@ -53,4 +53,6 @@ MuteChat: "holiday.mutechat"
 SlowChat: "holiday.slowchat"
 Demo: "holiday.demomode"
 
+HolidayOPCommands: "holiday.op"
+
 DonatorJoinWhenFull: "holiday.joinfull"

@@ -4,9 +4,10 @@ import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.redis.packet.StaffSwitchServer;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.ProfileHandler;
-import me.andyreckt.holiday.player.disguise.DisguiseHandler;
+import me.andyreckt.holiday.player.disguise.IDisguiseHandler;
+import me.andyreckt.holiday.player.disguise.impl.v1_7.DisguiseHandler_1_7;
+import me.andyreckt.holiday.player.disguise.impl.v1_8.DisguiseHandler_1_8;
 import me.andyreckt.holiday.player.grant.Grant;
-import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.player.rank.RankHandler;
 import me.andyreckt.holiday.server.nms.impl.NMS_v1_7;
 import me.andyreckt.holiday.utils.*;
@@ -88,15 +89,7 @@ public class ProfileListener implements Listener {
 
             if (p.isDisguisedOnLogin() || p.isDisguised()) {
 
-                if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_7) {
-                    DisguiseHandler.DisguiseRequest.removeDisguise(p);
-                    event.getPlayer().sendMessage(CC.translate("&cYOUR DISGUISE HAS BEEN REMOVED SINCE IT IS NOT YET IMPLEMENTED ON 1.7 SERVERS")); //TODO IMPLEMENT 1.7
-                    p.setDisguiseData(null);
-                    Holiday.getInstance().getDisguiseHandler().getDisguiseData().remove(p.getUuid());
-                    Holiday.getInstance().getDisguiseHandler().getOriginalCache().remove(p.getUuid());
-
-                } else {
-                    DisguiseHandler.DisguiseData data = Holiday.getInstance().getDisguiseHandler().getDisguiseData(p.getUuid());
+                    IDisguiseHandler.DisguiseData data = Holiday.getInstance().getDisguiseHandler().getDisguiseData(p.getUuid());
                     Tasks.run(() -> {
                         try {
                             Holiday.getInstance().getDisguiseHandler().disguise(event.getPlayer(), data.disguiseRank(), data.skinName(), data.displayName(), false);
@@ -104,9 +97,6 @@ public class ProfileListener implements Listener {
                             e.printStackTrace();
                         }
                     });
-                }
-
-
 
             }
 

@@ -66,14 +66,4 @@ public class NMS_v1_8 implements INMS {
         player.setWalkSpeed(player.getWalkSpeed());
 
     }
-
-    @Override
-    public void updateCache(GameProfile profile) {
-        MinecraftServer.getServer().getUserCache().a(profile);
-    }
-
-    @Override
-    public GameProfile getGameProfile(Player player) {
-        return ((CraftPlayer) player).getHandle().getProfile();
-    }
 }

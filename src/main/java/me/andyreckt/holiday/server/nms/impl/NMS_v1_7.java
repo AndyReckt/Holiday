@@ -35,13 +35,4 @@ public class NMS_v1_7 implements INMS {
         player.teleport(previousLocation);
     }
 
-    @Override
-    public void updateCache(GameProfile profile) {
-        //TODO make it useable
-    }
-
-    @Override
-    public GameProfile getGameProfile(Player player) {
-        return null;
-    }
 }

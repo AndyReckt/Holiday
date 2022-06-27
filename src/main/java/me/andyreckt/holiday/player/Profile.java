@@ -9,7 +9,8 @@ import lombok.Setter;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.database.redis.packet.ProfilePacket;
-import me.andyreckt.holiday.player.disguise.DisguiseHandler;
+import me.andyreckt.holiday.player.disguise.IDisguiseHandler;
+import me.andyreckt.holiday.player.disguise.impl.v1_8.DisguiseHandler_1_8;
 import me.andyreckt.holiday.player.grant.Grant;
 import me.andyreckt.holiday.player.grant.GrantComparator;
 import me.andyreckt.holiday.player.punishments.PunishData;
@@ -22,7 +23,6 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Getter
@@ -42,7 +42,7 @@ public class Profile {
     @Nullable
     private String currentServer;
     @Nullable
-    private DisguiseHandler.DisguiseData disguiseData;
+    private IDisguiseHandler.DisguiseData disguiseData;
 
 
     public Profile(Player player) {
@@ -96,7 +96,7 @@ public class Profile {
     }
 
     private boolean hasProfile(String name) {
-        if (DisguiseHandler.DisguiseRequest.alreadyUsed(name)) return true;
+        if (DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) return true;
 
         Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
         return document != null;

@@ -19,7 +19,9 @@ import me.andyreckt.holiday.other.enums.StaffMessageType;
 import me.andyreckt.holiday.other.placeholder.PlaceholderAPIExpansion;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.ProfileHandler;
-import me.andyreckt.holiday.player.disguise.DisguiseHandler;
+import me.andyreckt.holiday.player.disguise.IDisguiseHandler;
+import me.andyreckt.holiday.player.disguise.impl.v1_7.DisguiseHandler_1_7;
+import me.andyreckt.holiday.player.disguise.impl.v1_8.DisguiseHandler_1_8;
 import me.andyreckt.holiday.player.grant.GrantHandler;
 import me.andyreckt.holiday.player.punishments.PunishmentHandler;
 import me.andyreckt.holiday.player.rank.RankHandler;
@@ -43,7 +45,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.JedisPool;
@@ -71,7 +72,7 @@ public final class Holiday extends JavaPlugin implements Listener{
     private CommandHandler commandHandler;
     private PunishmentHandler punishmentHandler;
     private ProfileHandler profileHandler;
-    private DisguiseHandler disguiseHandler;
+    private IDisguiseHandler disguiseHandler;
     private RankHandler rankHandler;
     private GrantHandler grantHandler;
     private ServerHandler serverHandler;
@@ -182,7 +183,7 @@ public final class Holiday extends JavaPlugin implements Listener{
     private void setupHandlers() {
         this.rankHandler = new RankHandler();
         this.grantHandler = new GrantHandler();
-        this.disguiseHandler = new DisguiseHandler(this);
+        this.disguiseHandler = this.nmsHandler instanceof NMS_v1_8 ? new DisguiseHandler_1_8(this) : new DisguiseHandler_1_7(this);
         this.profileHandler = new ProfileHandler();
         this.serverHandler = new ServerHandler(this);
         this.punishmentHandler = new PunishmentHandler();

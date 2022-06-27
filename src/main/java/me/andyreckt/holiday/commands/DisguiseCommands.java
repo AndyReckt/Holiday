@@ -2,7 +2,8 @@ package me.andyreckt.holiday.commands;
 
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.Profile;
-import me.andyreckt.holiday.player.disguise.DisguiseHandler;
+import me.andyreckt.holiday.player.disguise.impl.v1_7.DisguiseHandler_1_7;
+import me.andyreckt.holiday.player.disguise.impl.v1_8.DisguiseHandler_1_8;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.server.nms.impl.NMS_v1_7;
 import me.andyreckt.holiday.utils.*;
@@ -25,11 +26,6 @@ public class DisguiseCommands {
                               @Param(name = "name") String name,
                               @Param(name = "skin") String skin,
                               @Param(name = "rank", defaultValue = "default") Rank rank) {
-
-        if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_7) {
-            player.sendMessage(CC.translate("&cNOT IMPLEMENTED FOR 1.7")); //TODO IMPLEMENT FOR 1.7
-            return;
-        }
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(player);
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
@@ -86,7 +82,7 @@ public class DisguiseCommands {
         String name, skin;
 
         name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
-        while (DisguiseHandler.DisguiseRequest.alreadyUsed(name)) name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
+        while (DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
 
         final String namef = name;
 
@@ -122,27 +118,55 @@ public class DisguiseCommands {
     public static void list(CommandSender sender) {
 
         StringBuilder sb = new StringBuilder();
-        if (!Holiday.getInstance().getDisguiseHandler().usedNames.isEmpty()) {
-            Holiday.getInstance().getDisguiseHandler().usedNames.forEach(n -> {
-                Profile profile = Holiday.getInstance().getProfileHandler().getByName(n);
-                if (profile != null) {
-                    String server = (profile.getCurrentServer() == null) ? "&coffline" : profile.getCurrentServer();
+        if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_7) {
+            DisguiseHandler_1_7 handler = (DisguiseHandler_1_7  ) Holiday.getInstance().getDisguiseHandler();
 
-                    sb.append(Holiday.getInstance().getMessages().getString("COMMANDS.DISGUISE.LIST")
-                                    .replace("<displayname>", profile.getDisplayNameWithColor())
-                                    .replace("<name>", profile.getNameWithColor())
-                                    .replace("<server>", server));
-                    sb.append("\n");
-                }
-            });
+            if (!handler.usedNames.isEmpty()) {
+                handler.usedNames.forEach(n -> {
+                    Profile profile = Holiday.getInstance().getProfileHandler().getByName(n);
+                    if (profile != null) {
+                        String server = (profile.getCurrentServer() == null) ? "&coffline" : profile.getCurrentServer();
+
+                        sb.append(Holiday.getInstance().getMessages().getString("COMMANDS.DISGUISE.LIST")
+                                .replace("<displayname>", profile.getDisplayNameWithColor())
+                                .replace("<name>", profile.getNameWithColor())
+                                .replace("<server>", server));
+                        sb.append("\n");
+                    }
+                });
+            } else {
+                sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.DISGUISE.NOBODYDISGUISED"));
+                return;
+            }
+            sender.sendMessage(CC.CHAT_BAR);
+            sender.sendMessage(CC.translate("&aDisguised Players:"));
+            sender.sendMessage(CC.translate(sb.substring(0, sb.length() - 1)));
+            sender.sendMessage(CC.CHAT_BAR);
         } else {
-            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.DISGUISE.NOBODYDISGUISED"));
-            return;
+            DisguiseHandler_1_8 handler = (DisguiseHandler_1_8) Holiday.getInstance().getDisguiseHandler();
+
+            if (!handler.usedNames.isEmpty()) {
+                handler.usedNames.forEach(n -> {
+                    Profile profile = Holiday.getInstance().getProfileHandler().getByName(n);
+                    if (profile != null) {
+                        String server = (profile.getCurrentServer() == null) ? "&coffline" : profile.getCurrentServer();
+
+                        sb.append(Holiday.getInstance().getMessages().getString("COMMANDS.DISGUISE.LIST")
+                                .replace("<displayname>", profile.getDisplayNameWithColor())
+                                .replace("<name>", profile.getNameWithColor())
+                                .replace("<server>", server));
+                        sb.append("\n");
+                    }
+                });
+            } else {
+                sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.DISGUISE.NOBODYDISGUISED"));
+                return;
+            }
+            sender.sendMessage(CC.CHAT_BAR);
+            sender.sendMessage(CC.translate("&aDisguised Players:"));
+            sender.sendMessage(CC.translate(sb.substring(0, sb.length() - 1)));
+            sender.sendMessage(CC.CHAT_BAR);
         }
-        sender.sendMessage(CC.CHAT_BAR);
-        sender.sendMessage(CC.translate("&aDisguised Players:"));
-        sender.sendMessage(CC.translate(sb.substring(0, sb.length() - 1)));
-        sender.sendMessage(CC.CHAT_BAR);
     }
 
     public static void setup(BasicConfigurationFile settings) {

@@ -3,7 +3,7 @@ package me.andyreckt.holiday.player;
 import com.mongodb.client.model.Filters;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
-import me.andyreckt.holiday.player.disguise.DisguiseHandler;
+import me.andyreckt.holiday.player.disguise.impl.v1_8.DisguiseHandler_1_8;
 import me.andyreckt.holiday.utils.Tasks;
 import org.bson.Document;
 import org.bukkit.Bukkit;
@@ -54,8 +54,8 @@ public class ProfileHandler {
     }
 
     public Profile getByName(String name) {
-        if(DisguiseHandler.DisguiseRequest.alreadyUsed(name)) {
-            return Holiday.getInstance().getProfileHandler().getByUUIDFor5Minutes(DisguiseHandler.DisguiseRequest.getDataFromName(name).uuid());
+        if(DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) {
+            return Holiday.getInstance().getProfileHandler().getByUUIDFor5Minutes(DisguiseHandler_1_8.DisguiseRequest.getDataFromName(name).uuid());
         }
         if (hasProfile(name)) {
             Profile profile = new Profile(name);
@@ -72,7 +72,7 @@ public class ProfileHandler {
     }
 
     public boolean hasProfile(String name) {
-        if(DisguiseHandler.DisguiseRequest.alreadyUsed(name)) return true;
+        if(DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) return true;
 
         Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
         return document != null;

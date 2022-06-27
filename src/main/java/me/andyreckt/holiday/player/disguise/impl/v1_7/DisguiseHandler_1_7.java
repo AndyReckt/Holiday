@@ -1,30 +1,33 @@
-package me.andyreckt.holiday.player.disguise;
+package me.andyreckt.holiday.player.disguise.impl.v1_7;
 
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import lombok.SneakyThrows;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.database.redis.packet.DisguisePacket;
 import me.andyreckt.holiday.other.enums.DisguiseType;
 import me.andyreckt.holiday.player.Profile;
+import me.andyreckt.holiday.player.disguise.IDisguiseHandler;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.GameProfileUtil;
 import me.andyreckt.holiday.utils.Tasks;
 import me.andyreckt.holiday.utils.UUIDFetcher;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
+import net.minecraft.server.v1_7_R4.MinecraftServer;
+import net.minecraft.util.com.mojang.authlib.GameProfile;
+import net.minecraft.util.com.mojang.authlib.properties.Property;
 import org.bson.Document;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -37,7 +40,7 @@ import java.util.*;
  * Disguise Class - Edited to fit our needs and 2021
  * @author ConaxGames
  */
-public class DisguiseHandler {
+public class DisguiseHandler_1_7 implements IDisguiseHandler {
 
 	private final Holiday plugin;
 	private final Map<String, GameProfile> skinCache = new HashMap<>();
@@ -49,7 +52,7 @@ public class DisguiseHandler {
 	public List<String> usedNames = new ArrayList<>();
 
 
-	public DisguiseHandler(Holiday plugin) {
+	public DisguiseHandler_1_7(Holiday plugin) {
 		this.plugin = plugin;
 		MongoUtils.submitToThread(() -> {
 			if(MongoUtils.getDisguiseCollection().find(Filters.eq("_id", "names")).first() == null) {
@@ -62,7 +65,8 @@ public class DisguiseHandler {
 		});
 	}
 
-	public void disguise(Player player, Rank rank, String skin, String name, boolean sendRequest) throws Exception {
+	@Override @SneakyThrows
+	public void disguise(Player player, Rank rank, String skin, String name, boolean sendRequest) {
 		BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 		if(sendRequest) {
 			if (Bukkit.getPlayer(name) != null || DisguiseRequest.alreadyUsed(name)) {
@@ -89,11 +93,11 @@ public class DisguiseHandler {
 		Profile profile = plugin.getProfileHandler().getByUUID(player.getUniqueId());
 
 		DisguiseData data = getDisguiseData(player.getUniqueId());
-		data.disguiseRank = rank;
-		data.displayName = name;
-		data.skinName = skin;
-		data.uuid = profile.getUuid();
-		data.lDisplayName = name.toLowerCase();
+		data.disguiseRank(rank);
+		data.displayName(name);
+		data.skinName(skin);
+		data.uuid(profile.getUuid());
+		data.lDisplayName(name.toLowerCase());
 		profile.setDisguiseData(data);
 		profile.save();
 		this.disguiseData.put(profile.getUuid(), data);
@@ -107,17 +111,18 @@ public class DisguiseHandler {
 
 		// Make sure we don't cache another game profile that isn't actually theirs
 		if (!this.originalCache.containsKey(player.getUniqueId())) {
-			this.originalCache.put(player.getUniqueId(), GameProfileUtil.clone(Holiday.getInstance().getNmsHandler().getGameProfile(player)));
+			this.originalCache.put(player.getUniqueId(), GameProfileUtil.v1_7.clone(getGameProfile(player)));
 		}
 
-		new UpdateSkinTask(this.plugin, player, targetProfile, name).runTask(this.plugin);
+		new UpdateSkinTask_1_7(this.plugin, player, targetProfile, name).runTask(this.plugin);
 	}
 
+	@Override
 	public void undisguise(Player player, boolean sendRequest) {
 		BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 		GameProfile originalProfile = this.originalCache.remove(player.getUniqueId());
 		if (originalProfile != null) {
-			new UpdateSkinTask(this.plugin, player, originalProfile, originalProfile.getName()).runTask(this.plugin);
+			new UpdateSkinTask_1_7(this.plugin, player, originalProfile, originalProfile.getName()).runTask(this.plugin);
 			Profile profile = plugin.getProfileHandler().getByUUID(player.getUniqueId());
 
 			if (sendRequest) {
@@ -131,6 +136,7 @@ public class DisguiseHandler {
 		}
 	}
 
+	@Override
 	public GameProfile loadGameProfile(UUID uniqueId, String skinName) {
 		GameProfile profile = this.skinCache.get(skinName.toLowerCase());
 
@@ -162,7 +168,7 @@ public class DisguiseHandler {
 					}
 
 					this.skinCache.put(skinName.toLowerCase(), profile);
-					Holiday.getInstance().getNmsHandler().updateCache(profile);
+					updateCache(profile);
 				}
 			}
 		} catch (Exception e) {
@@ -178,51 +184,41 @@ public class DisguiseHandler {
 		return profile;
 	}
 
+	@Override
 	public boolean isDisguised(UUID uuid) {
 		return this.originalCache.containsKey(uuid);
 	}
 
+	@Override
 	public boolean isDisguisedMongo(UUID uuid) {
 		return getDisguiseData(uuid).displayName() != null;
 	}
 
+	@Override
 	public boolean isDisguised(Player player) {
 		return this.isDisguised(player.getUniqueId());
 	}
 
+	@Override
 	public DisguiseData getDisguiseData(UUID uuid) {
 		if(this.disguiseData.containsKey(uuid)) return this.disguiseData.get(uuid);
 
 		DisguiseData data = new DisguiseData();
 		Document doc = (Document) MongoUtils.getDisguiseCollection().find(Filters.eq("_id", uuid.toString())).first();
 		if(doc != null) {
-			data.uuid = UUID.fromString(doc.getString("_id"));
-			data.displayName = doc.getString("displayName");
-			data.skinName = doc.getString("skinName");
-			data.disguiseRank = Holiday.getInstance().getRankHandler().getFromName(doc.getString("disguiseRank"));
-			data.lDisplayName = doc.getString("displayName").toLowerCase();
+			data.uuid(UUID.fromString(doc.getString("_id")));
+			data.displayName(doc.getString("displayName"));
+			data.skinName(doc.getString("skinName"));
+			data.disguiseRank(Holiday.getInstance().getRankHandler().getFromName(doc.getString("disguiseRank")));
+			data.lDisplayName(doc.getString("displayName").toLowerCase());
 		}
 		return data;
-	}
-
-	@Getter
-	@Setter
-	@Accessors(fluent = true)
-
-	public static class DisguiseData {
-
-		String displayName;
-		String skinName;
-		Rank disguiseRank;
-		UUID uuid;
-		String lDisplayName;
-
 	}
 
 
 	public static class DisguiseRequest {
 		static Holiday hol = Holiday.getInstance();
-		static DisguiseHandler dis = hol.getDisguiseHandler();
+		static DisguiseHandler_1_7 dis = (DisguiseHandler_1_7) hol.getDisguiseHandler();
 		public static boolean alreadyUsed(String name) {
 			return dis.getUsedNames().contains(name.toLowerCase());
 			/*
@@ -271,6 +267,16 @@ public class DisguiseHandler {
 		}
 
 
+	}
+
+	@Override
+	public void updateCache(Object profile) {
+		MinecraftServer.getServer().getUserCache().a((GameProfile) profile);
+	}
+
+	@Override
+	public GameProfile getGameProfile(Player player) {
+		return ((CraftPlayer) player).getHandle().getProfile();
 	}
 
 }

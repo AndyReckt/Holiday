@@ -2,6 +2,8 @@ package me.andyreckt.holiday.commands.staff;
 
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
+import me.andyreckt.holiday.player.disguise.impl.v1_7.DisguiseHandler_1_7;
+import me.andyreckt.holiday.player.disguise.impl.v1_8.DisguiseHandler_1_8;
 import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.server.menu.ServersMenu;
 import me.andyreckt.holiday.utils.CC;
@@ -98,7 +100,11 @@ public class HolidayCommand {
             public Prompt acceptInput(ConversationContext cc, String s) {
                 if (s.equalsIgnoreCase("yes")) {
                     MongoUtils.getDisguiseCollection().drop();
-                    Holiday.getInstance().getDisguiseHandler().usedNames.clear();
+                    if (Holiday.getInstance().getDisguiseHandler() instanceof DisguiseHandler_1_7) {
+                        ((DisguiseHandler_1_7) Holiday.getInstance().getDisguiseHandler()).usedNames.clear();
+                    } else {
+                        ((DisguiseHandler_1_8) Holiday.getInstance().getDisguiseHandler()).usedNames.clear();
+                    }
                     cc.getForWhom().sendRawMessage(ChatColor.GREEN + "Disguise collection has been cleared.");
                     return Prompt.END_OF_CONVERSATION;
                 }
