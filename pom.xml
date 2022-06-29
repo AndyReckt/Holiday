@@ -84,6 +84,13 @@
             <version>3.5.2</version>
             <scope>compile</scope>
         </dependency>
+        <!--bStats-->
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.0</version>
+            <scope>compile</scope>
+        </dependency>
         <!--JetBrains Annotations in case of any errors-->
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -162,6 +169,10 @@
                         <relocation>
                             <pattern>org.bson</pattern>
                             <shadedPattern>me.andyreckt.holiday.relocations.org.bson</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>me.andyreckt.holiday.relocations.org.bstats</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.mongodb</pattern>

@@ -40,6 +40,8 @@ import me.andyreckt.holiday.utils.command.CommandHandler;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import me.andyreckt.holiday.utils.packets.Pidgin;
 import org.apache.commons.lang.time.DurationFormatUtils;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -222,6 +224,9 @@ public final class Holiday extends JavaPlugin implements Listener{
     private void setupOthers() {
         DisguiseCommands.setup(settings);
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
+        Metrics metrics = new Metrics(this, 15604);
+        metrics.addCustomChart(new SimplePie("lunar_enabled", () -> lunarEnabled ? "Yes" : "No"));
     }
 
     private void addListener(Listener listener) {
