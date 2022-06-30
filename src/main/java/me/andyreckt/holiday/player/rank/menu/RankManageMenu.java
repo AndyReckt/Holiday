@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class RankManageMenu extends Menu {
+public class RankManageMenu extends Menu { //TODO MANAGE INT THINGS
 
     private final Rank rank;
 

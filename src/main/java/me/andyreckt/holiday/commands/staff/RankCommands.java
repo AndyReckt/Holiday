@@ -29,6 +29,7 @@ public class RankCommands {
                 "&cUsage: /rank setpriority <priority>",
                 "&cUsage: /rank create/delete <name>",
                 "&cUsage: /rank list"
+                //TODO ADD RANK IMPORT/EXPORT
         };
 
         for (String s: message) {

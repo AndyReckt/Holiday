@@ -126,10 +126,12 @@ public class PunishmentSubscriber implements PacketListener {
 
         String message = "";
         switch (data.getType()) {
+            case TEMP_BAN:
             case BAN: {
                 message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.UNBAN");
                 break;
             }
+            case UNIP_BAN:
             case IP_BAN: {
                 message = Holiday.getInstance().getMessages().getString("PUNISHMENTS.MESSAGES.UNIPBAN");
                 break;
@@ -144,13 +146,13 @@ public class PunishmentSubscriber implements PacketListener {
             }
         }
 
-        Profile issuer = data.getAddedBy();
+        Profile issuer = data.getRemovedBy();
         Profile punished = data.getPunished();
         message = StringUtil.addNetworkPlaceholder(message);
 
         message = message.replace("<executor>", issuer.getNameWithColor());
         message = message.replace("<player>", punished.getNameWithColor());
-        message = message.replace("<reason>", data.getAddedReason());
+        message = message.replace("<reason>", data.getRemovedReason());
         message = message.replace("<duration>", TimeUtil.getDuration(data.getDuration()));
 
         if (packet.getSubType() == PunishmentSubType.REMOVESILENT) {
@@ -162,7 +164,8 @@ public class PunishmentSubscriber implements PacketListener {
                     });
             System.out.println(finalMessage);
         } else {
-            Bukkit.broadcastMessage(CC.translate(message));
+            String finalMessage1 = message;
+            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(CC.translate(finalMessage1)));
         }
     }
 

@@ -142,8 +142,8 @@ public class GeneralCommands {
         ItemMeta im = is.getItemMeta();
         im.setDisplayName(CC.translate(name));
 
-        String itemName = StringUtils.capitalize(is.getType().name().toLowerCase().replace("_", ""));
-
+        String itemName = StringUtils.capitalize(is.getType().name().toLowerCase().replace("_", " "));
+        sender.getItemInHand().setItemMeta(im);
 
         sender.updateInventory();
         sender.sendMessage(CC.translate(

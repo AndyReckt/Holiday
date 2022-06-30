@@ -7,6 +7,7 @@ import me.andyreckt.holiday.other.menu.InvseeMenu;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.utils.CC;
+import me.andyreckt.holiday.utils.PlayerUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -63,7 +64,7 @@ public class OtherListeners implements Listener {
     public void onLoginFrozen(PlayerJoinEvent event) {
         if (event.getPlayer().hasMetadata("frozen")) {
             event.getPlayer().removeMetadata("frozen", Holiday.getInstance());
-            event.getPlayer().getActivePotionEffects().clear();
+            PlayerUtil.freeze(event.getPlayer(), false);
         }
     }
 }
