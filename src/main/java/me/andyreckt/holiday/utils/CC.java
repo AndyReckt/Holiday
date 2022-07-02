@@ -131,9 +131,9 @@ public final class CC {
 	}
 
 	public static void setupColors(BasicConfigurationFile settings) {
-		PRIMARY = settings.getString("COLORS.PRIMARY");
-		SECONDARY = settings.getString("COLORS.SECONDARY");
-		CHAT = settings.getString("COLORS.CHAT");
+		PRIMARY = getColor(settings.getString("COLORS.PRIMARY")).toString();
+		SECONDARY = getColor(settings.getString("COLORS.SECONDARY")).toString();
+		CHAT = getColor(settings.getString("COLORS.CHAT")).toString();
 	}
 
 }
