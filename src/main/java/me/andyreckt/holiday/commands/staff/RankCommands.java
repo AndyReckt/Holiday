@@ -64,18 +64,18 @@ public class RankCommands {
         for (Rank rank : rh.ranksSorted()) {
             TextComponentBuilder builder = new TextComponentBuilder(CC.translate(" " + rank.getDisplayName()));
             builder.setHoverEvent(HoverEvent.Action.SHOW_TEXT,
-                    "&eDisplay Name: " + rank.getDisplayName() + "\n" +
-                            "&ePrefix: " + rank.getPrefix() + "\n" +
-                            "&eSuffix: " + rank.getSuffix() + "\n" +
-                            "&eColor: " + rank.getColor() + rank.getColor().name() + "\n" +
-                            "&ePriority: &d" + rank.getPriority() + "\n" +
-                            "&eDefault: " + yesNo(rank.isDefault()) + "\n" +
-                            "&eVisible: " + yesNo(rank.isVisible()) + "\n" +
-                            "&eBold: " + yesNo(rank.isBold()) + "\n" +
-                            "&eItalic: " + yesNo(rank.isItalic()) + "\n" +
-                            "&eStaff: " + yesNo(rank.isStaff()) + "\n" +
-                            "&eAdmin: " + yesNo(rank.isAdmin()) + "\n" +
-                            "&eDev: " + yesNo(rank.isDev()) + "\n" +
+                    CC.CHAT + "Display Name: " + rank.getDisplayName() + "\n" +
+                            CC.CHAT + "Prefix: " + rank.getPrefix() + "\n" +
+                            CC.CHAT + "Suffix: " + rank.getSuffix() + "\n" +
+                            CC.CHAT + "Color: " + rank.getColor() + rank.getColor().name() + "\n" +
+                            CC.CHAT + "Priority: " + CC.PRIMARY + rank.getPriority() + "\n" +
+                            CC.CHAT + "Default: " + yesNo(rank.isDefault()) + "\n" +
+                            CC.CHAT + "Visible: " + yesNo(rank.isVisible()) + "\n" +
+                            CC.CHAT + "Bold: " + yesNo(rank.isBold()) + "\n" +
+                            CC.CHAT + "Italic: " + yesNo(rank.isItalic()) + "\n" +
+                            CC.CHAT + "Staff: " + yesNo(rank.isStaff()) + "\n" +
+                            CC.CHAT + "Admin: " + yesNo(rank.isAdmin()) + "\n" +
+                            CC.CHAT + "Dev: " + yesNo(rank.isDev()) + "\n" +
                             "&7&oClick to manage this rank"
             );
             builder.setClickEvent(ClickEvent.Action.RUN_COMMAND, "/rank manage " + rank.getName());

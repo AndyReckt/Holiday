@@ -22,20 +22,21 @@ public class HolidayCommand {
     public static void holiday(Player sender) {
 
         if (!(sender.hasPermission("holiday.op") || sender.hasPermission("holiday.*") || sender.hasPermission("*") || sender.hasPermission("*.*"))) {
-            sender.sendMessage(CC.translate("&eThis server is running &bHoliday &7(&dv" + Holiday.getInstance().getDescription().getVersion() + "&7) &eMade by &dAndyReckt"));
+            String msg = CC.CHAT + "This server is running" + CC.PRIMARY + " Holiday &7(" + CC.PRIMARY + "v" + Holiday.getInstance().getDescription().getVersion() + CC.CHAT + "&7) " + CC.CHAT + "by " + CC.SECONDARY + "AndyReckt";
+            sender.sendMessage(CC.translate(msg));
             return;
         }
 
         sender.sendMessage(CC.CHAT_BAR);
         sendVersionMessage(sender);
-        sender.sendMessage(CC.translate("&dCommands:"));
-        sender.sendMessage(CC.translate(" &e/holiday punishments &7(Shows the amount of Punishments)"));
-        sender.sendMessage(CC.translate(" &e/holiday clearpunishments &7(Clears the punishments collection)"));
-        sender.sendMessage(CC.translate(" &e/holiday clearprofiles &7(Clears the profiles collection)"));
-        sender.sendMessage(CC.translate(" &e/holiday cleardisguises &7(Clears the disguises collection)"));
-        sender.sendMessage(CC.translate(" &e/holiday clearservers &7(Clears the servers collection)"));
-        sender.sendMessage(CC.translate(" &e/holiday reloadconfig &7(Reload the config files)"));
-        sender.sendMessage(CC.translate(" &e/holiday servers &7(Show a list of all servers)"));
+        sender.sendMessage(CC.PRIMARY + "Commands:");
+        sender.sendMessage(CC.translate(CC.CHAT + "/holiday punishments &7(Shows the amount of Punishments)"));
+        sender.sendMessage(CC.translate(CC.CHAT + "/holiday clearpunishments &7(Clears the punishments collection)"));
+        sender.sendMessage(CC.translate(CC.CHAT + "/holiday clearprofiles &7(Clears the profiles collection)"));
+        sender.sendMessage(CC.translate(CC.CHAT + "/holiday cleardisguises &7(Clears the disguises collection)"));
+        sender.sendMessage(CC.translate(CC.CHAT + "/holiday clearservers &7(Clears the servers collection)"));
+        sender.sendMessage(CC.translate(CC.CHAT + "/holiday reloadconfig &7(Reload the config files)"));
+        sender.sendMessage(CC.translate(CC.CHAT + "/holiday servers &7(Show a list of all servers)"));
         sender.sendMessage(CC.CHAT_BAR);
 
     }
@@ -49,11 +50,11 @@ public class HolidayCommand {
 
         sender.sendMessage(CC.CHAT_BAR);
         sendVersionMessage(sender);
-        sender.sendMessage(CC.translate("&dPunishments:"));
-        sender.sendMessage(CC.translate(" &eBans: &7" + bans));
-        sender.sendMessage(CC.translate(" &eIp Bans: &7" + ipbans));
-        sender.sendMessage(CC.translate(" &eBlacklists: &7" + blacklists));
-        sender.sendMessage(CC.translate(" &eMutes: &7" + mutes));
+        sender.sendMessage(CC.PRIMARY + "Punishments:");
+        sender.sendMessage(CC.translate(CC.CHAT + " Bans: &7" + bans));
+        sender.sendMessage(CC.translate(CC.CHAT + " Ip Bans: &7" + ipbans));
+        sender.sendMessage(CC.translate(CC.CHAT + " Blacklists: &7" + blacklists));
+        sender.sendMessage(CC.translate(CC.CHAT + " Mutes: &7" + mutes));
         sender.sendMessage(CC.CHAT_BAR);
     }
 
@@ -197,7 +198,8 @@ public class HolidayCommand {
     }
 
     private static void sendVersionMessage(CommandSender sender) {
-        sender.sendMessage(CC.translate("&bHoliday &7(&dv" + Holiday.getInstance().getDescription().getVersion() + "&7) &eMade by &dAndyReckt"));
+        String msg = CC.PRIMARY + "Holiday &7(" + CC.PRIMARY + "v" + Holiday.getInstance().getDescription().getVersion() + "&7) " + CC.CHAT + "by " + CC.SECONDARY + "AndyReckt";
+        sender.sendMessage(CC.translate(msg));
     }
 
 

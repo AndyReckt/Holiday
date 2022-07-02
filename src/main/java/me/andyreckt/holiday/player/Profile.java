@@ -283,7 +283,7 @@ public class Profile {
             if (PunishmentUtils.checkBlacklisted(profile)) toReturn.add("&4" + profile.getName());
             else if (PunishmentUtils.checkIPBanned(profile) || PunishmentUtils.checkBanned(profile))
                 toReturn.add("&c" + profile.getName());
-            else if (PunishmentUtils.checkMuted(profile)) toReturn.add("&e" + profile.getName());
+            else if (PunishmentUtils.checkMuted(profile)) toReturn.add(CC.CHAT + profile.getName());
             else if (profile.isOnline()) toReturn.add("&a" + profile.getName());
             else toReturn.add("&7" + profile.getName());
         });

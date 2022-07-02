@@ -47,7 +47,7 @@ public class GamemodeCommands {
 		if (sender instanceof Player) {
 			if (target == (sender)) sender.sendMessage(messages.getString("COMMANDS.GAMEMODE.TARGET").replace("<gamemode>", target.getGameMode().name()));
 			else {
-				target.sendMessage(CC.translate("&eYour gamemode has been set to &d" + target.getGameMode().name()));
+				target.sendMessage(messages.getString("COMMANDS.GAMEMODE.TARGET").replace("<gamemode>", target.getGameMode().name()));
 				sender.sendMessage(messages.getString("COMMANDS.GAMEMODE.SENDER").replace("<gamemode>", target.getGameMode().name()).replace("<target>", target.getName()));
 			}
 		} else {

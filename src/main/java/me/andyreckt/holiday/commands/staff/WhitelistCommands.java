@@ -77,20 +77,20 @@ public class WhitelistCommands {
         sender.sendMessage(CC.CHAT_BAR);
 
         String status = sh.getThisServer().isWhitelisted() ? "&aOn" : "&cOff";
-        sender.sendMessage(CC.translate("&dWhitelist Info"));
-        sender.sendMessage(CC.translate(" &eWhitelist status: " + status));
-        sender.sendMessage(CC.translate(" &eWhitelist rank: " + sh.getThisServer().getWhitelistRank().getDisplayName()));
+        sender.sendMessage(CC.PRIMARY + "Whitelist Info");
+        sender.sendMessage(CC.CHAT + " Whitelist status: " + status);
+        sender.sendMessage(CC.CHAT + " Whitelist rank: " + sh.getThisServer().getWhitelistRank().getDisplayName());
 
         StringBuilder s = new StringBuilder();
 
         for (UUID uid : sh.getThisServer().getWhitelistedPlayers()) {
             Profile pr = Holiday.getInstance().getProfileHandler().getByUUIDFor5Minutes(uid);
-            s.append("&e").append(pr.getNameWithColor()).append("&e, ");
+            s.append(CC.CHAT).append(pr.getNameWithColor()).append(CC.CHAT).append(", ");
         }
         if (s.length() > 5)
         s = new StringBuilder(s.substring(0, s.length() - 4));
         s = new StringBuilder("&7[" + s + "&7]");
-        sender.sendMessage(CC.translate(" &eWhitelisted players: " + s));
+        sender.sendMessage(CC.CHAT + " Whitelisted players: " + s);
         sender.sendMessage(CC.CHAT_BAR);
     }
 

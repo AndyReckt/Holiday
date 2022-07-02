@@ -3,6 +3,7 @@ package me.andyreckt.holiday.player.staff.menu.button;
 import io.github.zowpy.menu.Button;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.Profile;
+import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -24,7 +25,7 @@ public class StaffButton extends Button {
                 .damage(SkullType.PLAYER.ordinal())
                 .owner(profile.getName())
                 .lore(
-                        "&eVanished: " + yesNo(profile.isVanished())
+                        CC.CHAT + "Vanished: " + yesNo(profile.isVanished())
                 ).build();
     }
 

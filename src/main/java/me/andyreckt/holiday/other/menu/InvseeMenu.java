@@ -86,7 +86,7 @@ public class InvseeMenu extends Menu {
             lore.add(CC.translate(CC.MENU_BAR));
             for (PotionEffect effect : InvseeMenu.invMap.get(paramPlayer).getActivePotionEffects()) {
                 String name = WordUtils.capitalize(effect.getType().getName().replace("_", " ").toLowerCase());
-                lore.add(CC.translate("&e" + name + " " + (effect.getAmplifier() + 1) + "&c for &e" + TimeUtil.niceTime(effect.getDuration() / 20) + "m"));
+                lore.add(CC.translate(CC.CHAT + name + " " + (effect.getAmplifier() + 1) + "&c for " + CC.CHAT + TimeUtil.niceTime(effect.getDuration() / 20) + "m"));
             }
             lore.add(CC.translate(CC.MENU_BAR));
         }

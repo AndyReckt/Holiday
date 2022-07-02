@@ -19,16 +19,16 @@ public class ServerButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player p0) {
-        ItemBuilder ib = new ItemBuilder(Material.WOOL, "&5" + serverData.getName());
+        ItemBuilder ib = new ItemBuilder(Material.WOOL, CC.SECONDARY + serverData.getName());
 
-        String status = serverData.isWhitelisted() ? "&dWhitelisted" : "&aOnline";
+        String status = serverData.isWhitelisted() ? CC.PRIMARY + "Whitelisted" : "&aOnline";
         int data = serverData.isWhitelisted() ? 2 : 5;
 
         ib.durability(data);
         ib.lore(CC.MENU_BAR,
-                "&ePlayers: &d" + serverData.getPlayers(),
-                "&eMax Players: &d" + serverData.getMaxplayers(),
-                "&eStatus: " + status,
+                CC.CHAT + "Players: " + CC.PRIMARY + serverData.getPlayers(),
+                CC.CHAT + "Max Players: " + CC.PRIMARY + serverData.getMaxplayers(),
+                CC.CHAT + "Status: " + status,
                 " ",
                 "&7&oClick to connect...",
                 CC.MENU_BAR);

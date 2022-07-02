@@ -1,6 +1,8 @@
 package me.andyreckt.holiday.utils;
 
+import lombok.experimental.UtilityClass;
 import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import org.bukkit.ChatColor;
 
 import java.util.List;
@@ -12,14 +14,15 @@ import org.bukkit.entity.Player;
 /**
  * Created by Marko on 26.02.2019.
  */
+@UtilityClass
 public final class CC {
 
-	public static final String PRIMARY = ChatColor.LIGHT_PURPLE.toString();
-	public static final String SECONDARY = ChatColor.DARK_PURPLE.toString();
-	public static final String CHAT = ChatColor.YELLOW.toString(); // TODO MAKE THESE 3 TAKE FROM CONFIG AND USE THEM IN MENUS
+	public static String PRIMARY;
+	public static String SECONDARY;
+	public static String CHAT;
 
-	public static final String B_PRIMARY = PRIMARY + ChatColor.BOLD;
-	public static final String B_SECONDARY = SECONDARY + ChatColor.BOLD;
+	public static String B_PRIMARY = PRIMARY + ChatColor.BOLD;
+	public static String B_SECONDARY = SECONDARY + ChatColor.BOLD;
 
 	public static final String BLUE = ChatColor.BLUE.toString();
 	public static final String AQUA = ChatColor.AQUA.toString();
@@ -105,6 +108,7 @@ public final class CC {
 
 	public static final char NICE_CHAR = '●';
 	public static final char HEART = '\u2764';
+	public static final String LINE = "▏";
 
 
 	public static String translate(String input) {
@@ -120,6 +124,16 @@ public final class CC {
 		List<String> messages = frozen ? Holiday.getInstance().getMessages().getStringList("FREEZE.FROZEN") : Holiday.getInstance().getMessages().getStringList("FREEZE.UNFROZEN");
 		List<String> toSend = translate(messages);
 		toSend.forEach(s -> player.sendMessage(StringUtil.addNetworkPlaceholder(s)));
+	}
+
+	public static ChatColor getColor(String text) {
+		return ChatColor.valueOf(text.toUpperCase());
+	}
+
+	public static void setupColors(BasicConfigurationFile settings) {
+		PRIMARY = settings.getString("COLORS.PRIMARY");
+		SECONDARY = settings.getString("COLORS.SECONDARY");
+		CHAT = settings.getString("COLORS.CHAT");
 	}
 
 }

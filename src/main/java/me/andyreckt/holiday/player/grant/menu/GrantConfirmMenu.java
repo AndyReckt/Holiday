@@ -46,9 +46,9 @@ public class GrantConfirmMenu extends Menu {
         toReturn.put(13, new DisplayButton(
                 new ItemBuilder(Material.PAPER).displayname("&bGrant").lore(
                         CC.MENU_BAR,
-                        "&ePlayer: " + profile.getNameWithColor(),
-                        "&eRank: " + rank.getDisplayName(),
-                        "&eDuration: &d" + TimeUtil.getDuration(time),
+                        CC.CHAT + "Player: " + profile.getNameWithColor(),
+                        CC.CHAT + "Rank: " + rank.getDisplayName(),
+                        CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(time),
                         CC.MENU_BAR
                 ).build()
         ));

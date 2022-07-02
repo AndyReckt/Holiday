@@ -37,7 +37,7 @@ public class StringUtils {
         }
 
         if(name.equalsIgnoreCase("ff") || name.equalsIgnoreCase("featherfalling")) {
-            enchant = "FEATHER_FALLING";
+            enchant = "PROTECTION_FALL";
         }
 
         if(name.equalsIgnoreCase("fire") || name.equalsIgnoreCase("fireaspect")) {

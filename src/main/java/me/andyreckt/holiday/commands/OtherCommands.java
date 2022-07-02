@@ -173,7 +173,7 @@ public class OtherCommands {
         packet.getFloat().write(0, 0.0f);
         try {
             ProtocolLibrary.getProtocolManager().sendServerPacket(target, packet);
-            sender.sendMessage(CC.translate("&eSuccessfully sent the demo screen to &d" + target.getName()));
+            sender.sendMessage(CC.CHAT + "Successfully sent the demo screen to " + CC.PRIMARY + target.getName());
         } catch (Exception ignored) {
             sender.sendMessage(CC.translate("&cFailed to send the demo screen to that player."));
         }

@@ -27,25 +27,25 @@ public class PunishmentCheckButton extends Button {
                     return new ItemBuilder(Material.WOOL)
                             .durability((short) 5)
                             .displayname(CC.RED + data.getId())
-                            .lore("&5Ban",
-                                    " &eDuration: &d" + data.getDurationString(),
-                                    " &eStaff: &d" + data.getAddedBy().getNameWithColor(),
-                                    " &eReason: &d" + data.getAddedReason(),
-                                    " &eDate: &d" + TimeUtil.formatDate(data.getAddedAt()))
+                            .lore(CC.SECONDARY + "Ban",
+                                    CC.CHAT + " Duration: " + CC.PRIMARY + data.getDurationString(),
+                                    CC.CHAT + " Staff: " + CC.PRIMARY + data.getAddedBy().getNameWithColor(),
+                                    CC.CHAT + " Reason: " + CC.PRIMARY + data.getAddedReason(),
+                                    CC.CHAT + " Date: " + CC.PRIMARY + TimeUtil.formatDate(data.getAddedAt()))
                             .build();
                 } else {
                     return new ItemBuilder(Material.WOOL)
                             .durability((short) 14)
                             .displayname(CC.RED + data.getId())
-                            .lore("&5Ban &8(&cExpired&8)",
-                                    " &eDuration: &d" + data.getDurationString(),
-                                    " &eStaff: &d" + data.getAddedBy().getNameWithColor(),
-                                    " &eReason: &d" + data.getAddedReason(),
-                                    " &eDate: &d" + TimeUtil.formatDate(data.getAddedAt()),
+                            .lore(CC.SECONDARY + "Ban &8(&cExpired&8)",
+                                    CC.CHAT + " Duration: " + CC.PRIMARY + data.getDurationString(),
+                                    CC.CHAT + " Staff: " + CC.PRIMARY + data.getAddedBy().getNameWithColor(),
+                                    CC.CHAT + " Reason: " + CC.PRIMARY + data.getAddedReason(),
+                                    CC.CHAT + " Date: " + CC.PRIMARY + TimeUtil.formatDate(data.getAddedAt()),
                                     " ",
-                                    " &eUnbanned by: &d" + data.getRemovedBy().getNameWithColor(),
-                                    " &eUnban reason: &d" + data.getRemovedReason(),
-                                    " &eUnban date: &d" + TimeUtil.formatDate(data.getRemovedAt()))
+                                    CC.CHAT + " Unbanned by: " + CC.PRIMARY + data.getRemovedBy().getNameWithColor(),
+                                    CC.CHAT + " Unban reason: " + CC.PRIMARY + data.getRemovedReason(),
+                                    CC.CHAT + " Unban date: " + CC.PRIMARY + TimeUtil.formatDate(data.getRemovedAt()))
                             .build();
                 }
             }
@@ -55,25 +55,25 @@ public class PunishmentCheckButton extends Button {
                     return new ItemBuilder(Material.WOOL)
                             .durability((short) 5)
                             .displayname(CC.RED + data.getId())
-                            .lore("&5Mute",
-                                    " &eDuration: &d" + data.getDurationString(),
-                                    " &eStaff: &d" + data.getAddedBy().getNameWithColor(),
-                                    " &eReason: &d" + data.getAddedReason(),
-                                    " &eDate: &d" + TimeUtil.formatDate(data.getAddedAt()))
+                            .lore(CC.SECONDARY + "Mute",
+                                    CC.CHAT + " Duration: " + CC.PRIMARY + data.getDurationString(),
+                                    CC.CHAT + " Staff: " + CC.PRIMARY + data.getAddedBy().getNameWithColor(),
+                                    CC.CHAT + " Reason: " + CC.PRIMARY + data.getAddedReason(),
+                                    CC.CHAT + " Date: " + CC.PRIMARY + TimeUtil.formatDate(data.getAddedAt()))
                             .build();
                 } else {
                     return new ItemBuilder(Material.WOOL)
                             .durability((short) 14)
                             .displayname(CC.RED + data.getId())
-                            .lore("&5Mute &8(&cExpired&8)",
-                                    " &eDuration: &d" + data.getDurationString(),
-                                    " &eStaff: &d" + data.getAddedBy().getNameWithColor(),
-                                    " &eReason: &d" + data.getAddedReason(),
-                                    " &eDate: &d" + TimeUtil.formatDate(data.getAddedAt()),
+                            .lore(CC.SECONDARY + "Mute &8(&cExpired&8)",
+                                    CC.CHAT + " Duration: " + CC.PRIMARY + data.getDurationString(),
+                                    CC.CHAT + " Staff: " + CC.PRIMARY + data.getAddedBy().getNameWithColor(),
+                                    CC.CHAT + " Reason: " + CC.PRIMARY + data.getAddedReason(),
+                                    CC.CHAT + " Date: " + CC.PRIMARY + TimeUtil.formatDate(data.getAddedAt()),
                                     " ",
-                                    " &eUnmuted by: &d" + data.getRemovedBy().getNameWithColor(),
-                                    " &eUnmute reason: &d" + data.getRemovedReason(),
-                                    " &eUnmute date: &d" + TimeUtil.formatDate(data.getRemovedAt()))
+                                    CC.CHAT + " Unmuted by: " + CC.PRIMARY + data.getRemovedBy().getNameWithColor(),
+                                    CC.CHAT + " Unmute reason: " + CC.PRIMARY + data.getRemovedReason(),
+                                    CC.CHAT + " Unmute date: " + CC.PRIMARY + TimeUtil.formatDate(data.getRemovedAt()))
                             .build();
                 }
             }
@@ -82,25 +82,25 @@ public class PunishmentCheckButton extends Button {
                     return new ItemBuilder(Material.WOOL)
                             .durability((short) 5)
                             .displayname(CC.RED + data.getId())
-                            .lore("&5IP-BAN",
-                                    " &eDuration: &d" + data.getDurationString(),
-                                    " &eStaff: &d" + data.getAddedBy().getNameWithColor(),
-                                    " &eReason: &d" + data.getAddedReason(),
-                                    " &eDate: &d" + TimeUtil.formatDate(data.getAddedAt()))
+                            .lore(CC.SECONDARY + "IP-BAN",
+                                    CC.CHAT + " Duration: " + CC.PRIMARY + data.getDurationString(),
+                                    CC.CHAT + " Staff: " + CC.PRIMARY + data.getAddedBy().getNameWithColor(),
+                                    CC.CHAT + " Reason: " + CC.PRIMARY + data.getAddedReason(),
+                                    CC.CHAT + " Date: " + CC.PRIMARY + TimeUtil.formatDate(data.getAddedAt()))
                             .build();
                 } else {
                     return new ItemBuilder(Material.WOOL)
                             .durability((short) 14)
                             .displayname(CC.RED + data.getId())
-                            .lore("&5IP-BAN &8(&cExpired&8)",
-                                    " &eDuration: &d" + data.getDurationString(),
-                                    " &eStaff: &d" + data.getAddedBy().getNameWithColor(),
-                                    " &eReason: &d" + data.getAddedReason(),
-                                    " &eDate: &d" + TimeUtil.formatDate(data.getAddedAt()),
+                            .lore(CC.SECONDARY + "IP-BAN &8(&cExpired&8)",
+                                    CC.CHAT + " Duration: " + CC.PRIMARY + data.getDurationString(),
+                                    CC.CHAT + " Staff: " + CC.PRIMARY + data.getAddedBy().getNameWithColor(),
+                                    CC.CHAT + " Reason: " + CC.PRIMARY + data.getAddedReason(),
+                                    CC.CHAT + " Date: " + CC.PRIMARY + TimeUtil.formatDate(data.getAddedAt()),
                                     " ",
-                                    " &eUnbanned by: &d" + data.getRemovedBy().getNameWithColor(),
-                                    " &eUnban reason: &d" + data.getRemovedReason(),
-                                    " &eUnban date: &d" + TimeUtil.formatDate(data.getRemovedAt()))
+                                    CC.CHAT + " Unbanned by: " + CC.PRIMARY + data.getRemovedBy().getNameWithColor(),
+                                    CC.CHAT + " Unban reason: " + CC.PRIMARY + data.getRemovedReason(),
+                                    CC.CHAT + " Unban date: " + CC.PRIMARY + TimeUtil.formatDate(data.getRemovedAt()))
                             .build();
                 }
             }
@@ -109,25 +109,25 @@ public class PunishmentCheckButton extends Button {
                     return new ItemBuilder(Material.WOOL)
                             .durability((short) 5)
                             .displayname(CC.DARK_RED + data.getId())
-                            .lore("&5Blacklist",
-                                    " &eDuration: &d" + data.getDurationString(),
-                                    " &eStaff: &d" + data.getAddedBy().getNameWithColor(),
-                                    " &eReason: &d" + data.getAddedReason(),
-                                    " &eDate: &d" + TimeUtil.formatDate(data.getAddedAt()))
+                            .lore(CC.SECONDARY + "Blacklist",
+                                    CC.CHAT + " Duration: " + CC.PRIMARY + data.getDurationString(),
+                                    CC.CHAT + " Staff: " + CC.PRIMARY + data.getAddedBy().getNameWithColor(),
+                                    CC.CHAT + " Reason: " + CC.PRIMARY + data.getAddedReason(),
+                                    CC.CHAT + " Date: " + CC.PRIMARY + TimeUtil.formatDate(data.getAddedAt()))
                             .build();
                 } else {
                     return new ItemBuilder(Material.WOOL)
                             .durability((short) 14)
                             .displayname(CC.GOLD + data.getId())
-                            .lore("&5Blacklist &8(&aExpired&8)",
-                                    " &eDuration: &d" + data.getDurationString(),
-                                    " &eStaff: &d" + data.getAddedBy().getNameWithColor(),
-                                    " &eReason: &d" + data.getAddedReason(),
-                                    " &eDate: &d" + TimeUtil.formatDate(data.getAddedAt()),
+                            .lore(CC.SECONDARY + "Blacklist &8(&aExpired&8)",
+                                    CC.CHAT + " Duration: " + CC.PRIMARY + data.getDurationString(),
+                                    CC.CHAT + " Staff: " + CC.PRIMARY + data.getAddedBy().getNameWithColor(),
+                                    CC.CHAT + " Reason: " + CC.PRIMARY + data.getAddedReason(),
+                                    CC.CHAT + " Date: " + CC.PRIMARY + TimeUtil.formatDate(data.getAddedAt()),
                                     " ",
-                                    " &eUnblacklist by: &d" + data.getRemovedBy().getNameWithColor(),
-                                    " &eUnblacklist reason: &d" + data.getRemovedReason(),
-                                    " &eUnblacklist date: &d" + TimeUtil.formatDate(data.getRemovedAt()))
+                                    CC.CHAT + " Unblacklist by: " + CC.PRIMARY + data.getRemovedBy().getNameWithColor(),
+                                    CC.CHAT + " Unblacklist reason: " + CC.PRIMARY + data.getRemovedReason(),
+                                    CC.CHAT + " Unblacklist date: " + CC.PRIMARY + TimeUtil.formatDate(data.getRemovedAt()))
                             .build();
                 }
             }

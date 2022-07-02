@@ -35,10 +35,10 @@ public class GrantButton extends Button {
                 .displayname(grant.getRank().getDisplayName())
                 .lore(
                         CC.MENU_BAR,
-                        "&eAdded by: &d" + issuer.getName(),
-                        "&eAdded at: &d" + TimeUtil.formatDate(grant.getExecutedAt()),
-                        "&eDuration: &d" + TimeUtil.getDuration(grant.getDuration()),
-                        "&eActive: " + yesNo(grant.isActive()),
+                        CC.CHAT + "Added by: " + CC.PRIMARY + issuer.getName(),
+                        CC.CHAT + "Added at: " + CC.PRIMARY + TimeUtil.formatDate(grant.getExecutedAt()),
+                        CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),
+                        CC.CHAT + "Active: " + yesNo(grant.isActive()),
                         CC.MENU_BAR
                 )
                 .damage(grant.isActive() ? 5 : 14);
