@@ -21,8 +21,8 @@ public final class CC {
 	public static String SECONDARY;
 	public static String CHAT;
 
-	public static String B_PRIMARY = PRIMARY + ChatColor.BOLD;
-	public static String B_SECONDARY = SECONDARY + ChatColor.BOLD;
+	public static String B_PRIMARY;
+	public static String B_SECONDARY;
 
 	public static final String BLUE = ChatColor.BLUE.toString();
 	public static final String AQUA = ChatColor.AQUA.toString();
@@ -134,6 +134,8 @@ public final class CC {
 		PRIMARY = getColor(settings.getString("COLORS.PRIMARY")).toString();
 		SECONDARY = getColor(settings.getString("COLORS.SECONDARY")).toString();
 		CHAT = getColor(settings.getString("COLORS.CHAT")).toString();
+		B_PRIMARY = PRIMARY + ChatColor.BOLD;
+		B_SECONDARY = SECONDARY + ChatColor.BOLD;
 	}
 
 }

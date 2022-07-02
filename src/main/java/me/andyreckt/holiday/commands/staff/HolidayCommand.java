@@ -30,13 +30,13 @@ public class HolidayCommand {
         sender.sendMessage(CC.CHAT_BAR);
         sendVersionMessage(sender);
         sender.sendMessage(CC.PRIMARY + "Commands:");
-        sender.sendMessage(CC.translate(CC.CHAT + "/holiday punishments &7(Shows the amount of Punishments)"));
-        sender.sendMessage(CC.translate(CC.CHAT + "/holiday clearpunishments &7(Clears the punishments collection)"));
-        sender.sendMessage(CC.translate(CC.CHAT + "/holiday clearprofiles &7(Clears the profiles collection)"));
-        sender.sendMessage(CC.translate(CC.CHAT + "/holiday cleardisguises &7(Clears the disguises collection)"));
-        sender.sendMessage(CC.translate(CC.CHAT + "/holiday clearservers &7(Clears the servers collection)"));
-        sender.sendMessage(CC.translate(CC.CHAT + "/holiday reloadconfig &7(Reload the config files)"));
-        sender.sendMessage(CC.translate(CC.CHAT + "/holiday servers &7(Show a list of all servers)"));
+        sender.sendMessage(CC.translate(CC.CHAT + " /holiday punishments &7(Shows the amount of Punishments)"));
+        sender.sendMessage(CC.translate(CC.CHAT + " /holiday clearpunishments &7(Clears the punishments collection)"));
+        sender.sendMessage(CC.translate(CC.CHAT + " /holiday clearprofiles &7(Clears the profiles collection)"));
+        sender.sendMessage(CC.translate(CC.CHAT + " /holiday cleardisguises &7(Clears the disguises collection)"));
+        sender.sendMessage(CC.translate(CC.CHAT + " /holiday clearservers &7(Clears the servers collection)"));
+        sender.sendMessage(CC.translate(CC.CHAT + " /holiday reloadconfig &7(Reload the config files)"));
+        sender.sendMessage(CC.translate(CC.CHAT + " /holiday servers &7(Show a list of all servers)"));
         sender.sendMessage(CC.CHAT_BAR);
 
     }

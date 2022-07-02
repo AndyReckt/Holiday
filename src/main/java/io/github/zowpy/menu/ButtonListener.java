@@ -74,14 +74,15 @@ public class ButtonListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
     public void onClose(InventoryCloseEvent event) {
         if (Menu.currentlyOpenedMenus.get(event.getPlayer().getUniqueId()) == null) return;
         Tasks.runLater(() -> {
             if (event.getInventory().getName().equals(Menu.currentlyOpenedMenus.get(event.getPlayer().getUniqueId()).getInventory().getName())) {
                 onInventoryClose((Player) event.getPlayer());
+                Menu.currentlyOpenedMenus.remove(event.getPlayer().getUniqueId());
             }
-        }, 5L);
+        }, 2L);
     }
 
 
