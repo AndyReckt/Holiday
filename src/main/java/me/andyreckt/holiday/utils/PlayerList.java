@@ -27,7 +27,7 @@ public class PlayerList { //PVPTEMPLE
 	public PlayerList visibleTo(CommandSender sender) {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			this.players.removeIf(other -> other != player && !player.canSee(other));
+			this.players.removeIf(other -> other != player && (Holiday.getInstance().getProfileHandler().getByPlayer(other).isVanished() && !Holiday.getInstance().getProfileHandler().getByPlayer(player).isStaff()));
 		}
 		return this;
 	}
@@ -35,7 +35,7 @@ public class PlayerList { //PVPTEMPLE
 	public PlayerList canSee(CommandSender sender) {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			this.players.removeIf(other -> other == player || !other.canSee(player));
+			this.players.removeIf(other -> other == player && (Holiday.getInstance().getProfileHandler().getByPlayer(player).isVanished() && !Holiday.getInstance().getProfileHandler().getByPlayer(other).isStaff()));
 		}
 		return this;
 	}

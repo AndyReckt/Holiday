@@ -12,7 +12,22 @@ import org.bukkit.entity.Player;
 
 public class ChatCommands {
 
-	@Command(names = {"clearchat"}, perm = "holiday.clearchat", async = true)
+	@Command(names = {"chat", "chat help"}, perm = "holiday.chat", async = true)
+	public static void help(CommandSender sender) {
+		String[] message = {
+				"&cUsage: /chat clear",
+				"&cUsage: /chat mute",
+				"&cUsage: /chat slow (duration)",
+				"&cUsage: /chat unslow",
+		};
+
+		for (String s: message) {
+			sender.sendMessage(CC.translate(s));
+		}
+	}
+
+
+	@Command(names = {"clearchat", "chat clear"}, perm = "holiday.clearchat", async = true)
 	public static void execute(CommandSender sender) {
 		StringBuilder sb = new StringBuilder(" ");
 		Tasks.runAsync(() -> {

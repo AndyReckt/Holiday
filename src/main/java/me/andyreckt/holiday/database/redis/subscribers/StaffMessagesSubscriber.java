@@ -93,6 +93,7 @@ public class StaffMessagesSubscriber implements PacketListener {
             Clickable clickable = new Clickable(s,
                     Holiday.getInstance().getMessages().getString("HELPOPS.CLICKMESSAGE")
                             .replace("<player>", packet.getSender()),
+                    ClickEvent.Action.SUGGEST_COMMAND,
                     "/msg " + packet.getSender()
             );
 

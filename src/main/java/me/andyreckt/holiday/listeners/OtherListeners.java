@@ -1,7 +1,9 @@
 package me.andyreckt.holiday.listeners;
 
 import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.database.redis.packet.BroadcastPacket;
 import me.andyreckt.holiday.database.redis.packet.ClickablePacket;
+import me.andyreckt.holiday.database.redis.packet.MessagePacket;
 import me.andyreckt.holiday.other.enums.BroadcastType;
 import me.andyreckt.holiday.other.menu.InvseeMenu;
 import me.andyreckt.holiday.player.Profile;
@@ -9,6 +11,7 @@ import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.PlayerUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -38,10 +41,14 @@ public class OtherListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoinFull(PlayerLoginEvent event) {
-        if (!(event.getResult() == PlayerLoginEvent.Result.KICK_FULL)) return;
+        if (!(event.getResult() == PlayerLoginEvent.Result.KICK_FULL || event.getResult() == PlayerLoginEvent.Result.ALLOWED)) return;
+        if (!(Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers())) return;
+
         Profile profile = Holiday.getInstance().getProfileHandler().getByUUID(event.getPlayer().getUniqueId());
-        if (Holiday.getInstance().getSettings().getBoolean("SERVER.DONATORJOINFULL")
-        && profile.hasPermission("holiday.joinfull")) event.setResult(PlayerLoginEvent.Result.ALLOWED);
+
+        if (Holiday.getInstance().getSettings().getBoolean("SERVER.DONATORJOINFULL") && profile.hasPermission("holiday.joinfull"))
+            event.setResult(PlayerLoginEvent.Result.ALLOWED);
+        else event.setResult(PlayerLoginEvent.Result.KICK_FULL);
     }
     @EventHandler
     public void invseeClose(InventoryCloseEvent event) {
@@ -51,13 +58,15 @@ public class OtherListeners implements Listener {
     @EventHandler
     public void onLogout(PlayerQuitEvent event) {
         if (!event.getPlayer().hasMetadata("frozen")) return;
+        Holiday.getInstance().getRedis().sendPacket(new BroadcastPacket(" ", BroadcastType.STAFF));
         Holiday.getInstance().getRedis().sendPacket(new ClickablePacket(
-                "&c" + event.getPlayer().getName() + " has logged out whilst frozen",
+                "&4" + event.getPlayer().getName() + " has logged out whilst frozen",
                 "&7&oClick here to ban",
                 ClickEvent.Action.RUN_COMMAND,
                 "/ban " + event.getPlayer().getName() + " Logged out whilst frozen -s",
                 BroadcastType.STAFF
         ));
+        Holiday.getInstance().getRedis().sendPacket(new BroadcastPacket(" ", BroadcastType.STAFF));
     }
 
     @EventHandler

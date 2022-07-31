@@ -5,11 +5,12 @@ import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.player.disguise.impl.v1_7.DisguiseHandler_1_7;
 import me.andyreckt.holiday.player.disguise.impl.v1_8.DisguiseHandler_1_8;
 import me.andyreckt.holiday.server.Server;
-import me.andyreckt.holiday.server.menu.ServersMenu;
 import me.andyreckt.holiday.utils.CC;
-import me.andyreckt.holiday.utils.PlayerUtil;
 import me.andyreckt.holiday.utils.PunishmentUtils;
+import me.andyreckt.holiday.utils.TextComponentBuilder;
 import me.andyreckt.holiday.utils.command.Command;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -194,7 +195,21 @@ public class HolidayCommand {
     }
     @Command(names = {"holiday servers", "servers"}, perm = "holiday.op")
     public static void servers(Player sender) {
-        new ServersMenu().openMenu(sender);
+        sender.sendMessage(CC.CHAT_BAR);
+        for (Server serverData : Holiday.getInstance().getServerHandler().getServers().values()) {
+            String status = serverData.isWhitelisted() ? CC.PRIMARY + "Whitelisted" : "&aOnline";
+
+            TextComponentBuilder builder = new TextComponentBuilder(CC.PRIMARY + serverData.getName());
+            builder.setHoverEvent(HoverEvent.Action.SHOW_TEXT,
+                    CC.CHAT + "Players: " + CC.PRIMARY + serverData.getPlayers() + "\n" +
+                    CC.CHAT + "Max Players: " + CC.PRIMARY + serverData.getMaxplayers() + "\n" +
+                    CC.CHAT + "Status: " + status + "\n" +
+                    " " + "\n" +
+                    "&7&oClick to connect...");
+            builder.setClickEvent(ClickEvent.Action.RUN_COMMAND, "/join " + serverData.getName());
+            sender.spigot().sendMessage(builder.toText());
+        }
+        sender.sendMessage(CC.CHAT_BAR);
     }
 
     private static void sendVersionMessage(CommandSender sender) {

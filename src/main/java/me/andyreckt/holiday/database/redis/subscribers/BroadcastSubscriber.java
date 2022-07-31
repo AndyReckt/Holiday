@@ -34,7 +34,7 @@ public class BroadcastSubscriber implements PacketListener {
                 });
                 break;
             }
-            case OP: {
+            case DEV: {
                 ph.getOnlineProfiles().forEach(profile -> {
                     if(profile.isOp() && profile.getPlayer() != null) profile.getPlayer().sendMessage(CC.translate(packet.getMessage()));
                 });
@@ -64,7 +64,7 @@ public class BroadcastSubscriber implements PacketListener {
                 });
                 break;
             }
-            case OP: {
+            case DEV: {
                 ph.getOnlineProfiles().forEach(profile -> {
                     if(profile.isOp() && profile.getPlayer() != null) clickable.sendToPlayer(profile.getPlayer());
                 });

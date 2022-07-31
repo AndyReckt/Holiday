@@ -37,15 +37,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings({"unchecked"})
-public final class CommandHandler implements Listener {
+@SuppressWarnings("unused")
+public class CommandHandler implements Listener {
 
     @Getter
-    static final List<CommandData> commands = new ArrayList<>();
-    static final Map<Class<?>, ParameterType> parameterTypes = new HashMap<>();
-    static boolean initiated = false;
+    private final List<CommandData> commands = new ArrayList<>();
+    private static final Map<Class<?>, ParameterType<?>> parameterTypes = new HashMap<>();
+    private boolean initiated = false;
 
-    final JavaPlugin plugin;
+    private final JavaPlugin plugin;
 
     public CommandHandler(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -55,10 +55,10 @@ public final class CommandHandler implements Listener {
      * Loads all commands from the given package into the command handler.
      *
      * @param plugin      The plugin responsible for these commands. This is here
-     *                    because the .getClassesInPackage method requires it (for no real reason)
+     *                    because the .getClassesInPackage method requires it.
      * @param packageName The package to load commands from. Example: "me.andyreckt.holiday.commands.staff"
      */
-    public static void loadCommandsFromPackage(Plugin plugin, String packageName) {
+    public void loadCommandsFromPackage(Plugin plugin, String packageName) {
         for (Class<?> clazz : Utilities.getClassesInPackage(plugin, packageName)) {
             registerClass(clazz);
         }
@@ -70,7 +70,7 @@ public final class CommandHandler implements Listener {
      * @param transforms    The class this parameter type will return (IE Profile.class, Player.class, etc.)
      * @param parameterType The ParameterType object which will perform the transformation.
      */
-    public static void registerParameterType(Class<?> transforms, ParameterType parameterType) {
+    public void registerParameterType(Class<?> transforms, ParameterType<?> parameterType) {
         parameterTypes.put(transforms, parameterType);
     }
 
@@ -79,7 +79,7 @@ public final class CommandHandler implements Listener {
      *
      * @param registeredClass The class to scan/register.
      */
-    protected static void registerClass(Class<?> registeredClass) {
+    private void registerClass(Class<?> registeredClass) {
 
         for (Method method : registeredClass.getMethods()) {
             if (method.getAnnotation(Command.class) != null) {
@@ -93,7 +93,7 @@ public final class CommandHandler implements Listener {
      *
      * @param method The method to register (if applicable)
      */
-    protected static void registerMethod(Method method) {
+    private void registerMethod(Method method) {
         Command commandAnnotation = method.getAnnotation(Command.class);
         List<ParameterData> parameterData = new ArrayList<>();
 
@@ -128,7 +128,7 @@ public final class CommandHandler implements Listener {
     /**
      * @return the full command line input of a player before running or tab completing a Core command
      */
-    public static String[] getParameters(Player player) {
+    public String[] getParameters(Player player) {
         return CommandMap.parameters.get(player.getUniqueId());
     }
 
@@ -140,7 +140,7 @@ public final class CommandHandler implements Listener {
      * @param command The command to process (without a prepended '/')
      * @return The Command executed
      */
-    public static CommandData evalCommand(final CommandSender sender, String command) {
+    public CommandData evalCommand(final CommandSender sender, String command) {
         String[] args = new String[]{};
         CommandData found = null;
 
@@ -213,7 +213,7 @@ public final class CommandHandler implements Listener {
      * @param transformTo The class we should use to fetch our ParameterType (which we delegate transforming down to)
      * @return The Object that we've transformed the parameter to.
      */
-    protected static Object transformParameter(CommandSender sender, String parameter, Class<?> transformTo) {
+    static Object transformParameter(CommandSender sender, String parameter, Class<?> transformTo) {
         // Special-case Strings as they never need transforming.
         if (transformTo.equals(String.class)) {
             return (parameter);
@@ -233,7 +233,7 @@ public final class CommandHandler implements Listener {
      * @param tabCompleteFlags The list of custom flags to use when tab completing this parameter.
      * @return A List<String> of available tab completions. (empty if none)
      */
-    protected static List<String> tabCompleteParameter(Player sender, String parameter, Class<?> transformTo, String[] tabCompleteFlags) {
+    static List<String> tabCompleteParameter(Player sender, String parameter, Class<?> transformTo, String[] tabCompleteFlags) {
         if (!parameterTypes.containsKey(transformTo)) {
             return (new ArrayList<>());
         }

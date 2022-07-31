@@ -16,7 +16,7 @@ public class WhitelistCommands {
 
     private static final ServerHandler sh = Holiday.getInstance().getServerHandler();
 
-    @Command(names = {"whitelist", "wl"}, perm = "holiday.whitelist", async = true)
+    @Command(names = {"whitelist", "wl", "wl help", "whitelist help"}, perm = "holiday.whitelist", async = true)
     public static void onHelp(CommandSender sender) {
 
         String[] message = {
@@ -78,8 +78,8 @@ public class WhitelistCommands {
 
         String status = sh.getThisServer().isWhitelisted() ? "&aOn" : "&cOff";
         sender.sendMessage(CC.PRIMARY + "Whitelist Info");
-        sender.sendMessage(CC.CHAT + " Whitelist status: " + status);
-        sender.sendMessage(CC.CHAT + " Whitelist rank: " + sh.getThisServer().getWhitelistRank().getDisplayName());
+        sender.sendMessage(CC.CHAT + " Whitelist status: " + CC.translate(status));
+        sender.sendMessage(CC.CHAT + " Whitelist rank: " + CC.translate(sh.getThisServer().getWhitelistRank().getDisplayName()));
 
         StringBuilder s = new StringBuilder();
 
@@ -90,7 +90,12 @@ public class WhitelistCommands {
         if (s.length() > 5)
         s = new StringBuilder(s.substring(0, s.length() - 4));
         s = new StringBuilder("&7[" + s + "&7]");
-        sender.sendMessage(CC.CHAT + " Whitelisted players: " + s);
+        if (s.toString().equalsIgnoreCase("&7[&7]")) {
+            sender.sendMessage(CC.CHAT + " Whitelisted players: " + CC.PRIMARY + "None");
+        } else {
+            sender.sendMessage(CC.CHAT + " Whitelisted players: " + CC.translate(s.toString()));
+        }
+
         sender.sendMessage(CC.CHAT_BAR);
     }
 

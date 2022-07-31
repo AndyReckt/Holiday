@@ -7,6 +7,7 @@ import io.github.zowpy.menu.Button;
 import io.github.zowpy.menu.buttons.DisplayButton;
 import io.github.zowpy.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.server.nms.impl.NMS_v1_8;
 import me.andyreckt.holiday.utils.CC;
@@ -56,6 +57,28 @@ public class OtherCommands {
                     .replace("<material>", mat.name()).replace("<amount>", String.valueOf(amount)).replace("<target>", target.getName()));
             target.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.GIVE.TARGET")
                     .replace("<material>", mat.name()).replace("<amount>", String.valueOf(amount)).replace("<player>", sender.getName()));
+        }
+    }
+
+    @Command(names = {"giveall"}, perm = "holiday.giveall")
+    public static void giveall(Player sender, @Param(name = "material") String material, @Param(name = "amount") int amount) {
+        Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
+        if (mat != null) {
+            ItemStack Item = new ItemStack(mat, amount);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                PlayerInventory inv = player.getInventory();
+                inv.addItem(Item);
+                player.updateInventory();
+            }
+            sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.GIVEALL.SENDER")
+                    .replace("<material>", mat.name()).replace("<amount>", String.valueOf(amount)));
+            Holiday.getInstance().getProfileHandler().getOnlineProfiles().stream()
+                    .map(Profile::getPlayer)
+                    .forEach(player ->
+                            player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.GIVEALL.BROADCAST")
+                                    .replace("<material>", mat.name())
+                                    .replace("<amount>", String.valueOf(amount))
+                                    .replace("<player>", Holiday.getInstance().getProfileHandler().getByPlayer(sender).getDisplayNameWithColor())));
         }
     }
 

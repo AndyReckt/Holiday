@@ -51,6 +51,7 @@ Lag: "holiday.lag"
 ClearChat: "holiday.clearchat"
 MuteChat: "holiday.mutechat"
 SlowChat: "holiday.slowchat"
+ChatHelp: "holiday.chat"
 Demo: "holiday.demomode"
 
 HolidayOPCommands: "holiday.op"

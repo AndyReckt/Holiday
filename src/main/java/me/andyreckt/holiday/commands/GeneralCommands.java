@@ -73,7 +73,7 @@ public class GeneralCommands {
 
         sender.sendMessage(CC.translate(messages.getString("COMMANDS.GENERAL.HELPOP.SUBMITTED")));
         Holiday.getInstance().getRedis().sendPacket(new StaffMessages.HelpopPacket(
-                Holiday.getInstance().getProfileHandler().getByPlayer(sender).getDisplayNameWithColor(),
+                Holiday.getInstance().getProfileHandler().getByPlayer(sender).getDisplayName(),
                 reason,
                 Holiday.getInstance().getSettings().getString("SERVER.NICENAME")
         ));

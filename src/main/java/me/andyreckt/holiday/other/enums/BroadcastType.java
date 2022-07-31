@@ -6,6 +6,6 @@ public enum BroadcastType {
     ALL,
     STAFF,
     ADMIN,
-    OP;
+    DEV;
 
 }

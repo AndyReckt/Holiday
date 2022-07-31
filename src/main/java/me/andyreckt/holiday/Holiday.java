@@ -134,8 +134,8 @@ public final class Holiday extends JavaPlugin implements Listener{
     private void setupCommands() {
         this.commandHandler = new CommandHandler(this);
         this.commandHandler.hook();
-        CommandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands");
-        CommandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands.staff");
+        this.commandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands");
+        this.commandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands.staff");
     }
 
     private void setupNms() {

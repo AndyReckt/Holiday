@@ -26,8 +26,8 @@ public class RankCommands {
                 "&cUsage: /rank manage <rank>",
                 "&cUsage: /rank addperm/removeperm <rank> <permission>",
                 "&cUsage: /rank addchild/removechild <rank> <child>",
-                "&cUsage: /rank setpriority <priority>",
-                "&cUsage: /rank create/delete <name>",
+                "&cUsage: /rank setpriority <rank> <priority>",
+                "&cUsage: /rank create/delete <rank>",
                 "&cUsage: /rank list"
                 //TODO ADD RANK IMPORT/EXPORT
         };
