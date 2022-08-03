@@ -8,12 +8,10 @@ import me.andyreckt.holiday.other.menu.InvseeMenu;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.punishments.menu.check.CheckMenu;
 import me.andyreckt.holiday.player.punishments.menu.list.ListMenu;
-import me.andyreckt.holiday.player.staff.StaffHandler;
 import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.utils.*;
 import me.andyreckt.holiday.utils.command.Command;
 import me.andyreckt.holiday.utils.command.param.Param;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -276,7 +274,7 @@ public class StaffCommands {
     @Command(names = {"lag", "serverlag"}, perm = "holiday.lag")
     public static void lag(CommandSender sender) {
         StringBuilder sb = new StringBuilder(" ");
-        for (double tps : MinecraftServer.getServer().recentTps)
+        for (double tps : Holiday.getInstance().getNmsHandler().recentTps())
         {
             sb.append(format(tps));
             sb.append( ", " );

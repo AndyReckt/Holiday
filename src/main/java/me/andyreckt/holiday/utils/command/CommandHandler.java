@@ -7,6 +7,7 @@ import lombok.Getter;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.rank.Rank;
+import me.andyreckt.holiday.server.nms.impl.NMS_v1_8;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.Utilities;
 import me.andyreckt.holiday.utils.command.param.Param;
@@ -41,7 +42,7 @@ import java.util.Map;
 public class CommandHandler implements Listener {
 
     @Getter
-    private final List<CommandData> commands = new ArrayList<>();
+    private static final List<CommandData> commands = new ArrayList<>();
     private static final Map<Class<?>, ParameterType<?>> parameterTypes = new HashMap<>();
     private boolean initiated = false;
 
@@ -303,7 +304,6 @@ public class CommandHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    // Allow command cancellation.
     public void onCommandPreProcess(PlayerCommandPreprocessEvent event) {
 
         boolean bool = false;
@@ -339,6 +339,7 @@ public class CommandHandler implements Listener {
     @EventHandler
     public void onConsoleCommand(ServerCommandEvent event) {
         if (evalCommand(event.getSender(), event.getCommand()) != null) {
+            if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_8)
             event.setCancelled(true);
         }
     }

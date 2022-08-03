@@ -9,6 +9,7 @@ import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.database.redis.packet.GrantPacket;
 import me.andyreckt.holiday.other.enums.UpdateType;
+import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.TimeUtil;
 import org.bson.Document;
@@ -49,7 +50,7 @@ public class Grant {
 
     public Grant(Document document) {
         this.uuid = UUID.fromString(document.getString("_id"));
-        this.user = UUID.fromString(document.getString("user"));
+        this.user = document.getString("user").equalsIgnoreCase("null") ? new Profile().getUuid() : UUID.fromString(document.getString("user"));
         this.issuer = document.getString("issuer").equalsIgnoreCase("Console") ? null : UUID.fromString(document.getString("issuer"));
         this.rank = document.getString("rank");
         this.active = document.getBoolean("active");
@@ -85,8 +86,9 @@ public class Grant {
     }
 
     public Document toBson() {
+        String user = this.user == null ? new Profile().getUuid().toString() : this.user.toString();
         return new Document("_id", uuid.toString())
-                .append("user", user.toString())
+                .append("user", user)
                 .append("issuer", issuer == null ? "Console" : issuer.toString())
                 .append("rank", rank == null ? "null" : rank)
                 .append("active", active)

@@ -14,4 +14,6 @@ public interface INMS {
 
     void clearDataWatcher(final Player p0);
 
+    double[] recentTps();
+
 }

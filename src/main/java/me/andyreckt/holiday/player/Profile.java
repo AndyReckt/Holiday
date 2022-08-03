@@ -237,12 +237,12 @@ public class Profile {
     }
 
     public String getNameWithColor() {
-        Rank rank = getHighestVisibleGrant().getRank();
+        Rank rank = getHighestVisibleRank();
         String color = "";
         color += rank.getColor().toString();
         if (rank.isItalic()) color += CC.I;
         if (rank.isBold()) color += CC.B;
-        return color + name;
+        return CC.translate(color + name);
     }
 
     public boolean isVanished() {

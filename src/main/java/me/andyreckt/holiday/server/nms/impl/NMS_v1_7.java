@@ -40,4 +40,9 @@ public class NMS_v1_7 implements INMS {
         ((CraftPlayer) player).getHandle().getDataWatcher().watch(9, (byte) 0);
     }
 
+    @Override
+    public double[] recentTps() {
+        return MinecraftServer.getServer().recentTps;
+    }
+
 }

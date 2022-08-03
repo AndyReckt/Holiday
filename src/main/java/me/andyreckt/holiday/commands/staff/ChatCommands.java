@@ -65,7 +65,7 @@ public class ChatCommands {
 				if (profile.isStaff()) {
 					Player player = profile.getPlayer();
 					if (player != null) {
-						player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.CHAT.STAFF.MUTE").replace("<player>", Holiday.getInstance().getProfileHandler().getByCommandSender(sender).getNameWithColor()));
+						player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CHAT.STAFF.MUTE").replace("<player>", Holiday.getInstance().getProfileHandler().getByCommandSender(sender).getNameWithColor())));
 					}
 				}
 			});
@@ -78,7 +78,7 @@ public class ChatCommands {
 				if (profile.isStaff()) {
 					Player player = profile.getPlayer();
 					if (player != null) {
-						player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.CHAT.STAFF.UNMUTE").replace("<player>", Holiday.getInstance().getProfileHandler().getByCommandSender(sender).getNameWithColor()));
+						player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CHAT.STAFF.UNMUTE").replace("<player>", Holiday.getInstance().getProfileHandler().getByCommandSender(sender).getNameWithColor())));
 					}
 				}
 			});

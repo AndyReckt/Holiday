@@ -15,6 +15,15 @@ public class ChatListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        if (!Holiday.getInstance().getChatHandler().canChat(player.getUniqueId())) {
+            event.setCancelled(true);
+            return;
+        }
+        if (!Holiday.getInstance().getChatHandler().isFine(event.getMessage(), event.getPlayer())) {
+            event.setCancelled(true);
+            return;
+        }
         if (!Holiday.getInstance().getSettings().getBoolean("SERVER.CHAT.ENABLED")) return;
         if (event.isCancelled()) return;
 
@@ -25,16 +34,6 @@ public class ChatListener implements Listener {
                 .replace("<suffix>", profile.getDisplayRank().getSuffix())
                 .replace("<message>", "%2$s");
 
-        Player player = event.getPlayer();
-
-        if (!Holiday.getInstance().getChatHandler().canChat(player.getUniqueId())) {
-            event.setCancelled(true);
-            return;
-        }
-        if (!Holiday.getInstance().getChatHandler().isFine(event.getMessage(), event.getPlayer())) {
-            event.setCancelled(true);
-            return;
-        }
         event.setFormat(CC.translate(message));
     }
 

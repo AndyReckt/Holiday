@@ -320,7 +320,7 @@ public class StringUtils {
         slots = Math.abs(slots);
 
         try {
-            Object invoke = Class.forName(String.valueOf(Bukkit.getServer().getClass().getPackage().getName()) + ".CraftServer").getDeclaredMethod("getHandle", (Class<?>[])new Class[0]).invoke(Bukkit.getServer(), new Object[0]);
+            Object invoke = Class.forName(Bukkit.getServer().getClass().getPackage().getName() + ".CraftServer").getDeclaredMethod("getHandle", (Class<?>[])new Class[0]).invoke(Bukkit.getServer(), new Object[0]);
             Field declaredField = invoke.getClass().getSuperclass().getDeclaredField("maxPlayers");
 
             declaredField.setAccessible(true);

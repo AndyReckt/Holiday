@@ -33,6 +33,7 @@ public class GrantHandler {
     public List<Grant> getGrants(UUID user) {
         List<Grant> list = new ArrayList<>();
         for (Grant o : grants()) {
+            if (o.getUser() == null || user == null) continue;
             if (o.getUser().toString().equalsIgnoreCase(user.toString())) {
                 list.add(o);
             }
