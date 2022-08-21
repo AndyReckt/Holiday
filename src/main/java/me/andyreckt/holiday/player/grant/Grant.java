@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.player.grant;
 
+import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
@@ -12,11 +13,15 @@ import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.TimeUtil;
 import org.bson.Document;
 
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
 public class Grant {
+    public static final Type GRANTS = new TypeToken<Grant>() {
+    }.getType();
 
     private UUID uuid = UUID.randomUUID();
 
@@ -28,15 +33,15 @@ public class Grant {
     private long duration = TimeUtil.PERMANENT, issuedAt = 0, removedAt = 0;
 
     public static Grant fromJson(String json) {
-        return Holiday.getInstance().getGson().fromJson(json, Grant.class);
+        return Holiday.getInstance().getGson().fromJson(json, GRANTS);
     }
 
     public static String toJson(Grant grant) {
-        return Holiday.getInstance().getGson().toJson(grant, Grant.class);
+        return Holiday.getInstance().getGson().toJson(grant, GRANTS);
     }
 
     public String toJson() {
-        return Holiday.getInstance().getGson().toJson(this, Grant.class);
+        return Holiday.getInstance().getGson().toJson(this, GRANTS);
     }
 
     public Document getDocument() {
@@ -44,7 +49,7 @@ public class Grant {
     }
 
     public Rank getRank() {
-        return Holiday.getInstance().getRankHandler().getFromName(rankId);
+        return Holiday.getInstance().getRankHandler().getFromId(UUID.fromString(rankId));
     }
 
     public int getPriority() {

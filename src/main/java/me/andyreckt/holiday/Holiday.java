@@ -105,7 +105,7 @@ public final class Holiday extends JavaPlugin implements Listener{
     private void loadPlugin() {
         instance = this;
         long time = System.currentTimeMillis();
-        this.gson = new GsonBuilder().serializeNulls().create();
+        this.gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
         setupConfigFiles();
         setupExecutors();
         setupDatabases();
