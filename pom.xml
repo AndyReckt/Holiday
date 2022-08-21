@@ -202,4 +202,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>holiday</id>
+            <name>Holiday</name>
+            <url>https://maven.pkg.github.com/andyreckt/holiday/</url>
+        </repository>
+    </distributionManagement>
 </project>
