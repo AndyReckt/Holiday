@@ -29,23 +29,49 @@ public class GrantButton extends Button {
     @Override
     public ItemStack getButtonItem(Player p0) {
         ProfileHandler ph = Holiday.getInstance().getProfileHandler();
-        Profile issuer = ph.getByUUIDFor5Minutes(grant.getIssuer());
+        Profile issuer = ph.getByUUIDFor5Minutes(grant.getIssuedBy());
 
-        ItemBuilder builder = new ItemBuilder(Material.WOOL)
-                .displayname(grant.getRank().getDisplayName())
-                .lore(
-                        CC.MENU_BAR,
-                        CC.CHAT + "Added by: " + CC.PRIMARY + issuer.getName(),
-                        CC.CHAT + "Added at: " + CC.PRIMARY + TimeUtil.formatDate(grant.getExecutedAt()),
-                        CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),
-                        CC.CHAT + "Active: " + yesNo(grant.isActive()),
-                        CC.MENU_BAR
-                )
-                .damage(grant.isActive() ? 5 : 14);
+        ItemBuilder item = new ItemBuilder(Material.WOOL);
+        if (grant.isActive()) {
+            item.displayname("&a(Active) " + TimeUtil.formatDate(grant.getIssuedAt()));
+            item.lore(
+                    CC.MENU_BAR,
+                    CC.CHAT + "Rank: " + CC.PRIMARY + grant.getRank().getDisplayName(),
+                    CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),
+                    CC.MENU_BAR,
+                    CC.CHAT + "Issued By: " + CC.PRIMARY + issuer.getName(),
+                    CC.CHAT + "Issued On: " + CC.PRIMARY + grant.getIssuedOn(),
+                    CC.CHAT + "Issued Reason: " + CC.PRIMARY + grant.getReason(),
+                    CC.MENU_BAR
+            );
+        } else {
+            Profile remover = ph.getByUUIDFor5Minutes(grant.getRemovedBy());
+            item.displayname("&c(Inactive) " + TimeUtil.formatDate(grant.getIssuedAt()));
+            item.lore("&c                  " + TimeUtil.formatDate(grant.getRemovedAt()),
+                    CC.MENU_BAR,
+                    CC.CHAT + "Rank: " + CC.PRIMARY + grant.getRank().getDisplayName(),
+                    CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),
+                    CC.MENU_BAR,
+                    CC.CHAT + "Issued By: " + CC.PRIMARY + issuer.getName(),
+                    CC.CHAT + "Issued On: " + CC.PRIMARY + grant.getIssuedOn(),
+                    CC.CHAT + "Issued Reason: " + CC.PRIMARY + grant.getReason(),
+                    CC.MENU_BAR,
+                    CC.CHAT + "Removed By: " + CC.PRIMARY + remover.getName(),
+                    CC.CHAT + "Removed On: " + CC.PRIMARY + grant.getRemovedOn(),
+                    CC.CHAT + "Removed Reason: " + CC.PRIMARY + grant.getRemovedReason(),
+                    CC.MENU_BAR
+            );
+        }
 
-        if (grant.isActive() && p0.hasPermission("holiday.grants.edit") && !grant.getRank().isDefault()) builder.lore("&7&oClick to remove this grant");
+        item.damage(grant.isActive() ? 5 : 14);
 
-        return builder.build();
+        if (grant.isActive() && p0.hasPermission("holiday.grants.edit") && !grant.getRank().isDefault()) {
+            item.lore(
+                    "&cClick to remove this grant.",
+                    CC.MENU_BAR
+            );
+        }
+        return item.build();
     }
 
     @Override
@@ -55,11 +81,11 @@ public class GrantButton extends Button {
         if (grant.getRank().isDefault()) return;
 
         grant.setActive(false);
+        grant.setRemovedBy(player.getUniqueId());
+        grant.setRemovedOn(Holiday.getInstance().getServerHandler().getThisServer().getName());
+        grant.setRemovedAt(System.currentTimeMillis());
+        grant.setRemovedReason("Removed");
         grant.save();
         new GrantsMenu(profile, actives).openMenu(player);
-    }
-
-    private String yesNo(boolean bool) {
-        return bool ? "&aYes" : "&cNo";
     }
 }

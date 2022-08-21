@@ -38,7 +38,7 @@ public class GrantsMenu extends PaginatedMenu {
 
         List<Grant> grants = actives ? user.getActiveGrants() : user.getGrants();
 
-        grants.sort(Comparator.comparingLong(Grant::getExecutedAt));
+        grants.sort(Comparator.comparing(Grant::isActive).thenComparingLong(Grant::getIssuedAt));
         Collections.reverse(grants);
 
         int i = 9;

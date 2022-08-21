@@ -27,15 +27,20 @@ public class GrantCommands {
     }
 
     @Command(names = {"ogrant"},  perm = "op", async = true)
-    public static void execute(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "rank") Rank rank, @Param(name = "time") String time) {
+    public static void execute(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "rank") Rank rank, @Param(name = "reason") String reason, @Param(name = "time") String time) {
         long tim = TimeUtil.getDuration(time);
         String ti = TimeUtil.getDuration(tim);
 
         Profile issuer = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
-
-        Grant grant = new Grant(target.getUuid(), issuer.getUuid(), rank, tim);
+        Grant grant = new Grant();
+        grant.setTarget(target.getUuid());
+        grant.setIssuedBy(issuer.getUuid());
+        grant.setIssuedOn(Holiday.getInstance().getServerHandler().getThisServer().getName());
+        grant.setIssuedAt(System.currentTimeMillis());
+        grant.setReason(reason);
+        grant.setRankId(rank.getUuid().toString());
+        grant.setDuration(tim);
         grant.save();
-
 
         sender.sendMessage(CC.translate("&aYou have granted the rank " + rank.getDisplayName() + " &ato " + target.getNameWithColor() + " &afor a duration of " + ti));
         Holiday.getInstance().getRedis().sendPacket(new ProfilePacket.ProfileMessagePacket(target, "&aYou have been granted " + rank.getDisplayName() + "&a for a duration of " + ti));

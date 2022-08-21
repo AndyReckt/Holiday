@@ -17,31 +17,31 @@ public class MongoUtils {
         return Holiday.getInstance().getMongoDatabase();
     }
 
-    private static MongoCollection getCollection(String collection){
+    private static MongoCollection<Document> getCollection(String collection){
         return getDatabase().getCollection(collection);
     }
 
-    public static MongoCollection getRankCollection(){
+    public static MongoCollection<Document> getRankCollection(){
         return getCollection("Ranks");
     }
 
-    public static MongoCollection getProfileCollection(){
+    public static MongoCollection<Document> getProfileCollection(){
         return getCollection("Profiles");
     }
 
-    public static MongoCollection getPunishmentsCollection() {
+    public static MongoCollection<Document> getPunishmentsCollection() {
         return getCollection("Punishments");
     }
 
-    public static MongoCollection getGrantCollection(){
+    public static MongoCollection<Document> getGrantCollection(){
         return getCollection("Grants");
     }
 
-    public static MongoCollection getDisguiseCollection() {
+    public static MongoCollection<Document> getDisguiseCollection() {
         return getCollection("Disguises");
     }
 
-    public static MongoCollection getServersCollection() {
+    public static MongoCollection<Document> getServersCollection() {
         return getCollection("Servers");
     }
 

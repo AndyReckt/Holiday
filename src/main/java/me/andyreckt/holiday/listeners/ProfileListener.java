@@ -63,10 +63,12 @@ public class ProfileListener implements Listener {
                         p.getPlayer().sendMessage(CC.translate(config.getString("NAMEMC.MESSAGE")));
                         if (config.getBoolean("NAMEMC.RANK.ENABLED")) {
                             if (p.getHighestRank() == rh.getDefaultRank()) {
-                                Grant grant = new Grant(p.getUuid(),
-                                        ph.getConsoleProfile().getUuid(),
-                                        rh.getFromName(config.getString("NAMEMC.RANK.NAME")),
-                                        TimeUtil.PERMANENT);
+                                Grant grant = new Grant();
+                                grant.setTarget(p.getUuid());
+                                grant.setIssuedBy(ph.getConsoleProfile().getUuid());
+                                grant.setIssuedOn(Holiday.getInstance().getServerHandler().getThisServer().getName());
+                                grant.setIssuedAt(System.currentTimeMillis());
+                                grant.setRankId(rh.getFromName(config.getString("NAMEMC.RANK.NAME")).getUuid().toString());
                                 grant.save();
                             }
                         }

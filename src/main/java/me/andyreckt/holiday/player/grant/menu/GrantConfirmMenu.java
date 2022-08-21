@@ -54,8 +54,16 @@ public class GrantConfirmMenu extends Menu {
         ));
 
         Button confirm = new ConfirmationButton(true, (bool) -> {
-            Grant grant = new Grant(profile.getUuid(), paramPlayer.getUniqueId(), rank, time);
+            Grant grant = new Grant();
+            grant.setTarget(profile.getUuid());
+            grant.setIssuedBy(paramPlayer.getUniqueId());
+            grant.setIssuedOn(Holiday.getInstance().getServerHandler().getThisServer().getName());
+            grant.setIssuedAt(System.currentTimeMillis());
+            grant.setRankId(rank.getUuid().toString());
+            grant.setReason("Added");
+            grant.setDuration(time);
             grant.save();
+
             paramPlayer.sendMessage(CC.translate("&aYou have granted the rank " + rank.getDisplayName() + " &ato " + profile.getNameWithColor() + " &afor a duration of " + ti));
             Holiday.getInstance().getRedis().sendPacket(new ProfilePacket.ProfileMessagePacket(profile, "&aYou have been granted " + rank.getDisplayName() + "&a for a duration of " + ti));
         } , true);
