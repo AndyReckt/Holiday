@@ -3,7 +3,6 @@ package me.andyreckt.holiday.player.rank.menu;
 import io.github.zowpy.menu.Button;
 import io.github.zowpy.menu.buttons.DisplayButton;
 import io.github.zowpy.menu.pagination.PaginatedMenu;
-import javafx.geometry.HPos;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.ItemBuilder;

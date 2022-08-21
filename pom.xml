@@ -6,7 +6,7 @@
 
     <groupId>me.andyreckt</groupId>
     <artifactId>holiday</artifactId>
-    <version>PRE-1.5</version>
+    <version>0.5</version>
     <packaging>jar</packaging>
 
     <name>Holiday</name>
