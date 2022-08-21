@@ -29,22 +29,44 @@ public class Grant {
     private UUID target, issuedBy, removedBy;
 
     private boolean active = true;
-    private long duration = TimeUtil.PERMANENT, issuedAt = System.currentTimeMillis(), removedAt = System.currentTimeMillis();
-
-    public static Grant fromJson(String json) {
-        return Holiday.getInstance().getGson().fromJson(json, GRANTS);
-    }
-
-    public static String toJson(Grant grant) {
-        return Holiday.getInstance().getGson().toJson(grant, GRANTS);
-    }
-
-    public String toJson() {
-        return Holiday.getInstance().getGson().toJson(this, GRANTS);
-    }
+    private long duration = TimeUtil.PERMANENT, issuedAt = 0L, removedAt = 0L;
 
     public Document getDocument() {
-        return Document.parse(toJson());
+        Document document = new Document();
+        document.put("rankId", rankId);
+        document.put("reason", reason);
+        document.put("issuedOn", issuedOn);
+        document.put("removedOn", removedOn);
+        document.put("removedReason", removedReason);
+        document.put("target", target.toString());
+        document.put("issuedBy", issuedBy.toString());
+        if (removedBy != null) {
+            document.put("removedBy", removedBy.toString());
+        }
+        document.put("active", active);
+        document.put("duration", duration);
+        document.put("issuedAt", issuedAt);
+        document.put("removedAt", removedAt);
+        return document;
+    }
+
+    public static Grant update(Document document) {
+        Grant grant = new Grant();
+        grant.setRankId(document.getString("rankId"));
+        grant.setReason(document.getString("reason"));
+        grant.setIssuedOn(document.getString("issuedOn"));
+        grant.setRemovedOn(document.getString("removedOn"));
+        grant.setRemovedReason(document.getString("removedReason"));
+        grant.setTarget(UUID.fromString(document.getString("target")));
+        grant.setIssuedBy(UUID.fromString(document.getString("issuedBy")));
+        if (document.containsKey("removedBy")) {
+            grant.setRemovedBy(UUID.fromString(document.getString("removedBy")));
+        }
+        grant.setActive(document.getBoolean("active", false));
+        grant.setDuration(document.getLong("duration"));
+        grant.setIssuedAt(document.getLong("issuedAt"));
+        grant.setRemovedAt(document.getLong("removedAt"));
+        return grant;
     }
 
     public Rank getRank() {

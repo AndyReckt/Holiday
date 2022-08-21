@@ -47,7 +47,7 @@ public class GrantButton extends Button {
         } else {
             Profile remover = ph.getByUUIDFor5Minutes(grant.getRemovedBy());
             item.displayname("&c(Inactive) " + TimeUtil.formatDate(grant.getIssuedAt()));
-            item.lore("&c                   " + TimeUtil.formatDate(grant.getRemovedAt()),
+            item.lore("&c                  " + TimeUtil.formatDate(grant.getRemovedAt()),
                     CC.MENU_BAR,
                     CC.CHAT + "Rank: " + CC.PRIMARY + grant.getRank().getDisplayName(),
                     CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),

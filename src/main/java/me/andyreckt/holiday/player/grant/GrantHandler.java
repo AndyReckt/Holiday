@@ -24,7 +24,7 @@ public class GrantHandler {
 
     private void init() {
         MongoUtils.getGrantCollection().find().forEach((Block<Document>) o -> {
-            Grant grant = Grant.fromJson(o.toJson());
+            Grant grant = Grant.update(o);
             grantCache.put(grant.getUuid(), grant);
         });
     }
