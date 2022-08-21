@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.database.redis.subscribers;
 
 import me.andyreckt.holiday.Holiday;
+import me.andyreckt.holiday.database.redis.packet.CrossServerCommandPacket;
 import me.andyreckt.holiday.database.redis.packet.ServerPacket;
 import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.utils.packets.handler.IncomingPacketHandler;
@@ -21,11 +22,16 @@ public class ServerSubscriber implements PacketListener {
                 break;
             }
             case REMOVE: {
-                try {
-                    Holiday.getInstance().getServerHandler().getServers().remove(packet.getData().getName());
-                } catch (Exception ignored){}
+                Holiday.getInstance().getServerHandler().getServers().remove(packet.getData().getName());
                 break;
             }
+        }
+    }
+
+    @IncomingPacketHandler
+    public void onCrossServerCommand(CrossServerCommandPacket packet) {
+        if(packet.getServer().equalsIgnoreCase(Holiday.getInstance().getServerHandler().getThisServer().getName())) {
+            Holiday.getInstance().getServer().dispatchCommand(Holiday.getInstance().getServer().getConsoleSender(), packet.getCommand());
         }
     }
 

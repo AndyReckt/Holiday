@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import me.andyreckt.holiday.Holiday;
 
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Marko on 25.02.2019.
@@ -19,7 +20,7 @@ public class Tasks {
     }
 
     public static void runAsync(Callable callable) {
-        Holiday.getInstance().getServer().getScheduler().runTaskAsynchronously(Holiday.getInstance(), callable::call);
+        Holiday.getInstance().getExecutor().execute(callable::call);
     }
 
     public static void runLater(Callable callable, long delay) {
@@ -27,7 +28,7 @@ public class Tasks {
     }
 
     public static void runAsyncLater(Callable callable, long delay) {
-        Holiday.getInstance().getServer().getScheduler().runTaskLaterAsynchronously(Holiday.getInstance(), callable::call, delay);
+        Holiday.getInstance().getScheduledExecutor().schedule(callable::call, delay * 50L, TimeUnit.MILLISECONDS);
     }
 
     public static void runTimer(Callable callable, long delay, long interval) {
@@ -35,7 +36,7 @@ public class Tasks {
     }
 
     public static void runAsyncTimer(Callable callable, long delay, long interval) {
-        Holiday.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(Holiday.getInstance(), callable::call, delay, interval);
+        Holiday.getInstance().getScheduledExecutor().scheduleAtFixedRate(callable::call, delay * 50L, interval * 50L, TimeUnit.MILLISECONDS);
     }
 
     public interface Callable {

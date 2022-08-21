@@ -18,14 +18,14 @@ public class Punishment {
         String punishId = UUID.randomUUID().toString().substring(0, 6);
         PunishData punishData = new PunishData(punishId, punished, punishmentType, issuer, reason, System.currentTimeMillis(), TimeUtil.PERMANENT, silent, punished.getIp());
         addPunishment(punishData);
-        Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(punishData, PunishmentSubType.ADD));
+        Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(punishData, PunishmentSubType.ADD, punishmentType));
     }
 
     public Punishment(Profile issuer, Profile punished, PunishmentType punishmentType, String duration, String reason, Boolean silent) {
         String punishId = UUID.randomUUID().toString().substring(0, 6);
         PunishData punishData = new PunishData(punishId, punished, punishmentType, issuer, reason, System.currentTimeMillis(), TimeUtil.getDuration(duration), silent, punished.getIp());
         addPunishment(punishData);
-        Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(punishData, PunishmentSubType.ADD));
+        Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(punishData, PunishmentSubType.ADD, punishmentType));
     }
 
     private void addPunishment(PunishData punishData) {

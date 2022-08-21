@@ -77,8 +77,8 @@ public class PunishmentRemoveCommands {
         data.setRemoved(true);
         data.setRemovedAt(System.currentTimeMillis());
         data.save();
-        if (silent) Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(data, PunishmentSubType.REMOVESILENT));
-        else Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(data, PunishmentSubType.REMOVE));
+        if (silent) Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(data, PunishmentSubType.REMOVESILENT, type));
+        else Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(data, PunishmentSubType.REMOVE, type));
     }
 
 }

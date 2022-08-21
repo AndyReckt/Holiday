@@ -105,7 +105,6 @@ public class ProfileListener implements Listener {
 
                 p.save();
                 Tasks.runLater(() -> PermissionUtils.updatePermissions(event.getPlayer()), 5L);
-
             }, 10L);
         });
     }
@@ -113,6 +112,7 @@ public class ProfileListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
+        PermissionUtils.attachments.remove(event.getPlayer().getUniqueId());
         Holiday.getInstance().getExecutor().execute(() -> {
             Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(event.getPlayer());
             try {
@@ -135,6 +135,7 @@ public class ProfileListener implements Listener {
     @EventHandler
     public void onKick(PlayerKickEvent event) {
         event.setLeaveMessage(null);
+        PermissionUtils.attachments.remove(event.getPlayer().getUniqueId());
         Holiday.getInstance().getExecutor().execute(() -> {
             Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(event.getPlayer());
             try {

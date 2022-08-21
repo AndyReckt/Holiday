@@ -7,3 +7,5 @@ description: Core Plugin I try to make that is open sourced
 website: https://andyreckt.me
 softdepend:
   - LunarClient-API
+  - ProtocolLib
+  - PlaceholderAPI

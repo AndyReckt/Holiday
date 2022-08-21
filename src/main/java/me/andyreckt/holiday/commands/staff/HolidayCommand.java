@@ -5,7 +5,9 @@ import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.player.disguise.impl.v1_7.DisguiseHandler_1_7;
 import me.andyreckt.holiday.player.disguise.impl.v1_8.DisguiseHandler_1_8;
 import me.andyreckt.holiday.server.Server;
+import me.andyreckt.holiday.server.ServerHandler;
 import me.andyreckt.holiday.utils.CC;
+import me.andyreckt.holiday.utils.Clickable;
 import me.andyreckt.holiday.utils.PunishmentUtils;
 import me.andyreckt.holiday.utils.TextComponentBuilder;
 import me.andyreckt.holiday.utils.command.Command;
@@ -195,21 +197,23 @@ public class HolidayCommand {
     }
     @Command(names = {"holiday servers", "servers"}, perm = "holiday.op")
     public static void servers(Player sender) {
-        sender.sendMessage(CC.CHAT_BAR);
-        for (Server serverData : Holiday.getInstance().getServerHandler().getServers().values()) {
-            String status = serverData.isWhitelisted() ? CC.PRIMARY + "Whitelisted" : "&aOnline";
+        ServerHandler serverHandler = Holiday.getInstance().getServerHandler();
+        sender.sendMessage(CC.CHAT + "You are currently connected to " + CC.SECONDARY + serverHandler.getThisServer().getName());
 
-            TextComponentBuilder builder = new TextComponentBuilder(CC.PRIMARY + serverData.getName());
-            builder.setHoverEvent(HoverEvent.Action.SHOW_TEXT,
+        Clickable clickable = new Clickable(CC.CHAT + "This is the list of the currently online servers: ");
+
+        for (Server serverData : serverHandler.getServers().values()) {
+            String status = serverData.isWhitelisted() ? CC.PRIMARY + "Whitelisted" : "&aOnline";
+            clickable.add(CC.PRIMARY + serverData.getName(),
                     CC.CHAT + "Players: " + CC.PRIMARY + serverData.getPlayers() + "\n" +
-                    CC.CHAT + "Max Players: " + CC.PRIMARY + serverData.getMaxplayers() + "\n" +
-                    CC.CHAT + "Status: " + status + "\n" +
-                    " " + "\n" +
-                    "&7&oClick to connect...");
-            builder.setClickEvent(ClickEvent.Action.RUN_COMMAND, "/join " + serverData.getName());
-            sender.spigot().sendMessage(builder.toText());
+                            CC.CHAT + "Max Players: " + CC.PRIMARY + serverData.getMaxplayers() + "\n" +
+                            CC.CHAT + "Status: " + status + "\n" +
+                            " " + "\n" +
+                            "&7&oClick to connect...",
+                    "/join " + serverData.getName());
+            clickable.add(CC.CHAT + ", ");
         }
-        sender.sendMessage(CC.CHAT_BAR);
+        clickable.sendToPlayer(sender);
     }
 
     private static void sendVersionMessage(CommandSender sender) {

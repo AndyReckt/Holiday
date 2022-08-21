@@ -20,8 +20,6 @@ public enum PunishmentType {
     MUTE(),
     TEMP_MUTE(),
     UNMUTE(),
-    WARN(),
-    UNWARN(),
     KICK();
 
 

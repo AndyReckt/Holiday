@@ -22,20 +22,20 @@ HELPOPS:
   FORMAT: "&2[HELPOP] &d[<server>] <player> &2needs help \n  &7» &2Request: &a<reason>" # Placeholders: <server> <player> <reason>
   CLICKMESSAGE: "&dClick to answer <player>" # Placeholder: <player>
 
-PUNISHMENTS: # Placeholders: <player> <executor> <reason> <duration>
+PUNISHMENTS: # Placeholders: <player> <executor> <reason> <duration> <silent>
   SILENTPREFIX: "&7(Silent) "
   MESSAGES:
-    KICK: "&c<executor> kicked <player> &cfor <reason>."
-    MUTE: "&c<player> &chas been muted by <executor> &cfor <reason>."
-    TEMPMUTE: "&c<player> &chas been temporarily muted by <executor> &cfor <reason> for a duration of <duration>."
-    UNMUTE: "&a<player> &ahas been unmuted by <executor> &afor <reason>."
-    BAN: "&c<player> &chas been permanently banned by <executor> &cfor <reason>."
-    TEMPBAN: "&c<player> &chas been temporarily banned by <executor> &cfor <reason> for a duration of <duration>."
-    UNBAN: "&a<player> &ahas been unbanned by <executor> for &a<reason>."
-    IPBAN: "&c<player> &chas been permanently ip-banned by <executor> &cfor <reason>."
-    UNIPBAN: "&a<player> &ahas been unip-banned by <executor> &afor <reason>."
-    BLACKLIST: "&c<player> &chas been blacklisted by <executor> &cfor <reason>."
-    UNBLACKLIST: "&a<player> &ahas been unblacklisted by <executor> &afor <reason>."
+    KICK: "<silent>&c<executor> kicked <player> &cfor <reason>."
+    MUTE: "<silent>&c<player> &chas been muted by <executor> &cfor <reason>."
+    TEMPMUTE: "<silent>&c<player> &chas been temporarily muted by <executor> &cfor <reason> for a duration of <duration>."
+    UNMUTE: "<silent>&a<player> &ahas been unmuted by <executor> &afor <reason>."
+    BAN: "<silent>&c<player> &chas been permanently banned by <executor> &cfor <reason>."
+    TEMPBAN: "<silent>&c<player> &chas been temporarily banned by <executor> &cfor <reason> for a duration of <duration>."
+    UNBAN: "<silent>&a<player> &ahas been unbanned by <executor> for &a<reason>."
+    IPBAN: "<silent>&c<player> &chas been permanently ip-banned by <executor> &cfor <reason>."
+    UNIPBAN: "<silent>&a<player> &ahas been unip-banned by <executor> &afor <reason>."
+    BLACKLIST: "<silent>&c<player> &chas been blacklisted by <executor> &cfor <reason>."
+    UNBLACKLIST: "<silent>&a<player> &ahas been unblacklisted by <executor> &afor <reason>."
   KICKMESSAGE:
     KICK: "&cYou have been kicked by <executor> &cfor <reason>."
     BAN: "&cYou have been permanently banned from <network_name> for <reason>. \n &cAppeal at <discord> or buy an unban at <store>."

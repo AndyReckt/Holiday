@@ -82,7 +82,8 @@ public class UpdateSkinTask_1_7 extends BukkitRunnable {
 
 		Holiday.getInstance().getNmsHandler().updatePlayer(this.player);
 		player.setDisplayName(this.displayName);
-
+		plugin.getProfileHandler().getByPlayer(player).setBukkitDisplayName();
+		plugin.getProfileHandler().getByPlayer(player).setPlayerListName();
 	}
 
 	private void sendPackets() {

@@ -81,7 +81,7 @@ public class    PunishData {
         PunishmentHandler ph = Holiday.getInstance().getPunishmentHandler();
         ph.updateCache(getId(), this);
         MongoUtils.submitToThread(() -> MongoUtils.getPunishmentsCollection().replaceOne(Filters.eq("_id", getId()), toBson(), new ReplaceOptions().upsert(true)));
-        Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(this, PunishmentSubType.EDIT));
+        Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(this, PunishmentSubType.EDIT, type));
     }
 
     public Document toBson() {

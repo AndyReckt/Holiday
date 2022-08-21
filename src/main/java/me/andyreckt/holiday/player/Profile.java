@@ -438,7 +438,7 @@ public class Profile {
         Player player = Bukkit.getPlayer(this.uuid);
         if (player == null) return;
         if (Holiday.getInstance().getSettings().getBoolean("PLAYER.DISPLAYNAME"))
-            player.setDisplayName(getDisplayRank().getPrefix() + getDisplayNameWithColor());
+            player.setDisplayName(CC.translate(getDisplayRank().getPrefix() + getDisplayNameWithColor()));
     }
 
     public void setPlayerListName() {
