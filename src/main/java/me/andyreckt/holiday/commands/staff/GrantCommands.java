@@ -27,7 +27,7 @@ public class GrantCommands {
     }
 
     @Command(names = {"ogrant"},  perm = "op", async = true)
-    public static void execute(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "rank") Rank rank, @Param(name = "time") String time) {
+    public static void execute(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "rank") Rank rank, @Param(name = "reason") String reason, @Param(name = "time") String time) {
         long tim = TimeUtil.getDuration(time);
         String ti = TimeUtil.getDuration(tim);
 
@@ -37,6 +37,7 @@ public class GrantCommands {
         grant.setIssuedBy(issuer.getUuid());
         grant.setIssuedOn(Holiday.getInstance().getServerHandler().getThisServer().getName());
         grant.setIssuedAt(System.currentTimeMillis());
+        grant.setReason(reason);
         grant.setRankId(rank.getUuid().toString());
         grant.setDuration(tim);
         grant.save();

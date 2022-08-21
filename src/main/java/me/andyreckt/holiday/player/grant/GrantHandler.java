@@ -52,14 +52,13 @@ public class GrantHandler {
         grant.setIssuedAt(System.currentTimeMillis());
         grant.setRankId(Holiday.getInstance().getRankHandler().getDefaultRank().getUuid().toString());
         grant.setReason("Default Rank");
-        grant.save();
         return grant;
     }
 
     public void refreshGrants() {
         for (Grant o : grants()) {
             if (o.hasExpired()) {
-                o.setActive(false);
+                o.expire();
                 o.save();
             }
         }

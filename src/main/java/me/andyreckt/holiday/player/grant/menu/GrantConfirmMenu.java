@@ -60,6 +60,7 @@ public class GrantConfirmMenu extends Menu {
             grant.setIssuedOn(Holiday.getInstance().getServerHandler().getThisServer().getName());
             grant.setIssuedAt(System.currentTimeMillis());
             grant.setRankId(rank.getUuid().toString());
+            grant.setReason("Added");
             grant.setDuration(time);
             grant.save();
 

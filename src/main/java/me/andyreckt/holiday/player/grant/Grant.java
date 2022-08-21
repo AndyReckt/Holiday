@@ -14,7 +14,6 @@ import me.andyreckt.holiday.utils.TimeUtil;
 import org.bson.Document;
 
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -30,7 +29,7 @@ public class Grant {
     private UUID target, issuedBy, removedBy;
 
     private boolean active = true;
-    private long duration = TimeUtil.PERMANENT, issuedAt = 0, removedAt = 0;
+    private long duration = TimeUtil.PERMANENT, issuedAt = System.currentTimeMillis(), removedAt = System.currentTimeMillis();
 
     public static Grant fromJson(String json) {
         return Holiday.getInstance().getGson().fromJson(json, GRANTS);
@@ -73,13 +72,17 @@ public class Grant {
         Holiday.getInstance().getRedis().sendPacket(new GrantPacket(this, UpdateType.DELETE));
     }
 
+    public void expire() {
+        setRemovedBy(Holiday.getInstance().getProfileHandler().getConsoleProfile().getUuid());
+        setRemovedOn(Holiday.getInstance().getServerHandler().getThisServer().getName());
+        setRemovedAt(System.currentTimeMillis());
+        setRemovedReason("Expired");
+        setActive(false);
+    }
+
     public boolean isActive() {
         if (hasExpired()) {
-            setRemovedBy(Holiday.getInstance().getProfileHandler().getConsoleProfile().getUuid());
-            setRemovedOn(Holiday.getInstance().getServerHandler().getThisServer().getName());
-            setRemovedAt(System.currentTimeMillis());
-            setRemovedReason("Expired");
-            setActive(false);
+            expire();
             save();
         }
         return !hasExpired() && active;

@@ -37,7 +37,7 @@ public class GrantButton extends Button {
             item.lore(
                     CC.MENU_BAR,
                     CC.CHAT + "Rank: " + CC.PRIMARY + grant.getRank().getDisplayName(),
-                    CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.formatDate(grant.getDuration()),
+                    CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),
                     CC.MENU_BAR,
                     CC.CHAT + "Issued By: " + CC.PRIMARY + issuer.getName(),
                     CC.CHAT + "Issued On: " + CC.PRIMARY + grant.getIssuedOn(),
@@ -47,11 +47,10 @@ public class GrantButton extends Button {
         } else {
             Profile remover = ph.getByUUIDFor5Minutes(grant.getRemovedBy());
             item.displayname("&c(Inactive) " + TimeUtil.formatDate(grant.getIssuedAt()));
-            item.displayname("             " + TimeUtil.formatDate(grant.getRemovedAt()));
-            item.lore(
+            item.lore("&c                   " + TimeUtil.formatDate(grant.getRemovedAt()),
                     CC.MENU_BAR,
                     CC.CHAT + "Rank: " + CC.PRIMARY + grant.getRank().getDisplayName(),
-                    CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.formatDate(grant.getDuration()),
+                    CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),
                     CC.MENU_BAR,
                     CC.CHAT + "Issued By: " + CC.PRIMARY + issuer.getName(),
                     CC.CHAT + "Issued On: " + CC.PRIMARY + grant.getIssuedOn(),
@@ -66,11 +65,12 @@ public class GrantButton extends Button {
 
         item.damage(grant.isActive() ? 5 : 14);
 
-        if (grant.isActive() && p0.hasPermission("holiday.grants.edit") && !grant.getRank().isDefault())
-            item.lore(CC.MENU_BAR,
+        if (grant.isActive() && p0.hasPermission("holiday.grants.edit") && !grant.getRank().isDefault()) {
+            item.lore(
                     "&cClick to remove this grant.",
                     CC.MENU_BAR
             );
+        }
         return item.build();
     }
 
