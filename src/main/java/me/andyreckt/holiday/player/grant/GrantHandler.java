@@ -16,25 +16,24 @@ import java.util.stream.Collectors;
 
 public class GrantHandler {
 
-    Map<UUID, Grant> grantCache;
+    public Map<UUID, Grant> grantCache = new ConcurrentHashMap<>();
 
     public GrantHandler() {
         init();
     }
 
     private void init() {
-        grantCache = new ConcurrentHashMap<>();
         MongoUtils.getGrantCollection().find().forEach((Block<Document>) o -> {
-            Grant grant = new Grant(o);
+            Grant grant = Grant.fromJson(o.toJson());
             grantCache.put(grant.getUuid(), grant);
         });
     }
 
-    public List<Grant> getGrants(UUID user) {
+    public List<Grant> getGrants(UUID target) {
         List<Grant> list = new ArrayList<>();
         for (Grant o : grants()) {
-            if (o.getUser() == null || user == null) continue;
-            if (o.getUser().toString().equalsIgnoreCase(user.toString())) {
+            if (o.getTarget() == null || target == null) continue;
+            if (o.getTarget().toString().equalsIgnoreCase(target.toString())) {
                 list.add(o);
             }
         }
@@ -46,17 +45,20 @@ public class GrantHandler {
     }
 
     public Grant newDefaultGrant(UUID user) {
-        Grant grant = new Grant(user,
-                Holiday.getInstance().getProfileHandler().getConsoleProfile().getUuid(),
-                Holiday.getInstance().getRankHandler().getDefaultRank(),
-                TimeUtil.PERMANENT);
+        Grant grant = new Grant();
+        grant.setTarget(user);
+        grant.setIssuedBy(Holiday.getInstance().getProfileHandler().getConsoleProfile().getUuid());
+        grant.setIssuedOn(Holiday.getInstance().getServerHandler().getThisServer().getName());
+        grant.setIssuedAt(System.currentTimeMillis());
+        grant.setRankId(Holiday.getInstance().getRankHandler().getDefaultRank().getUuid().toString());
+        grant.setReason("Default Rank");
         grant.save();
         return grant;
     }
 
     public void refreshGrants() {
         for (Grant o : grants()) {
-            if (o.expired()) {
+            if (o.hasExpired()) {
                 o.setActive(false);
                 o.save();
             }

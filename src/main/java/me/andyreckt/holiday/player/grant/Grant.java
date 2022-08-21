@@ -1,6 +1,5 @@
 package me.andyreckt.holiday.player.grant;
 
-import com.mongodb.Block;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
@@ -9,102 +8,80 @@ import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.database.redis.packet.GrantPacket;
 import me.andyreckt.holiday.other.enums.UpdateType;
-import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.TimeUtil;
 import org.bson.Document;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
-/**
- * This Class is initially from Zowpy
- * All credits to him
- *
- * @author Zowpy
- */
-@Getter @Setter
+@Getter
+@Setter
 public class Grant {
 
-     private final UUID uuid;
-     private String rank;
+    private UUID uuid = UUID.randomUUID();
 
-     private UUID user, issuer;
-     private boolean active;
-     private long duration, executedAt;
+    private String rankId = "";
+    private String reason = "", issuedOn = "", removedOn = "", removedReason = "";
+    private UUID target, issuedBy, removedBy;
 
-    public Grant(UUID uuid) {
-        this.uuid = uuid;
+    private boolean active = true;
+    private long duration = TimeUtil.PERMANENT, issuedAt = 0, removedAt = 0;
+
+    public static Grant fromJson(String json) {
+        return Holiday.getInstance().getGson().fromJson(json, Grant.class);
     }
 
-    public Grant(UUID user, UUID issuer, Rank rank, long duration) {
-        this.uuid = UUID.randomUUID();
-        this.user = user;
-        this.issuer = issuer;
-        this.rank = rank.getName();
-        this.duration = duration;
-        this.active = true;
-        this.executedAt = System.currentTimeMillis();
+    public static String toJson(Grant grant) {
+        return Holiday.getInstance().getGson().toJson(grant, Grant.class);
     }
 
-    public Grant(Document document) {
-        this.uuid = UUID.fromString(document.getString("_id"));
-        this.user = document.getString("user").equalsIgnoreCase("null") ? new Profile().getUuid() : UUID.fromString(document.getString("user"));
-        this.issuer = document.getString("issuer").equalsIgnoreCase("Console") ? null : UUID.fromString(document.getString("issuer"));
-        this.rank = document.getString("rank");
-        this.active = document.getBoolean("active");
-        this.duration = document.getLong("duration");
-        this.executedAt = document.getLong("executedAt");
+    public String toJson() {
+        return Holiday.getInstance().getGson().toJson(this, Grant.class);
+    }
+
+    public Document getDocument() {
+        return Document.parse(toJson());
     }
 
     public Rank getRank() {
-        return Holiday.getInstance().getRankHandler().getFromName(rank);
+        return Holiday.getInstance().getRankHandler().getFromName(rankId);
     }
 
     public int getPriority() {
-        return rank == null ? 0 : getRank().getPriority();
+        return getRank() == null ? 0 : getRank().getPriority();
     }
 
-    public boolean expired() {
-        if(duration == TimeUtil.PERMANENT) return false;
-        return (executedAt + duration) <= System.currentTimeMillis();
+    public boolean hasExpired() {
+        if (duration == TimeUtil.PERMANENT) return false;
+        return (issuedAt + duration) <= System.currentTimeMillis();
     }
 
     public void save() {
-        MongoUtils.submitToThread(() -> MongoUtils.getGrantCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
+        MongoUtils.submitToThread(() -> MongoUtils.getGrantCollection().replaceOne(Filters.eq("_id", uuid.toString()), getDocument(), new ReplaceOptions().upsert(true)));
         Holiday.getInstance().getRedis().sendPacket(new GrantPacket(this, UpdateType.UPDATE));
     }
 
     public void delete() {
         MongoUtils.submitToThread(() -> {
-            if (MongoUtils.getGrantCollection().find(Filters.eq("_id", uuid.toString())).first() != null) {
-                MongoUtils.getGrantCollection().deleteOne(Filters.eq("_id", uuid.toString()));
-            }
+            MongoUtils.getGrantCollection().deleteOne(Filters.eq("_id", uuid.toString()));
         });
         Holiday.getInstance().getRedis().sendPacket(new GrantPacket(this, UpdateType.DELETE));
     }
 
-    public Document toBson() {
-        String user = this.user == null ? new Profile().getUuid().toString() : this.user.toString();
-        return new Document("_id", uuid.toString())
-                .append("user", user)
-                .append("issuer", issuer == null ? "Console" : issuer.toString())
-                .append("rank", rank == null ? "null" : rank)
-                .append("active", active)
-                .append("duration", duration)
-                .append("executedAt", executedAt);
-    }
-
     public boolean isActive() {
-        if (expired()) setActive(false);
-        return !expired() && active;
+        if (hasExpired()) {
+            setRemovedBy(Holiday.getInstance().getProfileHandler().getConsoleProfile().getUuid());
+            setRemovedOn(Holiday.getInstance().getServerHandler().getThisServer().getName());
+            setRemovedAt(System.currentTimeMillis());
+            setRemovedReason("Expired");
+            setActive(false);
+            save();
+        }
+        return !hasExpired() && active;
     }
 
     public long getRemainingTime() {
         if (duration == TimeUtil.PERMANENT) return TimeUtil.PERMANENT;
-        else return (duration + executedAt) - System.currentTimeMillis();
+        else return (duration + issuedAt) - System.currentTimeMillis();
     }
-
-
 }

@@ -31,9 +31,7 @@ public class ProfileHandler {
     public Profile getByUUIDFor5Minutes(UUID uuid) {
         if (uuid == getConsoleProfile().getUuid()) return getConsoleProfile();
         if (profileCache.containsKey(uuid)) return profileCache.get(uuid);
-        Profile profile = new Profile(uuid);
-        Tasks.runAsyncLater(() -> profileCache.remove(uuid), 5*60*20);
-        return profile;
+        return new Profile(uuid);
     }
 
     public Profile getByUUID(UUID uuid) {
@@ -42,7 +40,7 @@ public class ProfileHandler {
 
     public Profile getByUUID(UUID uuid, boolean cache) {
         if (uuid == getConsoleProfile().getUuid()) return getConsoleProfile();
-        if(profileCache.containsKey(uuid)) return profileCache.get(uuid);
+        if (profileCache.containsKey(uuid)) return profileCache.get(uuid);
         return new Profile(uuid, cache);
     }
 
@@ -57,38 +55,35 @@ public class ProfileHandler {
 
     public Profile getByName(String name) {
         if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_8) {
-            if(DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) {
+            if (DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) {
                 return Holiday.getInstance().getProfileHandler().getByUUIDFor5Minutes(DisguiseHandler_1_8.DisguiseRequest.getDataFromName(name).uuid());
             }
         } else {
-            if(DisguiseHandler_1_7.DisguiseRequest.alreadyUsed(name)) {
+            if (DisguiseHandler_1_7.DisguiseRequest.alreadyUsed(name)) {
                 return Holiday.getInstance().getProfileHandler().getByUUIDFor5Minutes(DisguiseHandler_1_7.DisguiseRequest.getDataFromName(name).uuid());
             }
         }
 
-
         if (hasProfile(name)) {
-            Profile profile = new Profile(name);
-            Tasks.runAsyncLater(() -> profileCache.remove(profile.getUuid()), 5*60*20);
-            return profile;
+            return new Profile(name);
         } else return null;
 
     }
 
     public boolean hasProfile(UUID uuid) {
         if (uuid == getConsoleProfile().getUuid()) return true;
-        Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
+        Document document = MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
         return document != null;
     }
 
     public boolean hasProfile(String name) {
         if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_8) {
-            if(DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) return true;
+            if (DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) return true;
         } else {
-            if(DisguiseHandler_1_7.DisguiseRequest.alreadyUsed(name)) return true;
+            if (DisguiseHandler_1_7.DisguiseRequest.alreadyUsed(name)) return true;
         }
 
-        Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
+        Document document = MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
         return document != null;
     }
 
