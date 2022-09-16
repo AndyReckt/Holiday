@@ -9,19 +9,19 @@ import me.andyreckt.holiday.server.ServerHandler;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.Clickable;
 import me.andyreckt.holiday.utils.PunishmentUtils;
-import me.andyreckt.holiday.utils.TextComponentBuilder;
-import me.andyreckt.holiday.utils.command.Command;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
+import me.andyreckt.sunset.annotations.Command;
+import me.andyreckt.sunset.annotations.MainCommand;
+import me.andyreckt.sunset.annotations.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 
+@MainCommand(names = {"holiday", "core"}, helpCommand = "info")
 public class HolidayCommand {
 
-    @Command(names = {"holiday", "holiday info", "core", "core info"})
+    @SubCommand(names = {"info"}, async = true)
     public static void holiday(Player sender) {
 
         if (!(sender.hasPermission("holiday.op") || sender.hasPermission("holiday.*") || sender.hasPermission("*") || sender.hasPermission("*.*"))) {
@@ -44,7 +44,7 @@ public class HolidayCommand {
 
     }
 
-    @Command(names = {"holiday punishments", "core punishments"}, perm = "holiday.op")
+    @SubCommand(names = {"punishments"}, permission = "holiday.op", async = true)
     public static void punishments(CommandSender sender) {
         int bans = PunishmentUtils.bans().size();
         int mutes = PunishmentUtils.mutes().size();
@@ -61,7 +61,7 @@ public class HolidayCommand {
         sender.sendMessage(CC.CHAT_BAR);
     }
 
-    @Command(names = {"holiday clearpunishments", "core clearpunishments", "holiday wipepunishments", "core wipepunishments"}, perm = "holiday.op")
+    @SubCommand(names = {"clearpunishments", "wipepunishments"}, permission = "holiday.op")
     public static void clearpunishments(Player sender) {
         ConversationFactory factory = new ConversationFactory(Holiday.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
 
@@ -92,7 +92,7 @@ public class HolidayCommand {
         sender.beginConversation(con);
     }
 
-    @Command(names = {"holiday cleardisguises", "core cleardisguises", "holiday wipedisguises", "core wipedisguises"}, perm = "holiday.op")
+    @SubCommand(names = {"cleardisguises", "wipedisguises"}, permission = "holiday.op")
     public static void cleardisguise(Player sender) {
         ConversationFactory factory = new ConversationFactory(Holiday.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
 
@@ -127,7 +127,7 @@ public class HolidayCommand {
         sender.beginConversation(con);
     }
 
-    @Command(names = {"holiday clearprofiles", "core clearprofiles", "holiday wipeprofiles", "core wipeprofiles"}, perm = "holiday.op")
+    @SubCommand(names = {"clearprofiles", "wipeprofiles"}, permission = "holiday.op")
     public static void clearprofiles(Player sender) {
         ConversationFactory factory = new ConversationFactory(Holiday.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
 
@@ -159,7 +159,7 @@ public class HolidayCommand {
         sender.beginConversation(con);
     }
 
-    @Command(names = {"holiday clearservers", "core clearservers", "holiday wipeservers", "core wipeservers"}, perm = "holiday.op")
+    @SubCommand(names = {"clearservers", "wipeservers"}, permission = "holiday.op")
     public static void clearservers(Player sender) {
         ConversationFactory factory = new ConversationFactory(Holiday.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
 
@@ -190,12 +190,14 @@ public class HolidayCommand {
         sender.beginConversation(con);
     }
 
-    @Command(names = {"holiday reload", "holiday reloadconfig"}, perm = "holiday.op")
+    @SubCommand(names = {"reload", "reloadconfig"}, permission = "holiday.op")
     public static void reloadfiles(Player sender) {
         Holiday.getInstance().setupConfigFiles();
         sender.sendMessage(CC.translate("&aConfig files sucessfully reloaded."));
     }
-    @Command(names = {"holiday servers", "servers"}, perm = "holiday.op")
+
+    @Command(names = "servers", permission = "holiday.op")
+    @SubCommand(names = {"servers"}, permission = "holiday.op")
     public static void servers(Player sender) {
         ServerHandler serverHandler = Holiday.getInstance().getServerHandler();
         sender.sendMessage(CC.CHAT + "You are currently connected to " + CC.SECONDARY + serverHandler.getThisServer().getName());

@@ -3,8 +3,7 @@ package me.andyreckt.holiday.commands;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.utils.CC;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
+import me.andyreckt.sunset.annotations.Command;
 import org.bukkit.entity.Player;
 
 public class SettingsCommands {

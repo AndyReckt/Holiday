@@ -6,10 +6,13 @@ import me.andyreckt.holiday.player.disguise.impl.v1_7.DisguiseHandler_1_7;
 import me.andyreckt.holiday.player.disguise.impl.v1_8.DisguiseHandler_1_8;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.server.nms.impl.NMS_v1_7;
-import me.andyreckt.holiday.utils.*;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
+import me.andyreckt.holiday.utils.CC;
+import me.andyreckt.holiday.utils.Cooldown;
+import me.andyreckt.holiday.utils.NumberUtils;
+import me.andyreckt.holiday.utils.TimeUtil;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
+import me.andyreckt.sunset.annotations.Command;
+import me.andyreckt.sunset.annotations.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,11 +24,11 @@ public class DisguiseCommands {
     private static final Map<UUID, Cooldown> cooldownMap = new HashMap<>();
     private static final List<String> names = new ArrayList<>(), skins = new ArrayList<>();
 
-    @Command(names = {"mnick", "mdisguise", "mdis", "manualdisguise", "manualnick"}, perm = "holiday.manualdisguise")
+    @Command(names = {"mnick", "mdisguise", "mdis", "manualdisguise", "manualnick"}, permission = "holiday.manualdisguise")
     public static void manual(Player player,
                               @Param(name = "name") String name,
                               @Param(name = "skin") String skin,
-                              @Param(name = "rank", defaultValue = "default") Rank rank) {
+                              @Param(name = "rank", baseValue = "default") Rank rank) {
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(player);
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
@@ -55,7 +58,7 @@ public class DisguiseCommands {
 
     }
 
-    @Command(names = {"nick", "disguise", "dis"}, perm = "holiday.disguise")
+    @Command(names = {"nick", "disguise", "dis"}, permission = "holiday.disguise")
     public static void nick(Player player) {
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(player);
@@ -66,9 +69,9 @@ public class DisguiseCommands {
             return;
         }
 
-        if(cooldownMap.containsKey(player.getUniqueId())) {
+        if (cooldownMap.containsKey(player.getUniqueId())) {
             Cooldown oldCd = cooldownMap.get(player.getUniqueId());
-            if(oldCd.hasExpired()) cooldownMap.remove(player.getUniqueId());
+            if (oldCd.hasExpired()) cooldownMap.remove(player.getUniqueId());
             else {
                 player.sendMessage(CC.translate(messages.getString("COMMANDS.DISGUISE.COOLDOWN").replace("<cooldown>", TimeUtil.getDuration(oldCd.getRemaining()))));
                 return;
@@ -78,9 +81,11 @@ public class DisguiseCommands {
 
         name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
         if (Holiday.getInstance().getDisguiseHandler() instanceof DisguiseHandler_1_7) {
-            while (DisguiseHandler_1_7.DisguiseRequest.alreadyUsed(name)) name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
+            while (DisguiseHandler_1_7.DisguiseRequest.alreadyUsed(name))
+                name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
         } else {
-            while (DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
+            while (DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name))
+                name = names.get(NumberUtils.generateRandomIntInRange(0, names.size() - 1));
         }
 
         final String namef = name;
@@ -91,7 +96,8 @@ public class DisguiseCommands {
             try {
                 Holiday.getInstance().getDisguiseHandler().disguise(player, Holiday.getInstance().getRankHandler().getDefaultRank(), skin, namef, true);
                 Cooldown cd = Cooldown.fromMinutes(15);
-                if (Holiday.getInstance().getProfileHandler().getByUUID(player.getUniqueId()).isStaff()) cd = Cooldown.fromSeconds(30);
+                if (Holiday.getInstance().getProfileHandler().getByUUID(player.getUniqueId()).isStaff())
+                    cd = Cooldown.fromSeconds(30);
                 cooldownMap.put(player.getUniqueId(), cd);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -113,12 +119,12 @@ public class DisguiseCommands {
 
     }
 
-    @Command(names = {"disguiselist", "nicklist"}, perm = "holiday.disguiselist")
+    @Command(names = {"disguiselist", "nicklist"}, permission = "holiday.disguiselist")
     public static void list(CommandSender sender) {
 
         StringBuilder sb = new StringBuilder();
         if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_7) {
-            DisguiseHandler_1_7 handler = (DisguiseHandler_1_7 ) Holiday.getInstance().getDisguiseHandler();
+            DisguiseHandler_1_7 handler = (DisguiseHandler_1_7) Holiday.getInstance().getDisguiseHandler();
 
             if (!handler.usedNames.isEmpty()) {
                 handler.usedNames.forEach(n -> {

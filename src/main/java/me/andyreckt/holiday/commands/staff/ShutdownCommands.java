@@ -5,15 +5,15 @@ import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.server.reboot.RebootTask;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.TimeUtil;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
+import me.andyreckt.sunset.annotations.Command;
+import me.andyreckt.sunset.annotations.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class ShutdownCommands {
 
-    @Command(names = {"stop"},  perm = "holiday.reboot", async = true)
+    @Command(names = {"stop"}, permission = "holiday.reboot", async = true)
     public static void stop(CommandSender sender) {
         RebootTask task = Holiday.getInstance().getRebootTask();
 
@@ -25,7 +25,7 @@ public class ShutdownCommands {
     }
 
 
-    @Command(names = {"reboot", "restart"},  perm = "holiday.reboot", async = true)
+    @Command(names = {"reboot", "restart"}, permission = "holiday.reboot", async = true)
     public static void reboot(CommandSender sender, @Param(name = "cancel/time") String time) {
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
         RebootTask task = Holiday.getInstance().getRebootTask();

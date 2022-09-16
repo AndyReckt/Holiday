@@ -3,7 +3,6 @@ package me.andyreckt.holiday.listeners;
 import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.redis.packet.BroadcastPacket;
 import me.andyreckt.holiday.database.redis.packet.ClickablePacket;
-import me.andyreckt.holiday.database.redis.packet.MessagePacket;
 import me.andyreckt.holiday.other.enums.BroadcastType;
 import me.andyreckt.holiday.other.menu.InvseeMenu;
 import me.andyreckt.holiday.player.Profile;
@@ -17,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -41,7 +41,8 @@ public class OtherListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoinFull(PlayerLoginEvent event) {
-        if (!(event.getResult() == PlayerLoginEvent.Result.KICK_FULL || event.getResult() == PlayerLoginEvent.Result.ALLOWED)) return;
+        if (!(event.getResult() == PlayerLoginEvent.Result.KICK_FULL || event.getResult() == PlayerLoginEvent.Result.ALLOWED))
+            return;
         if (!(Bukkit.getOnlinePlayers().size() >= Bukkit.getMaxPlayers())) return;
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByUUID(event.getPlayer().getUniqueId());
@@ -50,6 +51,7 @@ public class OtherListeners implements Listener {
             event.setResult(PlayerLoginEvent.Result.ALLOWED);
         else event.setResult(PlayerLoginEvent.Result.KICK_FULL);
     }
+
     @EventHandler
     public void invseeClose(InventoryCloseEvent event) {
         InvseeMenu.invMap.remove((Player) event.getPlayer());
@@ -76,4 +78,33 @@ public class OtherListeners implements Listener {
             PlayerUtil.freeze(event.getPlayer(), false);
         }
     }
+
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onCommandPreProcess(PlayerCommandPreprocessEvent event) {
+
+        boolean bool = false;
+
+        for (String s : Holiday.getInstance().getSettings().getStringList("DISABLEDCOMMANDS.CORE")) {
+            if (event.getMessage().toLowerCase().startsWith(s)) {
+                bool = true;
+                break;
+            }
+        }
+
+        for (String s : Holiday.getInstance().getSettings().getStringList("DISABLEDCOMMANDS.OTHER")) {
+            if (Holiday.getInstance().getSettings().getBoolean("DISABLEDCOMMANDS.OPBYPASS") && event.getPlayer().isOp())
+                continue;
+            if (event.getMessage().toLowerCase().startsWith(s)) {
+                bool = true;
+                break;
+            }
+        }
+
+        if (bool) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(CC.translate(Holiday.getInstance().getSettings().getString("DISABLEDCOMMANDS.MESSAGE")));
+        }
+    }
+
 }

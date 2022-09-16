@@ -15,14 +15,20 @@ import me.andyreckt.holiday.player.grant.Grant;
 import me.andyreckt.holiday.player.grant.GrantComparator;
 import me.andyreckt.holiday.player.punishments.PunishData;
 import me.andyreckt.holiday.player.rank.Rank;
-import me.andyreckt.holiday.utils.*;
+import me.andyreckt.holiday.utils.CC;
+import me.andyreckt.holiday.utils.PunishmentUtils;
+import me.andyreckt.holiday.utils.StringUtils;
+import me.andyreckt.holiday.utils.Tasks;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter
@@ -46,7 +52,7 @@ public class Profile {
 
 
     public Profile(Player player) {
-        new Profile(player.getUniqueId(), true);
+        this(player.getUniqueId(), true);
     }
 
     public Profile(String name) {
@@ -59,7 +65,7 @@ public class Profile {
         this.uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
         this.name = "&4Console";
         this.ip = "0";
-        this.lowerCaseName = "&4CONSOLE";
+        this.lowerCaseName = "&4console";
         this.ips = new ArrayList<>();
         this.permissions = Collections.singletonList("*");
         this.online = true;
@@ -74,7 +80,7 @@ public class Profile {
     }
 
     public Profile(UUID uuid) {
-        new Profile(uuid, true);
+        this(uuid, true);
     }
 
     public Profile(Document document) {
@@ -91,14 +97,14 @@ public class Profile {
     }
 
     private boolean hasProfile(UUID uuid) {
-        Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
+        Document document = MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
         return document != null;
     }
 
     private boolean hasProfile(String name) {
         if (DisguiseHandler_1_8.DisguiseRequest.alreadyUsed(name)) return true;
 
-        Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
+        Document document = MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
         return document != null;
     }
 
@@ -113,13 +119,13 @@ public class Profile {
     }
 
     private void getProfileFromDb(UUID uuid) {
-        Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
+        Document document = MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid.toString())).first();
         assert document != null;
         loadFromDocument(document);
     }
 
     private void getProfileFromDb(String name) {
-        Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
+        Document document = MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
         assert document != null;
         loadFromDocument(document);
     }
@@ -166,7 +172,7 @@ public class Profile {
     private void reloadProfile(UUID uuid) {
         Player player = Bukkit.getPlayer(uuid);
         if (player == null) return;
-        Document document = (Document) MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid)).first();
+        Document document = MongoUtils.getProfileCollection().find(Filters.eq("_id", uuid)).first();
 
         this.uuid = uuid;
 
@@ -356,7 +362,8 @@ public class Profile {
         this.messagesEnabled = document.getBoolean("isMessages");
         this.socialSpy = document.getBoolean("socialSpy") != null && document.getBoolean("socialSpy");
 
-        if (Holiday.getInstance().getDisguiseHandler().isDisguisedMongo(uuid)) this.disguiseData = Holiday.getInstance().getDisguiseHandler().getDisguiseData(uuid);
+        if (Holiday.getInstance().getDisguiseHandler().isDisguisedMongo(uuid))
+            this.disguiseData = Holiday.getInstance().getDisguiseHandler().getDisguiseData(uuid);
     }
 
     public Grant getHighestGrant() {

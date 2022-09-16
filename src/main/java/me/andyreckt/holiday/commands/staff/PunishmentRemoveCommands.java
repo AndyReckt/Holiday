@@ -7,38 +7,41 @@ import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.punishments.PunishData;
 import me.andyreckt.holiday.player.punishments.PunishmentType;
 import me.andyreckt.holiday.utils.PunishmentUtils;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
+import me.andyreckt.sunset.annotations.Command;
+import me.andyreckt.sunset.annotations.Param;
 import org.bukkit.command.CommandSender;
 
 public class PunishmentRemoveCommands {
 
-    @Command(names = {"unban", "pardon"}, async = true, perm = "holiday.unban")
-    public static void unban(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
+    @Command(names = {"unban", "pardon"}, async = true, permission = "holiday.unban")
+    public static void unban(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, baseValue = "Appealed") String reason) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
         if (fReason.equals("")) fReason = "Appealed";
         unPunish(profile, target, PunishmentType.UNBAN, fReason, silent, sender);
     }
-    @Command(names = "unipban", async = true, perm = "holiday.unipban")
-    public static void unipban(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
+
+    @Command(names = "unipban", async = true, permission = "holiday.unipban")
+    public static void unipban(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, baseValue = "Appealed") String reason) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
         if (fReason.equals("")) fReason = "Appealed";
         unPunish(profile, target, PunishmentType.UNIP_BAN, fReason, silent, sender);
     }
-    @Command(names = "unmute", async = true, perm = "holiday.unmute")
-    public static void unmute(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
+
+    @Command(names = "unmute", async = true, permission = "holiday.unmute")
+    public static void unmute(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, baseValue = "Appealed") String reason) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
         if (fReason.equals("")) fReason = "Appealed";
         unPunish(profile, target, PunishmentType.UNMUTE, fReason, silent, sender);
     }
-    @Command(names = "unblacklist", async = true, perm = "holiday.unblacklist")
-    public static void unblacklist(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, defaultValue = "Appealed") String reason) {
+
+    @Command(names = "unblacklist", async = true, permission = "holiday.unblacklist")
+    public static void unblacklist(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "reason", wildcard = true, baseValue = "Appealed") String reason) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
@@ -77,7 +80,8 @@ public class PunishmentRemoveCommands {
         data.setRemoved(true);
         data.setRemovedAt(System.currentTimeMillis());
         data.save();
-        if (silent) Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(data, PunishmentSubType.REMOVESILENT, type));
+        if (silent)
+            Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(data, PunishmentSubType.REMOVESILENT, type));
         else Holiday.getInstance().getRedis().sendPacket(new PunishmentPacket(data, PunishmentSubType.REMOVE, type));
     }
 

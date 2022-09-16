@@ -4,15 +4,22 @@ import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.Tasks;
 import me.andyreckt.holiday.utils.TimeUtil;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
+import me.andyreckt.sunset.annotations.Command;
+import me.andyreckt.sunset.annotations.MainCommand;
+import me.andyreckt.sunset.annotations.Param;
+import me.andyreckt.sunset.annotations.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+@MainCommand(names = "chat",
+		permission = "holiday.chat",
+		description = "Chat management commands.",
+		usage = "/chat <clear|slow|unslow|mute>",
+		helpCommand = "help")
 public class ChatCommands {
 
-	@Command(names = {"chat", "chat help"}, perm = "holiday.chat", async = true)
+	@SubCommand(names = "help", async = true)
 	public static void help(CommandSender sender) {
 		String[] message = {
 				"&cUsage: /chat clear",
@@ -25,37 +32,35 @@ public class ChatCommands {
 			sender.sendMessage(CC.translate(s));
 		}
 	}
-
-
-	@Command(names = {"clearchat", "chat clear"}, perm = "holiday.clearchat", async = true)
-	public static void execute(CommandSender sender) {
+	@SubCommand(names = "clear", permission = "holiday.chat.clear", async = true)
+	@Command(names = "clearchat", permission = "holiday.chat.clear", async = true)
+	public static void clear(CommandSender sender) {
 		StringBuilder sb = new StringBuilder(" ");
-		Tasks.runAsync(() -> {
-			for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 1000; i++) {
 
-				Holiday.getInstance().getProfileHandler().getOnlineProfiles().forEach(profile -> {
-					if (!profile.isStaff()) {
-						Player player = profile.getPlayer();
-						if (player != null) {
-							player.sendMessage(CC.translate(sb.toString()));
-						}
-					}
-				});
-				sb.append(" ");
-			}
-			Bukkit.broadcastMessage(Holiday.getInstance().getMessages().getString("COMMANDS.CHAT.GLOBAL.CLEAR"));
 			Holiday.getInstance().getProfileHandler().getOnlineProfiles().forEach(profile -> {
-				if (profile.isStaff()) {
+				if (!profile.isStaff()) {
 					Player player = profile.getPlayer();
 					if (player != null) {
-						player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.CHAT.STAFF.CLEAR").replace("<player>", Holiday.getInstance().getProfileHandler().getByCommandSender(sender).getNameWithColor()));
+						player.sendMessage(CC.translate(sb.toString()));
 					}
 				}
 			});
+			sb.append(" ");
+		}
+		Bukkit.broadcastMessage(Holiday.getInstance().getMessages().getString("COMMANDS.CHAT.GLOBAL.CLEAR"));
+		Holiday.getInstance().getProfileHandler().getOnlineProfiles().forEach(profile -> {
+			if (profile.isStaff()) {
+				Player player = profile.getPlayer();
+				if (player != null) {
+					player.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.CHAT.STAFF.CLEAR").replace("<player>", Holiday.getInstance().getProfileHandler().getByCommandSender(sender).getNameWithColor()));
+				}
+			}
 		});
 	}
 
-	@Command(names = {"mutechat", "chat mute"}, perm = "holiday.mutechat", async = true)
+	@SubCommand(names = "mute", permission = "holiday.chat.mute", async = true)
+	@Command(names = {"mutechat"}, permission = "holiday.chat.mute", async = true)
 	public static void mutechat(CommandSender sender) {
 		if(!Holiday.getInstance().getChatHandler().isChatMuted()) {
 			Holiday.getInstance().getChatHandler().setChatMuted(true);
@@ -85,7 +90,8 @@ public class ChatCommands {
 		}
 	}
 
-	@Command(names = {"slowchat", "chat slow"}, perm = "holiday.slowchat", async = true)
+	@SubCommand(names = "slow", permission = "holiday.chat.slow", async = true)
+	@Command(names = {"slowchat"}, permission = "holiday.chat.slow", async = true)
 	public static void slowchat(CommandSender sender, @Param(name = "time") String duration){
 
 		long time = TimeUtil.getDuration(duration);
@@ -106,7 +112,8 @@ public class ChatCommands {
 		});
 	}
 
-	@Command(names = {"unslowchat", "chat unslow"}, perm = "holiday.slowchat", async = true)
+	@SubCommand(names = {"unslow"}, permission = "holiday.slowchat", async = true)
+	@Command(names = {"unslowchat"}, permission = "holiday.slowchat", async = true)
 	public static void unslowchat(CommandSender sender){
 
 		Holiday.getInstance().getChatHandler().setChatDelay(0L);

@@ -5,18 +5,20 @@ import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.server.ServerHandler;
 import me.andyreckt.holiday.utils.CC;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
+import me.andyreckt.sunset.annotations.MainCommand;
+import me.andyreckt.sunset.annotations.Param;
+import me.andyreckt.sunset.annotations.SubCommand;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import java.util.UUID;
 
+@MainCommand(names = {"whitelist", "wl"}, permission = "holiday.whitelist", helpCommand = "help")
 public class WhitelistCommands {
 
     private static final ServerHandler sh = Holiday.getInstance().getServerHandler();
 
-    @Command(names = {"whitelist", "wl", "wl help", "whitelist help"}, perm = "holiday.whitelist", async = true)
+    @SubCommand(names = {"help"}, permission = "holiday.whitelist", async = true)
     public static void onHelp(CommandSender sender) {
 
         String[] message = {
@@ -27,22 +29,29 @@ public class WhitelistCommands {
                 "&cUsage: /wl remove <name>"
         };
 
-        for (String s: message) {
+        for (String s : message) {
             sender.sendMessage(CC.translate(s));
         }
 
     }
 
 
-    @Command(names = {"whitelist", "wl"}, perm = "holiday.whitelist", async = true)
-    public static void onToggleOn(CommandSender sender, @Param(name = "value") boolean bool) {
-        sh.getThisServer().setWhitelisted(bool);
+    @SubCommand(names = {"on"}, permission = "holiday.whitelist", async = true)
+    public static void onToggleOn(CommandSender sender) {
+        sh.getThisServer().setWhitelisted(true);
         sh.save();
-        sender.sendMessage(CC.translate("&aSuccessfully toggled the whitelist " + (bool ? "on" : "off")));
+        sender.sendMessage(CC.translate("&aSuccessfully toggled the whitelist on."));
+    }
+
+    @SubCommand(names = {"off"}, permission = "holiday.whitelist", async = true)
+    public static void onToggleOff(CommandSender sender) {
+        sh.getThisServer().setWhitelisted(false);
+        sh.save();
+        sender.sendMessage(CC.translate("&aSuccessfully toggled the whitelist off."));
     }
 
 
-    @Command(names = {"whitelist rank", "wl rank"}, perm = "holiday.whitelist", async = true)
+    @SubCommand(names = {"rank"}, permission = "holiday.whitelist", async = true)
     public static void onRank(CommandSender sender, @Param(name = "rank") Rank rank) {
         sh.getThisServer().setWhitelistRank(rank);
         sh.save();
@@ -50,7 +59,7 @@ public class WhitelistCommands {
     }
 
 
-    @Command(names = {"whitelist add", "wl add"}, perm = "holiday.whitelist", async = true)
+    @SubCommand(names = {"add"}, permission = "holiday.whitelist", async = true)
     public static void onAdd(CommandSender sender, @Param(name = "player") OfflinePlayer player) {
         if (sh.getThisServer().getWhitelistedPlayers().contains(player.getUniqueId())) {
             sender.sendMessage(CC.translate("&cThis player is already whitelisted"));
@@ -61,7 +70,7 @@ public class WhitelistCommands {
         }
     }
 
-    @Command(names = {"whitelist remove", "wl remove"}, perm = "holiday.whitelist", async = true)
+    @SubCommand(names = {"remove"}, permission = "holiday.whitelist", async = true)
     public static void onremove(CommandSender sender, @Param(name = "player") OfflinePlayer player) {
         if (!sh.getThisServer().getWhitelistedPlayers().contains(player.getUniqueId())) {
             sender.sendMessage(CC.translate("&cThis player is not whitelisted"));
@@ -72,7 +81,7 @@ public class WhitelistCommands {
         }
     }
 
-    @Command(names = {"whitelist info", "wl info"}, perm = "holiday.whitelist", async = true)
+    @SubCommand(names = {"info"}, permission = "holiday.whitelist", async = true)
     public static void onInfo(CommandSender sender) {
         sender.sendMessage(CC.CHAT_BAR);
 
@@ -88,7 +97,7 @@ public class WhitelistCommands {
             s.append(CC.CHAT).append(pr.getNameWithColor()).append(CC.CHAT).append(", ");
         }
         if (s.length() > 5)
-        s = new StringBuilder(s.substring(0, s.length() - 4));
+            s = new StringBuilder(s.substring(0, s.length() - 4));
         s = new StringBuilder("&7[" + s + "&7]");
         if (s.toString().equalsIgnoreCase("&7[&7]")) {
             sender.sendMessage(CC.CHAT + " Whitelisted players: " + CC.PRIMARY + "None");
@@ -98,7 +107,6 @@ public class WhitelistCommands {
 
         sender.sendMessage(CC.CHAT_BAR);
     }
-
 
 
 }

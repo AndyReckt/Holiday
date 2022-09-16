@@ -10,8 +10,8 @@ import me.andyreckt.holiday.player.punishments.menu.check.CheckMenu;
 import me.andyreckt.holiday.player.punishments.menu.list.ListMenu;
 import me.andyreckt.holiday.server.Server;
 import me.andyreckt.holiday.utils.*;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
+import me.andyreckt.sunset.annotations.Command;
+import me.andyreckt.sunset.annotations.Param;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -24,14 +24,14 @@ import java.lang.management.ManagementFactory;
 
 public class StaffCommands {
 
-    @Command(names = {"alts", "alt", "accounts", "associatedaccounts", "listallaccounts"}, perm = "holiday.alts", async = true)
+    @Command(names = {"alts", "alt", "accounts", "associatedaccounts", "listallaccounts"}, permission = "holiday.alts", async = true)
     public static void alts(CommandSender sender, @Param(name = "player") Profile target) {
         StringBuilder alts = new StringBuilder();
         alts.append("&7[");
         int i = 0;
         for (String alt : target.formatAlts()) {
             i++;
-            if(i == target.getAlts().size()) {
+            if (i == target.getAlts().size()) {
                 alts.append(alt);
             } else {
                 alts.append(alt).append("&7, ");
@@ -44,9 +44,9 @@ public class StaffCommands {
         sender.sendMessage(CC.translate(alts.toString()));
     }
 
-    @Command(names = "killall", perm = "holiday.killall")
+    @Command(names = "killall", permission = "holiday.killall")
     public static void killall(CommandSender sender,
-                               @Param(name = "<all|mobs|animals|items>", defaultValue = "all", tabCompleteFlags = {"all", "mobs", "animals", "items"}) String arg) {
+                               @Param(name = "<all|mobs|animals|items>", baseValue = "all", tabCompleteFlags = {"all", "mobs", "animals", "items"}) String arg) {
         int total = 0;
         switch (arg) {
             case "all": {
@@ -108,21 +108,21 @@ public class StaffCommands {
         }
     }
 
-    @Command(names = {"setmaxplayer", "setslots"}, perm = "holiday.setslots")
+    @Command(names = {"setmaxplayer", "setslots"}, permission = "holiday.setslots")
     public static void slots(CommandSender sender, @Param(name = "player") int players) {
         StringUtils.setSlots(players);
         Holiday.getInstance().getServerHandler().save();
         sender.sendMessage(CC.translate("&aSuccessfully set the slots to \"" + players + "\""));
     }
 
-    @Command(names = {"more"}, perm = "holiday.more")
+    @Command(names = {"more"}, permission = "holiday.more")
     public static void more(Player sender) {
         ItemStack item = sender.getItemInHand();
-        if(item == null || item.getType() == Material.AIR) {
+        if (item == null || item.getType() == Material.AIR) {
             sender.sendMessage(CC.translate("&cYou need to have an item in your hand."));
             return;
         }
-        if(item.getAmount() >= 64) {
+        if (item.getAmount() >= 64) {
             sender.sendMessage(CC.translate("&cYour item is already stacked."));
             return;
         }
@@ -131,13 +131,13 @@ public class StaffCommands {
         sender.sendMessage(CC.translate("&aYou have stacked your item."));
     }
 
-    @Command(names = "sudo", perm = "holiday.sudo")
+    @Command(names = "sudo", permission = "holiday.sudo")
     public static void sudo(CommandSender sender, @Param(name = "target") Player target, @Param(name = "message", wildcard = true) String msg) {
         sender.sendMessage(CC.translate("&aYou forced \"" + target.getName() + "\" to say \"" + msg + "\""));
         target.chat(msg);
     }
 
-    @Command(names = {"sudoall", "massay"}, perm = "holiday.sudoall")
+    @Command(names = {"sudoall", "massay"}, permission = "holiday.sudoall")
     public static void suadoall(CommandSender sender, @Param(name = "message", wildcard = true) String msg) {
         Bukkit.getOnlinePlayers()
                 .stream()
@@ -148,34 +148,36 @@ public class StaffCommands {
         sender.sendMessage(CC.translate("&aYou forced everyone to say \"" + msg + "\""));
     }
 
-    @Command(names = {"invsee", "inv"}, perm = "holiday.invsee")
+    @Command(names = {"invsee", "inv"}, permission = "holiday.invsee")
     public static void invsee(Player player, @Param(name = "player") Player target) {
         new InvseeMenu(player, target).openMenu(player);
     }
 
-    @Command(names = {"staff", "staffmode", "modmode", "mod"}, perm = "holiday.modmode")
+    @Command(names = {"staff", "staffmode", "modmode", "mod"}, permission = "holiday.modmode")
     public static void staff(Player player) {
 
-        if(Holiday.getInstance().getStaffHandler().isInStaffMode(player)) {
+        if (Holiday.getInstance().getStaffHandler().isInStaffMode(player)) {
             Tasks.runAsync(() -> player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("STAFF.MODMODE.DISABLED"))));
             Holiday.getInstance().getStaffHandler().destroy(player);
-        }
-        else {
+        } else {
             Tasks.runAsync(() -> player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("STAFF.MODMODE.ENABLED"))));
             Holiday.getInstance().getStaffHandler().init(player);
         }
     }
 
-    @Command(names = {"vanish", "v", "poof"}, perm = "holiday.modmode")
+    @Command(names = {"vanish", "v", "poof"}, permission = "holiday.modmode")
     public static void vanish(Player player) {
-        if(Holiday.getInstance().getStaffHandler().isInStaffMode(player)) Holiday.getInstance().getStaffHandler().getStaffPlayer(player).vanish();
+        if (Holiday.getInstance().getStaffHandler().isInStaffMode(player))
+            Holiday.getInstance().getStaffHandler().getStaffPlayer(player).vanish();
         else player.sendMessage(CC.translate("&cYou need to be in staff mode to be able to vanish."));
     }
-    @Command(names = {"check", "c", "checkban", "checkpun", "checkpunishments", "punishments", "bancheck", "mutecheck", "punishmentcheck", "punishcheck", "pcheck"}, perm = "holiday.checkpunishments")
+
+    @Command(names = {"check", "c", "checkban", "checkpun", "checkpunishments", "punishments", "bancheck", "mutecheck", "punishmentcheck", "punishcheck", "pcheck"}, permission = "holiday.checkpunishments")
     public static void check(Player player, @Param(name = "player") Profile target) {
         new CheckMenu(target).open(player);
     }
-    @Command(names = {"freeze", "ss"}, perm = "holiday.freeze")
+
+    @Command(names = {"freeze", "ss"}, permission = "holiday.freeze")
     public static void execute(Player player, @Param(name = "player") Player target) {
         Holiday.getInstance().getStaffHandler().handleFreeze(target);
         if (target.hasMetadata("frozen")) {
@@ -185,12 +187,12 @@ public class StaffCommands {
         }
     }
 
-    @Command(names = {"punishmentlist", "plist", "banlist", "mutelist", "blacklistlist"}, perm = "holiday.punishmentslist")
+    @Command(names = {"punishmentlist", "plist", "banlist", "mutelist", "blacklistlist"}, permission = "holiday.punishmentslist")
     public static void punishmentsList(Player player) {
         new ListMenu().open(player);
     }
 
-    @Command(names = {"sc", "staffchat"}, perm = "holiday.staffchat", async = true)
+    @Command(names = {"sc", "staffchat"}, permission = "holiday.staffchat", async = true)
     public static void staffchat(Player player, @Param(name = "message", wildcard = true) String message) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByUUID(player.getUniqueId());
         String playerName = profile.getNameWithColor();
@@ -201,7 +203,7 @@ public class StaffCommands {
         ));
     }
 
-    @Command(names = "join", perm = "holiday.join")
+    @Command(names = "join", permission = "holiday.join")
     public static void join(Player sender, @Param(name = "server") String server) {
         Server serverData = Holiday.getInstance().getServerHandler().getServers().get(server);
 
@@ -222,7 +224,7 @@ public class StaffCommands {
 
     }
 
-    @Command(names = "pull", perm = "holiday.pull")
+    @Command(names = "pull", permission = "holiday.pull")
     public static void join(Player sender, @Param(name = "player") Profile player) {
 
         if (!player.isOnline()) {
@@ -239,7 +241,7 @@ public class StaffCommands {
         Holiday.getInstance().getRedis().sendPacket(new CrossServerCommandPacket("sendtoserver " + player.getDisplayName() + " " + Holiday.getInstance().getSettings().getString("SERVER.NAME"), player.getCurrentServer()));
     }
 
-    @Command(names = "sendtoserver", perm = "holiday.sendtoserver")
+    @Command(names = "sendtoserver", permission = "holiday.sendtoserver")
     public static void send(CommandSender sender, @Param(name = "player") Player player, @Param(name = "server") String server) {
         Server serverData = Holiday.getInstance().getServerHandler().getServers().get(server);
 
@@ -259,7 +261,7 @@ public class StaffCommands {
 
     }
 
-    @Command(names = {"find", "search"}, perm = "holiday.find")
+    @Command(names = {"find", "search"}, permission = "holiday.find")
     public static void find(CommandSender sender, @Param(name = "player") Profile player) {
         if (player.isOnline()) {
             sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.FIND.ONLINE")
@@ -271,13 +273,12 @@ public class StaffCommands {
         }
     }
 
-    @Command(names = {"lag", "serverlag"}, perm = "holiday.lag")
+    @Command(names = {"lag", "serverlag"}, permission = "holiday.lag")
     public static void lag(CommandSender sender) {
         StringBuilder sb = new StringBuilder(" ");
-        for (double tps : Holiday.getInstance().getNmsHandler().recentTps())
-        {
+        for (double tps : Holiday.getInstance().getNmsHandler().recentTps()) {
             sb.append(format(tps));
-            sb.append( ", " );
+            sb.append(", ");
         }
 
         long serverTime = ManagementFactory.getRuntimeMXBean().getStartTime();
@@ -295,23 +296,23 @@ public class StaffCommands {
                     );
                 }
             } else
-            sender.sendMessage(CC.translate(s
-                    .replace("<bar>", CC.CHAT_BAR)
-                    .replace("<tps>", tps)
-                    .replace("<uptime>", uptime)
-                    .replace("<mem_max>", String.valueOf(Runtime.getRuntime().maxMemory() / 1024 / 1024))
-                    .replace("<mem_allocated>", String.valueOf(Runtime.getRuntime().totalMemory() / 1024 / 1024))
-                    .replace("<mem_available>", String.valueOf(Runtime.getRuntime().freeMemory() / 1024 / 1024))
-            ));
+                sender.sendMessage(CC.translate(s
+                        .replace("<bar>", CC.CHAT_BAR)
+                        .replace("<tps>", tps)
+                        .replace("<uptime>", uptime)
+                        .replace("<mem_max>", String.valueOf(Runtime.getRuntime().maxMemory() / 1024 / 1024))
+                        .replace("<mem_allocated>", String.valueOf(Runtime.getRuntime().totalMemory() / 1024 / 1024))
+                        .replace("<mem_available>", String.valueOf(Runtime.getRuntime().freeMemory() / 1024 / 1024))
+                ));
 
 
         });
     }
-    static String format(double tps) {
-        return ( ( tps > 18.0 ) ? CC.GREEN : ( tps > 16.0 ) ? CC.YELLOW : CC.RED )
-                + ( ( tps > 20.0 ) ? "*" : "" ) + Math.min( Math.round( tps * 100.0 ) / 100.0, 20.0 );
-    }
 
+    static String format(double tps) {
+        return ((tps > 18.0) ? CC.GREEN : (tps > 16.0) ? CC.YELLOW : CC.RED)
+                + ((tps > 20.0) ? "*" : "") + Math.min(Math.round(tps * 100.0) / 100.0, 20.0);
+    }
 
 
 }

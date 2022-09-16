@@ -4,10 +4,9 @@ import me.andyreckt.holiday.Holiday;
 import me.andyreckt.holiday.database.redis.packet.StaffMessages;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.*;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
-import org.apache.commons.lang.ArrayUtils;
+import me.andyreckt.sunset.annotations.Command;
+import me.andyreckt.sunset.annotations.Param;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
@@ -33,9 +32,9 @@ public class GeneralCommands {
             return;
         }
 
-        if(reportCooldownMap.containsKey(sender.getUniqueId())) {
+        if (reportCooldownMap.containsKey(sender.getUniqueId())) {
             Cooldown oldCd = reportCooldownMap.get(sender.getUniqueId());
-            if(oldCd.hasExpired()) reportCooldownMap.remove(sender.getUniqueId());
+            if (oldCd.hasExpired()) reportCooldownMap.remove(sender.getUniqueId());
             else {
                 sender.sendMessage(CC.translate(messages.getString("COMMANDS.GENERAL.REPORT.COOLDOWN").replace("<time>", TimeUtil.getDuration(oldCd.getRemaining()))));
                 return;
@@ -55,13 +54,13 @@ public class GeneralCommands {
     }
 
     @Command(names = {"request", "helpop", "helpme", "question", "ask",}, async = true)
-    public static void request(Player sender,  @Param(name = "reason", wildcard = true) String reason) {
+    public static void request(Player sender, @Param(name = "reason", wildcard = true) String reason) {
 
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
-        if(helpopCooldownMap.containsKey(sender.getUniqueId())) {
+        if (helpopCooldownMap.containsKey(sender.getUniqueId())) {
             Cooldown oldCd = helpopCooldownMap.get(sender.getUniqueId());
-            if(oldCd.hasExpired()) helpopCooldownMap.remove(sender.getUniqueId());
+            if (oldCd.hasExpired()) helpopCooldownMap.remove(sender.getUniqueId());
             else {
                 sender.sendMessage(CC.translate(messages.getString("COMMANDS.GENERAL.HELPOP.COOLDOWN").replace("<time>", TimeUtil.getDuration(oldCd.getRemaining()))));
                 return;
@@ -80,7 +79,7 @@ public class GeneralCommands {
     }
 
     @Command(names = "playtime")
-    public static void playtime(Player sender, @Param(name = "player", defaultValue = "self") Player target) {
+    public static void playtime(Player sender, @Param(name = "player", baseValue = "self") Player target) {
         long playtime = target.getStatistic(Statistic.PLAY_ONE_TICK) * 50L;
 
         String playtimeString = target == sender ? Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.PLAYTIME.SELF") :
@@ -90,9 +89,9 @@ public class GeneralCommands {
         sender.sendMessage(CC.translate(playtimeString));
     }
 
-    @Command( names = {"ping", "ms", "latency"})
-    public static void ping(Player sender, @Param(name = "target", defaultValue = "self") Player target)  {
-        if(target != sender) {
+    @Command(names = {"ping", "ms", "latency"})
+    public static void ping(Player sender, @Param(name = "target", baseValue = "self") Player target) {
+        if (target != sender) {
             for (String s : Holiday.getInstance().getMessages().getStringList("COMMANDS.GENERAL.PING.OTHER")) {
                 sender.sendMessage(CC.translate(
                         s.replace("<ping>", String.valueOf(Utilities.getPing(target)))
@@ -107,7 +106,7 @@ public class GeneralCommands {
         }
     }
 
-    @Command(names = {"who","list"}, async = true)
+    @Command(names = {"who", "list"}, async = true)
     public static void list(CommandSender sender) {
         StringBuilder builder = new StringBuilder();
 
@@ -132,7 +131,7 @@ public class GeneralCommands {
         sender.sendMessage(CC.translate(builder.toString()));
     }
 
-    @Command(names = "rename", perm = "holiday.rename")
+    @Command(names = "rename", permission = "holiday.rename")
     public static void rename(Player sender, @Param(name = "name", wildcard = true) String name) {
         ItemStack is = sender.getItemInHand();
         if (is == null || is.getType().equals(Material.AIR)) {
@@ -152,7 +151,6 @@ public class GeneralCommands {
                         .replace("<name>", name)
         ));
     }
-
 
 
 }

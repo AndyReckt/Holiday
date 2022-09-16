@@ -1,19 +1,17 @@
-package me.andyreckt.holiday.utils.command.param.defaults;
+package me.andyreckt.holiday.utils.command.param.custom;
 
 import me.andyreckt.holiday.Holiday;
-import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.CC;
-import me.andyreckt.holiday.utils.command.param.ParameterType;
+import me.andyreckt.sunset.parameter.PType;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-public class RankParameterType implements ParameterType<Rank> {
+public class RankParameterType implements PType<Rank> {
 
     public Rank transform(CommandSender sender, String source) {
         if (sender instanceof Player && source.equals("")) {
@@ -31,7 +29,7 @@ public class RankParameterType implements ParameterType<Rank> {
         return (rank);
     }
 
-    public List<String> tabComplete(Player sender, Set<String> flags, String source) {
+    public List<String> complete(Player sender, String source) {
         List<String> completions = new ArrayList<>();
 
         for (Rank rank : Holiday.getInstance().getRankHandler().ranks()) {

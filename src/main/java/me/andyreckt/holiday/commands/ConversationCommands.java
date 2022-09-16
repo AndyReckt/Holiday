@@ -5,9 +5,8 @@ import me.andyreckt.holiday.database.redis.packet.MessagePacket;
 import me.andyreckt.holiday.player.Profile;
 import me.andyreckt.holiday.player.ProfileHandler;
 import me.andyreckt.holiday.utils.CC;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
-import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
+import me.andyreckt.sunset.annotations.Command;
+import me.andyreckt.sunset.annotations.Param;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -84,7 +83,7 @@ public class ConversationCommands {
             return;
         }
 
-        if (!target.isMessagesEnabled() &&!bypass) {
+        if (!target.isMessagesEnabled() && !bypass) {
             player.sendMessage(CC.translate(Holiday.getInstance().getMessages().getString("COMMANDS.CONVERSATION.TARGETTOGGLED")));
             return;
         }
@@ -99,7 +98,7 @@ public class ConversationCommands {
         lastMessage.put(profile.getUuid(), target.getUuid());
     }
 
-    @Command(names = "socialspy", async = true, perm = "holiday.socialspy")
+    @Command(names = "socialspy", async = true, permission = "holiday.socialspy")
     public static void spy(Player sender) {
         Profile profile = Holiday.getInstance().getProfileHandler().getByUUID(sender.getUniqueId());
         profile.setSocialSpy(!profile.isSocialSpy());

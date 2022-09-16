@@ -7,19 +7,21 @@ import me.andyreckt.holiday.player.rank.RankHandler;
 import me.andyreckt.holiday.player.rank.menu.RankManageMenu;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.TextComponentBuilder;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
+import me.andyreckt.sunset.annotations.MainCommand;
+import me.andyreckt.sunset.annotations.Param;
+import me.andyreckt.sunset.annotations.SubCommand;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 
+@MainCommand(permission = "op", names = {"rank", "ranks"}, helpCommand = "help", description = "Rank management commands.")
 public class RankCommands {
 
     private static final RankHandler rh = Holiday.getInstance().getRankHandler();
 
-    @Command(names = {"rank", "rank help"}, perm = "op", async = true)
+    @SubCommand(names = {"help"}, async = true)
     public static void onHelp(CommandSender sender) {
 
         String[] message = {
@@ -32,13 +34,13 @@ public class RankCommands {
                 //TODO ADD RANK IMPORT/EXPORT
         };
 
-        for (String s: message) {
+        for (String s : message) {
             sender.sendMessage(CC.translate(s));
         }
 
     }
 
-    @Command(names = {"rank create"}, perm = "op", async = true)
+    @SubCommand(names = {"create"}, async = true)
     public static void create(CommandSender sender, @Param(name = "rank") String string) {
 
         if (rh.getFromName(string) != null) {
@@ -52,12 +54,12 @@ public class RankCommands {
 
     }
 
-    @Command(names = {"rank manage", "rank edit"}, perm = "op")
+    @SubCommand(names = {"manage", "edit"})
     public static void manage(Player sender, @Param(name = "rank") Rank rank) {
         new RankManageMenu(rank).openMenu(sender);
     }
 
-    @Command(names = {"rank list"}, perm = "op")
+    @SubCommand(names = {"list"})
     public static void list(Player sender) {
         sender.sendMessage(CC.translate("&aRank list: "));
         sender.sendMessage(CC.CHAT_BAR);
@@ -84,7 +86,7 @@ public class RankCommands {
         sender.sendMessage(CC.CHAT_BAR);
     }
 
-    @Command(names = {"rank addperm", "rank perm add"}, perm = "op", async = true)
+    @SubCommand(names = {"addperm"}, async = true)
     public static void addperm(CommandSender sender, @Param(name = "rank") Rank rank, @Param(name = "perm") String perm) {
         rank.addPermission(perm);
         rank.save();
@@ -94,7 +96,7 @@ public class RankCommands {
         sender.sendMessage(CC.translate("&aSuccessfully added the permission \"" + perm + "\" to the rank " + rank.getDisplayName()));
     }
 
-    @Command(names = {"rank removeperm", "rank remperm", "rank perm rem", "rank perm remove"}, perm = "op", async = true)
+    @SubCommand(names = {"removeperm", "remperm"}, async = true)
     public static void removePerm(CommandSender sender, @Param(name = "rank") Rank rank, @Param(name = "perm") String perm) {
         rank.removePermission(perm);
         rank.save();
@@ -104,7 +106,7 @@ public class RankCommands {
         sender.sendMessage(CC.translate("&aSuccessfully removed the permission \"" + perm + "\" from the rank " + rank.getDisplayName()));
     }
 
-    @Command(names = {"rank addchild", "rank child add"}, perm = "op", async = true)
+    @SubCommand(names = {"addchild"}, async = true)
     public static void addChild(CommandSender sender, @Param(name = "rank") Rank rank, @Param(name = "child") Rank child) {
         rank.removeChild(child);
         rank.save();
@@ -114,7 +116,7 @@ public class RankCommands {
         sender.sendMessage(CC.translate("&aSuccessfully added the child \"" + child.getDisplayName() + "\"&a to the rank " + rank.getDisplayName()));
     }
 
-    @Command(names = {"rank removechild", "rank remchild", "rank child rem", "rank child remove"}, perm = "op", async = true)
+    @SubCommand(names = {"removechild", "remchild"}, async = true)
     public static void remChild(CommandSender sender, @Param(name = "rank") Rank rank, @Param(name = "child") Rank child) {
         rank.removeChild(child);
         rank.save();
@@ -124,7 +126,7 @@ public class RankCommands {
         sender.sendMessage(CC.translate("&aSuccessfully removed the child \"" + child.getDisplayName() + "\" from the rank " + rank.getDisplayName()));
     }
 
-    @Command(names = {"rank setpriority", "rank priority", "rank priority set", "rank weight set", "rank setweight", "rank weight"}, perm = "op", async = true)
+    @SubCommand(names = {"setpriority", "priority", "setweight", "weight"}, async = true)
     public static void remChild(CommandSender sender, @Param(name = "rank") Rank rank, @Param(name = "priority") int i) {
         rank.setPriority(i);
         rank.save();
@@ -132,7 +134,7 @@ public class RankCommands {
         sender.sendMessage(CC.translate("&aSuccessfully set the priority to \"" + i + "\" for the rank " + rank.getDisplayName()));
     }
 
-    @Command(names = {"rank delete", "rank remove"}, perm = "op", async = true)
+    @SubCommand(names = {"delete", "remove"}, async = true)
     public static void remRank(CommandSender sender, @Param(name = "rank") Rank rank) {
         if (rank.isDefault()) {
             sender.sendMessage(CC.translate("&cYou cannot delete the default rank!"));

@@ -8,17 +8,16 @@ import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.CommandUtils;
 import me.andyreckt.holiday.utils.PunishmentUtils;
 import me.andyreckt.holiday.utils.TimeUtil;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
-import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
+import me.andyreckt.sunset.annotations.Command;
+import me.andyreckt.sunset.annotations.Param;
 import org.bukkit.command.CommandSender;
 
 public class PunishmentCommands {
 
-    @Command(names = {"ban", "b"}, async = true, perm = "holiday.ban")
+    @Command(names = {"ban", "b"}, async = true, permission = "holiday.ban")
     public static void ban(CommandSender sender,
                            @Param(name = "name") Profile target,
-                           @Param(name = "reason", wildcard = true, defaultValue = "Cheating") String reason) {
+                           @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
@@ -27,10 +26,11 @@ public class PunishmentCommands {
 
         punish(profile, target, "ban", PunishmentType.BAN, fReason, silent, sender);
     }
-    @Command(names = {"blacklist", "bl"}, async = true, perm = "holiday.blacklist")
+
+    @Command(names = {"blacklist", "bl"}, async = true, permission = "holiday.blacklist")
     public static void blacklist(CommandSender sender,
-                           @Param(name = "name") Profile target,
-                           @Param(name = "reason", wildcard = true, defaultValue = "Cheating") String reason) {
+                                 @Param(name = "name") Profile target,
+                                 @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
@@ -39,10 +39,11 @@ public class PunishmentCommands {
 
         punish(profile, target, "blacklist", PunishmentType.BLACKLIST, fReason, silent, sender);
     }
-    @Command(names = {"ipban", "ipb", "banip", "ban-ip"}, async = true, perm = "holiday.ipban")
+
+    @Command(names = {"ipban", "ipb", "banip", "ban-ip"}, async = true, permission = "holiday.ipban")
     public static void ipban(CommandSender sender,
-                           @Param(name = "name") Profile target,
-                           @Param(name = "reason", wildcard = true, defaultValue = "Cheating") String reason) {
+                             @Param(name = "name") Profile target,
+                             @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
@@ -51,11 +52,12 @@ public class PunishmentCommands {
 
         punish(profile, target, "ip-ban", PunishmentType.IP_BAN, fReason, silent, sender);
     }
-    @Command(names = {"tempban", "tban", "tb"}, async = true, perm = "holiday.tempban")
+
+    @Command(names = {"tempban", "tban", "tb"}, async = true, permission = "holiday.tempban")
     public static void tempban(CommandSender sender,
-                           @Param(name = "name") Profile target,
-                           @Param(name = "time") String duration,
-                           @Param(name = "reason", wildcard = true, defaultValue = "Cheating") String reason) {
+                               @Param(name = "name") Profile target,
+                               @Param(name = "time") String duration,
+                               @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
@@ -64,10 +66,11 @@ public class PunishmentCommands {
 
         punish(profile, target, "tempban", PunishmentType.TEMP_BAN, duration, fReason, silent, sender);
     }
-    @Command(names = {"mute"}, async = true, perm = "holiday.mute")
+
+    @Command(names = {"mute"}, async = true, permission = "holiday.mute")
     public static void mute(CommandSender sender,
-                           @Param(name = "name") Profile target,
-                           @Param(name = "reason", wildcard = true, defaultValue = "Cheating") String reason) {
+                            @Param(name = "name") Profile target,
+                            @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
@@ -76,11 +79,12 @@ public class PunishmentCommands {
 
         punish(profile, target, "mute", PunishmentType.MUTE, fReason, silent, sender);
     }
-    @Command(names = {"tempmute", "tmute"}, async = true, perm = "holiday.tempmute")
+
+    @Command(names = {"tempmute", "tmute"}, async = true, permission = "holiday.tempmute")
     public static void tempmute(CommandSender sender,
-                           @Param(name = "name") Profile target,
-                           @Param(name = "time") String duration,
-                           @Param(name = "reason", wildcard = true, defaultValue = "Cheating") String reason) {
+                                @Param(name = "name") Profile target,
+                                @Param(name = "time") String duration,
+                                @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
@@ -104,7 +108,7 @@ public class PunishmentCommands {
 
     private static void punish(Profile issuer, Profile target, String type, PunishmentType punishmentType, String duration, String reason, boolean silent, CommandSender sender) {
         long time = TimeUtil.getDuration(duration);
-        if(time == 0L || time == -1L) {
+        if (time == 0L || time == -1L) {
             sender.sendMessage(CC.translate("&cInvalid duration."));
             return;
         }
@@ -128,7 +132,8 @@ public class PunishmentCommands {
             }
             case TEMP_BAN:
             case BAN: {
-                if(PunishmentUtils.checkBanned(target) || PunishmentUtils.checkIPBanned(target) || PunishmentUtils.checkBlacklisted(target)) return true;
+                if (PunishmentUtils.checkBanned(target) || PunishmentUtils.checkIPBanned(target) || PunishmentUtils.checkBlacklisted(target))
+                    return true;
                 break;
             }
             case IP_BAN: {

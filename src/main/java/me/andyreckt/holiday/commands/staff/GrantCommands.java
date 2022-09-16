@@ -9,24 +9,24 @@ import me.andyreckt.holiday.player.grant.menu.GrantsMenu;
 import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.TimeUtil;
-import me.andyreckt.holiday.utils.command.Command;
-import me.andyreckt.holiday.utils.command.param.Param;
+import me.andyreckt.sunset.annotations.Command;
+import me.andyreckt.sunset.annotations.Param;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class GrantCommands {
 
-    @Command(names = "grants", perm = "holiday.grants.view")
-    public static void grants(Player sender, @Param(name = "player")Profile target) {
+    @Command(names = "grants", permission = "holiday.grants.view")
+    public static void grants(Player sender, @Param(name = "player") Profile target) {
         new GrantsMenu(target, false).openMenu(sender);
     }
 
-    @Command(names = "grant", perm = "holiday.grants.edit")
+    @Command(names = "grant", permission = "holiday.grants.edit")
     public static void grant(Player sender, @Param(name = "player") Profile target) {
         new GrantChooseRankMenu(target).openMenu(sender);
     }
 
-    @Command(names = {"ogrant"},  perm = "op", async = true)
+    @Command(names = {"ogrant"}, permission = "op", async = true)
     public static void execute(CommandSender sender, @Param(name = "player") Profile target, @Param(name = "rank") Rank rank, @Param(name = "reason") String reason, @Param(name = "time") String time) {
         long tim = TimeUtil.getDuration(time);
         String ti = TimeUtil.getDuration(tim);

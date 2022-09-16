@@ -6,14 +6,13 @@ import com.mongodb.client.MongoDatabase;
 import io.github.zowpy.menu.MenuAPI;
 import lombok.Getter;
 import lombok.Setter;
-import me.andyreckt.holiday.commands.DisguiseCommands;
+
+import me.andyreckt.holiday.commands.*;
+import me.andyreckt.holiday.commands.staff.*;
 import me.andyreckt.holiday.database.mongo.MongoDB;
 import me.andyreckt.holiday.database.redis.Redis;
 import me.andyreckt.holiday.database.redis.packet.StaffMessages;
-import me.andyreckt.holiday.listeners.ChatListener;
-import me.andyreckt.holiday.listeners.OtherListeners;
-import me.andyreckt.holiday.listeners.ProfileListener;
-import me.andyreckt.holiday.listeners.PunishmentsListener;
+import me.andyreckt.holiday.listeners.*;
 import me.andyreckt.holiday.other.LunarNametagsTask;
 import me.andyreckt.holiday.other.enums.StaffMessageType;
 import me.andyreckt.holiday.other.placeholder.PlaceholderAPIExpansion;
@@ -24,6 +23,7 @@ import me.andyreckt.holiday.player.disguise.impl.v1_7.DisguiseHandler_1_7;
 import me.andyreckt.holiday.player.disguise.impl.v1_8.DisguiseHandler_1_8;
 import me.andyreckt.holiday.player.grant.GrantHandler;
 import me.andyreckt.holiday.player.punishments.PunishmentHandler;
+import me.andyreckt.holiday.player.rank.Rank;
 import me.andyreckt.holiday.player.rank.RankHandler;
 import me.andyreckt.holiday.player.staff.StaffHandler;
 import me.andyreckt.holiday.player.staff.StaffListeners;
@@ -36,9 +36,11 @@ import me.andyreckt.holiday.server.reboot.RebootTask;
 import me.andyreckt.holiday.utils.CC;
 import me.andyreckt.holiday.utils.StringUtil;
 import me.andyreckt.holiday.utils.Tasks;
-import me.andyreckt.holiday.utils.command.CommandHandler;
+import me.andyreckt.holiday.utils.command.param.custom.ProfileParameterType;
+import me.andyreckt.holiday.utils.command.param.custom.RankParameterType;
 import me.andyreckt.holiday.utils.file.type.BasicConfigurationFile;
 import me.andyreckt.holiday.utils.packets.Pidgin;
+import me.andyreckt.sunset.Sunset;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
@@ -51,6 +53,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.JedisPool;
 
+import java.util.Arrays;
 import java.util.concurrent.*;
 
 
@@ -71,7 +74,7 @@ public final class Holiday extends JavaPlugin implements Listener{
 
     private MongoDatabase mongoDatabase;
 
-    private CommandHandler commandHandler;
+    private Sunset commandHandler;
     private PunishmentHandler punishmentHandler;
     private ProfileHandler profileHandler;
     private IDisguiseHandler disguiseHandler;
@@ -132,10 +135,21 @@ public final class Holiday extends JavaPlugin implements Listener{
     }
 
     private void setupCommands() {
-        this.commandHandler = new CommandHandler(this);
-        this.commandHandler.hook();
-        this.commandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands");
-        this.commandHandler.loadCommandsFromPackage(this, "me.andyreckt.holiday.commands.staff");
+        this.commandHandler = new Sunset(this);
+        this.commandHandler.registerType(new RankParameterType(), Rank.class);
+        this.commandHandler.registerType(new ProfileParameterType(), Profile.class);
+        Arrays.asList(
+                new ChatCommands(), new GamemodeCommands(), new GrantCommands(), new HolidayCommand(),
+                new PunishmentCommands(), new PunishmentRemoveCommands(), new ShutdownCommands(),
+                new StaffCommands(), new TeleportCommands(), new UserCommands(), new ConversationCommands(),
+                new DisguiseCommands(), new GeneralCommands(), new OtherCommands(), new SettingsCommands(),
+                new SocialCommands()
+        ).forEach(commandHandler::registerCommands);
+        Arrays.asList(
+                new ChatCommands(), new GamemodeCommands(), new HolidayCommand(), new RankCommands(),
+                new WhitelistCommands()
+        ).forEach(commandHandler::registerCommandWithSubCommands);
+
     }
 
     private void setupNms() {
