@@ -40,7 +40,7 @@ public class RankCommands {
 
     }
 
-    @SubCommand(names = {"create"}, async = true)
+    @SubCommand(names = {"create"}, async = true, description = "Create a new rank.", usage = "/rank create <rank>")
     public static void create(CommandSender sender, @Param(name = "rank") String string) {
 
         if (rh.getFromName(string) != null) {
@@ -54,12 +54,12 @@ public class RankCommands {
 
     }
 
-    @SubCommand(names = {"manage", "edit"})
+    @SubCommand(names = {"manage", "edit"}, description = "Manage a rank.", usage = "/rank manage <rank>")
     public static void manage(Player sender, @Param(name = "rank") Rank rank) {
         new RankManageMenu(rank).openMenu(sender);
     }
 
-    @SubCommand(names = {"list"})
+    @SubCommand(names = {"list"}, description = "List all ranks.", usage = "/rank list")
     public static void list(Player sender) {
         sender.sendMessage(CC.translate("&aRank list: "));
         sender.sendMessage(CC.CHAT_BAR);
@@ -86,7 +86,7 @@ public class RankCommands {
         sender.sendMessage(CC.CHAT_BAR);
     }
 
-    @SubCommand(names = {"addperm"}, async = true)
+    @SubCommand(names = {"addperm"}, async = true, description = "Add a permission to a rank.", usage = "/rank addperm <rank> <permission>")
     public static void addperm(CommandSender sender, @Param(name = "rank") Rank rank, @Param(name = "perm") String perm) {
         rank.addPermission(perm);
         rank.save();
@@ -96,7 +96,7 @@ public class RankCommands {
         sender.sendMessage(CC.translate("&aSuccessfully added the permission \"" + perm + "\" to the rank " + rank.getDisplayName()));
     }
 
-    @SubCommand(names = {"removeperm", "remperm"}, async = true)
+    @SubCommand(names = {"removeperm", "remperm"}, async = true, description = "Remove a permission from a rank.", usage = "/rank removeperm <rank> <permission>")
     public static void removePerm(CommandSender sender, @Param(name = "rank") Rank rank, @Param(name = "perm") String perm) {
         rank.removePermission(perm);
         rank.save();
@@ -106,7 +106,7 @@ public class RankCommands {
         sender.sendMessage(CC.translate("&aSuccessfully removed the permission \"" + perm + "\" from the rank " + rank.getDisplayName()));
     }
 
-    @SubCommand(names = {"addchild"}, async = true)
+    @SubCommand(names = {"addchild"}, async = true, description = "Add a child rank to a rank.", usage = "/rank addchild <rank> <child>")
     public static void addChild(CommandSender sender, @Param(name = "rank") Rank rank, @Param(name = "child") Rank child) {
         rank.removeChild(child);
         rank.save();
@@ -116,7 +116,7 @@ public class RankCommands {
         sender.sendMessage(CC.translate("&aSuccessfully added the child \"" + child.getDisplayName() + "\"&a to the rank " + rank.getDisplayName()));
     }
 
-    @SubCommand(names = {"removechild", "remchild"}, async = true)
+    @SubCommand(names = {"removechild", "remchild"}, async = true, description = "Remove a child rank from a rank.", usage = "/rank removechild <rank> <child>")
     public static void remChild(CommandSender sender, @Param(name = "rank") Rank rank, @Param(name = "child") Rank child) {
         rank.removeChild(child);
         rank.save();
@@ -126,7 +126,7 @@ public class RankCommands {
         sender.sendMessage(CC.translate("&aSuccessfully removed the child \"" + child.getDisplayName() + "\" from the rank " + rank.getDisplayName()));
     }
 
-    @SubCommand(names = {"setpriority", "priority", "setweight", "weight"}, async = true)
+    @SubCommand(names = {"setpriority", "priority", "setweight", "weight"}, async = true, description = "Set the priority of a rank.", usage = "/rank setpriority <rank> <priority>")
     public static void remChild(CommandSender sender, @Param(name = "rank") Rank rank, @Param(name = "priority") int i) {
         rank.setPriority(i);
         rank.save();
@@ -134,7 +134,7 @@ public class RankCommands {
         sender.sendMessage(CC.translate("&aSuccessfully set the priority to \"" + i + "\" for the rank " + rank.getDisplayName()));
     }
 
-    @SubCommand(names = {"delete", "remove"}, async = true)
+    @SubCommand(names = {"delete", "remove"}, async = true, description = "Delete a rank.", usage = "/rank delete <rank>")
     public static void remRank(CommandSender sender, @Param(name = "rank") Rank rank) {
         if (rank.isDefault()) {
             sender.sendMessage(CC.translate("&cYou cannot delete the default rank!"));

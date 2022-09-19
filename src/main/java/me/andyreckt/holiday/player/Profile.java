@@ -135,7 +135,7 @@ public class Profile {
         Holiday.getInstance().getRedis().sendPacket(new ProfilePacket(this));
     }
 
-    public void autoSave() {
+    public void saveMongo() {
         MongoUtils.submitToThread(() -> MongoUtils.getProfileCollection().replaceOne(Filters.eq("_id", uuid.toString()), toBson(), new ReplaceOptions().upsert(true)));
     }
 

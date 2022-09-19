@@ -32,7 +32,7 @@ public class ChatCommands {
 			sender.sendMessage(CC.translate(s));
 		}
 	}
-	@SubCommand(names = "clear", permission = "holiday.chat.clear", async = true)
+	@SubCommand(names = "clear", permission = "holiday.chat.clear", async = true, usage = "/chat clear")
 	@Command(names = "clearchat", permission = "holiday.chat.clear", async = true)
 	public static void clear(CommandSender sender) {
 		StringBuilder sb = new StringBuilder(" ");
@@ -59,7 +59,7 @@ public class ChatCommands {
 		});
 	}
 
-	@SubCommand(names = "mute", permission = "holiday.chat.mute", async = true)
+	@SubCommand(names = "mute", permission = "holiday.chat.mute", async = true, usage = "/chat mute")
 	@Command(names = {"mutechat"}, permission = "holiday.chat.mute", async = true)
 	public static void mutechat(CommandSender sender) {
 		if(!Holiday.getInstance().getChatHandler().isChatMuted()) {
@@ -90,7 +90,7 @@ public class ChatCommands {
 		}
 	}
 
-	@SubCommand(names = "slow", permission = "holiday.chat.slow", async = true)
+	@SubCommand(names = "slow", permission = "holiday.chat.slow", async = true, usage = "/chat slow (duration)")
 	@Command(names = {"slowchat"}, permission = "holiday.chat.slow", async = true)
 	public static void slowchat(CommandSender sender, @Param(name = "time") String duration){
 
@@ -112,7 +112,7 @@ public class ChatCommands {
 		});
 	}
 
-	@SubCommand(names = {"unslow"}, permission = "holiday.slowchat", async = true)
+	@SubCommand(names = {"unslow"}, permission = "holiday.slowchat", async = true, usage = "/chat unslow")
 	@Command(names = {"unslowchat"}, permission = "holiday.slowchat", async = true)
 	public static void unslowchat(CommandSender sender){
 

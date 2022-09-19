@@ -20,28 +20,28 @@ import org.bukkit.entity.Player;
 public class GamemodeCommands {
 
 
-    @SubCommand(names = {"c", "creative", "crea", "1"}, permission = "holiday.gamemode")
+    @SubCommand(names = {"c", "creative", "crea", "1"}, permission = "holiday.gamemode", description = "Change your gamemode to creative.", usage = "/gamemode creative [player]")
     @Command(names = {"gmc", "gm1"}, permission = "holiday.gamemode")
     public static void gmc(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
         target.setGameMode(GameMode.CREATIVE);
         sendMessage(sender, target);
     }
 
-    @SubCommand(names = {"a", "adventure", "adv", "2"}, permission = "holiday.gamemode")
+    @SubCommand(names = {"a", "adventure", "adv", "2"}, permission = "holiday.gamemode", description = "Change your gamemode to adventure.", usage = "/gamemode adventure [player]")
     @Command(names = {"gma", "gm2"}, permission = "holiday.gamemode")
     public static void gma(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
         target.setGameMode(GameMode.ADVENTURE);
         sendMessage(sender, target);
     }
 
-    @SubCommand(names = {"s", "survival", "surv" , "0"}, permission = "holiday.gamemode")
+    @SubCommand(names = {"s", "survival", "surv" , "0"}, permission = "holiday.gamemode", description = "Change your gamemode to survival.", usage = "/gamemode survival [player]")
     @Command(names = {"gms", "gm0"}, permission = "holiday.gamemode")
     public static void gms(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
         target.setGameMode(GameMode.SURVIVAL);
         sendMessage(sender, target);
     }
 
-    @SubCommand(names = {"sp", "spectator", "spec", "3"}, permission = "holiday.gamemode")
+    @SubCommand(names = {"sp", "spectator", "spec", "3"}, permission = "holiday.gamemode", description = "Change your gamemode to spectator.", usage = "/gamemode spectator [player]")
     @Command(names = {"gmsp", "gm3"}, permission = "holiday.gamemode")
     public static void gmsp(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
         if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_7) {

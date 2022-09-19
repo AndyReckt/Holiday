@@ -51,7 +51,7 @@ public class WhitelistCommands {
     }
 
 
-    @SubCommand(names = {"rank"}, permission = "holiday.whitelist", async = true)
+    @SubCommand(names = {"rank"}, permission = "holiday.whitelist", async = true, description = "Set the rank required to join the server.", usage = "/wl rank <rank>")
     public static void onRank(CommandSender sender, @Param(name = "rank") Rank rank) {
         sh.getThisServer().setWhitelistRank(rank);
         sh.save();
@@ -59,7 +59,7 @@ public class WhitelistCommands {
     }
 
 
-    @SubCommand(names = {"add"}, permission = "holiday.whitelist", async = true)
+    @SubCommand(names = {"add"}, permission = "holiday.whitelist", async = true, description = "Add a player to the whitelist.", usage = "/wl add <name>")
     public static void onAdd(CommandSender sender, @Param(name = "player") OfflinePlayer player) {
         if (sh.getThisServer().getWhitelistedPlayers().contains(player.getUniqueId())) {
             sender.sendMessage(CC.translate("&cThis player is already whitelisted"));
@@ -70,7 +70,7 @@ public class WhitelistCommands {
         }
     }
 
-    @SubCommand(names = {"remove"}, permission = "holiday.whitelist", async = true)
+    @SubCommand(names = {"remove"}, permission = "holiday.whitelist", async = true, description = "Remove a player from the whitelist.", usage = "/wl remove <name>")
     public static void onremove(CommandSender sender, @Param(name = "player") OfflinePlayer player) {
         if (!sh.getThisServer().getWhitelistedPlayers().contains(player.getUniqueId())) {
             sender.sendMessage(CC.translate("&cThis player is not whitelisted"));
@@ -81,7 +81,7 @@ public class WhitelistCommands {
         }
     }
 
-    @SubCommand(names = {"info"}, permission = "holiday.whitelist", async = true)
+    @SubCommand(names = {"info"}, permission = "holiday.whitelist", async = true, description = "Get information about the whitelist status.", usage = "/wl info")
     public static void onInfo(CommandSender sender) {
         sender.sendMessage(CC.CHAT_BAR);
 

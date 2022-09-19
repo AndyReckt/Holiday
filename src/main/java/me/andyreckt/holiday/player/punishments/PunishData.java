@@ -10,21 +10,16 @@ import me.andyreckt.holiday.database.mongo.MongoUtils;
 import me.andyreckt.holiday.database.redis.packet.PunishmentPacket;
 import me.andyreckt.holiday.other.enums.PunishmentSubType;
 import me.andyreckt.holiday.player.Profile;
-import me.andyreckt.holiday.player.ProfileHandler;
 import me.andyreckt.holiday.utils.TimeUtil;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 
 import javax.annotation.Nullable;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class    PunishData {
+public class PunishData {
 
     private final String id;
     private final Profile punished;
@@ -36,20 +31,22 @@ public class    PunishData {
     private final String ip;
 
 
-    @Nullable private Profile removedBy;
-    @Nullable private String removedReason;
+    @Nullable
+    private Profile removedBy;
+    @Nullable
+    private String removedReason;
     private long removedAt;
     private boolean removed;
 
     public String getRemovedReason() {
-        if(removedReason == null) {
+        if (removedReason == null) {
             return "Automatic";
         }
         return removedReason;
     }
 
     public Profile getRemovedBy() {
-        if(removedBy == null) {
+        if (removedBy == null) {
             return Holiday.getInstance().getProfileHandler().getConsoleProfile();
         }
         return removedBy;
@@ -72,7 +69,7 @@ public class    PunishData {
     }
 
     public String getDurationString() {
-        if(duration == -1) return ChatColor.DARK_PURPLE + "Permanent";
+        if (duration == -1) return ChatColor.DARK_PURPLE + "Permanent";
         return TimeUtil.getDuration(duration);
     }
 
@@ -87,7 +84,8 @@ public class    PunishData {
     public Document toBson() {
 
         String idd;
-        if (addedBy == null || addedBy.getUuid() == null) idd = Holiday.getInstance().getProfileHandler().getConsoleProfile().getUuid().toString();
+        if (addedBy == null || addedBy.getUuid() == null)
+            idd = Holiday.getInstance().getProfileHandler().getConsoleProfile().getUuid().toString();
         else idd = addedBy.getUuid().toString();
 
         String rBy;
