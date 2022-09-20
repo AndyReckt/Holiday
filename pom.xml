@@ -81,7 +81,7 @@
         <dependency>
             <groupId>me.andyreckt</groupId>
             <artifactId>sunset</artifactId>
-            <version>2.1</version>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
         <!--MongoDB-->
@@ -224,4 +224,5 @@
             <url>https://maven.pkg.github.com/andyreckt/holiday/</url>
         </repository>
     </distributionManagement>
+
 </project>
