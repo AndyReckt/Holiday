@@ -73,7 +73,7 @@
         <!--Commands Api-->
         <dependency>
             <groupId>me.andyreckt</groupId>
-            <artifactId>Sunset</artifactId>
+            <artifactId>sunset</artifactId>
             <version>2.1</version>
             <scope>compile</scope>
         </dependency>
