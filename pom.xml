@@ -26,8 +26,8 @@
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
         <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/</url>
+            <id>sunset</id>
+            <url>https://maven.pkg.github.com/andyreckt/sunset</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
