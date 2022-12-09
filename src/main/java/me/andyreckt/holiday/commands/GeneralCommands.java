@@ -19,11 +19,11 @@ import java.util.*;
 
 public class GeneralCommands {
 
-    private static final Map<UUID, Cooldown> reportCooldownMap = new HashMap<>();
-    private static final Map<UUID, Cooldown> helpopCooldownMap = new HashMap<>();
+    private final Map<UUID, Cooldown> reportCooldownMap = new HashMap<>();
+    private final Map<UUID, Cooldown> helpopCooldownMap = new HashMap<>();
 
     @Command(names = {"report"}, async = true)
-    public static void report(Player sender, @Param(name = "target") Player target, @Param(name = "reason", wildcard = true) String reason) {
+    public void report(Player sender, @Param(name = "target") Player target, @Param(name = "reason", wildcard = true) String reason) {
 
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
@@ -54,7 +54,7 @@ public class GeneralCommands {
     }
 
     @Command(names = {"request", "helpop", "helpme", "question", "ask",}, async = true)
-    public static void request(Player sender, @Param(name = "reason", wildcard = true) String reason) {
+    public void request(Player sender, @Param(name = "reason", wildcard = true) String reason) {
 
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
 
@@ -79,7 +79,7 @@ public class GeneralCommands {
     }
 
     @Command(names = "playtime")
-    public static void playtime(Player sender, @Param(name = "player", baseValue = "self") Player target) {
+    public void playtime(Player sender, @Param(name = "player", baseValue = "self") Player target) {
         long playtime = target.getStatistic(Statistic.PLAY_ONE_TICK) * 50L;
 
         String playtimeString = target == sender ? Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.PLAYTIME.SELF") :
@@ -90,7 +90,7 @@ public class GeneralCommands {
     }
 
     @Command(names = {"ping", "ms", "latency"})
-    public static void ping(Player sender, @Param(name = "target", baseValue = "self") Player target) {
+    public void ping(Player sender, @Param(name = "target", baseValue = "self") Player target) {
         if (target != sender) {
             for (String s : Holiday.getInstance().getMessages().getStringList("COMMANDS.GENERAL.PING.OTHER")) {
                 sender.sendMessage(CC.translate(
@@ -107,7 +107,7 @@ public class GeneralCommands {
     }
 
     @Command(names = {"who", "list"}, async = true)
-    public static void list(CommandSender sender) {
+    public void list(CommandSender sender) {
         StringBuilder builder = new StringBuilder();
 
         Rank[] ranks = Holiday.getInstance().getRankHandler().ranks().toArray(new Rank[]{});
@@ -132,7 +132,7 @@ public class GeneralCommands {
     }
 
     @Command(names = "rename", permission = "holiday.rename")
-    public static void rename(Player sender, @Param(name = "name", wildcard = true) String name) {
+    public void rename(Player sender, @Param(name = "name", wildcard = true) String name) {
         ItemStack is = sender.getItemInHand();
         if (is == null || is.getType().equals(Material.AIR)) {
             sender.sendMessage(CC.translate("&cYou must hold an item in order to rename it."));

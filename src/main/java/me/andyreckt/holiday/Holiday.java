@@ -109,19 +109,26 @@ public final class Holiday extends JavaPlugin implements Listener{
         instance = this;
         long time = System.currentTimeMillis();
         this.gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-        setupConfigFiles();
-        setupExecutors();
-        setupDatabases();
-        setupNms();
-        setupHandlers();
-        setupListeners();
-        setupRunnables();
-        setupCommands();
-        setupSoftDependencies();
-        setupOthers();
 
-        logInformation(time);
-        sendServerStartup();
+        try {
+            setupConfigFiles();
+            setupExecutors();
+            setupDatabases();
+            setupNms();
+            setupHandlers();
+            setupListeners();
+            setupRunnables();
+            setupCommands();
+            setupSoftDependencies();
+            setupOthers();
+
+            logInformation(time);
+            sendServerStartup();
+        } catch (Exception ex) {
+            infoConsole(ChatColor.DARK_RED + "Plugin was not loaded correctly...");
+            ex.printStackTrace();
+            Bukkit.getServer().shutdown();
+        }
     }
 
 

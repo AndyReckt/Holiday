@@ -83,6 +83,12 @@ public class ProfileHandler {
             if (DisguiseHandler_1_7.DisguiseRequest.alreadyUsed(name)) return true;
         }
 
+        if (this.cachedProfiles().stream().filter(profile -> profile.getLowerCaseName().equalsIgnoreCase(name)).findFirst().orElse(null) != null) return true;
+
+        List<Document> docs = MongoUtils.getProfileCollection().find().into(new ArrayList<>());
+        if (docs.stream().filter(doc -> doc.getString("name").equalsIgnoreCase(name)).findFirst().orElse(null) != null) return true;
+        if (docs.stream().filter(doc -> doc.getString("lname").equalsIgnoreCase(name)).findFirst().orElse(null) != null) return true;
+
         Document document = MongoUtils.getProfileCollection().find(Filters.eq("lname", name.toLowerCase())).first();
         return document != null;
     }

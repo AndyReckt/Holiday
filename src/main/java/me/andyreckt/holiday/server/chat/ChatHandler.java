@@ -39,8 +39,6 @@ public class ChatHandler {
 
         this.hardFilters = new ArrayList<>(settings.getStringList("FILTERS.HIGH.LIST"));
         this.filter = new ArrayList<>(settings.getStringList("FILTERS.LOW.LIST"));
-
-
     }
 
 

@@ -25,7 +25,7 @@ public class DisguiseCommands {
     private static final List<String> names = new ArrayList<>(), skins = new ArrayList<>();
 
     @Command(names = {"mnick", "mdisguise", "mdis", "manualdisguise", "manualnick"}, permission = "holiday.manualdisguise")
-    public static void manual(Player player,
+    public void manual(Player player,
                               @Param(name = "name") String name,
                               @Param(name = "skin") String skin,
                               @Param(name = "rank", baseValue = "default") Rank rank) {
@@ -59,7 +59,7 @@ public class DisguiseCommands {
     }
 
     @Command(names = {"nick", "disguise", "dis"}, permission = "holiday.disguise")
-    public static void nick(Player player) {
+    public void nick(Player player) {
 
         Profile profile = Holiday.getInstance().getProfileHandler().getByPlayer(player);
         BasicConfigurationFile messages = Holiday.getInstance().getMessages();
@@ -107,7 +107,7 @@ public class DisguiseCommands {
     }
 
     @Command(names = {"undisguise", "unnick", "undis"})
-    public static void undis(Player player) {
+    public void undis(Player player) {
 
         Profile mineman = Holiday.getInstance().getProfileHandler().getByUUID(player.getUniqueId());
 
@@ -120,7 +120,7 @@ public class DisguiseCommands {
     }
 
     @Command(names = {"disguiselist", "nicklist"}, permission = "holiday.disguiselist")
-    public static void list(CommandSender sender) {
+    public void list(CommandSender sender) {
 
         StringBuilder sb = new StringBuilder();
         if (Holiday.getInstance().getNmsHandler() instanceof NMS_v1_7) {

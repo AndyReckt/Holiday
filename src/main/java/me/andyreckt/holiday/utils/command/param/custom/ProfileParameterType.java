@@ -18,6 +18,7 @@ public class ProfileParameterType implements PType<Profile> {
 
     @Override
     public Profile transform(CommandSender sender, String source) {
+
         if (source.equals("")) {
             sender.sendMessage(CC.translate("&cYou need to enter a name"));
         }

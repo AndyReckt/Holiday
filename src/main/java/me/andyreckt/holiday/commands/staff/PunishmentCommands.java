@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 public class PunishmentCommands {
 
     @Command(names = {"ban", "b"}, async = true, permission = "holiday.ban")
-    public static void ban(CommandSender sender,
+    public void ban(CommandSender sender,
                            @Param(name = "name") Profile target,
                            @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
 
@@ -28,7 +28,7 @@ public class PunishmentCommands {
     }
 
     @Command(names = {"blacklist", "bl"}, async = true, permission = "holiday.blacklist")
-    public static void blacklist(CommandSender sender,
+    public void blacklist(CommandSender sender,
                                  @Param(name = "name") Profile target,
                                  @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
 
@@ -41,7 +41,7 @@ public class PunishmentCommands {
     }
 
     @Command(names = {"ipban", "ipb", "banip", "ban-ip"}, async = true, permission = "holiday.ipban")
-    public static void ipban(CommandSender sender,
+    public void ipban(CommandSender sender,
                              @Param(name = "name") Profile target,
                              @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
 
@@ -54,7 +54,7 @@ public class PunishmentCommands {
     }
 
     @Command(names = {"tempban", "tban", "tb"}, async = true, permission = "holiday.tempban")
-    public static void tempban(CommandSender sender,
+    public void tempban(CommandSender sender,
                                @Param(name = "name") Profile target,
                                @Param(name = "time") String duration,
                                @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
@@ -68,7 +68,7 @@ public class PunishmentCommands {
     }
 
     @Command(names = {"mute"}, async = true, permission = "holiday.mute")
-    public static void mute(CommandSender sender,
+    public void mute(CommandSender sender,
                             @Param(name = "name") Profile target,
                             @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
 
@@ -81,7 +81,7 @@ public class PunishmentCommands {
     }
 
     @Command(names = {"tempmute", "tmute"}, async = true, permission = "holiday.tempmute")
-    public static void tempmute(CommandSender sender,
+    public void tempmute(CommandSender sender,
                                 @Param(name = "name") Profile target,
                                 @Param(name = "time") String duration,
                                 @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
@@ -94,7 +94,7 @@ public class PunishmentCommands {
         punish(profile, target, "tempmute", PunishmentType.TEMP_MUTE, duration, fReason, silent, sender);
     }
 
-    private static void punish(Profile issuer, Profile target, String type, PunishmentType punishmentType, String reason, boolean silent, CommandSender sender) {
+    private void punish(Profile issuer, Profile target, String type, PunishmentType punishmentType, String reason, boolean silent, CommandSender sender) {
         if (!CommandUtils.canPunish(issuer, target)) {
             sender.sendMessage(Holiday.getInstance().getMessages().getString("COMMANDS.PUNISHMENT.CANNOT").replace("<type>", type));
             return;
@@ -106,7 +106,7 @@ public class PunishmentCommands {
         new Punishment(issuer, target, punishmentType, reason, silent);
     }
 
-    private static void punish(Profile issuer, Profile target, String type, PunishmentType punishmentType, String duration, String reason, boolean silent, CommandSender sender) {
+    private void punish(Profile issuer, Profile target, String type, PunishmentType punishmentType, String duration, String reason, boolean silent, CommandSender sender) {
         long time = TimeUtil.getDuration(duration);
         if (time == 0L || time == -1L) {
             sender.sendMessage(CC.translate("&cInvalid duration."));
@@ -123,7 +123,7 @@ public class PunishmentCommands {
         new Punishment(issuer, target, punishmentType, duration, reason, silent);
     }
 
-    private static boolean alreadyPunished(Profile target, PunishmentType type) {
+    private boolean alreadyPunished(Profile target, PunishmentType type) {
         switch (type) {
             case TEMP_MUTE:
             case MUTE: {
