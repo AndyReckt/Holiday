@@ -37,9 +37,9 @@ public final class BooleanButton<T>
     @Override
     public ItemStack getButtonItem(Player p0) {
         return new ItemBuilder(Material.WOOL)
-                .setName((this.readFunction.apply(this.target) ? "&a" : "&c") + this.trait)
-                .setDurability(this.readFunction.apply(this.target) ? 5 : 14)
-                .toItemStack();
+                .displayname((this.readFunction.apply(this.target) ? "&a" : "&c") + this.trait)
+                .damage(this.readFunction.apply(this.target) ? 5 : 14)
+                .build();
     }
 
     @Override

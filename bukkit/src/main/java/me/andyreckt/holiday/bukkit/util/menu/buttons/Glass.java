@@ -21,8 +21,8 @@ public class Glass extends Button {
 
     @Override
     public ItemStack getButtonItem(final Player player) {
-        final ItemBuilder item = new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(data).setName(" ");
-        return item.toItemStack();
+        final ItemBuilder item = new ItemBuilder(Material.STAINED_GLASS_PANE).damage(data).displayname(" ");
+        return item.build();
     }
 
     @Override

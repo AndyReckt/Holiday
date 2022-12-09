@@ -22,7 +22,7 @@ public class PageButton extends Button {
 
     @Override
     public ItemStack getButtonItem(final Player player) {
-        ItemBuilder item = (this.mod > 0) ? new ItemBuilder(Heads.NEXT_PAGE.toItemStack()) : new ItemBuilder(Heads.PREVIOUS_PAGE.toItemStack());
+        ItemBuilder item = (this.mod > 0) ? new ItemBuilder(Heads.NEXT_PAGE.build()) : new ItemBuilder(Heads.PREVIOUS_PAGE.build());
         if (this.hasNext(player)) {
             item.displayname(ChatColor.translateAlternateColorCodes('&', (this.mod > 0) ? "&8» &7Next Page" : "&8« &7Previous Page"));
         } else {

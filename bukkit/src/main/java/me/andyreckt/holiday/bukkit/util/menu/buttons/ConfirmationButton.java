@@ -24,9 +24,9 @@ public class ConfirmationButton extends Button {
     @Override
     public ItemStack getButtonItem(final Player player) {
         final ItemBuilder item = new ItemBuilder(Material.WOOL);
-        item.setDurability(this.confirm ? 5 : 14);
-        item.setName(ChatColor.translateAlternateColorCodes('*', this.confirm ? "&aConfirm" : "&cCancel"));
-        return item.toItemStack();
+        item.damage(this.confirm ? 5 : 14);
+        item.displayname(ChatColor.translateAlternateColorCodes('*', this.confirm ? "&aConfirm" : "&cCancel"));
+        return item.build();
     }
 
     @Override

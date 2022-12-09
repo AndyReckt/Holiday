@@ -5,14 +5,16 @@ import lombok.Setter;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
+import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.menu.MenuAPI;
 import me.andyreckt.holiday.bukkit.util.sunset.Sunset;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.ProfileParameterType;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.RankParameterType;
 import me.andyreckt.holiday.bukkit.util.text.CC;
-import me.andyreckt.holiday.bukkit.util.uuid.HolidayUUIDCache;
 import me.andyreckt.holiday.bukkit.util.uuid.UUIDCache;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
+import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
+import me.andyreckt.holiday.core.util.redis.RedisCredentials;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
@@ -32,8 +34,6 @@ public final class Holiday extends JavaPlugin implements Listener {
     private static Holiday instance;
 
     private API api;
-
-    private boolean lunarEnabled = false, protocolEnabled = false;
 
     private Sunset commandHandler;
     private MenuAPI menuAPI;
@@ -62,10 +62,14 @@ public final class Holiday extends JavaPlugin implements Listener {
         instance = this;
         long time = System.currentTimeMillis();
         setupConfigFiles();
-        this.api = API.create();
+        MongoCredentials mongoCreds = Locale.MONGO_AUTH.getBoolean() ? new MongoCredentials(
+                Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_USERNAME.getString(), Locale.MONGO_PASSWORD.getString())
+                : new MongoCredentials(Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt());
+        RedisCredentials redisCreds = new RedisCredentials(Locale.REDIS_HOST.getString(), Locale.REDIS_PORT.getInt(), Locale.REDIS_AUTH.getBoolean(), Locale.REDIS_PASSWORD.getString());
+        this.api = API.create(mongoCreds, redisCreds);
 
         setupExecutors();
-        setupNms();
+//        setupNms();
         setupHandlers();
         setupListeners();
         setupCommands();
@@ -89,19 +93,19 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.commandHandler.registerType(new ProfileParameterType(), Profile.class);
     }
 
-    private void setupNms() {
-        if (this.getServer().getVersion().contains("1.7")) {
-            this.nmsHandler = new NMS_v1_7();
-            infoConsole(ChatColor.GOLD + "FOUND COMPATIBLE SPIGOT VERSION, IT IS RECOMMENDED TO CHANGE TO 1.8.8, LOADING PLUGIN");
-        }
-        else if (this.getServer().getVersion().contains("1.8")) {
-            this.nmsHandler = new NMS_v1_8();
-            infoConsole(ChatColor.GREEN + "FOUND FULLY COMPATIBLE SPIGOT VERSION, LOADING PLUGIN");
-        } else {
-            infoConsole(ChatColor.RED + "FOUND IMCOMPATIBLE/UNKNOWN VERSION, DISABLING");
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
-    }
+//    private void setupNms() {
+//        if (this.getServer().getVersion().contains("1.7")) {
+//            this.nmsHandler = new NMS_v1_7();
+//            infoConsole(ChatColor.GOLD + "FOUND COMPATIBLE SPIGOT VERSION, IT IS RECOMMENDED TO CHANGE TO 1.8.8, LOADING PLUGIN");
+//        }
+//        else if (this.getServer().getVersion().contains("1.8")) {
+//            this.nmsHandler = new NMS_v1_8();
+//            infoConsole(ChatColor.GREEN + "FOUND FULLY COMPATIBLE SPIGOT VERSION, LOADING PLUGIN");
+//        } else {
+//            infoConsole(ChatColor.RED + "FOUND INCOMPATIBLE/UNKNOWN VERSION, DISABLING");
+//            Bukkit.getPluginManager().disablePlugin(this);
+//        }
+//    }
 
     private void setupExecutors() {
         this.executor = ForkJoinPool.commonPool();
@@ -110,12 +114,12 @@ public final class Holiday extends JavaPlugin implements Listener {
 
 
     public void setupConfigFiles() {
+        Locale.init(this);
         CC.setupColors();
     }
 
     private void setupHandlers() {
-        HolidayUUIDCache.init();
-        this.uuidCache = HolidayUUIDCache.getImpl();
+        this.uuidCache = new UUIDCache();
         this.menuAPI = new MenuAPI(this);
     }
 

@@ -1,6 +1,6 @@
 package me.andyreckt.holiday.bukkit.util.menu.buttons;
 
-import me.andyreckt.holiday.bukkit.BukkitAPI;
+import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.anvilgui.AnvilGUI;
 import org.bukkit.entity.Player;
@@ -38,7 +38,7 @@ public class AnvilButton extends Button {
                 })
                 .title(menuName)
                 .text(this.initialText)
-                .plugin(BukkitAPI.getInstance())
+                .plugin(Holiday.getInstance())
                 .open(player);
     }
 

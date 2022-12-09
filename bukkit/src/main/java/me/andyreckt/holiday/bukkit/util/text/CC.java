@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.util.text;
 
 import lombok.experimental.UtilityClass;
+import me.andyreckt.holiday.bukkit.util.files.Locale;
 import org.bukkit.ChatColor;
 
 import java.util.List;
@@ -119,9 +120,9 @@ public final class CC {
 	}
 
 	public static void setupColors() {
-		PRIMARY = getColor(settings.getString("COLORS.PRIMARY")).toString();
-		SECONDARY = getColor(settings.getString("COLORS.SECONDARY")).toString();
-		CHAT = getColor(settings.getString("COLORS.CHAT")).toString();
+		PRIMARY = getColor(Locale.COLOR_PRIMARY.getString()).toString();
+		SECONDARY = getColor(Locale.COLOR_SECONDARY.getString()).toString();
+		CHAT = getColor(Locale.COLOR_CHAT.getString()).toString();
 		B_PRIMARY = PRIMARY + ChatColor.BOLD;
 		B_SECONDARY = SECONDARY + ChatColor.BOLD;
 	}

@@ -18,8 +18,8 @@ public class BackButton extends Button {
 
     @Override
     public ItemStack getButtonItem(final Player player) {
-        final ItemBuilder item = new ItemBuilder(Material.ARROW).setName(ChatColor.translateAlternateColorCodes('&', "&8« &7Retourner en arrière"));
-        return item.toItemStack();
+        final ItemBuilder item = new ItemBuilder(Material.ARROW).displayname(ChatColor.translateAlternateColorCodes('&', "&8« &7Retourner en arrière"));
+        return item.build();
     }
 
     @Override

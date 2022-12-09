@@ -49,7 +49,7 @@ public enum Heads {
         return base;
     }
 
-    public ItemStack toItemStack() {
+    public ItemStack build() {
         return new ItemBuilder(Material.SKULL_ITEM, 1).durability(SkullType.PLAYER.ordinal()).texture(getBase()).build();
     }
 

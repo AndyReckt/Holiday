@@ -9,9 +9,8 @@ import org.bukkit.inventory.ItemStack;
 public class SoonButton extends Button {
     @Override
     public ItemStack getButtonItem(Player p0) {
-        return new ItemBuilder(Heads.SOON.toItemStack()).setName("&8&lProchainement").setLore(
-                "&7Cette fonctionnalité n'est toujours pas",
-                "&7disponible, mais elle le sera bientôt."
-        ).toItemStack();
+        return new ItemBuilder(Heads.SOON.build()).displayname("&7&lSOON").lore(
+                "&7This feature is coming soon!"
+        ).build();
     }
 }

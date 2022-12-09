@@ -1,6 +1,6 @@
 package me.andyreckt.holiday.bukkit.util.menu.buttons;
 
-import me.andyreckt.holiday.bukkit.BukkitAPI;
+import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import org.apache.commons.lang3.tuple.Pair;
@@ -32,16 +32,16 @@ public class ConversationButton<T> extends Button {
     @Override
     public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
         player.closeInventory();
-        ConversationFactory factory = new ConversationFactory(BukkitAPI.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
+        ConversationFactory factory = new ConversationFactory(Holiday.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
             @Override
             public String getPromptText(ConversationContext cc) {
-                return CC.translate(message + " &7&oRentrez &c&ocancel &7&opour annuler");
+                return CC.translate(message + " &7&oEnter &c&ocancel &7&oto cancel.");
             }
 
             @Override
             public Prompt acceptInput(ConversationContext cc, String s) {
                 if (s.equalsIgnoreCase("cancel")) {
-                    cc.getForWhom().sendRawMessage(CC.prefix("&cVous avez annulé la procédure"));
+                    cc.getForWhom().sendRawMessage(CC.translate("&cCancelled"));
                     return Prompt.END_OF_CONVERSATION;
                 }
                 action.accept(target, Pair.of(cc, s));

@@ -3,6 +3,7 @@ package me.andyreckt.holiday.bukkit.util.sunset.parameter.custom;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.PType;
+import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.rank.Rank;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -32,7 +33,7 @@ public class RankParameterType implements PType<IRank> {
     public List<String> complete(Player sender, String source) {
         List<String> completions = new ArrayList<>();
 
-        for (Rank rank : Holiday.getInstance().getRankHandler().ranks()) {
+        for (IRank rank : Holiday.getInstance().getApi().getRanks()) {
             if (StringUtils.startsWithIgnoreCase(rank.getName(), source)) {
                 completions.add(rank.getName());
             }
