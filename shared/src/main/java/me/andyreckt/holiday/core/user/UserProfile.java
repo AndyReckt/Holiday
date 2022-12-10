@@ -145,7 +145,9 @@ public class UserProfile implements Profile {
     }
 
     public static UserProfile getConsoleProfile() {
-        return new UserProfile(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+        UserProfile console = new UserProfile(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+        console.setName("Console");
+        return console;
     }
 
 }

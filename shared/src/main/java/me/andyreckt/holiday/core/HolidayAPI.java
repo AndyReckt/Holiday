@@ -3,11 +3,13 @@ package me.andyreckt.holiday.core;
 import lombok.Getter;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IGrant;
+import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.user.UserManager;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.grant.GrantManager;
+import me.andyreckt.holiday.core.user.punishment.PunishmentManager;
 import me.andyreckt.holiday.core.user.rank.Rank;
 import me.andyreckt.holiday.core.user.rank.RankManager;
 import me.andyreckt.holiday.core.util.mongo.MongoManager;
@@ -19,7 +21,6 @@ import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.GrantUpdateSubscr
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.ProfileUpdateSubscriber;
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.RankUpdateSubscriber;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class HolidayAPI implements API {
     private final RankManager rankManager;
     private final GrantManager grantManager;
 //    private final ServerManager serverManager;
-//    private final PunishmentManager punishmentManager;
+    private final PunishmentManager punishmentManager;
 
 
 
@@ -53,8 +54,7 @@ public class HolidayAPI implements API {
 
         //TODO: ServerManager
         //this.serverManager = new ServerManager(this);
-        //TODO: Punishments
-        //this.punishmentManager = new PunishmentManager(this);
+        this.punishmentManager = new PunishmentManager(this);
 
         this.loadRedis();
     }
@@ -144,7 +144,7 @@ public class HolidayAPI implements API {
 
     @Override
     public void refreshGrants() {
-        this.grantManager.updateGrants();
+        this.grantManager.refreshGrants();
     }
 
     @Override
@@ -177,5 +177,30 @@ public class HolidayAPI implements API {
             }
         }
         return result;
+    }
+
+    @Override
+    public void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason) {
+        this.punishmentManager.revokePunishment(punishment, revokedBy, revokedReason);
+    }
+
+    @Override
+    public List<IPunishment> getPunishments(UUID uniqueId) {
+        return this.punishmentManager.getPunishments().stream().filter(punishment -> punishment.getPunished().equals(uniqueId)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<IPunishment> getPunishments() {
+        return this.punishmentManager.getPunishments();
+    }
+
+    @Override
+    public void addPunishment(IPunishment punishment) {
+        this.punishmentManager.savePunishment(punishment);
+    }
+
+    @Override
+    public void refreshPunishments() {
+        this.punishmentManager.refreshPunishments();
     }
 }

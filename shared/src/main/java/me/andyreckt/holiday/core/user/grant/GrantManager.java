@@ -3,14 +3,12 @@ package me.andyreckt.holiday.core.user.grant;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import me.andyreckt.holiday.api.user.IGrant;
-import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.HolidayAPI;
 import lombok.Getter;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.GrantUpdatePacket;
 import org.bson.Document;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +57,7 @@ public class GrantManager {
         this.api.getMidnight().sendObject(new GrantUpdatePacket((Grant) grant, true));
     }
 
-    public void updateGrants() {
+    public void refreshGrants() {
         for (IGrant o : getGrants()) {
             if (o.check()) saveGrant(o);
         }
