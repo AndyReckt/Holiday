@@ -6,6 +6,7 @@ import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.user.UserManager;
+import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.grant.GrantManager;
 import me.andyreckt.holiday.core.user.rank.Rank;
 import me.andyreckt.holiday.core.user.rank.RankManager;
@@ -49,6 +50,7 @@ public class HolidayAPI implements API {
         this.userManager = new UserManager(this);
         this.rankManager = new RankManager(this);
         this.grantManager = new GrantManager(this);
+
         //TODO: ServerManager
         //this.serverManager = new ServerManager(this);
         //TODO: Punishments
@@ -77,7 +79,7 @@ public class HolidayAPI implements API {
 
     @Override
     public Profile getProfile(UUID uuid) {
-        return this.userManager.getProfiles().get(uuid);
+        return this.userManager.getProfiles().computeIfAbsent(uuid, k -> new UserProfile(uuid));
     }
 
     @Override

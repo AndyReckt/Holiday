@@ -5,6 +5,9 @@ import lombok.Setter;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
+import me.andyreckt.holiday.bukkit.commands.DebugCommand;
+import me.andyreckt.holiday.bukkit.server.listeners.PlayerListener;
+import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.menu.MenuAPI;
 import me.andyreckt.holiday.bukkit.util.sunset.Sunset;
@@ -22,6 +25,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerLoginEvent;
+
+import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
@@ -49,38 +54,33 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        instance = this;
+        long time = System.currentTimeMillis();
+
         try {
-            this.loadPlugin();
+            this.setupConfigFiles();
+            MongoCredentials mongoCreds = Locale.MONGO_AUTH.getBoolean() ? new MongoCredentials(
+                    Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_USERNAME.getString(), Locale.MONGO_PASSWORD.getString(), Locale.MONGO_DATABASE.getString())
+                    : new MongoCredentials(Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_DATABASE.getString());
+            RedisCredentials redisCreds = new RedisCredentials(Locale.REDIS_HOST.getString(), Locale.REDIS_PORT.getInt(), Locale.REDIS_AUTH.getBoolean(), Locale.REDIS_PASSWORD.getString());
+            this.api = API.create(mongoCreds, redisCreds);
+
+            this.setupExecutors();
+//          TODO: this.setupNms();
+            this.setupHandlers();
+            this.setupListeners();
+            this.setupCommands();
+            this.setupSoftDependencies();
+            this.setupOthers();
+
+            logInformation(time);
         } catch (Exception e) {
-            infoConsole(ChatColor.DARK_RED + "Plugin was not loaded correctly...");
+            Logger.error("An error occurred while enabling the plugin. Showing stacktrace:");
             e.printStackTrace();
+            Logger.error("Stopping the server...");
             Bukkit.getServer().shutdown();
         }
     }
-
-    private void loadPlugin() {
-        instance = this;
-        long time = System.currentTimeMillis();
-        setupConfigFiles();
-        MongoCredentials mongoCreds = Locale.MONGO_AUTH.getBoolean() ? new MongoCredentials(
-                Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_USERNAME.getString(), Locale.MONGO_PASSWORD.getString())
-                : new MongoCredentials(Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt());
-        RedisCredentials redisCreds = new RedisCredentials(Locale.REDIS_HOST.getString(), Locale.REDIS_PORT.getInt(), Locale.REDIS_AUTH.getBoolean(), Locale.REDIS_PASSWORD.getString());
-        this.api = API.create(mongoCreds, redisCreds);
-
-        setupExecutors();
-//        setupNms();
-        setupHandlers();
-        setupListeners();
-        setupCommands();
-        setupSoftDependencies();
-        setupOthers();
-
-        logInformation(time);
-    }
-
-
-
 
     @Override
     public void onDisable() {
@@ -91,6 +91,9 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.commandHandler = new Sunset(this);
         this.commandHandler.registerType(new RankParameterType(), IRank.class);
         this.commandHandler.registerType(new ProfileParameterType(), Profile.class);
+        Arrays.asList(
+                new DebugCommand()
+        ).forEach(commandHandler::registerCommandWithSubCommands);
     }
 
 //    private void setupNms() {
@@ -107,7 +110,7 @@ public final class Holiday extends JavaPlugin implements Listener {
 //        }
 //    }
 
-    private void setupExecutors() {
+    private void    setupExecutors() {
         this.executor = ForkJoinPool.commonPool();
         this.scheduledExecutor = Executors.newScheduledThreadPool(2);
     }
@@ -124,7 +127,8 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     private void setupListeners() {
-
+        addListener(new PlayerListener());
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     private void setupSoftDependencies() {
@@ -139,12 +143,9 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    public void infoConsole(String message) {
-        Bukkit.getConsoleSender().sendMessage(CC.translate(message));
-    }
 
     private void logInformation(final long milli) {
-        infoConsole(ChatColor.GREEN + "Initialized Holiday in " + (System.currentTimeMillis() - milli) + "ms (" + TimeUtil.getDuration(System.currentTimeMillis() - milli) + ").");
+        Logger.log(ChatColor.GREEN + "Initialized Holiday in " + (System.currentTimeMillis() - milli) + "ms (" + TimeUtil.getDuration(System.currentTimeMillis() - milli) + ").");
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

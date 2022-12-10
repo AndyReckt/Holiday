@@ -311,6 +311,19 @@ public class Midnight {
     }
 
     /**
+     * Removes an all objects connected to an id from redis.
+     * @param id the id or type of the object. (ie: profile)
+     */
+    public void removeAll(String id) {
+        executor.execute(() -> {
+            Jedis jedis = this.pool.getResource();
+            jedis.keys(id + ":::*").forEach(jedis::del);
+        });
+    }
+
+
+
+    /**
      * Registers a method as a RedisListener.
      *
      * @param method The method to register

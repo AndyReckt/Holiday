@@ -7,6 +7,7 @@ import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.HolidayAPI;
+import me.andyreckt.holiday.core.util.text.HashUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -41,6 +42,15 @@ public class UserProfile implements Profile {
     @Override
     public String getLowercaseName() {
         return getName().toLowerCase();
+    }
+
+    @Override
+    public void addNewCurrentIP(String ip) {
+        String hash = HashUtils.hash(ip);
+        if (!ips.contains(hash)) {
+            ips.add(hash);
+        }
+        this.ip = hash;
     }
 
     @Override

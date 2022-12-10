@@ -50,7 +50,6 @@
     </dependencies>
 
     <build>
-        <finalName>${project.name}</finalName>
         <defaultGoal>clean install</defaultGoal>
 
         <resources>

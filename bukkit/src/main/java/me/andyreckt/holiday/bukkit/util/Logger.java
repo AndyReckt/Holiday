@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 
 public class Logger {
 
-    private static final boolean DEV = true;
+    public static final boolean DEV = true;
 
     public static void log(String message) {
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "[Holiday] " + message));

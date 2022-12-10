@@ -13,6 +13,7 @@ public interface Profile {
 
     String getIp();
     List<String> getIps();
+    void addNewCurrentIP(String ip);
 
     void addPermission(String permission);
     void removePermission(String permission);

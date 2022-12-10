@@ -28,7 +28,7 @@ public class UUIDCacheListener implements Listener {
 
         if (foundName == null) {
             this.plugin.getUuidCache().update(player.getUniqueId(), player.getName());
-            Logger.log(CC.translate("&9[UUID Cache] &b" + player.getName() + " 's &bname and uuid have been updated to the UUID Cache."));
+            Logger.log(CC.translate("&9[UUID Cache] &b" + player.getName() + "'s &bname and uuid have been updated to the UUID Cache."));
             return;
         }
 

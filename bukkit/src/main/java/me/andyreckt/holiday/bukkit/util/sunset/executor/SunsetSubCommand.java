@@ -271,7 +271,7 @@ public class SunsetSubCommand extends org.bukkit.command.Command {
             return (toReturn);
         }
 
-        // if (!((method.getParameterCount() - 1) <= args.length)) return (new ArrayList<>()); //TODO: SEE IF THIS IS NEEDED
+        // if (!((method.getParameterCount() - 1) <= args.length)) return (new ArrayList<>());
 
         int index = args.length - 1;
         if (args.length == 0 || args.length > (method.getParameterCount() - 1)) {

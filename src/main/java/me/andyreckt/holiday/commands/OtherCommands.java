@@ -179,7 +179,7 @@ public class OtherCommands {
 
         if (!(Holiday.getInstance().getNmsHandler() instanceof NMS_v1_8)) {
             sender.sendMessage(CC.translate("&cYou need to be in 1.8 in order to use this command for compatibility reasons"));
-            return; //TODO Add this to NMS handler so its usable in 1.7 too
+            return;
         }
 
         final PacketContainer packet = new PacketContainer(PacketType.Play.Server.GAME_STATE_CHANGE);

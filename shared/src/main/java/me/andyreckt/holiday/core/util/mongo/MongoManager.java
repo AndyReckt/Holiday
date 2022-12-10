@@ -24,7 +24,7 @@ public class MongoManager {
         this.api = api;
 
         this.client = new MongoClient(new MongoClientURI(credentials.getURI()));
-        this.database = this.client.getDatabase("holiday");
+        this.database = this.client.getDatabase(credentials.getDatabase());
 
         this.profiles = database.getCollection("profiles");
         this.ranks = database.getCollection("ranks");

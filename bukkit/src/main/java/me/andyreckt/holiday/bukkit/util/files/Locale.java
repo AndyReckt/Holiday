@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,6 +24,7 @@ public enum Locale {
     MONGO_AUTH(SETTINGS.get(), "mongo.auth", false),
     MONGO_USERNAME(SETTINGS.get(), "mongo.username", "foo"),
     MONGO_PASSWORD(SETTINGS.get(), "mongo.password", "bar"),
+    MONGO_DATABASE(SETTINGS.get(), "mongo.database", "holiday"),
 
     /* REDIS */
     REDIS_HOST(SETTINGS.get(), "redis.host", "localhost"),
@@ -31,9 +33,9 @@ public enum Locale {
     REDIS_PASSWORD(SETTINGS.get(), "redis.password", "bar"),
 
     /* COLORS */
-    COLOR_PRIMARY(SETTINGS.get(), "color.primary", "&b"),
-    COLOR_SECONDARY(SETTINGS.get(), "color.secondary", "&3"),
-    COLOR_CHAT(SETTINGS.get(), "color.chat", "&e"),
+    COLOR_PRIMARY(SETTINGS.get(), "color.primary", "AQUA"),
+    COLOR_SECONDARY(SETTINGS.get(), "color.secondary", "DARK_AQUA"),
+    COLOR_CHAT(SETTINGS.get(), "color.chat", "YELLOW"),
     ;
 
 
