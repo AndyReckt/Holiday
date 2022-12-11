@@ -57,5 +57,14 @@ public class DebugCommand {
         HolidayAPI.getUnsafeAPI().getUserManager().getProfiles().forEach((uuid, profile) ->
                 HolidayAPI.getUnsafeAPI().getMidnight().cache("uuid-cache", uuid.toString(), profile.getName()));
     }
+
+    @SubCommand(names = "server", description = "Server debug", async = true)
+    public void serverDebugging(CommandSender sender) {
+        if (!Logger.DEV) {
+            sender.sendMessage(CC.translate("&cThis command is not available in production"));
+            return;
+        }
+        Logger.debug(GsonProvider.GSON.toJson(Holiday.getInstance().getServer()));
+    }
 }
 

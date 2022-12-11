@@ -19,7 +19,10 @@ import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.Midnight;
 import me.andyreckt.holiday.core.util.redis.RedisCommand;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.GrantUpdatePacket;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.ProfileUpdatePacket;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.PunishmentUpdatePacket;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.RankUpdatePacket;
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.GrantUpdateSubscriber;
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.ProfileUpdateSubscriber;
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.PunishmentUpdateSubscriber;
@@ -73,8 +76,8 @@ public class HolidayAPI implements API {
                 new RankUpdateSubscriber(), new PunishmentUpdateSubscriber()
         ).forEach(midnight::registerListener);
         Arrays.asList(
-                GrantUpdateSubscriber.class, ProfileUpdateSubscriber.class,
-                RankUpdateSubscriber.class, PunishmentUpdatePacket.class
+                GrantUpdatePacket.class, ProfileUpdatePacket.class,
+                RankUpdatePacket.class, PunishmentUpdatePacket.class
         ).forEach(midnight::registerObject);
     }
 
