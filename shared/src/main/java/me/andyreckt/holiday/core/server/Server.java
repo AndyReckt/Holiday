@@ -19,7 +19,7 @@ public class Server implements IServer {
 
     private double[] tps = new double[]{};
 
-    private UUID whitelistRank;
+    private UUID whitelistRank = HolidayAPI.getUnsafeAPI().getDefaultRank().getUuid();
 
     private int maxPlayers = 250;
     private int memoryMax = 0;

@@ -13,13 +13,12 @@ import me.andyreckt.holiday.bukkit.util.sunset.executor.SunsetSubCommand;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.PData;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.PType;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.defaults.*;
+import me.andyreckt.holiday.bukkit.util.text.CC;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -32,7 +31,6 @@ import java.lang.reflect.*;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.*;
-import java.util.concurrent.ForkJoinPool;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -322,7 +320,6 @@ public class Sunset {
 
     public static class HelpBuilder {
 
-        private static final char NICE_CHAR = '●';
         private final List<TextComponent> components;
         private final String commandName;
 
@@ -330,22 +327,28 @@ public class Sunset {
             this.components = new ArrayList<>();
             this.commandName = commandName;
 
-            this.components.add(new TextComponent(translate(" ")));
-            this.components.add(new TextComponent(translate("  &6" + description)));
-            this.components.add(new TextComponent(translate("$undefined")));
-            this.components.add(new TextComponent(translate(" ")));
+            this.components.add(new TextComponent(CC.translate(" ")));
+            this.components.add(new TextComponent(CC.translate("  " + CC.SECONDARY + description)));
+            this.components.add(new TextComponent(CC.translate("$undefined")));
+            this.components.add(new TextComponent(CC.translate(" ")));
         }
 
         public HelpBuilder addSubCommand(String command, String description, Param... args) {
             StringBuilder argsBuilder = new StringBuilder();
             for (Param arg : args) {
                 if (arg.baseValue().equals("")) {
-                    argsBuilder.append(" &b<").append(arg.name()).append(">");
+                    argsBuilder.append(" ").append(CC.SECONDARY).append("<").append(arg.name()).append(">");
                 } else {
-                    argsBuilder.append(" &b[").append(arg.name()).append("]");
+                    argsBuilder.append(" ").append(CC.SECONDARY).append("[").append(arg.name()).append("]");
                 }
             }
-            this.components.add(new TextComponent(translate("   &7" + NICE_CHAR + " &e/&6" + commandName + " &e" + command + argsBuilder + " &7» &f" + description)));
+
+
+            this.components.add(new TextComponent(
+                    "   " + CC.GRAY + CC.NICE_CHAR + " " + CC.GRAY + "/" + CC.CHAT + commandName
+                            + " " + CC.PRIMARY + command + argsBuilder
+                            + CC.GRAY + " " + CC.UNICODE_ARROWS_RIGHT + " " + CC.CHAT + description
+            ));
             return this;
         }
 
@@ -354,8 +357,12 @@ public class Sunset {
         }
 
         public List<TextComponent> getFinal() {
-            this.components.add(new TextComponent(translate(" ")));
-            this.components.set(2, new TextComponent(translate("  &eThere is &6" + (this.components.size() - 5) + " &esub-command(s) available.")));
+            this.components.add(new TextComponent(CC.translate(" ")));
+
+            this.components.set(2,
+                    new TextComponent("  " + CC.CHAT + "There is" + CC.PRIMARY + " " + (this.components.size() - 5)
+                            + " " + CC.CHAT + "subcommand" + (this.components.size() == 5 ? "" : "s") + " for this command."
+            ));
             return this.components;
         }
 
@@ -363,10 +370,6 @@ public class Sunset {
             for (TextComponent component : getFinal()) {
                 player.spigot().sendMessage(component);
             }
-        }
-
-        private static String translate(String message) {
-            return ChatColor.translateAlternateColorCodes('&', message);
         }
     }
 

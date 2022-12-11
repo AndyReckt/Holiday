@@ -64,7 +64,7 @@ public class DebugCommand {
             sender.sendMessage(CC.translate("&cThis command is not available in production"));
             return;
         }
-        Logger.debug(GsonProvider.GSON.toJson(Holiday.getInstance().getServer()));
+        Logger.debug(GsonProvider.GSON.toJson(Holiday.getInstance().getThisServer()));
     }
 }
 
