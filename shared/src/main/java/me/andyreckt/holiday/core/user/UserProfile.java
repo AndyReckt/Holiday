@@ -123,6 +123,11 @@ public class UserProfile implements Profile {
     }
 
     @Override
+    public boolean isOnline() {
+        return HolidayAPI.getUnsafeAPI().isOnline(uuid);
+    }
+
+    @Override
     public String getNameWithColor() {
         throw new UnsupportedOperationException("Not implemented yet.");
     }

@@ -32,6 +32,10 @@ public enum Locale {
     REDIS_AUTH(SETTINGS.get(), "redis.auth", false),
     REDIS_PASSWORD(SETTINGS.get(), "redis.password", "bar"),
 
+    /* SERVER INFO */
+    SERVER_ID(SETTINGS.get(), "server.bungee-name", "$undefined"),
+    SERVER_NAME(SETTINGS.get(), "server.name", "Unknown"),
+
     /* COLORS */
     COLOR_PRIMARY(SETTINGS.get(), "color.primary", "AQUA"),
     COLOR_SECONDARY(SETTINGS.get(), "color.secondary", "DARK_AQUA"),

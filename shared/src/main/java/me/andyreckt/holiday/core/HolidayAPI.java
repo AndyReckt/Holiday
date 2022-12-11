@@ -6,6 +6,8 @@ import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
+import me.andyreckt.holiday.core.server.Server;
+import me.andyreckt.holiday.core.server.ServerManager;
 import me.andyreckt.holiday.core.user.UserManager;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.grant.GrantManager;
@@ -17,8 +19,10 @@ import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.Midnight;
 import me.andyreckt.holiday.core.util.redis.RedisCommand;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.PunishmentUpdatePacket;
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.GrantUpdateSubscriber;
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.ProfileUpdateSubscriber;
+import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.PunishmentUpdateSubscriber;
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.RankUpdateSubscriber;
 import redis.clients.jedis.Jedis;
 
@@ -26,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Getter
@@ -38,37 +43,38 @@ public class HolidayAPI implements API {
     private final UserManager userManager;
     private final RankManager rankManager;
     private final GrantManager grantManager;
-//    private final ServerManager serverManager;
+    private final ServerManager serverManager;
     private final PunishmentManager punishmentManager;
+
+    private final HashMap<UUID, String> onlinePlayers;
 
 
 
     public HolidayAPI(MongoCredentials mongoCredentials, RedisCredentials redisCredentials) {
         instance = this;
+        new me.andyreckt.holiday.api.HolidayAPI();
 
         this.mongoManager = new MongoManager(this, mongoCredentials);
         this.midnight = new Midnight(redisCredentials.getPool());
         this.userManager = new UserManager(this);
         this.rankManager = new RankManager(this);
         this.grantManager = new GrantManager(this);
-
-        //TODO: ServerManager
-        //this.serverManager = new ServerManager(this);
+        this.serverManager = new ServerManager(this);
         this.punishmentManager = new PunishmentManager(this);
+
+        this.onlinePlayers = new HashMap<>();
 
         this.loadRedis();
     }
 
     private void loadRedis() {
         Arrays.asList(
-                new GrantUpdateSubscriber(),
-                new ProfileUpdateSubscriber(),
-                new RankUpdateSubscriber()
+                new GrantUpdateSubscriber(), new ProfileUpdateSubscriber(),
+                new RankUpdateSubscriber(), new PunishmentUpdateSubscriber()
         ).forEach(midnight::registerListener);
         Arrays.asList(
-                GrantUpdateSubscriber.class,
-                ProfileUpdateSubscriber.class,
-                RankUpdateSubscriber.class
+                GrantUpdateSubscriber.class, ProfileUpdateSubscriber.class,
+                RankUpdateSubscriber.class, PunishmentUpdatePacket.class
         ).forEach(midnight::registerObject);
     }
 
@@ -202,5 +208,25 @@ public class HolidayAPI implements API {
     @Override
     public void refreshPunishments() {
         this.punishmentManager.refreshPunishments();
+    }
+
+    @Override
+    public boolean isOnline(UUID playerId) {
+        return this.onlinePlayers.containsKey(playerId);
+    }
+
+    @Override
+    public CompletableFuture<HashMap<String, Server>> getServers() {
+        return this.serverManager.getServers();
+    }
+
+    @Override
+    public CompletableFuture<Server> getServer(String serverId) {
+        return this.serverManager.getServer(serverId);
+    }
+
+    @Override
+    public CompletableFuture<Server> getServer(UUID playerId) {
+        return this.getServer(this.onlinePlayers.get(playerId));
     }
 }

@@ -45,6 +45,8 @@ public interface Profile {
     boolean isAdmin();
     boolean isOp();
 
+    boolean isOnline();
+
     String getNameWithColor();
 
     //TODO: Add disguise-related methods

@@ -7,14 +7,17 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.commands.DebugCommand;
 import me.andyreckt.holiday.bukkit.server.listeners.PlayerListener;
+import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.menu.MenuAPI;
+import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.bukkit.util.sunset.Sunset;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.ProfileParameterType;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.RankParameterType;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.uuid.UUIDCache;
+import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
@@ -51,6 +54,10 @@ public final class Holiday extends JavaPlugin implements Listener {
     @Setter
     private boolean joinable = false;
 
+    private Server thisServer;
+
+    private ServerTask serverTask;
+
 
     @Override
     public void onEnable() {
@@ -59,15 +66,12 @@ public final class Holiday extends JavaPlugin implements Listener {
 
         try {
             this.setupConfigFiles();
-            MongoCredentials mongoCreds = Locale.MONGO_AUTH.getBoolean() ? new MongoCredentials(
-                    Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_USERNAME.getString(), Locale.MONGO_PASSWORD.getString(), Locale.MONGO_DATABASE.getString())
-                    : new MongoCredentials(Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_DATABASE.getString());
-            RedisCredentials redisCreds = new RedisCredentials(Locale.REDIS_HOST.getString(), Locale.REDIS_PORT.getInt(), Locale.REDIS_AUTH.getBoolean(), Locale.REDIS_PASSWORD.getString());
-            this.api = API.create(mongoCreds, redisCreds);
+            this.setupApi();
 
             this.setupExecutors();
 //          TODO: this.setupNms();
             this.setupHandlers();
+            this.setupTasks();
             this.setupListeners();
             this.setupCommands();
             this.setupSoftDependencies();
@@ -82,9 +86,18 @@ public final class Holiday extends JavaPlugin implements Listener {
         }
     }
 
-    @Override
-    public void onDisable() {
-        this.scheduledExecutor.shutdownNow();
+    private void setupApi() {
+        MongoCredentials mongoCreds = Locale.MONGO_AUTH.getBoolean() ? new MongoCredentials(
+                Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_USERNAME.getString(), Locale.MONGO_PASSWORD.getString(), Locale.MONGO_DATABASE.getString())
+                : new MongoCredentials(Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_DATABASE.getString());
+        RedisCredentials redisCreds = new RedisCredentials(Locale.REDIS_HOST.getString(), Locale.REDIS_PORT.getInt(), Locale.REDIS_AUTH.getBoolean(), Locale.REDIS_PASSWORD.getString());
+        this.api = API.create(mongoCreds, redisCreds);
+        this.thisServer = new Server(Locale.SERVER_NAME.getString(), Locale.SERVER_ID.getString());
+    }
+
+    private void setupTasks() {
+        this.serverTask = new ServerTask(this);
+        this.serverTask.runTaskTimerAsynchronously(this, 20L, 60L);
     }
 
     private void setupCommands() {
@@ -110,7 +123,7 @@ public final class Holiday extends JavaPlugin implements Listener {
 //        }
 //    }
 
-    private void    setupExecutors() {
+    private void setupExecutors() {
         this.executor = ForkJoinPool.commonPool();
         this.scheduledExecutor = Executors.newScheduledThreadPool(2);
     }
@@ -136,7 +149,7 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     private void setupOthers() {
-
+        Tasks.runAsyncLater(() -> joinable = true, 5 * 20L);
     }
 
     private void addListener(Listener listener) {
@@ -154,5 +167,11 @@ public final class Holiday extends JavaPlugin implements Listener {
             event.setKickMessage(CC.translate("&cServer is still starting up."));
             event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
         }
+    }
+
+    @Override
+    public void onDisable() {
+        this.serverTask.cancel();
+        this.scheduledExecutor.shutdownNow();
     }
 }

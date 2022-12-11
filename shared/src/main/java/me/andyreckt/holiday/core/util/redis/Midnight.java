@@ -189,7 +189,7 @@ public class Midnight {
      * @return the object, or null if not found.
      */
     @SneakyThrows
-    public Object get(String id, Class<?> clazz) {
+    public <T> T get(String id, Class<T> clazz) {
         Jedis jedis = this.pool.getResource();
         String json = jedis.get(id);
         if (json == null) return null;
@@ -204,7 +204,7 @@ public class Midnight {
      * @return the object, or null if not found.
      */
     @SneakyThrows
-    public CompletableFuture<Object> getAsync(String id, Class<?> clazz) {
+    public <T> CompletableFuture<T> getAsync(String id, Class<T> clazz) {
         return CompletableFuture.supplyAsync(() -> {
             Jedis jedis = this.pool.getResource();
             String json = jedis.get(id);
@@ -222,7 +222,7 @@ public class Midnight {
      * @return the object, or null if not found.
      */
     @SneakyThrows
-    public Object get(String id, String uid, Class<?> clazz) {
+    public <T> T get(String id, String uid, Class<T> clazz) {
         Jedis jedis = this.pool.getResource();
         String json = jedis.get(id + ":::" + uid);
         if (json == null) return null;
@@ -238,7 +238,7 @@ public class Midnight {
      * @return the object, or null if not found.
      */
     @SneakyThrows
-    public CompletableFuture<Object> getAsync(String id, String uid, Class<?> clazz) {
+    public <T> CompletableFuture<T> getAsync(String id, String uid, Class<T> clazz) {
         return CompletableFuture.supplyAsync(() -> {
             Jedis jedis = this.pool.getResource();
             String json = jedis.get(id + ":::" + uid);
@@ -255,9 +255,9 @@ public class Midnight {
      * @return a map of unique ids and objects.
      */
     @SneakyThrows
-    public HashMap<String, Object> getAll(String id, Class<?> clazz) {
+    public <T> HashMap<String, T> getAll(String id, Class<T> clazz) {
         Jedis jedis = this.pool.getResource();
-        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, T> map = new HashMap<>();
         jedis.keys(id + ":::*").forEach(key -> {
             String json = jedis.get(key);
             if (json == null) return;
@@ -274,10 +274,10 @@ public class Midnight {
      * @return a map of unique ids and objects.
      */
     @SneakyThrows
-    public CompletableFuture<HashMap<String, Object>> getAllAsync(String id, Class<?> clazz) {
+    public <T> CompletableFuture<HashMap<String, T>> getAllAsync(String id, Class<T> clazz) {
         return CompletableFuture.supplyAsync(() -> {
             Jedis jedis = this.pool.getResource();
-            HashMap<String, Object> map = new HashMap<>();
+            HashMap<String, T> map = new HashMap<>();
             jedis.keys(id + ":::*").forEach(key -> {
                 String json = jedis.get(key);
                 if (json == null) return;
