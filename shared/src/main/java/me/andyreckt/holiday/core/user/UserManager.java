@@ -38,13 +38,12 @@ public class UserManager {
     }
 
     public void saveProfile(Profile profile) {
+        this.profiles.put(profile.getUuid(), profile);
         api.getMongoManager().getProfiles().replaceOne(
                 Filters.eq("_id", profile.getUuid()),
                 new Document("_id", profile.getUuid()).append("data", GsonProvider.GSON.toJson(profile)),
                 new ReplaceOptions().upsert(true)
         );
-        this.profiles.put(profile.getUuid(), profile);
-
         api.getMidnight().sendObject(new ProfileUpdatePacket((UserProfile) profile));
     }
 }

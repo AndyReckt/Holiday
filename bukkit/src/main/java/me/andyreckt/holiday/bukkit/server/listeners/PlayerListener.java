@@ -6,6 +6,7 @@ import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.UserProfile;
+import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.text.HashUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,29 +34,38 @@ public class PlayerListener implements Listener {
     }
 
 
-    //TODO: Punishment system
     @EventHandler(priority = EventPriority.LOWEST)
     public void onLoginPunishments(PlayerLoginEvent event) {
         Player player = event.getPlayer();
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
-
-
         IPunishment punishment = profile.getActivePunishments().stream()
-                .filter(punishment1 -> punishment1.getType() == IPunishment.PunishmentType.BAN ||
-                        punishment1.getType() == IPunishment.PunishmentType.IP_BAN ||
-                        punishment1.getType() == IPunishment.PunishmentType.BLACKLIST)
+                .filter(pun -> pun.getType() == IPunishment.PunishmentType.BAN ||
+                        pun.getType() == IPunishment.PunishmentType.IP_BAN ||
+                        pun.getType() == IPunishment.PunishmentType.BLACKLIST)
                 .findFirst().orElse(null);
         if (punishment == null) return;
         if (punishment.getType() == IPunishment.PunishmentType.BAN && Locale.BANNED_JOIN.getBoolean()) return;
 
-        //TODO: get punishment message
-//
-//        StringBuilder kickMessage = new StringBuilder();
-//        for (String s : Holiday.getInstance().getPunishmentManager().getKickMessage(punishment)) {
-//            kickMessage.append(CC.translate(s)).append("\n");
-//        }
-//        event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
-//        event.setKickMessage(kickMessage.toString());
+        Locale locale;
+        switch (punishment.getType()) {
+            case BAN:
+                locale = Locale.PUNISHMENT_BAN_KICK;
+                break;
+            case IP_BAN:
+                locale = Locale.PUNISHMENT_IP_BAN_KICK;
+                break;
+            case BLACKLIST:
+                locale = Locale.PUNISHMENT_BLACKLIST_KICK;
+                break;
+            default:
+                return;
+        }
+
+        String kickMessage = locale.getString().replace("%reason%", punishment.getAddedReason())
+                .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+        event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
+        event.setKickMessage(CC.translate(kickMessage));
+
     }
 }

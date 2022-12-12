@@ -30,10 +30,7 @@ import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.PunishmentUpdateS
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.RankUpdateSubscriber;
 import redis.clients.jedis.Jedis;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -197,7 +194,26 @@ public class HolidayAPI implements API {
 
     @Override
     public List<IPunishment> getPunishments(UUID uniqueId) {
-        return this.punishmentManager.getPunishments().stream().filter(punishment -> punishment.getPunished().equals(uniqueId)).collect(Collectors.toList());
+        Profile profile = this.getProfile(uniqueId);
+        List<IPunishment> toReturn = new ArrayList<>();
+        for (IPunishment punishment : this.punishmentManager.getPunishments()) {
+            if (punishment.getPunished().equals(uniqueId)) {
+                toReturn.add(punishment);
+            }
+            if (punishment.getIp().equalsIgnoreCase(profile.getIp()) && (punishment.getType() == IPunishment.PunishmentType.IP_BAN || punishment.getType() == IPunishment.PunishmentType.BLACKLIST)) {
+                if (!toReturn.contains(punishment)) {
+                    toReturn.add(punishment);
+                }
+            }
+            if (punishment.getType() == IPunishment.PunishmentType.BLACKLIST) {
+                if (profile.getIps().contains(punishment.getIp())) {
+                    if (!toReturn.contains(punishment)) {
+                        toReturn.add(punishment);
+                    }
+                }
+            }
+        }
+        return toReturn;
     }
 
     @Override

@@ -127,4 +127,18 @@ public final class CC {
 		B_SECONDARY = SECONDARY + ChatColor.BOLD;
 	}
 
+	public static String addNetworkPlaceholder(String string) {
+
+		string = string.replace("%network_name%", Locale.NETWORK_NAME.getString());
+		string = string.replace("%network_ip%", Locale.NETWORK_IP.getString());
+		string = string.replace("%discord%", Locale.NETWORK_DISCORD.getString());
+		string = string.replace("%teamspeak%", Locale.NETWORK_TEAMSPEAK.getString());
+		string = string.replace("%website%", Locale.NETWORK_WEBSITE.getString());
+		string = string.replace("%servername%", Locale.SERVER_NAME.getString());
+		string = string.replace("%store%", Locale.NETWORK_STORE.getString());
+		string = string.replace("%twitter%", Locale.NETWORK_TWITTER.getString());
+
+		return string;
+	}
+
 }
