@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.util.files;
 
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -9,9 +10,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
-@Getter
+@Getter(value = AccessLevel.PRIVATE)
 public enum Perms {
     /* STAFF */
+    STAFF_VIEW_FILTERED_MESSAGES("staff.view-filtered-messages", "core.staff.filtered"),
+
+    /* PUNISHMENTS */
+    PUNISHMENTS_SILENT_VIEW("punishments.silent-view", "core.punishments.silent")
 
 
 
@@ -26,6 +31,12 @@ public enum Perms {
         this.perm = perm;
     }
 
+    public String get() {
+        return perm;
+    }
+
+
+
     @SneakyThrows
     public static void init(JavaPlugin plugin) {
         for (Perms locale : values()) {
@@ -35,7 +46,7 @@ public enum Perms {
             }
             YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
             if (!yamlConfiguration.contains(locale.getPath())) {
-                yamlConfiguration.set(locale.getPath(), locale.getPerm());
+                yamlConfiguration.set(locale.getPath(), locale.get());
                 yamlConfiguration.save(file);
             }
             locale.setPerm(yamlConfiguration.getString(locale.getPath()));

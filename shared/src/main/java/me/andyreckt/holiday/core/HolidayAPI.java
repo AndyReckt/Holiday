@@ -20,14 +20,8 @@ import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.Midnight;
 import me.andyreckt.holiday.core.util.redis.RedisCommand;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
-import me.andyreckt.holiday.core.util.redis.pubsub.packets.GrantUpdatePacket;
-import me.andyreckt.holiday.core.util.redis.pubsub.packets.ProfileUpdatePacket;
-import me.andyreckt.holiday.core.util.redis.pubsub.packets.PunishmentUpdatePacket;
-import me.andyreckt.holiday.core.util.redis.pubsub.packets.RankUpdatePacket;
-import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.GrantUpdateSubscriber;
-import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.ProfileUpdateSubscriber;
-import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.PunishmentUpdateSubscriber;
-import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.RankUpdateSubscriber;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.*;
+import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.*;
 import redis.clients.jedis.Jedis;
 
 import java.util.*;
@@ -72,11 +66,13 @@ public class HolidayAPI implements API {
     private void loadRedis() {
         Arrays.asList(
                 new GrantUpdateSubscriber(), new ProfileUpdateSubscriber(),
-                new RankUpdateSubscriber(), new PunishmentUpdateSubscriber()
+                new RankUpdateSubscriber(), new PunishmentUpdateSubscriber(),
+                new OnlinePlayersSubscriber()
         ).forEach(midnight::registerListener);
         Arrays.asList(
                 GrantUpdatePacket.class, ProfileUpdatePacket.class,
-                RankUpdatePacket.class, PunishmentUpdatePacket.class
+                RankUpdatePacket.class, PunishmentUpdatePacket.class,
+                BroadcastPacket.class, OnlinePlayersPacket.class
         ).forEach(midnight::registerObject);
     }
 

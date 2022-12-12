@@ -11,6 +11,7 @@ import me.andyreckt.holiday.bukkit.server.listeners.PlayerListener;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8;
+import me.andyreckt.holiday.bukkit.server.redis.subscriber.BroadcastSubscriber;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
@@ -72,11 +73,11 @@ public final class Holiday extends JavaPlugin implements Listener {
         long time = System.currentTimeMillis();
 
         try {
+            this.setupNms();
             this.setupConfigFiles();
             this.setupApi();
 
             this.setupExecutors();
-            this.setupNms();
             this.setupManagers();
             this.setupTasks();
             this.setupListeners();
@@ -125,7 +126,7 @@ public final class Holiday extends JavaPlugin implements Listener {
             this.nms = new NMS_v1_8();
             Logger.log(ChatColor.GREEN + "FOUND FULLY COMPATIBLE SPIGOT VERSION, LOADING PLUGIN");
         } else {
-            Logger.log(ChatColor.RED + "FOUND INCOMPATIBLE/UNKNOWN VERSION, DISABLING");
+            Logger.error(ChatColor.RED + "FOUND INCOMPATIBLE/UNKNOWN VERSION, DISABLING");
             Bukkit.getPluginManager().disablePlugin(this);
         }
     }
@@ -149,6 +150,9 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     private void setupListeners() {
         addListener(new PlayerListener());
+        Arrays.asList(
+                new BroadcastSubscriber()
+        ).forEach(sub -> api.getMidnight().registerListener(new BroadcastSubscriber()));
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
@@ -188,6 +192,11 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     public String getNameWithColor(Profile profile) {
+        IRank rank = profile.getHighestVisibleRank();
+        return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getName();
+    }
+
+    public String getDisplayNameWithColor(Profile profile) {
         IRank rank = profile.getDisplayRank();
         return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getName();
     }

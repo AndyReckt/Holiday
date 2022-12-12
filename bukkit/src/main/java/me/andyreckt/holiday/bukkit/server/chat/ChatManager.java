@@ -5,10 +5,12 @@ import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
+import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.punishment.Punishment;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -36,8 +38,16 @@ public class ChatManager {
         return plugin.getThisServer().getChatDelay();
     }
 
+    public void setChatDelay(long delay) {
+        plugin.getThisServer().setChatDelay(delay);
+    }
+
     public boolean isChatMuted() {
         return plugin.getThisServer().isChatMuted();
+    }
+
+    public void setChatMuted(boolean chatMuted) {
+        plugin.getThisServer().setChatMuted(chatMuted);
     }
 
     public boolean isOnDelay(UUID uuid) {
@@ -87,6 +97,13 @@ public class ChatManager {
                         Locale.FILTER_HIGH_MUTE_REASON.getString().replace("%word%", filtered)
                 );
                 plugin.getApi().addPunishment(punishment);
+                String toSend = Locale.PUNISHMENT_MUTE_MESSAGE.getString()
+                        .replace("%silent%", Locale.PUNISHMENT_SILENT_PREFIX.getString())
+                        .replace("%player%", Holiday.getInstance().getNameWithColor(profile))
+                        .replace("%executor%", "&4CONSOLE")
+                        .replace("%reason%", punishment.getAddedReason())
+                        .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+                plugin.getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.PUNISHMENTS_SILENT_VIEW.get()));
             }
 
             if (Locale.FILTER_SEND.getBoolean()) {
@@ -94,7 +111,7 @@ public class ChatManager {
                         .replace("%server%", Locale.SERVER_NAME.getString())
                         .replace("%player%", plugin.getNameWithColor(profile))
                         .replace("%message%", message);
-                //TODO: send staff message
+                plugin.getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
             }
 
             return Locale.FILTER_HIGH_ALLOW.getBoolean();
@@ -106,7 +123,7 @@ public class ChatManager {
                         .replace("%server%", Locale.SERVER_NAME.getString())
                         .replace("%player%", plugin.getNameWithColor(profile))
                         .replace("%message%", message);
-                //TODO: send staff message
+                plugin.getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
             }
             return Locale.FILTER_LOW_ALLOW.getBoolean();
         }

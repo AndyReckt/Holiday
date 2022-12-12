@@ -66,6 +66,6 @@ public class PlayerListener implements Listener {
                 .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
         event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
         event.setKickMessage(CC.translate(kickMessage));
-
+        //TODO: broadcast ban login try
     }
 }
