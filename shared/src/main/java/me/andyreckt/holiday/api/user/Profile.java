@@ -47,11 +47,19 @@ public interface Profile {
 
     boolean isOnline();
 
-    String getNameWithColor();
+    boolean isMuted();
+    boolean isBanned();
+    boolean isIpBanned();
+    boolean isBlacklisted();
+
+    List<IPunishment> getPunishments();
+    List<IPunishment> getPunishments(IPunishment.PunishmentType type);
+    List<IPunishment> getActivePunishments();
+    List<IPunishment> getActivePunishments(IPunishment.PunishmentType type);
+
 
     //TODO: Add disguise-related methods
     //TODO: Add settings-related methods
-    //TODO: Add punishment-related methods
     //TODO: Add staff-related methods
 
     List<Profile> getAlts();

@@ -6,7 +6,11 @@ import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.commands.DebugCommand;
+import me.andyreckt.holiday.bukkit.server.chat.ChatManager;
 import me.andyreckt.holiday.bukkit.server.listeners.PlayerListener;
+import me.andyreckt.holiday.bukkit.server.nms.INMS;
+import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7;
+import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
@@ -23,6 +27,7 @@ import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
@@ -43,8 +48,10 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     private API api;
 
-    private Sunset commandHandler;
+    private INMS nms;
+    private Sunset commandManager;
     private MenuAPI menuAPI;
+    private ChatManager chatManager;
 
     private UUIDCache uuidCache;
 
@@ -69,8 +76,8 @@ public final class Holiday extends JavaPlugin implements Listener {
             this.setupApi();
 
             this.setupExecutors();
-//          TODO: this.setupNms();
-            this.setupHandlers();
+            this.setupNms();
+            this.setupManagers();
             this.setupTasks();
             this.setupListeners();
             this.setupCommands();
@@ -78,9 +85,9 @@ public final class Holiday extends JavaPlugin implements Listener {
             this.setupOthers();
 
             logInformation(time);
-        } catch (Exception e) {
+        } catch (Exception ex) {
             Logger.error("An error occurred while enabling the plugin. Showing stacktrace:");
-            e.printStackTrace();
+            ex.printStackTrace();
             Logger.error("Stopping the server...");
             Bukkit.getServer().shutdown();
         }
@@ -101,27 +108,27 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     private void setupCommands() {
-        this.commandHandler = new Sunset(this);
-        this.commandHandler.registerType(new RankParameterType(), IRank.class);
-        this.commandHandler.registerType(new ProfileParameterType(), Profile.class);
+        this.commandManager = new Sunset(this);
+        this.commandManager.registerType(new RankParameterType(), IRank.class);
+        this.commandManager.registerType(new ProfileParameterType(), Profile.class);
         Arrays.asList(
                 new DebugCommand()
-        ).forEach(commandHandler::registerCommandWithSubCommands);
+        ).forEach(commandManager::registerCommandWithSubCommands);
     }
 
-//    private void setupNms() {
-//        if (this.getServer().getVersion().contains("1.7")) {
-//            this.nmsHandler = new NMS_v1_7();
-//            infoConsole(ChatColor.GOLD + "FOUND COMPATIBLE SPIGOT VERSION, IT IS RECOMMENDED TO CHANGE TO 1.8.8, LOADING PLUGIN");
-//        }
-//        else if (this.getServer().getVersion().contains("1.8")) {
-//            this.nmsHandler = new NMS_v1_8();
-//            infoConsole(ChatColor.GREEN + "FOUND FULLY COMPATIBLE SPIGOT VERSION, LOADING PLUGIN");
-//        } else {
-//            infoConsole(ChatColor.RED + "FOUND INCOMPATIBLE/UNKNOWN VERSION, DISABLING");
-//            Bukkit.getPluginManager().disablePlugin(this);
-//        }
-//    }
+    private void setupNms() {
+        if (this.getServer().getVersion().contains("1.7")) {
+            this.nms = new NMS_v1_7();
+            Logger.log(ChatColor.GREEN + "FOUND COMPATIBLE SPIGOT VERSION, IT IS RECOMMENDED TO CHANGE TO 1.8.8, LOADING PLUGIN");
+        }
+        else if (this.getServer().getVersion().contains("1.8")) {
+            this.nms = new NMS_v1_8();
+            Logger.log(ChatColor.GREEN + "FOUND FULLY COMPATIBLE SPIGOT VERSION, LOADING PLUGIN");
+        } else {
+            Logger.log(ChatColor.RED + "FOUND INCOMPATIBLE/UNKNOWN VERSION, DISABLING");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+    }
 
     private void setupExecutors() {
         this.executor = ForkJoinPool.commonPool();
@@ -134,9 +141,10 @@ public final class Holiday extends JavaPlugin implements Listener {
         CC.setupColors();
     }
 
-    private void setupHandlers() {
+    private void setupManagers() {
         this.uuidCache = new UUIDCache();
         this.menuAPI = new MenuAPI(this);
+        this.chatManager = new ChatManager(this);
     }
 
     private void setupListeners() {
@@ -173,5 +181,14 @@ public final class Holiday extends JavaPlugin implements Listener {
     public void onDisable() {
         this.serverTask.cancel();
         this.scheduledExecutor.shutdownNow();
+    }
+
+    public ChatColor getRankColor(IRank rank) {
+        return ChatColor.valueOf(rank.getColor().toUpperCase());
+    }
+
+    public String getNameWithColor(Profile profile) {
+        IRank rank = profile.getDisplayRank();
+        return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getName();
     }
 }

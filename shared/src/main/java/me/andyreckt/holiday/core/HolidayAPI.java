@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.core;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
@@ -49,7 +50,8 @@ public class HolidayAPI implements API {
     private final ServerManager serverManager;
     private final PunishmentManager punishmentManager;
 
-    private final HashMap<UUID, String> onlinePlayers;
+    @Setter
+    private HashMap<UUID, String> onlinePlayers;
 
 
 

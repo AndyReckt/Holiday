@@ -18,6 +18,7 @@ public class Rank implements IRank {
     private String prefix = "";
     private String suffix = "";
     private String displayName = "";
+    private String color = "GREEN";
 
     private boolean bold = false;
     private boolean italic = false;

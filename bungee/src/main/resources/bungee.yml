@@ -1,0 +1,5 @@
+main: me.andyreckt.holiday.bungee.Bungee
+version: "1.0"
+api-version: 1.8
+authors: [ AndyReckt, Scifi ]
+name: Holiday

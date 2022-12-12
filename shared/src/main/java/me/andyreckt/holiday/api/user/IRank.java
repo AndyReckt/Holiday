@@ -19,6 +19,9 @@ public interface IRank {
     String getDisplayName();
     void setDisplayName(String displayName);
 
+    String getColor();
+    void setColor(String color);
+
     boolean isBold();
     void setBold(boolean bold);
 

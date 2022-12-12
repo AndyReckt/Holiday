@@ -1,6 +1,9 @@
 package me.andyreckt.holiday.bukkit.server.listeners;
 
+import me.andyreckt.holiday.api.user.IPunishment;
+import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.text.HashUtils;
@@ -31,14 +34,22 @@ public class PlayerListener implements Listener {
 
 
     //TODO: Punishment system
-//    @EventHandler(priority = EventPriority.LOWEST)
-//    public void onLoginPunishments(PlayerLoginEvent event) {
-//        Player player = event.getPlayer();
-//        Punishment punishment = Holiday.getInstance().getApi().getPunishments(player.getUniqueId()).stream()
-//                .filter(punishment1 -> punishment1.getPunishmentType() == PunishmentType.BAN || punishment1.getPunishmentType() == PunishmentType.BLACKLIST)
-//                .filter(punishment1 -> punishment1.isActive())
-//                .findFirst().orElse(null);
-//        if (punishment == null) return;
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onLoginPunishments(PlayerLoginEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+
+
+
+        IPunishment punishment = profile.getActivePunishments().stream()
+                .filter(punishment1 -> punishment1.getType() == IPunishment.PunishmentType.BAN ||
+                        punishment1.getType() == IPunishment.PunishmentType.IP_BAN ||
+                        punishment1.getType() == IPunishment.PunishmentType.BLACKLIST)
+                .findFirst().orElse(null);
+        if (punishment == null) return;
+        if (punishment.getType() == IPunishment.PunishmentType.BAN && Locale.BANNED_JOIN.getBoolean()) return;
+
+        //TODO: get punishment message
 //
 //        StringBuilder kickMessage = new StringBuilder();
 //        for (String s : Holiday.getInstance().getPunishmentManager().getKickMessage(punishment)) {
@@ -46,5 +57,5 @@ public class PlayerListener implements Listener {
 //        }
 //        event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
 //        event.setKickMessage(kickMessage.toString());
-//    }
+    }
 }

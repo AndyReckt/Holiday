@@ -4,6 +4,7 @@ package me.andyreckt.holiday.core.user;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.user.IGrant;
+import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.HolidayAPI;
@@ -104,7 +105,8 @@ public class UserProfile implements Profile {
 
     @Override
     public IRank getDisplayRank() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        //TODO: Add support for disguises
+        return getHighestVisibleRank();
     }
 
     @Override
@@ -128,8 +130,43 @@ public class UserProfile implements Profile {
     }
 
     @Override
-    public String getNameWithColor() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+    public boolean isMuted() {
+        return HolidayAPI.getUnsafeAPI().getPunishments(uuid).stream().filter(IPunishment::isActive).anyMatch(type -> type.getType() == IPunishment.PunishmentType.MUTE);
+    }
+
+    @Override
+    public boolean isBanned() {
+        return HolidayAPI.getUnsafeAPI().getPunishments(uuid).stream().filter(IPunishment::isActive).anyMatch(type -> type.getType() == IPunishment.PunishmentType.BAN);
+    }
+
+    @Override
+    public boolean isIpBanned() {
+        return HolidayAPI.getUnsafeAPI().getPunishments(uuid).stream().filter(IPunishment::isActive).anyMatch(type -> type.getType() == IPunishment.PunishmentType.IP_BAN);
+    }
+
+    @Override
+    public boolean isBlacklisted() {
+        return HolidayAPI.getUnsafeAPI().getPunishments(uuid).stream().filter(IPunishment::isActive).anyMatch(type -> type.getType() == IPunishment.PunishmentType.BLACKLIST);
+    }
+
+    @Override
+    public List<IPunishment> getPunishments() {
+        return HolidayAPI.getUnsafeAPI().getPunishments(uuid);
+    }
+
+    @Override
+    public List<IPunishment> getPunishments(IPunishment.PunishmentType type) {
+        return HolidayAPI.getUnsafeAPI().getPunishments(uuid).stream().filter(punishment -> punishment.getType() == type).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<IPunishment> getActivePunishments() {
+        return HolidayAPI.getUnsafeAPI().getPunishments(uuid).stream().filter(IPunishment::isActive).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<IPunishment> getActivePunishments(IPunishment.PunishmentType type) {
+        return HolidayAPI.getUnsafeAPI().getPunishments(uuid).stream().filter(punishment -> punishment.getType() == type).filter(IPunishment::isActive).collect(Collectors.toList());
     }
 
     @Override

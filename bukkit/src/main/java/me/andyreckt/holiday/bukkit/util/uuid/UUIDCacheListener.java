@@ -21,7 +21,7 @@ public class UUIDCacheListener implements Listener {
 
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onAsyncPlayerPreLogin(PlayerLoginEvent event) {
+    public void onPlayerLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
 
         String foundName = this.plugin.getUuidCache().name(player.getUniqueId());

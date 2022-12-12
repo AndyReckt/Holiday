@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static me.andyreckt.holiday.bukkit.util.files.Locale.FileName.SETTINGS;
-import static me.andyreckt.holiday.bukkit.util.files.Locale.FileName.MESSAGES;
 
 @Getter(value = AccessLevel.PRIVATE)
 public enum Locale {
@@ -32,14 +30,29 @@ public enum Locale {
     REDIS_AUTH(SETTINGS.get(), "redis.auth", false),
     REDIS_PASSWORD(SETTINGS.get(), "redis.password", "bar"),
 
-    /* SERVER INFO */
+    /* SERVER */
     SERVER_ID(SETTINGS.get(), "server.bungee-name", "$undefined"),
     SERVER_NAME(SETTINGS.get(), "server.name", "Unknown"),
+    BANNED_JOIN(SETTINGS.get(), "server.banned-join", false),
 
     /* COLORS */
     COLOR_PRIMARY(SETTINGS.get(), "color.primary", "AQUA"),
     COLOR_SECONDARY(SETTINGS.get(), "color.secondary", "DARK_AQUA"),
     COLOR_CHAT(SETTINGS.get(), "color.chat", "YELLOW"),
+
+    /* FILTERS */
+    FILTER_SEND(SETTINGS.get(), "filter.send-to-staff", true),
+    FILTER_MESSAGE(SETTINGS.get(), "filter.message", "&d[Filtered] &5[%server%] %player%&e: %message%"),
+    FILTER_LOW_ALLOW(SETTINGS.get(), "filter.low.allow-message", true),
+    FILTER_LOW_LIST(SETTINGS.get(), "filter.low.list", "cunt", "anal", "beaner", "nazi", "paki"),
+    FILTER_HIGH_ALLOW(SETTINGS.get(), "filter.high.allow-message", false),
+    FILTER_HIGH_MUTE(SETTINGS.get(), "filter.high.mute", true),
+    FILTER_HIGH_MUTE_DURATION(SETTINGS.get(), "filter.high.mute-duration", "3h"),
+    FILTER_HIGH_MUTE_REASON(SETTINGS.get(), "filter.high.mute-reason", "Automute (%word%)"),
+    FILTER_HIGH_LIST(SETTINGS.get(), "filter.high.list", "nigger", "nigga", "coon", "faggot")
+
+
+
     ;
 
 
