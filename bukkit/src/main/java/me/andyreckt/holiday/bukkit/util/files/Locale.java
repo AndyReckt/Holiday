@@ -101,6 +101,18 @@ public enum Locale {
     RANK_ENTER_SUFFIX_SUCCESS(MESSAGES.get(), "rank.edit-suffix-success", "&aSuccessfully changed the suffix of the rank to %suffix%."),
     RANK_COLOR_UPDATED(MESSAGES.get(), "rank.color-updated", "&aSuccessfully updated the color of the rank to %color%."),
 
+    /* BROADCASTS */
+    GLOBAL_CHAT_CLEAR(MESSAGES.get(), "broadcasts.global.chat-clear", "&cThe global chat has been cleared."),
+    STAFF_CHAT_CLEAR(MESSAGES.get(), "broadcasts.staff.chat-clear", "&b[S] &3[%server%] &eThe chat has been cleared by %executor%"),
+    GLOBAL_CHAT_MUTED(MESSAGES.get(), "broadcasts.global.chat-muted", "&cThe global chat has been muted."),
+    STAFF_CHAT_MUTED(MESSAGES.get(), "broadcasts.staff.chat-muted", "&b[S] &3[%server%] &eThe chat has been muted by %executor%"),
+    GLOBAL_CHAT_UNMUTED(MESSAGES.get(), "broadcasts.global.chat-unmuted", "&aThe global chat has been unmuted."),
+    STAFF_CHAT_UNMUTED(MESSAGES.get(), "broadcasts.staff.chat-unmuted", "&b[S] &3[%server%] &eThe chat has been unmuted by %executor%"),
+    GLOBAL_CHAT_SLOWED(MESSAGES.get(), "broadcasts.global.chat-slowed", "&cThe global chat has been slowed to %delay% seconds."),
+    STAFF_CHAT_SLOWED(MESSAGES.get(), "broadcasts.staff.chat-slowed", "&b[S] &3[%server%] &eThe chat has been slowed down to %delay% seconds by %executor%"),
+    GLOBAL_CHAT_UNSLOWED(MESSAGES.get(), "broadcasts.global.chat-unslowed", "&aThe global chat has been unslowed."),
+    STAFF_CHAT_UNSLOWED(MESSAGES.get(), "broadcasts.staff.chat-unslowed", "&b[S] &3[%server%] &eThe chat has been unslowed by %executor%"),
+
 
 
     /* ERROR */
@@ -114,6 +126,8 @@ public enum Locale {
     CANNOT_DELETE_DEFAULT_RANK(MESSAGES.get(), "error.cannot-delete-default-rank", "&cYou cannot delete the default rank."),
     NEED_NAME(MESSAGES.get(), "error.need-name", "&cYou need to specify a name."),
     PLAYER_NOT_FOUND(MESSAGES.get(), "error.player-not-found", "&cA player with that name could not be found."),
+    CHAT_CURRENTLY_MUTED(MESSAGES.get(), "error.chat-currently-muted", "&cThe global chat is currently muted."),
+    TIME_FORMAT(MESSAGES.get(), "error.time-format", "&cPlease enter a valid time format."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),

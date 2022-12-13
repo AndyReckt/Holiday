@@ -4,6 +4,7 @@ import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
+import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,7 +36,7 @@ public class ChatListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW)
-    public void onChatMuted(AsyncPlayerChatEvent event) {
+    public void onChatCheck(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
@@ -49,7 +50,16 @@ public class ChatListener implements Listener {
                     .replace("%duration%", TimeUtil.getDuration(punishment.getRemainingTime()))
                     : Locale.PUNISHMENT_MUTE_PLAYER.getString());
         }
+
+        if (Holiday.getInstance().getChatManager().isChatMuted()) {
+            if (!player.hasPermission(Perms.STAFF_CHAT_BYPASS.get())) {
+                event.setCancelled(true);
+                player.sendMessage(Locale.CHAT_CURRENTLY_MUTED.getString());
+            }
+        }
     }
+
+    //TODO: add support for staff chat
 
 
 

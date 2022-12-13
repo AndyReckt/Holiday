@@ -14,14 +14,23 @@ import java.io.File;
 public enum Perms {
     /* STAFF */
     STAFF_VIEW_FILTERED_MESSAGES("staff.view-filtered-messages", "core.staff.filtered"),
+    STAFF_CHAT("staff.staff-chat", "core.staff.chat"),
+    STAFF_VIEW_NOTIFICATIONS("staff.view-notifications", "core.staff.notifications"),
+    STAFF_CHAT_BYPASS("staff.chat-bypass", "core.chat.bypass"),
 
     /* PUNISHMENTS */
     PUNISHMENTS_SILENT_VIEW("punishments.silent-view", "core.punishments.silent"),
 
-    /* OTHER */
+    /* COMMANDS */
     RANKS("command.ranks", "core.command.ranks"),
     DEBUG("command.debug", "core.command.debug"),
+    CHAT("command.chat.help", "core.command.chat"),
+    CHAT_CLEAR("command.chat.clear", "core.command.chat.clear"),
+    CHAT_MUTE("command.chat.mute", "core.command.chat.mute"),
+    CHAT_SLOW("command.chat.slow", "core.command.chat.slow"),
 
+
+    /* OTHER */
     NONE(null, ""),
     OP(null, "op"),
     ;

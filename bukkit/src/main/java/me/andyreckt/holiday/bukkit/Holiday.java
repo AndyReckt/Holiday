@@ -5,6 +5,7 @@ import lombok.Setter;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
+import me.andyreckt.holiday.bukkit.commands.ChatCommand;
 import me.andyreckt.holiday.bukkit.commands.DebugCommand;
 import me.andyreckt.holiday.bukkit.commands.RankCommand;
 import me.andyreckt.holiday.bukkit.server.chat.ChatManager;
@@ -115,8 +116,11 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.commandManager.registerType(new RankParameterType(), IRank.class);
         this.commandManager.registerType(new ProfileParameterType(), Profile.class);
         Arrays.asList(
-                new DebugCommand(), new RankCommand()
+                new DebugCommand(), new RankCommand(), new ChatCommand()
         ).forEach(commandManager::registerCommandWithSubCommands);
+        Arrays.asList(
+                new ChatCommand()
+        ).forEach(commandManager::registerCommands);
     }
 
     private void setupNms() {
