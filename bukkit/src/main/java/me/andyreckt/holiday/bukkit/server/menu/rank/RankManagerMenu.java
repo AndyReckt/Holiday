@@ -39,7 +39,7 @@ public class RankManagerMenu extends GlassMenu {
 
     @Override
     public String getTitle(Player paramPlayer) {
-        return null;
+        return "Rank Editor";
     }
 
     private static class RankButton extends Button {

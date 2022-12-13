@@ -4,6 +4,7 @@ package me.andyreckt.holiday.bukkit.commands;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.server.menu.rank.RankManageMenu;
 import me.andyreckt.holiday.bukkit.server.menu.rank.RankManagerMenu;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
@@ -34,7 +35,7 @@ public class RankCommand {
 
     @SubCommand(names = {"edit", "manage"}, description = "Manage a rank.", usage = "/rank manage <rank>")
     public void manage(Player sender, @Param(name = "rank") IRank rank) {
-        // new RankManageMenu(rank).openMenu(sender); //TODO: Implement this menu.
+        new RankManageMenu(rank).openMenu(sender); //TODO: Implement this menu.
     }
 
     @SubCommand(names = {"editor", "manager"})
