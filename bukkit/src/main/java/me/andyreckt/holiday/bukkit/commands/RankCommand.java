@@ -1,11 +1,16 @@
 package me.andyreckt.holiday.bukkit.commands;
 
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+import com.google.gson.reflect.TypeToken;
+import lombok.SneakyThrows;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.rank.RankManageMenu;
 import me.andyreckt.holiday.bukkit.server.menu.rank.RankManagerMenu;
+import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
@@ -13,10 +18,18 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.TextComponentBuilder;
+import me.andyreckt.holiday.core.user.rank.Rank;
+import me.andyreckt.holiday.core.util.json.GsonProvider;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @MainCommand(names = {"rank", "ranks"}, description = "Manage ranks.", permission = Perms.RANKS)
 public class RankCommand { //TODO: Rank import/export
@@ -168,6 +181,35 @@ public class RankCommand { //TODO: Rank import/export
         }
         Holiday.getInstance().getApi().deleteRank(rank);
         sender.sendMessage(Locale.RANK_SUCCESSFULLY_DELETED.getString().replace("%rank%", CC.translate(rank.getDisplayName())));
+    }
+
+    @SneakyThrows
+    @SubCommand(names = "export", description = "Export all the ranks to a file.", usage = "/rank export")
+    public void export(CommandSender sender) {
+        File file = new File(Holiday.getInstance().getDataFolder(), "ranks.json");
+        if (!file.exists()) {
+            Holiday.getInstance().saveResource("ranks.json", false);
+        }
+        Queue<Rank> ranks = new ConcurrentLinkedQueue<>();
+        Holiday.getInstance().getApi().getRanks().forEach(r -> ranks.add((Rank) r));
+        Files.write(GsonProvider.GSON.toJson(ranks), file, Charsets.UTF_8);
+        sender.sendMessage(CC.translate("&aSuccessfully exported ranks to &f" + file.getName()));
+    }
+
+    @SneakyThrows
+    @SubCommand(names = "import", description = "Import all the ranks from a file.", usage = "/rank import")
+    public void importRanks(CommandSender sender) {
+        File file = new File(Holiday.getInstance().getDataFolder(), "ranks.json");
+        if (!file.exists()) {
+            sender.sendMessage(CC.translate("&cThe ranks.json file does not exist!"));
+            return;
+        }
+
+        Queue<Rank> ranks = GsonProvider.GSON.fromJson(Files.toString(file, Charsets.UTF_8), new TypeToken<ConcurrentLinkedQueue<Rank>>() {
+        }.getType());
+        Holiday.getInstance().getApi().getRanks().forEach(r -> Holiday.getInstance().getApi().deleteRank(r));
+        ranks.forEach(r -> Holiday.getInstance().getApi().saveRank(r));
+        sender.sendMessage(CC.translate("&aSuccessfully imported ranks from &f" + file.getName()));
     }
 
 

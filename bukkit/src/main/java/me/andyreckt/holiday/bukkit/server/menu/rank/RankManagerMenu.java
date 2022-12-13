@@ -2,13 +2,17 @@ package me.andyreckt.holiday.bukkit.server.menu.rank;
 
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.util.files.Locale;
+import me.andyreckt.holiday.bukkit.util.item.Heads;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
+import me.andyreckt.holiday.bukkit.util.menu.buttons.ConversationButton;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.StringUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -32,8 +36,23 @@ public class RankManagerMenu extends PaginatedMenu {
         Map<Integer, Button> buttons = new HashMap<>();
         for (IRank rank : Holiday.getInstance().getApi().getRanksSorted()) {
             buttons.put(buttons.size(), new RankButton(rank));
-
         }
+        buttons.put(buttons.size(), new ConversationButton<>(
+            new ItemBuilder(Material.SKULL_ITEM)
+                .durability(SkullType.PLAYER.ordinal())
+                .texture(Heads.LIME_PLUS.getBase())
+                .displayname(CC.SECONDARY + "Create Rank")
+                .lore("", CC.I_GRAY + "Click to create a new rank.")
+                .build(),
+            null, Locale.RANK_ENTER_NAME.getString(),
+            (x, pair) -> {
+                IRank rank = Holiday.getInstance().getApi().createRank(pair.getB());
+                Holiday.getInstance().getApi().saveRank(rank);
+                pair.getA().getForWhom().sendRawMessage(Locale.RANK_SUCCESSFULLY_CREATED.getString().replace("%rank%", pair.getB()));
+                new RankManageMenu(rank).openMenu(p0);
+            })
+        );
+
         return buttons;
     }
 

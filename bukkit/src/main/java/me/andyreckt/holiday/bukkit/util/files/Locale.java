@@ -36,6 +36,8 @@ public enum Locale {
     SERVER_ID(SETTINGS.get(), "server.bungee-name", "$undefined"),
     SERVER_NAME(SETTINGS.get(), "server.name", "Unknown"),
     BANNED_JOIN(SETTINGS.get(), "server.banned-join", false),
+    CHAT_ENABLED(SETTINGS.get(), "server.chat.enabled", true),
+    CHAT_FORMAT(SETTINGS.get(), "server.chat.format", "%prefix%%player%%suffix%&7: %message%"),
 
     /* COLORS */
     COLOR_PRIMARY(SETTINGS.get(), "color.primary", "AQUA"),

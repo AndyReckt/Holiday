@@ -50,11 +50,11 @@ public final class NumberButton<T> extends Button {
             "",
             CC.I_GRAY + this.description,
             "",
-            CC.B_GREEN + "LEFT-CLICK " + ChatColor.GREEN + "to +1",
-            CC.B_GREEN + "SHIFT LEFT-CLICK " + ChatColor.GREEN + "to +10",
+            CC.B_GREEN + "LEFT-CLICK " + ChatColor.GRAY + "to +1",
+            CC.B_GREEN + "SHIFT LEFT-CLICK " + ChatColor.GRAY + "to +10",
             "",
-            CC.B_RED + "RIGHT-CLICK " + ChatColor.GREEN + "to -1",
-            CC.B_RED + "SHIFT RIGHT-CLICK " + ChatColor.GREEN + "to -10"
+            CC.B_RED + "RIGHT-CLICK " + ChatColor.GRAY + "to -1",
+            CC.B_RED + "SHIFT RIGHT-CLICK " + ChatColor.GRAY + "to -10"
         );
     }
 

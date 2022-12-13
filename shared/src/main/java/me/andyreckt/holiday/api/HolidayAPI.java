@@ -9,10 +9,7 @@ import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.util.redis.Midnight;
 import me.andyreckt.holiday.core.util.redis.RedisCommand;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class HolidayAPI implements API {
@@ -114,7 +111,7 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public List<IRank> getRanks() {
+    public Queue<IRank> getRanks() {
         return getApi().getRanks();
     }
 

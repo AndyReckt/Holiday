@@ -11,16 +11,18 @@ import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Getter
 public class RankManager {
     private final HolidayAPI api;
 
-    private final List<IRank> ranks;
+    private final Queue<IRank> ranks;
 
     public RankManager(HolidayAPI api) {
         this.api = api;
-        this.ranks = new ArrayList<>();
+        this.ranks = new ConcurrentLinkedQueue<>();
         this.loadRanks();
         if (this.ranks.stream().noneMatch(IRank::isDefault)) {
             IRank rank = newDefaultRank();

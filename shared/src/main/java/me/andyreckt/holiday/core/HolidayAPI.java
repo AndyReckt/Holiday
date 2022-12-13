@@ -102,7 +102,7 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public List<IRank> getRanks() {
+    public Queue<IRank> getRanks() {
         return this.rankManager.getRanks();
     }
 
