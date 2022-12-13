@@ -47,6 +47,14 @@
             <version>1.7.10</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -102,6 +110,10 @@
                         <relocation>
                             <pattern>com.google.gson</pattern>
                             <shadedPattern>me.andyreckt.holiday.relocations.com.google.gson</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.google.common</pattern>
+                            <shadedPattern>me.andyreckt.holiday.relocations.com.google.common</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
