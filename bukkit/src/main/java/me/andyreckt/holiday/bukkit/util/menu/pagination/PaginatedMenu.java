@@ -100,7 +100,7 @@ public abstract class PaginatedMenu extends Menu {
     }
 
     @Override
-    protected void surroundButtons(boolean full, Map buttons, final ItemStack itemStack) {
+    protected void surroundButtons(boolean full, Map<Integer, Button> buttons, final ItemStack itemStack) {
         IntStream.range(0, getSize()).filter(slot -> (buttons.get(slot) == null)).forEach(slot -> {
             if (slot < 9 || slot > getSize() - 10 || (full && (slot % 9 == 0 || (slot + 1) % 9 == 0)))
                 buttons.put(slot, new Button() {

@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.IntStream;
 
@@ -96,7 +95,7 @@ public abstract class Menu {
         return item;
     }
 
-    public void fill(Map buttons, final ItemStack itemStack) {
+    public void fill(Map<Integer, Button> buttons, final ItemStack itemStack) {
         IntStream.range(0, getSize()).filter(slot -> (buttons.get(slot) == null))
 
                 .forEach(slot -> buttons.put(slot, new Button() {
@@ -156,10 +155,9 @@ public abstract class Menu {
         Bukkit.getScheduler().runTaskLaterAsynchronously(Holiday.getInstance(), () -> currentlyOpenedMenus.put(player.getName(), this), 1L);
     }
 
-    public static int size(Map<Integer, Button> buttons) {
+    public int size(Map<Integer, Button> buttons) {
         int highest = 0;
-        for (Iterator<Integer> iterator = buttons.keySet().iterator(); iterator.hasNext(); ) {
-            int buttonValue = iterator.next();
+        for (int buttonValue : buttons.keySet()) {
             if (buttonValue > highest)
                 highest = buttonValue;
         }
@@ -180,7 +178,7 @@ public abstract class Menu {
     public void onClose(Player player) {
     }
 
-    protected void surroundButtons(boolean full, Map buttons, final ItemStack itemStack) {
+    protected void surroundButtons(boolean full, Map<Integer, Button> buttons, final ItemStack itemStack) {
         IntStream.range(0, getSize()).filter(slot -> (buttons.get(slot) == null)).forEach(slot -> {
             if (slot < 9 || slot > getSize() - 10 || (full && (slot % 9 == 0 || (slot + 1) % 9 == 0)))
                 buttons.put(slot, new Button() {

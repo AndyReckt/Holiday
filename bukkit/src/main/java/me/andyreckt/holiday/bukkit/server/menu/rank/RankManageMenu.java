@@ -7,10 +7,13 @@ import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.GlassMenu;
+import me.andyreckt.holiday.bukkit.util.menu.Menu;
 import me.andyreckt.holiday.bukkit.util.menu.buttons.BooleanButton;
 import me.andyreckt.holiday.bukkit.util.menu.buttons.ConversationButton;
+import me.andyreckt.holiday.bukkit.util.menu.buttons.EasyButton;
 import me.andyreckt.holiday.bukkit.util.menu.buttons.NumberButton;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.bukkit.util.text.StringUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -44,7 +47,7 @@ public class RankManageMenu extends GlassMenu {
                 (x, pair) -> {
                     rank.setName(pair.getB());
                     api.saveRank(rank);
-                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_NAME_SUCCESS.getString());
+                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_NAME_SUCCESS.getString().replace("%name%", pair.getB()));
                     new RankManageMenu(rank).openMenu(player);
                 })
         );
@@ -56,14 +59,21 @@ public class RankManageMenu extends GlassMenu {
                         .build(),
                 rank, Locale.RANK_ENTER_DISPLAY_NAME.getString(),
                 (x, pair) -> {
-                    rank.setPrefix(pair.getB());
+                    rank.setDisplayName(pair.getB());
                     api.saveRank(rank);
-                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_DISPLAY_NAME_SUCCESS.getString());
+                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_DISPLAY_NAME_SUCCESS.getString().replace("%name%", CC.translate(pair.getB())));
                     new RankManageMenu(rank).openMenu(player);
                 })
         );
 
-        //TODO: Change Color
+        buttons.put(12, new EasyButton(
+                new ItemBuilder(Material.WOOL)
+                        .displayname(CC.SECONDARY + "Set Color")
+                        .durability(StringUtil.convertChatColorToWoolData(Holiday.getInstance().getRankColor(rank)))
+                        .lore("", CC.I_GRAY + "Click to change the color of this rank.")
+                        .build(),
+                (u) -> new RankColorMenu(rank).openMenu(player))
+        );
 
         buttons.put(13, new ConversationButton<>(
                 new ItemBuilder(Material.PAINTING)
@@ -74,7 +84,7 @@ public class RankManageMenu extends GlassMenu {
                 (x, pair) -> {
                     rank.setPrefix(pair.getB());
                     api.saveRank(rank);
-                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_PREFIX_SUCCESS.getString());
+                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_PREFIX_SUCCESS.getString().replace("%prefix%", CC.translate(pair.getB())));
                     new RankManageMenu(rank).openMenu(player);
                 })
         );
@@ -88,7 +98,7 @@ public class RankManageMenu extends GlassMenu {
                 (x, pair) -> {
                     rank.setSuffix(pair.getB());
                     api.saveRank(rank);
-                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_SUFFIX_SUCCESS.getString());
+                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_SUFFIX_SUCCESS.getString().replace("%suffix%", CC.translate(pair.getB())));
                     new RankManageMenu(rank).openMenu(player);
                 })
         );
@@ -156,6 +166,11 @@ public class RankManageMenu extends GlassMenu {
         );
 
         return buttons;
+    }
+
+    @Override
+    public Menu backButton() {
+        return new RankManagerMenu();
     }
 
     @Override

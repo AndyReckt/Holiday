@@ -111,7 +111,7 @@ public class Wrapper1_8_R3 implements VersionWrapper {
     /**
      * Modifications to ContainerAnvil that makes it, so you don't have to have xp to use this anvil
      */
-    private class AnvilContainer extends ContainerAnvil {
+    private static class AnvilContainer extends ContainerAnvil {
 
         public AnvilContainer(EntityHuman entityhuman) {
             super(entityhuman.inventory, entityhuman.world, new BlockPosition(0, 0, 0), entityhuman);

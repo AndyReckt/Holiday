@@ -19,7 +19,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @MainCommand(names = {"rank", "ranks"}, description = "Manage ranks.", permission = Perms.RANKS)
-public class RankCommand {
+public class RankCommand { //TODO: Rank import/export
 
     @SubCommand(names = {"create", "add", "new"}, async = true, description = "Create a new rank.", usage = "/rank create <rank>")
     public void create(CommandSender sender, @Param(name = "rank") String string) {
@@ -35,10 +35,10 @@ public class RankCommand {
 
     @SubCommand(names = {"edit", "manage"}, description = "Manage a rank.", usage = "/rank manage <rank>")
     public void manage(Player sender, @Param(name = "rank") IRank rank) {
-        new RankManageMenu(rank).openMenu(sender); //TODO: Implement this menu.
+        new RankManageMenu(rank).openMenu(sender);
     }
 
-    @SubCommand(names = {"editor", "manager"})
+    @SubCommand(names = {"editor", "manager"}, description = "Manage ranks.", usage = "/rank manager")
     public void editor(Player sender) {
         new RankManagerMenu().openMenu(sender);
     }

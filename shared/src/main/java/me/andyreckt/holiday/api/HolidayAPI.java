@@ -1,7 +1,6 @@
 package me.andyreckt.holiday.api;
 
 import lombok.Getter;
-import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;

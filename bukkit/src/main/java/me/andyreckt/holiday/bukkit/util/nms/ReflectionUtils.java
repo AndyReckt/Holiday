@@ -77,7 +77,7 @@ public final class ReflectionUtils {
      */
     public static final int VER = Integer.parseInt(VERSION.substring(1).split("_")[1]);
     /**
-     * Mojang remapped their NMS in 1.17 https://www.spigotmc.org/threads/spigot-bungeecord-1-17.510208/#post-4184317
+     * Mojang remapped their NMS in 1.17 <a href="https://www.spigotmc.org/threads/spigot-bungeecord-1-17.510208/#post-4184317">...</a>
      */
     public static final String
             CRAFTBUKKIT = "org.bukkit.craftbukkit." + VERSION + '.',

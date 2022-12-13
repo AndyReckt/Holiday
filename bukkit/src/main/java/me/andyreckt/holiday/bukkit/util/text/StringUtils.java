@@ -294,17 +294,9 @@ public class StringUtils {
         return time;
     }
 
-    public static ThreadLocal<DecimalFormat> remaining_seconds = new ThreadLocal<DecimalFormat>() {
-        protected DecimalFormat initialValue() {
-            return new DecimalFormat("0.#");
-        }
-    };
+    public static ThreadLocal<DecimalFormat> remaining_seconds = ThreadLocal.withInitial(() -> new DecimalFormat("0.#"));
 
-    public static ThreadLocal<DecimalFormat> remaining_seconds_trailing = new ThreadLocal<DecimalFormat>() {
-        protected DecimalFormat initialValue() {
-            return new DecimalFormat("0.0");
-        }
-    };
+    public static ThreadLocal<DecimalFormat> remaining_seconds_trailing = ThreadLocal.withInitial(() -> new DecimalFormat("0.0"));
 
     public static void setSlots(int slots) {
         slots = Math.abs(slots);

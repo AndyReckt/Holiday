@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.bukkit.entity.Player;
 
 @UtilityClass
 public final class CC {
@@ -91,13 +90,13 @@ public final class CC {
 	public static final String VAPE = "§8 §8 §1 §3 §3 §7 §8 §r";
 	public static final String BLANK_LINE = VAPE;
 	public static final String BL = BLANK_LINE;
-	public static final String UNICODE_VERTICAL_BAR = CC.GRAY + StringEscapeUtils.unescapeJava("\u2503");
-	public static final String UNICODE_CAUTION = StringEscapeUtils.unescapeJava("\u26a0");
-	public static final String UNICODE_ARROW_LEFT = StringEscapeUtils.unescapeJava("\u25C0");
-	public static final String UNICODE_ARROW_RIGHT = StringEscapeUtils.unescapeJava("\u25B6");
-	public static final String UNICODE_ARROWS_LEFT = StringEscapeUtils.unescapeJava("\u00AB");
-	public static final String UNICODE_ARROWS_RIGHT = StringEscapeUtils.unescapeJava("\u00BB");
-	public static final String UNICODE_HEART = StringEscapeUtils.unescapeJava("\u2764");
+	public static final String UNICODE_VERTICAL_BAR = CC.GRAY + StringEscapeUtils.unescapeJava("┃");
+	public static final String UNICODE_CAUTION = StringEscapeUtils.unescapeJava("⚠");
+	public static final String UNICODE_ARROW_LEFT = StringEscapeUtils.unescapeJava("◀");
+	public static final String UNICODE_ARROW_RIGHT = StringEscapeUtils.unescapeJava("▶");
+	public static final String UNICODE_ARROWS_LEFT = StringEscapeUtils.unescapeJava("«");
+	public static final String UNICODE_ARROWS_RIGHT = StringEscapeUtils.unescapeJava("»");
+	public static final String UNICODE_HEART = StringEscapeUtils.unescapeJava("❤");
 	public static final String MENU_BAR = ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH.toString() + "------------------------";
 	public static final String CHAT_BAR = ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH.toString() + "------------------------------------------------";
 	public static final String SB_BAR = ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH.toString() + "------------------";

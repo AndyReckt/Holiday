@@ -27,7 +27,7 @@ public class ViewAllPagesMenu extends Menu {
 
     @Override
     public Map<Integer, Button> getButtons(final Player player) {
-        final HashMap<Integer, Button> buttons = new HashMap<Integer, Button>();
+        final HashMap<Integer, Button> buttons = new HashMap<>();
         buttons.put(0, new BackButton(this.menu));
         int index = 10;
         for (int i = 1; i <= this.menu.getPages(player); ++i) {

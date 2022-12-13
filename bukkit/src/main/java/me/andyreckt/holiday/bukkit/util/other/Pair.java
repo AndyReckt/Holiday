@@ -37,7 +37,7 @@ public class Pair<A, B> {
             return false;
         }
 
-        Pair p = (Pair) o;
+        Pair<A, B> p = (Pair<A, B>) o;
         return this.a.equals(p.getA()) && this.b.equals(p.getB());
     }
 

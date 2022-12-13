@@ -47,6 +47,7 @@ public final class NumberButton<T> extends Button {
 
     public List<String> getDescription(Player player) {
         return ImmutableList.of(
+            "",
             CC.I_GRAY + this.description,
             "",
             CC.B_GREEN + "LEFT-CLICK " + ChatColor.GREEN + "to +1",

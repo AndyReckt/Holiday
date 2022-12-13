@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.user.IRank;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ public class Rank implements IRank {
 
     private String prefix = "";
     private String suffix = "";
-    private String displayName = "";
+    private String displayName = name;
     private String color = "GREEN";
 
     private boolean bold = false;
@@ -33,8 +34,8 @@ public class Rank implements IRank {
 
     private int priority = 0;
 
-    private List<String> permissions;
-    private List<UUID> childs;
+    private List<String> permissions = new ArrayList<>();
+    private List<UUID> childs = new ArrayList<>();
 
 
 

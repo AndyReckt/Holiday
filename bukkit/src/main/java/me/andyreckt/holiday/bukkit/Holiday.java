@@ -16,6 +16,7 @@ import me.andyreckt.holiday.bukkit.server.redis.subscriber.BroadcastSubscriber;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
+import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.menu.MenuAPI;
 import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.bukkit.util.sunset.Sunset;
@@ -29,7 +30,6 @@ import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
@@ -141,6 +141,7 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     public void setupConfigFiles() {
         Locale.init(this);
+        Perms.init(this);
         Logger.init();
         CC.setupColors();
     }
@@ -153,6 +154,7 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     private void setupListeners() {
         addListener(new PlayerListener());
+        addListener(this);
         Arrays.asList(
                 new BroadcastSubscriber()
         ).forEach(sub -> api.getMidnight().registerListener(new BroadcastSubscriber()));

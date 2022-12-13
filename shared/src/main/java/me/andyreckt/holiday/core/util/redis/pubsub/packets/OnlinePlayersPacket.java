@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import me.andyreckt.holiday.core.util.redis.annotations.RedisObject;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Getter

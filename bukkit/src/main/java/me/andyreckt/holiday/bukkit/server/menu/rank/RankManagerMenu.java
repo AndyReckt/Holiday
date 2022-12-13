@@ -4,7 +4,7 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
-import me.andyreckt.holiday.bukkit.util.menu.GlassMenu;
+import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.StringUtil;
 import org.bukkit.ChatColor;
@@ -16,30 +16,25 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RankManagerMenu extends GlassMenu {
+public class RankManagerMenu extends PaginatedMenu {
     @Override
     public int getGlassColor() {
-        return 7;
+        return 8;
     }
 
     @Override
-    public Map<Integer, Button> getAllButtons(Player player) {
-        Map<Integer, Button> buttons = new HashMap<>();
-        int i = 10;
-        for (IRank rank : Holiday.getInstance().getApi().getRanksSorted()) {
-            if ((i + 1) % 9 == 0) {
-                i += 2;
-            }
-            buttons.put(i, new RankButton(rank));
-            i++;
-        }
-
-        return buttons;
-    }
-
-    @Override
-    public String getTitle(Player paramPlayer) {
+    public String getPrePaginatedTitle(Player p0) {
         return "Rank Editor";
+    }
+
+    @Override
+    public Map<Integer, Button> getAllPagesButtons(Player p0) {
+        Map<Integer, Button> buttons = new HashMap<>();
+        for (IRank rank : Holiday.getInstance().getApi().getRanksSorted()) {
+            buttons.put(buttons.size(), new RankButton(rank));
+
+        }
+        return buttons;
     }
 
     private static class RankButton extends Button {

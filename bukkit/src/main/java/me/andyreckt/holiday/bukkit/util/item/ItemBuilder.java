@@ -44,19 +44,19 @@ import java.util.*;
  */
 public class ItemBuilder {
 
-	ItemStack item;
-	ItemMeta meta;
-	Material material = Material.STONE;
-	int amount = 1;
-	MaterialData data;
-	short damage = 0;
-	Map<Enchantment, Integer> enchantments = new HashMap<>();
-	String displayname;
-	List<String> lore = new ArrayList<>();
-	List<ItemFlag> flags = new ArrayList<>();
+	private ItemStack item;
+	private ItemMeta meta;
+	private Material material = Material.STONE;
+	private int amount = 1;
+	private MaterialData data;
+	private short damage = 0;
+	private Map<Enchantment, Integer> enchantments = new HashMap<>();
+	private String displayname;
+	private List<String> lore = new ArrayList<>();
+	private List<ItemFlag> flags = new ArrayList<>();
 
-	boolean andSymbol = true;
-	boolean unsafeStackSize = false;
+	private boolean andSymbol = true;
+	private boolean unsafeStackSize = true;
 
 	/** Initalizes the ItemBuilder with {@link Material} */
 	public ItemBuilder(Material material) {
@@ -697,7 +697,7 @@ public class ItemBuilder {
 		}
 
 		/** This Class contains highly sensitive NMS Code that should not be touched unless you want to break the ItemBuilder */
-		public class ReflectionUtils {
+		public static class ReflectionUtils {
 
 			public String getString(ItemStack item, String key) {
 				Object compound = getNBTTagCompound(getItemAsNMSStack(item));

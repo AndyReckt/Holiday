@@ -137,7 +137,7 @@ public class Sunset {
         }
 
         SunsetSubCommand command = new SunsetSubCommand(this, object, mainCommandAnnotation, mainUsage, aliases, methodList.toArray(new Method[0]));
-        getCommandMap().register(plugin.getName(), command);
+            getCommandMap().register(plugin.getName(), command);
     }
 
 

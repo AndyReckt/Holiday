@@ -97,6 +97,7 @@ public enum Locale {
     RANK_ENTER_PREFIX_SUCCESS(MESSAGES.get(), "rank.edit-prefix-success", "&aSuccessfully changed the prefix of the rank to %prefix%."),
     RANK_ENTER_SUFFIX(MESSAGES.get(), "rank.edit-suffix", "&aPlease enter the new suffix of the rank."),
     RANK_ENTER_SUFFIX_SUCCESS(MESSAGES.get(), "rank.edit-suffix-success", "&aSuccessfully changed the suffix of the rank to %suffix%."),
+    RANK_COLOR_UPDATED(MESSAGES.get(), "rank.color-updated", "&aSuccessfully updated the color of the rank to %color%."),
 
 
 

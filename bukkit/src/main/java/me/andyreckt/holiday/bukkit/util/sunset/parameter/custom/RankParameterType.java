@@ -4,8 +4,6 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.PType;
-import me.andyreckt.holiday.bukkit.util.text.CC;
-import me.andyreckt.holiday.core.user.rank.Rank;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
