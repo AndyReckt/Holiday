@@ -2,6 +2,7 @@ package me.andyreckt.holiday.bukkit.util.sunset.parameter.custom;
 
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.PType;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.rank.Rank;
@@ -23,7 +24,7 @@ public class RankParameterType implements PType<IRank> {
         IRank rank = Holiday.getInstance().getApi().getRank(source);
 
         if (rank == null) {
-            sender.sendMessage(CC.translate("&cThis rank doesnt exist"));
+            sender.sendMessage(Locale.RANK_NOT_FOUND.getString());
             return (null);
         }
 

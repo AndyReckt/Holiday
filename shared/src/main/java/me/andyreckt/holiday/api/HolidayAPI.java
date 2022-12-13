@@ -120,6 +120,11 @@ public class HolidayAPI implements API {
     }
 
     @Override
+    public List<IRank> getRanksSorted() {
+        return getApi().getRanksSorted();
+    }
+
+    @Override
     public IRank createRank(String name) {
         return getApi().createRank(name);
     }

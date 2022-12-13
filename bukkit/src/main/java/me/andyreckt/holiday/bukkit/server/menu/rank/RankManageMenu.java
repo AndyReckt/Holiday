@@ -1,0 +1,165 @@
+package me.andyreckt.holiday.bukkit.server.menu.rank;
+
+import me.andyreckt.holiday.api.API;
+import me.andyreckt.holiday.api.user.IRank;
+import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.util.files.Locale;
+import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
+import me.andyreckt.holiday.bukkit.util.menu.Button;
+import me.andyreckt.holiday.bukkit.util.menu.GlassMenu;
+import me.andyreckt.holiday.bukkit.util.menu.buttons.BooleanButton;
+import me.andyreckt.holiday.bukkit.util.menu.buttons.ConversationButton;
+import me.andyreckt.holiday.bukkit.util.menu.buttons.NumberButton;
+import me.andyreckt.holiday.bukkit.util.text.CC;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class RankManageMenu extends GlassMenu {
+
+    private final IRank rank;
+
+    public RankManageMenu(IRank rank) {
+        this.rank = rank;
+        this.setUpdateAfterClick(true);
+    }
+
+    @Override
+    public int getGlassColor() {
+        return 7;
+    }
+
+    @Override
+    public Map<Integer, Button> getAllButtons(Player player) {
+        API api = Holiday.getInstance().getApi();
+        Map<Integer, Button> buttons = new HashMap<>();
+        buttons.put(10, new ConversationButton<>(
+                new ItemBuilder(Material.SIGN)
+                        .displayname(CC.SECONDARY + "Rename Rank")
+                        .lore("", CC.I_GRAY + "Click to rename this rank.")
+                        .build(),
+                rank, Locale.RANK_ENTER_NAME.getString(),
+                (x, pair) -> {
+                    rank.setName(pair.getB());
+                    api.saveRank(rank);
+                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_NAME_SUCCESS.getString());
+                    new RankManageMenu(rank).openMenu(player);
+                })
+        );
+
+        buttons.put(11, new ConversationButton<>(
+                new ItemBuilder(Material.NAME_TAG)
+                        .displayname(CC.SECONDARY + "Set Display Name")
+                        .lore("", CC.I_GRAY + "Click to change the display name of this rank.")
+                        .build(),
+                rank, Locale.RANK_ENTER_DISPLAY_NAME.getString(),
+                (x, pair) -> {
+                    rank.setPrefix(pair.getB());
+                    api.saveRank(rank);
+                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_DISPLAY_NAME_SUCCESS.getString());
+                    new RankManageMenu(rank).openMenu(player);
+                })
+        );
+
+        //TODO: Change Color
+
+        buttons.put(13, new ConversationButton<>(
+                new ItemBuilder(Material.PAINTING)
+                        .displayname(CC.SECONDARY + "Set Prefix")
+                        .lore("", CC.I_GRAY + "Click to change the prefix of this rank.")
+                        .build(),
+                rank, Locale.RANK_ENTER_PREFIX.getString(),
+                (x, pair) -> {
+                    rank.setPrefix(pair.getB());
+                    api.saveRank(rank);
+                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_PREFIX_SUCCESS.getString());
+                    new RankManageMenu(rank).openMenu(player);
+                })
+        );
+
+        buttons.put(14, new ConversationButton<>(
+                new ItemBuilder(Material.PAINTING)
+                        .displayname(CC.SECONDARY + "Set Suffix")
+                        .lore("", CC.I_GRAY + "Click to change the suffix of this rank.")
+                        .build(),
+                rank, Locale.RANK_ENTER_SUFFIX.getString(),
+                (x, pair) -> {
+                    rank.setSuffix(pair.getB());
+                    api.saveRank(rank);
+                    pair.getA().getForWhom().sendRawMessage(Locale.RANK_ENTER_SUFFIX_SUCCESS.getString());
+                    new RankManageMenu(rank).openMenu(player);
+                })
+        );
+
+        buttons.put(15, new NumberButton<>(rank, Material.GOLD_NUGGET,
+                CC.SECONDARY + "Weight", "Click to change the weight of this rank.",
+                (x, i) -> {
+                    rank.setPriority(i);
+                    api.saveRank(rank);
+                    new RankManageMenu(rank).openMenu(player);
+                }, (x) -> rank.getPriority())
+        );
+
+        buttons.put(16, new BooleanButton<>(
+                new ItemBuilder(Material.SLIME_BALL)
+                        .displayname(CC.SECONDARY + "Visible")
+                        .lore("", CC.I_GRAY + "Click to change the visibility of this rank.")
+                        .build(),
+                rank, "visibility",
+                (x, bool) -> {
+                    rank.setVisible(bool);
+                    api.saveRank(rank);
+                    new RankManageMenu(rank).openMenu(player);
+                }, (x) -> rank.isVisible())
+        );
+
+        buttons.put(21, new BooleanButton<>(
+                new ItemBuilder(Material.RAW_FISH)
+                        .durability(3)
+                        .displayname(CC.SECONDARY + "Staff")
+                        .lore("", CC.I_GRAY + "Click to change the staff status of this rank.")
+                        .build(),
+                rank, "staff status",
+                (x, bool) -> {
+                    rank.setStaff(bool);
+                    api.saveRank(rank);
+                    new RankManageMenu(rank).openMenu(player);
+                }, (x) -> rank.isStaff())
+        );
+
+        buttons.put(22, new BooleanButton<>(
+                new ItemBuilder(Material.REDSTONE)
+                        .displayname(CC.SECONDARY + "Admin")
+                        .lore("", CC.I_GRAY + "Click to change the admin status of this rank.")
+                        .build(),
+                rank, "admin status",
+                (x, bool) -> {
+                    rank.setAdmin(bool);
+                    api.saveRank(rank);
+                    new RankManageMenu(rank).openMenu(player);
+                }, (x) -> rank.isAdmin())
+        );
+
+        buttons.put(23, new BooleanButton<>(
+                new ItemBuilder(Material.BEDROCK)
+                        .displayname(CC.SECONDARY + "OP")
+                        .lore("", CC.I_GRAY + "Click to change the operator status of this rank.")
+                        .build(),
+                rank, "operator status",
+                (x, bool) -> {
+                    rank.setOp(bool);
+                    api.saveRank(rank);
+                    new RankManageMenu(rank).openMenu(player);
+                }, (x) -> rank.isOp())
+        );
+
+        return buttons;
+    }
+
+    @Override
+    public String getTitle(Player paramPlayer) {
+        return "Rank Editor - " + rank.getName();
+    }
+}

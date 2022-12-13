@@ -107,6 +107,13 @@ public class HolidayAPI implements API {
     }
 
     @Override
+    public List<IRank> getRanksSorted() {
+        List<IRank> toReturn = this.getRanks().stream().sorted(Comparator.comparingInt(IRank::getPriority)).collect(Collectors.toList());
+        Collections.reverse(toReturn);
+        return toReturn;
+    }
+
+    @Override
     public IRank createRank(String name) {
         return new Rank(name);
     }

@@ -56,14 +56,14 @@ public class SunsetCommand extends org.bukkit.command.Command {
             parameters.add(commandSender);
         } else parameters.add(commandSender);
 
-        if (!command.permission().equalsIgnoreCase("")) {
-            if (command.permission().equalsIgnoreCase("op")) {
+        if (!command.permission().get().equalsIgnoreCase("")) {
+            if (command.permission().get().equalsIgnoreCase("op")) {
                 if (commandSender instanceof Player && (!commandSender.hasPermission("op")) && (!commandSender.isOp())) {
                     commandSender.sendMessage(sunset.getPermissionMessage());
                     return false;
                 }
             }
-            if (!commandSender.hasPermission(command.permission())) {
+            if (!commandSender.hasPermission(command.permission().get())) {
                 commandSender.sendMessage(sunset.getPermissionMessage());
                 return false;
             }

@@ -62,7 +62,7 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        String kickMessage = locale.getString().replace("%reason%", punishment.getAddedReason())
+        String kickMessage = locale.getStringNetwork().replace("%reason%", punishment.getAddedReason())
                 .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
         event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
         event.setKickMessage(CC.translate(kickMessage));

@@ -2,6 +2,7 @@ package me.andyreckt.holiday.bukkit.util.menu.buttons;
 
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
+import me.andyreckt.holiday.bukkit.util.text.CC;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,15 +15,19 @@ import java.util.function.Function;
 
 public final class BooleanButton<T>
         extends Button {
+    private ItemStack item;
     private final T target;
     private final String trait;
     private final BiConsumer<T, Boolean> writeFunction;
     private final Function<T, Boolean> readFunction;
     private final Consumer<T> saveFunction;
 
+    public BooleanButton(ItemStack item, T target, String trait, BiConsumer<T, Boolean> writeFunction, Function<T, Boolean> readFunction) {
+        this(item, target, trait, writeFunction, readFunction, (i) -> {});
+    }
+
     public BooleanButton(T target, String trait, BiConsumer<T, Boolean> writeFunction, Function<T, Boolean> readFunction) {
-        this(target, trait, writeFunction, readFunction, i -> {
-        });
+        this(target, trait, writeFunction, readFunction, i -> {});
     }
 
     public BooleanButton(T target, String trait, BiConsumer<T, Boolean> toDo, Function<T, Boolean> getFrom, Consumer<T> saveFunction) {
@@ -33,13 +38,26 @@ public final class BooleanButton<T>
         this.saveFunction = saveFunction;
     }
 
+    public BooleanButton(ItemStack item, T target, String trait, BiConsumer<T, Boolean> toDo, Function<T, Boolean> getFrom, Consumer<T> saveFunction) {
+        this.item = item;
+        this.target = target;
+        this.trait = trait;
+        this.writeFunction = toDo;
+        this.readFunction = getFrom;
+        this.saveFunction = saveFunction;
+    }
+
 
     @Override
     public ItemStack getButtonItem(Player p0) {
-        return new ItemBuilder(Material.WOOL)
+        return item == null ? new ItemBuilder(Material.WOOL)
                 .displayname((this.readFunction.apply(this.target) ? "&a" : "&c") + this.trait)
                 .damage(this.readFunction.apply(this.target) ? 5 : 14)
-                .build();
+                .build() : new ItemBuilder(item).lore("", CC.CHAT + "Enabled: " + yesNo(this.readFunction.apply(this.target))).build();
+    }
+
+    private String yesNo(boolean apply) {
+        return apply ? CC.GREEN + "Yes" : CC.RED + "No";
     }
 
     @Override
@@ -47,6 +65,6 @@ public final class BooleanButton<T>
         boolean current = this.readFunction.apply(this.target);
         this.writeFunction.accept(this.target, !current);
         this.saveFunction.accept(this.target);
-        player.sendMessage(ChatColor.GREEN + "Set " + this.trait + " trait to " + (current ? "off" : "on"));
+        player.sendMessage(ChatColor.GREEN + "Changed " + this.trait + " to " + (current ? "disabled" : "enabled"));
     }
 }

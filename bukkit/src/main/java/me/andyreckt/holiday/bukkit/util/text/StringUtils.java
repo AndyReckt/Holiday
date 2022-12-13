@@ -19,16 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 public class StringUtils {
 
-    public static String hash(String input) {
-
-        int hash = 7;
-        for (int i = 0; i < input.length(); i++) {
-            hash = hash * 31 + input.charAt(i);
-        }
-
-        return String.valueOf(hash);
-    }
-
     public static String getEnchantment(String name) {
         String enchant = name;
 

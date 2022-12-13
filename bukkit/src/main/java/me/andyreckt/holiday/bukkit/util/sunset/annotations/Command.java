@@ -1,5 +1,7 @@
 package me.andyreckt.holiday.bukkit.util.sunset.annotations;
 
+import me.andyreckt.holiday.bukkit.util.files.Perms;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,7 +13,7 @@ public @interface Command {
 
     String[] names();
 
-    String permission() default "";
+    Perms permission() default Perms.NONE;
 
     boolean async() default false;
 

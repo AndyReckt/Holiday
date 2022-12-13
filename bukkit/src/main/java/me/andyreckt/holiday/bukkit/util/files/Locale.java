@@ -81,7 +81,39 @@ public enum Locale {
     PUNISHMENT_MUTE_REVOKED(MESSAGES.get(), "punishment.revoked.mute", "%silent%&a%player% &ahas been unmuted by %executor% &afor %reason%."),
     PUNISHMENT_BLACKLIST_REVOKED(MESSAGES.get(), "punishment.revoked.blacklist", "%silent%&a%player% &ahas been unblacklisted by %executor% &afor %reason%."),
 
+    /* RANKS */
+    RANK_SUCCESSFULLY_CREATED(MESSAGES.get(), "rank.successfully-created", "&aSuccessfully created rank %rank%."),
+    RANK_SUCCESSFULLY_DELETED(MESSAGES.get(), "rank.successfully-deleted", "&aSuccessfully deleted rank %rank%."),
+    RANK_PERMISSION_ADDED(MESSAGES.get(), "rank.permission-added", "&aSuccessfully added permission '%permission%' to rank %rank%."),
+    RANK_PERMISSION_REMOVED(MESSAGES.get(), "rank.permission-removed", "&aSuccessfully removed permission '%permission%' from rank %rank%."),
+    RANK_INHERITANCE_ADDED(MESSAGES.get(), "rank.inheritance-added", "&aSuccessfully added inheritance '%child%' to rank %rank%."),
+    RANK_INHERITANCE_REMOVED(MESSAGES.get(), "rank.inheritance-removed", "&aSuccessfully removed inheritance '%child%' from rank %rank%."),
+    RANK_PRIORITY_SET(MESSAGES.get(), "rank.priority-set", "&aSuccessfully set priority of rank %rank% to %priority%."),
+    RANK_ENTER_NAME(MESSAGES.get(), "rank.edit-name", "&aPlease enter the new name of the rank."),
+    RANK_ENTER_NAME_SUCCESS(MESSAGES.get(), "rank.edit-name-success", "&aSuccessfully changed the name of the rank to %name%."),
+    RANK_ENTER_DISPLAY_NAME(MESSAGES.get(), "rank.edit-display-name", "&aPlease enter the new display name of the rank."),
+    RANK_ENTER_DISPLAY_NAME_SUCCESS(MESSAGES.get(), "rank.edit-display-name-success", "&aSuccessfully changed the display name of the rank to %name%."),
+    RANK_ENTER_PREFIX(MESSAGES.get(), "rank.edit-prefix", "&aPlease enter the new prefix of the rank."),
+    RANK_ENTER_PREFIX_SUCCESS(MESSAGES.get(), "rank.edit-prefix-success", "&aSuccessfully changed the prefix of the rank to %prefix%."),
+    RANK_ENTER_SUFFIX(MESSAGES.get(), "rank.edit-suffix", "&aPlease enter the new suffix of the rank."),
+    RANK_ENTER_SUFFIX_SUCCESS(MESSAGES.get(), "rank.edit-suffix-success", "&aSuccessfully changed the suffix of the rank to %suffix%."),
 
+
+
+    /* ERROR */
+    NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
+    RANK_ALREADY_EXISTS(MESSAGES.get(), "error.rank-already-exists", "&cA rank with that name already exists."),
+    RANK_NOT_FOUND(MESSAGES.get(), "error.rank-not-found", "&cA rank with that name could not be found."),
+    RANK_PERMISSION_ALREADY_EXISTS(MESSAGES.get(), "error.rank-permission-already-exists", "&cRank %rank% already has permission '%permission%'."),
+    RANK_PERMISSION_DOES_NOT_EXIST(MESSAGES.get(), "error.rank-permission-does-not-exist", "&cRank %rank% does not have permission '%permission%'."),
+    RANK_INHERITANCE_ALREADY_EXISTS(MESSAGES.get(), "error.rank-inheritance-already-exists", "&cRank %rank% already inherits from rank %child%."),
+    RANK_INHERITANCE_DOES_NOT_EXIST(MESSAGES.get(), "error.rank-inheritance-does-not-exist", "&cRank %rank% does not inherit from rank %child%."),
+    CANNOT_DELETE_DEFAULT_RANK(MESSAGES.get(), "error.cannot-delete-default-rank", "&cYou cannot delete the default rank."),
+    NEED_NAME(MESSAGES.get(), "error.need-name", "&cYou need to specify a name."),
+    PLAYER_NOT_FOUND(MESSAGES.get(), "error.player-not-found", "&cA player with that name could not be found."),
+
+    /* OTHER */
+    DEV_MODE(SETTINGS.get(), "dev-mode", false),
     ;
 
 
@@ -137,6 +169,10 @@ public enum Locale {
     }
 
     public String getString() {
+        return CC.translate((String) this.def);
+    }
+
+    public String getStringNetwork() {
         return CC.translate(CC.addNetworkPlaceholder((String) this.def));
     }
 

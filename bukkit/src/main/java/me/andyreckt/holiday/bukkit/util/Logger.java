@@ -1,11 +1,16 @@
 package me.andyreckt.holiday.bukkit.util;
 
+import me.andyreckt.holiday.bukkit.util.files.Locale;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public class Logger {
 
-    public static final boolean DEV = true;
+    public static boolean DEV = false;
+
+    public static void init() {
+        DEV = Locale.DEV_MODE.getBoolean();
+    }
 
     public static void log(String message) {
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "[Holiday] " + message));

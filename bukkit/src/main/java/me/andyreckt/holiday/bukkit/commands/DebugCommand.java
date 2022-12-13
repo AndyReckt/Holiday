@@ -5,6 +5,7 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.Logger;
+import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
@@ -16,7 +17,7 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 
-@MainCommand(names = "debug", description = "Debug command", permission = "holiday.debug")
+@MainCommand(names = "debug", description = "Debug command", permission = Perms.DEBUG)
 public class DebugCommand {
     @SubCommand(names = "profile", description = "Profile Debug", async = true)
     public void profileDebugging(CommandSender sender, @Param(name = "profile") Profile profile) {

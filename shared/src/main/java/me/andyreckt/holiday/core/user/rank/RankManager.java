@@ -17,19 +17,15 @@ public class RankManager {
     private final HolidayAPI api;
 
     private final List<IRank> ranks;
-    private final IRank defaultRank;
 
     public RankManager(HolidayAPI api) {
         this.api = api;
         this.ranks = new ArrayList<>();
-        Rank defaultRank = new Rank("Default");
-        defaultRank.setPrefix("&a");
-        defaultRank.setDisplayName("&aDefault");
-        defaultRank.setVisible(true);
-        defaultRank.setDefault(true);
-        this.defaultRank = defaultRank;
-
         this.loadRanks();
+        if (this.ranks.stream().noneMatch(IRank::isDefault)) {
+            IRank rank = newDefaultRank();
+            saveRank(rank);
+        }
     }
 
     private void loadRanks() {
@@ -64,5 +60,18 @@ public class RankManager {
                 .forEach(grant -> api.getGrantManager().deleteGrant(grant));
 
         this.api.getMidnight().sendObject(new RankUpdatePacket((Rank) rank, true));
+    }
+
+    public IRank getDefaultRank() {
+        return this.ranks.stream().filter(IRank::isDefault).findFirst().orElseGet(this::newDefaultRank);
+    }
+
+    private IRank newDefaultRank() {
+        Rank defaultRank = new Rank("Default");
+        defaultRank.setPrefix("&a");
+        defaultRank.setDisplayName("&aDefault");
+        defaultRank.setVisible(true);
+        defaultRank.setDefault(true);
+        return defaultRank;
     }
 }

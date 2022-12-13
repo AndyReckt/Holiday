@@ -3,7 +3,8 @@ package me.andyreckt.holiday.bukkit.util.menu.buttons;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.text.CC;
-import org.apache.commons.lang3.tuple.Pair;
+import me.andyreckt.holiday.bukkit.util.other.Pair;
+import org.bukkit.ChatColor;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.BiConsumer;
 
 public class ConversationButton<T> extends Button {
+
     final ItemStack item;
     final String message;
     final T target;
@@ -24,6 +26,7 @@ public class ConversationButton<T> extends Button {
         this.action = action;
     }
 
+
     @Override
     public ItemStack getButtonItem(Player p0) {
         return item;
@@ -35,13 +38,13 @@ public class ConversationButton<T> extends Button {
         ConversationFactory factory = new ConversationFactory(Holiday.getInstance()).withModality(true).withPrefix(new NullConversationPrefix()).withFirstPrompt(new StringPrompt() {
             @Override
             public String getPromptText(ConversationContext cc) {
-                return CC.translate(message + " &7&oEnter &c&ocancel &7&oto cancel.");
+                return CC.translate(message + " &7&o(type \"CANCEL\" to cancel this)");
             }
 
             @Override
             public Prompt acceptInput(ConversationContext cc, String s) {
                 if (s.equalsIgnoreCase("cancel")) {
-                    cc.getForWhom().sendRawMessage(CC.translate("&cCancelled"));
+                    cc.getForWhom().sendRawMessage(ChatColor.RED + "Cancelled.");
                     return Prompt.END_OF_CONVERSATION;
                 }
                 action.accept(target, Pair.of(cc, s));

@@ -9,6 +9,7 @@ public interface RankAPI {
     IRank getDefaultRank();
 
     List<IRank> getRanks();
+    List<IRank> getRanksSorted();
 
     IRank createRank(String name);
 

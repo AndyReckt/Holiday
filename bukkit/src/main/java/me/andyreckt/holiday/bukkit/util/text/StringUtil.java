@@ -39,6 +39,32 @@ public class StringUtil {
                 data == 14 ? ChatColor.RED : data == 15 ? ChatColor.DARK_RED : null;
     }
 
+    public static ChatColor convertDyeDataToChatColor(int data) {
+        return data == 0 ? ChatColor.BLACK : data == 1 ? ChatColor.RED : data == 2 ? ChatColor.DARK_GREEN :
+                data == 4 ? ChatColor.BLUE : data == 5 ? ChatColor.DARK_PURPLE : data == 6 ? ChatColor.DARK_AQUA :
+                data == 7 ? ChatColor.GRAY : data == 8 ? ChatColor.DARK_GRAY : data == 13 ? ChatColor.LIGHT_PURPLE :
+                data == 10 ? ChatColor.GREEN : data == 11 ? ChatColor.YELLOW : data == 12 ? ChatColor.AQUA :
+                data == 14 ? ChatColor.GOLD : data == 15 ? ChatColor.WHITE : null;
+    }
+
+    public static int convertChatColorToDyeData(ChatColor color) {
+        return color == ChatColor.BLACK ? 0
+                : color == ChatColor.RED ? 1
+                : color == ChatColor.DARK_GREEN ? 2
+                : color == ChatColor.BLUE ? 4
+                : color == ChatColor.DARK_PURPLE ? 5
+                : color == ChatColor.DARK_AQUA ? 6
+                : color == ChatColor.DARK_GRAY ? 8
+                : color == ChatColor.GRAY ? 7
+                : color == ChatColor.LIGHT_PURPLE ? 13
+                : color == ChatColor.GREEN ? 10
+                : color == ChatColor.YELLOW ? 11
+                : color == ChatColor.AQUA ? 12
+                : color == ChatColor.GOLD ? 14
+                : color == ChatColor.WHITE ? 15
+                : null;
+    }
+
     public static Enchantment getEnchantmentByName(Object object) {
         String value = object.toString().replace("_", "").trim();
 

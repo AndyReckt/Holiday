@@ -108,26 +108,26 @@ public class SunsetSubCommand extends org.bukkit.command.Command {
             parameters.add(commandSender);
         } else parameters.add(commandSender);
 
-        if (!command.permission().equalsIgnoreCase("")) {
-            if (command.permission().equalsIgnoreCase("op")) {
+        if (!command.permission().get().equalsIgnoreCase("")) {
+            if (command.permission().get().equalsIgnoreCase("op")) {
                 if (commandSender instanceof Player && (!commandSender.hasPermission("op")) && (!commandSender.isOp())) {
                     commandSender.sendMessage(sunset.getPermissionMessage());
                     return false;
                 }
             }
-            if (!commandSender.hasPermission(command.permission())) {
+            if (!commandSender.hasPermission(command.permission().get())) {
                 commandSender.sendMessage(sunset.getPermissionMessage());
                 return false;
             }
         }
-        if (!subCommand.permission().equalsIgnoreCase("")) {
-            if (subCommand.permission().equalsIgnoreCase("op")) {
+        if (!subCommand.permission().get().equalsIgnoreCase("")) {
+            if (subCommand.permission().get().equalsIgnoreCase("op")) {
                 if (commandSender instanceof Player && (!commandSender.hasPermission("op")) && (!commandSender.isOp())) {
                     commandSender.sendMessage(sunset.getPermissionMessage());
                     return false;
                 }
             }
-            if (!commandSender.hasPermission(subCommand.permission())) {
+            if (!commandSender.hasPermission(subCommand.permission().get())) {
                 commandSender.sendMessage(sunset.getPermissionMessage());
                 return false;
             }

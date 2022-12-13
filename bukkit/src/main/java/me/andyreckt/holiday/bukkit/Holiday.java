@@ -6,6 +6,7 @@ import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.commands.DebugCommand;
+import me.andyreckt.holiday.bukkit.commands.RankCommand;
 import me.andyreckt.holiday.bukkit.server.chat.ChatManager;
 import me.andyreckt.holiday.bukkit.server.listeners.PlayerListener;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
@@ -110,10 +111,11 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     private void setupCommands() {
         this.commandManager = new Sunset(this);
+        this.commandManager.setPermissionMessage(Locale.NO_PERMISSION.getString());
         this.commandManager.registerType(new RankParameterType(), IRank.class);
         this.commandManager.registerType(new ProfileParameterType(), Profile.class);
         Arrays.asList(
-                new DebugCommand()
+                new DebugCommand(), new RankCommand()
         ).forEach(commandManager::registerCommandWithSubCommands);
     }
 
@@ -139,6 +141,7 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     public void setupConfigFiles() {
         Locale.init(this);
+        Logger.init();
         CC.setupColors();
     }
 

@@ -2,6 +2,7 @@ package me.andyreckt.holiday.bukkit.util.sunset.parameter.custom;
 
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.PType;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.UserManager;
@@ -21,7 +22,7 @@ public class ProfileParameterType implements PType<Profile> {
     public Profile transform(CommandSender sender, String source) {
 
         if (source.equals("")) {
-            sender.sendMessage(CC.translate("&cYou need to enter a name"));
+            sender.sendMessage(Locale.NEED_NAME.getString());
         }
 
         if (sender instanceof Player && (source.equalsIgnoreCase("self"))) {
@@ -33,7 +34,7 @@ public class ProfileParameterType implements PType<Profile> {
         }
 
         if (Holiday.getInstance().getUuidCache().uuid(source.toLowerCase()) == null) {
-            sender.sendMessage(CC.translate("&cThis player doesn't exist."));
+            sender.sendMessage(Locale.PLAYER_NOT_FOUND.getString());
             return (null);
         }
 
