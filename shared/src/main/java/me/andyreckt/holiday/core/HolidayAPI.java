@@ -3,6 +3,7 @@ package me.andyreckt.holiday.core;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.API;
+import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
@@ -67,12 +68,13 @@ public class HolidayAPI implements API {
         Arrays.asList(
                 new GrantUpdateSubscriber(), new ProfileUpdateSubscriber(),
                 new RankUpdateSubscriber(), new PunishmentUpdateSubscriber(),
-                new OnlinePlayersSubscriber()
+                new OnlinePlayersSubscriber(), new ServerKeepAliveSubscriber()
         ).forEach(midnight::registerListener);
         Arrays.asList(
                 GrantUpdatePacket.class, ProfileUpdatePacket.class,
                 RankUpdatePacket.class, PunishmentUpdatePacket.class,
-                BroadcastPacket.class, OnlinePlayersPacket.class
+                BroadcastPacket.class, OnlinePlayersPacket.class,
+                ServerKeepAlivePacket.class
         ).forEach(midnight::registerObject);
     }
 
@@ -240,17 +242,17 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public CompletableFuture<HashMap<String, Server>> getServers() {
+    public HashMap<String, IServer> getServers() {
         return this.serverManager.getServers();
     }
 
     @Override
-    public CompletableFuture<Server> getServer(String serverId) {
+    public IServer getServer(String serverId) {
         return this.serverManager.getServer(serverId);
     }
 
     @Override
-    public CompletableFuture<Server> getServer(UUID playerId) {
+    public IServer getServer(UUID playerId) {
         return this.getServer(this.onlinePlayers.get(playerId));
     }
 }

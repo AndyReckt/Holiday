@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.server.menu.server;
 
 import lombok.RequiredArgsConstructor;
+import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
@@ -21,9 +22,9 @@ import java.util.Map;
 
 public class ServerListMenu extends PaginatedMenu {
 
-    private final Collection<Server> servers;
+    private final Collection<IServer> servers;
 
-    public ServerListMenu(Collection<Server> servers) {
+    public ServerListMenu(Collection<IServer> servers) {
         this.servers = servers;
         this.setAutoUpdate(true);
     }
@@ -45,7 +46,7 @@ public class ServerListMenu extends PaginatedMenu {
     @RequiredArgsConstructor
     private static class ServerButton extends Button {
 
-        private final Server server;
+        private final IServer server;
 
         @Override
         public ItemStack getButtonItem(Player p0) {
@@ -72,7 +73,7 @@ public class ServerListMenu extends PaginatedMenu {
                     .lore(CC.MENU_BAR,
                             CC.CHAT + "ID: " + CC.SECONDARY + server.getServerId(),
                             CC.CHAT + "Status: " + status,
-                            CC.CHAT + "Players: " + CC.SECONDARY + server.getOnlinePlayers() + "&7/" + CC.SECONDARY + server.getMaxPlayers(),
+                            CC.CHAT + "Players: " + CC.SECONDARY + server.getPlayerCount() + "&7/" + CC.SECONDARY + server.getMaxPlayers(),
                             CC.CHAT + "TPS: " + tps,
                             CC.MENU_BAR)
                     .build();
@@ -95,10 +96,10 @@ public class ServerListMenu extends PaginatedMenu {
         }
     }
 
-    private static class ServerComparator implements Comparator<Server> {
+    private static class ServerComparator implements Comparator<IServer> {
 
         @Override
-        public int compare(Server o1, Server o2) {
+        public int compare(IServer o1, IServer o2) {
 
             if (o1.isOnline() && !o2.isOnline()) {
                 return -1;

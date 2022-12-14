@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.api;
 
 import lombok.Getter;
+import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
@@ -156,17 +157,17 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public CompletableFuture<HashMap<String, Server>> getServers() {
+    public Map<String, IServer> getServers() {
         return getApi().getServers();
     }
 
     @Override
-    public CompletableFuture<Server> getServer(String serverId) {
+    public IServer getServer(String serverId) {
         return getApi().getServer(serverId);
     }
 
     @Override
-    public CompletableFuture<Server> getServer(UUID playerId) {
+    public IServer getServer(UUID playerId) {
         return getApi().getServer(playerId);
     }
 

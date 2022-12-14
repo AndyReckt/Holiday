@@ -16,7 +16,7 @@ public final class UUIDCache {
 
     public UUIDCache() {
         Holiday.getInstance().getApi().getMidnight().getAllAsync("uuid-cache", String.class)
-                .thenAccept(o -> o.forEach((key, value)
+                .whenComplete((o, t) -> o.forEach((key, value)
                         -> UUIDCache.map.put(UUID.fromString(key), (String) value)));
         Holiday.getInstance().getApi().getMidnight().registerListener(new UpdateUUIDCacheSubscriber());
         Holiday.getInstance().getApi().getMidnight().registerObject(UpdateUUIDCachePacket.class);

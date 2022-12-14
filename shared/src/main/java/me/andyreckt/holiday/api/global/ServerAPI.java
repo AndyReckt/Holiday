@@ -1,11 +1,9 @@
 package me.andyreckt.holiday.api.global;
 
-import me.andyreckt.holiday.core.server.Server;
+import me.andyreckt.holiday.api.server.IServer;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public interface ServerAPI {
 
@@ -13,10 +11,10 @@ public interface ServerAPI {
 
     Map<UUID, String> getOnlinePlayers();
 
-    CompletableFuture<HashMap<String, Server>> getServers();
+    Map<String, IServer> getServers();
 
-    CompletableFuture<Server> getServer(String serverId);
+    IServer getServer(String serverId);
 
-    CompletableFuture<Server> getServer(UUID playerId);
+    IServer getServer(UUID playerId);
 
 }

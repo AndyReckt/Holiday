@@ -44,7 +44,7 @@ public class Server implements IServer {
 
     @Override
     public boolean isOnline() {
-        return System.currentTimeMillis() - lastKeepAlive < 10000L;
+        return System.currentTimeMillis() - lastKeepAlive < 10_000L;
     }
 
     @Override

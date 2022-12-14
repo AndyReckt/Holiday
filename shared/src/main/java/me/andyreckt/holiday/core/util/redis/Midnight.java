@@ -172,6 +172,7 @@ public class Midnight {
      * @param uid The unique id of the object. (ie: userId)
      * @param value The object to cache.
      */
+    @SneakyThrows
     public void cache(String id, String uid, Object value) {
         executor.execute(() -> {
             Jedis jedis = this.pool.getResource();
