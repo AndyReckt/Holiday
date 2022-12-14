@@ -41,7 +41,6 @@ public class Server implements IServer {
         this.startupTime = System.currentTimeMillis();
     }
 
-
     @Override
     public boolean isOnline() {
         return System.currentTimeMillis() - lastKeepAlive < 10_000L;

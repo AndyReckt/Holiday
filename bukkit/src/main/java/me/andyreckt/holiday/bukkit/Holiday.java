@@ -108,7 +108,7 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     private void setupTasks() {
         this.serverTask = new ServerTask(this);
-        this.serverTask.runTaskTimerAsynchronously(this, 30L, 60L);
+        this.serverTask.runTaskTimerAsynchronously(this, 20L, 4 * 20L);
     }
 
     private void setupCommands() {

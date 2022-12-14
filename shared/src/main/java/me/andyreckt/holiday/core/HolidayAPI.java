@@ -242,7 +242,7 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public HashMap<String, IServer> getServers() {
+    public Map<String, IServer> getServers() {
         return this.serverManager.getServers();
     }
 
