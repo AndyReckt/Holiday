@@ -17,6 +17,11 @@ public enum Perms {
     STAFF_CHAT("staff.staff-chat", "core.staff.chat"),
     STAFF_VIEW_NOTIFICATIONS("staff.view-notifications", "core.staff.notifications"),
     STAFF_CHAT_BYPASS("staff.chat-bypass", "core.chat.bypass"),
+    STAFF_WHITELIST_BYPASS("staff.whitelist-bypass", "core.whitelist.bypass"),
+
+    /* ADMIN */
+    ADMIN_CHAT("admin.admin-chat", "core.admin.chat"),
+    ADMIN_VIEW_NOTIFICATIONS("admin.view-notifications", "core.admin.notifications"),
 
     /* PUNISHMENTS */
     PUNISHMENTS_SILENT_VIEW("punishments.silent-view", "core.punishments.silent"),
@@ -28,6 +33,8 @@ public enum Perms {
     CHAT_CLEAR("command.chat.clear", "core.command.chat.clear"),
     CHAT_MUTE("command.chat.mute", "core.command.chat.mute"),
     CHAT_SLOW("command.chat.slow", "core.command.chat.slow"),
+    WHITELIST("command.whitelist", "core.command.whitelist"),
+    SERVERMANAGER("command.servermanager", "core.command.servermanager"),
 
 
     /* OTHER */

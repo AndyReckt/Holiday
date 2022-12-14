@@ -359,6 +359,6 @@ public class Midnight {
      * @param message The message to log.
      */
     public void log(String message) {
-        System.out.println("[Midnight] >> " + message);
+//        System.out.println("[Midnight] >> " + message);
     }
 }

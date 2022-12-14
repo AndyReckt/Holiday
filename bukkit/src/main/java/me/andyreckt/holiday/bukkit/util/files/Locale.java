@@ -38,6 +38,7 @@ public enum Locale {
     BANNED_JOIN(SETTINGS.get(), "server.banned-join", false),
     CHAT_ENABLED(SETTINGS.get(), "server.chat.enabled", true),
     CHAT_FORMAT(SETTINGS.get(), "server.chat.format", "%prefix%%player%%suffix%&7: %message%"),
+    LOGIN_WHITELIST(SETTINGS.get(), "server.whitelist-login", "&eThe server is currently &cWhitelisted&e. \\n &eYou need %rank% &eor above to be able to log into the server."),
 
     /* COLORS */
     COLOR_PRIMARY(SETTINGS.get(), "color.primary", "AQUA"),
@@ -82,6 +83,8 @@ public enum Locale {
     PUNISHMENT_BAN_REVOKED(MESSAGES.get(), "punishment.revoked.ban", "%silent%&a%player% &ahas been unbanned by %executor% &afor %reason%."),
     PUNISHMENT_MUTE_REVOKED(MESSAGES.get(), "punishment.revoked.mute", "%silent%&a%player% &ahas been unmuted by %executor% &afor %reason%."),
     PUNISHMENT_BLACKLIST_REVOKED(MESSAGES.get(), "punishment.revoked.blacklist", "%silent%&a%player% &ahas been unblacklisted by %executor% &afor %reason%."),
+    PUNISHMENT_BANNED_LOGIN_ALERT(MESSAGES.get(), "punishment.alert.banned", "&c[A] &c%player% tried to join but is banned!"),
+    PUNISHMENT_ALT_LOGIN_ALERT(MESSAGES.get(), "punishment.alert.alt", "&c[A] &c%player% might be alting while banned! &7(%alt%)"),
 
     /* RANKS */
     RANK_SUCCESSFULLY_CREATED(MESSAGES.get(), "rank.successfully-created", "&aSuccessfully created rank %rank%."),
@@ -101,17 +104,44 @@ public enum Locale {
     RANK_ENTER_SUFFIX_SUCCESS(MESSAGES.get(), "rank.edit-suffix-success", "&aSuccessfully changed the suffix of the rank to %suffix%."),
     RANK_COLOR_UPDATED(MESSAGES.get(), "rank.color-updated", "&aSuccessfully updated the color of the rank to %color%."),
 
-    /* BROADCASTS */
-    GLOBAL_CHAT_CLEAR(MESSAGES.get(), "broadcasts.global.chat-clear", "&cThe global chat has been cleared."),
-    STAFF_CHAT_CLEAR(MESSAGES.get(), "broadcasts.staff.chat-clear", "&b[S] &3[%server%] &eThe chat has been cleared by %executor%"),
-    GLOBAL_CHAT_MUTED(MESSAGES.get(), "broadcasts.global.chat-muted", "&cThe global chat has been muted."),
-    STAFF_CHAT_MUTED(MESSAGES.get(), "broadcasts.staff.chat-muted", "&b[S] &3[%server%] &eThe chat has been muted by %executor%"),
-    GLOBAL_CHAT_UNMUTED(MESSAGES.get(), "broadcasts.global.chat-unmuted", "&aThe global chat has been unmuted."),
-    STAFF_CHAT_UNMUTED(MESSAGES.get(), "broadcasts.staff.chat-unmuted", "&b[S] &3[%server%] &eThe chat has been unmuted by %executor%"),
-    GLOBAL_CHAT_SLOWED(MESSAGES.get(), "broadcasts.global.chat-slowed", "&cThe global chat has been slowed to %delay% seconds."),
-    STAFF_CHAT_SLOWED(MESSAGES.get(), "broadcasts.staff.chat-slowed", "&b[S] &3[%server%] &eThe chat has been slowed down to %delay% seconds by %executor%"),
-    GLOBAL_CHAT_UNSLOWED(MESSAGES.get(), "broadcasts.global.chat-unslowed", "&aThe global chat has been unslowed."),
-    STAFF_CHAT_UNSLOWED(MESSAGES.get(), "broadcasts.staff.chat-unslowed", "&b[S] &3[%server%] &eThe chat has been unslowed by %executor%"),
+    /* CHAT */
+    GLOBAL_CHAT_CLEAR(MESSAGES.get(), "chat.global.chat-clear", "&cThe global chat has been cleared."),
+    STAFF_CHAT_CLEAR(MESSAGES.get(), "chat.staff.chat-clear", "&b[S] &3[%server%] &eThe chat has been cleared by %executor%"),
+    GLOBAL_CHAT_MUTED(MESSAGES.get(), "chat.global.chat-muted", "&cThe global chat has been muted."),
+    STAFF_CHAT_MUTED(MESSAGES.get(), "chat.staff.chat-muted", "&b[S] &3[%server%] &eThe chat has been muted by %executor%"),
+    GLOBAL_CHAT_UNMUTED(MESSAGES.get(), "chat.global.chat-unmuted", "&aThe global chat has been unmuted."),
+    STAFF_CHAT_UNMUTED(MESSAGES.get(), "chat.staff.chat-unmuted", "&b[S] &3[%server%] &eThe chat has been unmuted by %executor%"),
+    GLOBAL_CHAT_SLOWED(MESSAGES.get(), "chat.global.chat-slowed", "&cThe global chat has been slowed to %delay% seconds."),
+    STAFF_CHAT_SLOWED(MESSAGES.get(), "chat.staff.chat-slowed", "&b[S] &3[%server%] &eThe chat has been slowed down to %delay% seconds by %executor%"),
+    GLOBAL_CHAT_UNSLOWED(MESSAGES.get(), "chat.global.chat-unslowed", "&aThe global chat has been unslowed."),
+    STAFF_CHAT_UNSLOWED(MESSAGES.get(), "chat.staff.chat-unslowed", "&b[S] &3[%server%] &eThe chat has been unslowed by %executor%"),
+
+    /* WHITELIST */
+    GLOBAL_WHITELIST_ENABLED(MESSAGES.get(), "whitelist.global.whitelist-enabled", "&cThe whitelist has been enabled."),
+    STAFF_WHITELIST_ENABLED(MESSAGES.get(), "whitelist.staff.whitelist-enabled", "&b[S] &3[%server%] &eThe whitelist has been enabled by %executor%"),
+    GLOBAL_WHITELIST_DISABLED(MESSAGES.get(), "whitelist.global.whitelist-disabled", "&aThe whitelist has been disabled."),
+    STAFF_WHITELIST_DISABLED(MESSAGES.get(), "whitelist.staff.whitelist-disabled", "&b[S] &3[%server%] &eThe whitelist has been disabled by %executor%"),
+    PLAYER_WHITELIST_RANK(MESSAGES.get(), "whitelist.player.whitelist-rank", "&aYou have successfully updated the whitelist rank to %rank%."),
+    STAFF_WHITELIST_RANK(MESSAGES.get(), "whitelist.staff.whitelist-rank", "&b[S] &3[%server%] &eThe whitelist rank has been set to %rank% &eby %executor%"),
+    PLAYER_WHITELIST_ADDED(MESSAGES.get(), "whitelist.player.whitelist-added", "&aYou have successfully added %player% &ato the whitelist."),
+    PLAYER_WHITELIST_REMOVED(MESSAGES.get(), "whitelist.player.whitelist-removed", "&aYou have successfully removed %player% &afrom the whitelist."),
+
+    /* SERVER MANAGER */
+    PLAYER_SERVER_MANAGER_RUN_ALL(MESSAGES.get(), "server-manager.player.run-all", "&aSuccessfully ran command '%command%' on all servers."),
+    PLAYER_SERVER_MANAGER_RUN_SERVER(MESSAGES.get(), "server-manager.player.run-server", "&aSuccessfully ran command '%command%' on server %server%."),
+    STAFF_SERVER_MANAGER_RUN_ALL(MESSAGES.get(), "server-manager.staff.run-all", "&b[S] &3[%server%] &e%executor% &ehas run command '%command%' on all servers."),
+    STAFF_SERVER_MANAGER_RUN_SERVER(MESSAGES.get(), "server-manager.staff.run-server", "&b[S] &3[%server%] &e%executor% &ehas run command '%command%' on server %serverid%."),
+    PLAYER_SERVER_MANAGER_INFO(MESSAGES.get(), "server-manager.player.info",
+            CC.CHAT_BAR,
+            "&bServer Manager",
+            "&eServer ID: &3%id%",
+            "&eServer Name: &3%name%",
+            "&eServer Status: %status%",
+            "&ePlayers: &3%players%&7/&3%maxplayers%",
+            "&eServer TPS: %tps%",
+            CC.CHAT_BAR),
+    PLAYER_SERVER_MANAGER_INFO_OFFLINE(MESSAGES.get(), "server-manager.player.info-offline", "&cThe server is currently offline or does not exist."),
+
 
 
 
@@ -128,6 +158,9 @@ public enum Locale {
     PLAYER_NOT_FOUND(MESSAGES.get(), "error.player-not-found", "&cA player with that name could not be found."),
     CHAT_CURRENTLY_MUTED(MESSAGES.get(), "error.chat-currently-muted", "&cThe global chat is currently muted."),
     TIME_FORMAT(MESSAGES.get(), "error.time-format", "&cPlease enter a valid time format."),
+    PLAYER_ALREADY_WHITELISTED(MESSAGES.get(), "error.player-already-whitelisted", "&cThat player is already whitelisted."),
+    PLAYER_NOT_WHITELISTED(MESSAGES.get(), "error.player-not-whitelisted", "&cThat player is not whitelisted."),
+    SERVER_NOT_FOUND(MESSAGES.get(), "error.server-not-found", "&cA server with that name could not be found."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),

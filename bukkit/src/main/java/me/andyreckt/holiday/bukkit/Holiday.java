@@ -5,15 +5,16 @@ import lombok.Setter;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
-import me.andyreckt.holiday.bukkit.commands.ChatCommand;
-import me.andyreckt.holiday.bukkit.commands.DebugCommand;
-import me.andyreckt.holiday.bukkit.commands.RankCommand;
+import me.andyreckt.holiday.bukkit.commands.*;
 import me.andyreckt.holiday.bukkit.server.chat.ChatManager;
+import me.andyreckt.holiday.bukkit.server.listeners.ChatListener;
 import me.andyreckt.holiday.bukkit.server.listeners.PlayerListener;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8;
+import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.BroadcastSubscriber;
+import me.andyreckt.holiday.bukkit.server.redis.subscriber.ServerSubscriber;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
@@ -107,7 +108,7 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     private void setupTasks() {
         this.serverTask = new ServerTask(this);
-        this.serverTask.runTaskTimerAsynchronously(this, 20L, 60L);
+        this.serverTask.runTaskTimerAsynchronously(this, 30L, 60L);
     }
 
     private void setupCommands() {
@@ -116,7 +117,8 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.commandManager.registerType(new RankParameterType(), IRank.class);
         this.commandManager.registerType(new ProfileParameterType(), Profile.class);
         Arrays.asList(
-                new DebugCommand(), new RankCommand(), new ChatCommand()
+                new DebugCommand(), new RankCommand(), new ChatCommand(),
+                new WhitelistCommand(), new ServerManagerCommand()
         ).forEach(commandManager::registerCommandWithSubCommands);
         Arrays.asList(
                 new ChatCommand()
@@ -157,11 +159,15 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     private void setupListeners() {
-        addListener(new PlayerListener());
-        addListener(this);
         Arrays.asList(
-                new BroadcastSubscriber()
-        ).forEach(sub -> api.getMidnight().registerListener(new BroadcastSubscriber()));
+                new PlayerListener(), new ChatListener(), this
+        ).forEach(this::addListener);
+        Arrays.asList(
+                CrossServerCommandPacket.class
+        ).forEach(packet -> api.getMidnight().registerObject(packet));
+        Arrays.asList(
+                new BroadcastSubscriber(), new ServerSubscriber()
+        ).forEach(sub -> api.getMidnight().registerListener(sub));
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
@@ -179,7 +185,15 @@ public final class Holiday extends JavaPlugin implements Listener {
 
 
     private void logInformation(final long milli) {
-        Logger.log(ChatColor.GREEN + "Initialized Holiday in " + (System.currentTimeMillis() - milli) + "ms (" + TimeUtil.getDuration(System.currentTimeMillis() - milli) + ").");
+        long duration = System.currentTimeMillis() - milli;
+        Logger.log(" ");
+        Logger.log(CC.CHAT + "-----------------------------------------------");
+        Logger.log(CC.PRIMARY + "Plugin: " + CC.SECONDARY + "Holiday");
+        Logger.log(CC.PRIMARY + "Version: " + CC.SECONDARY + getDescription().getVersion());
+        Logger.log(CC.PRIMARY + "Author: " + CC.SECONDARY + getDescription().getAuthors().get(0));
+        Logger.log(CC.PRIMARY + "Startup time: " + CC.SECONDARY + duration + "ms " + CC.PRIMARY + "(" + TimeUtil.getDuration(duration) + ")");
+        Logger.log(CC.CHAT + "-----------------------------------------------");
+        Logger.log(" ");
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

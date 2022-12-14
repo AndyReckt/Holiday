@@ -140,4 +140,14 @@ public final class CC {
 		return string;
 	}
 
+	public static String formatTps(double tps) {
+		if (tps >= 18.0) {
+			return CC.GREEN + String.format("%.2f", tps);
+		} else if (tps >= 16.0) {
+			return CC.YELLOW + String.format("%.2f", tps);
+		} else {
+			return CC.RED + String.format("%.2f", tps);
+		}
+	}
+
 }

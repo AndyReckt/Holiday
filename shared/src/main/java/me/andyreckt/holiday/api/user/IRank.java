@@ -54,6 +54,8 @@ public interface IRank {
     void addChild(UUID uuid);
     void removeChild(UUID uuid);
 
-
+    default boolean isAboveOrEqual(IRank rank) {
+        return rank.getPriority() <= getPriority();
+    }
 
 }

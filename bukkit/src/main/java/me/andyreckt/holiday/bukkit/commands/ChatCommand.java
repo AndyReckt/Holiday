@@ -18,11 +18,11 @@ import org.bukkit.entity.Player;
 @MainCommand(names = "chat",
         permission = Perms.CHAT,
         description = "Chat management commands.",
-        usage = "/chat <clear|slow|unslow|mute>")
+        usage = "/chat (clear|slow|unslow|mute)")
 public class ChatCommand {
 
-    @SubCommand(names = "clear", permission = Perms.CHAT_CLEAR, async = true, usage = "/chat clear")
-    @Command(names = "clearchat", permission = Perms.CHAT_CLEAR, async = true, usage = "/clearchat")
+    @SubCommand(names = "clear", permission = Perms.CHAT_CLEAR, async = true, usage = "/chat clear", description = "Clears the chat")
+    @Command(names = "clearchat", permission = Perms.CHAT_CLEAR, async = true, usage = "/clearchat", description = "Clears the chat")
     public void clear(CommandSender sender) {
         Bukkit.getOnlinePlayers().forEach(player -> {
             Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
@@ -40,8 +40,8 @@ public class ChatCommand {
         Holiday.getInstance().getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
-    @SubCommand(names = "mute", permission = Perms.CHAT_MUTE, async = true, usage = "/chat mute")
-    @Command(names = {"mutechat"}, permission = Perms.CHAT_MUTE, async = true)
+    @SubCommand(names = "mute", permission = Perms.CHAT_MUTE, async = true, usage = "/chat mute", description = "Mutes the chat")
+    @Command(names = {"mutechat"}, permission = Perms.CHAT_MUTE, async = true, usage = "/mutechat", description = "Mutes the chat")
     public void mutechat(CommandSender sender) {
         Holiday.getInstance().getChatManager().setChatMuted(!Holiday.getInstance().getChatManager().isChatMuted());
         Bukkit.broadcastMessage(Holiday.getInstance().getChatManager().isChatMuted() ? Locale.GLOBAL_CHAT_MUTED.getString() : Locale.GLOBAL_CHAT_UNMUTED.getString());
@@ -54,8 +54,8 @@ public class ChatCommand {
         Holiday.getInstance().getApi().getMidnight().sendObject(new BroadcastPacket(Holiday.getInstance().getChatManager().isChatMuted() ? toSendMuted : toSendUnmuted, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
-    @SubCommand(names = "slow", permission = Perms.CHAT_SLOW, async = true, usage = "/chat slow (duration)")
-    @Command(names = {"slowchat"}, permission = Perms.CHAT_SLOW, async = true)
+    @SubCommand(names = "slow", permission = Perms.CHAT_SLOW, async = true, usage = "/chat slow (duration)", description = "Slows the chat")
+    @Command(names = {"slowchat"}, permission = Perms.CHAT_SLOW, async = true, usage = "/slowchat (duration)", description = "Slows the chat")
     public void slowchat(CommandSender sender, @Param(name = "time") String duration){
 
         long time = TimeUtil.getDuration(duration);
@@ -72,8 +72,8 @@ public class ChatCommand {
         Holiday.getInstance().getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
-    @SubCommand(names = {"unslow"}, permission = Perms.CHAT_SLOW, async = true, usage = "/chat unslow")
-    @Command(names = {"unslowchat"}, permission = Perms.CHAT_SLOW, async = true)
+    @SubCommand(names = {"unslow"}, permission = Perms.CHAT_SLOW, async = true, usage = "/chat unslow", description = "Unslows the chat")
+    @Command(names = {"unslowchat"}, permission = Perms.CHAT_SLOW, async = true, usage = "/unslowchat", description = "Unslows the chat")
     public void unslowchat(CommandSender sender){
 
         Holiday.getInstance().getChatManager().setChatDelay(0L);
