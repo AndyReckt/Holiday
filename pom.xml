@@ -11,7 +11,7 @@
 
     <name>Holiday</name>
 
-    <description>Core Plugin I try to make</description>
+    <description>Open-Source Core plugin</description>
     <modules>
         <module>shared</module>
         <module>bukkit</module>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
+            <version>23.1.0</version>
             <scope>compile</scope>
         </dependency>
         <!--Gson-->
