@@ -4,11 +4,12 @@ import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.other.Tasks;
-import me.andyreckt.holiday.core.util.redis.annotations.RedisListener;
+import me.andyreckt.holiday.core.util.redis.messaging.IncomingPacketHandler;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketListener;
 
-public class ServerSubscriber {
+public class ServerSubscriber implements PacketListener {
 
-    @RedisListener
+    @IncomingPacketHandler
     public void onCrossServerCommand(CrossServerCommandPacket packet) {
         if (packet.getServer().equalsIgnoreCase(Holiday.getInstance().getThisServer().getServerId()) || packet.getServer().equalsIgnoreCase("ALL")) {
             Logger.log("&dRunning command '" + packet.getCommand() + "'...");

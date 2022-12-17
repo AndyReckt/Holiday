@@ -54,9 +54,9 @@ public class DebugCommand {
             return;
         }
 
-        HolidayAPI.getUnsafeAPI().getMidnight().removeAll("uuid-cache");
+        HolidayAPI.getUnsafeAPI().getRedis().getClient().getMap("uuid-cache").clear();
         HolidayAPI.getUnsafeAPI().getUserManager().getProfiles().forEach((uuid, profile) ->
-                HolidayAPI.getUnsafeAPI().getMidnight().cache("uuid-cache", uuid.toString(), profile.getName()));
+                HolidayAPI.getUnsafeAPI().getRedis().getClient().getMap("uuid-cache").put(uuid.toString(), profile.getName()));
     }
 
     @SubCommand(names = "server", description = "Server debug", async = true)

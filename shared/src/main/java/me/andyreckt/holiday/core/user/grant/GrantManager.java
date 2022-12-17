@@ -46,7 +46,7 @@ public class GrantManager {
                 new ReplaceOptions().upsert(true)
         );
 
-        this.api.getMidnight().sendObject(new GrantUpdatePacket((Grant) grant));
+        this.api.getRedis().sendPacket(new GrantUpdatePacket((Grant) grant));
     }
 
     public void deleteGrant(IGrant grant) {
@@ -54,7 +54,7 @@ public class GrantManager {
 
         api.getMongoManager().getGrants().deleteOne(Filters.eq("_id", grant.getGrantId()));
 
-        this.api.getMidnight().sendObject(new GrantUpdatePacket((Grant) grant, true));
+        this.api.getRedis().sendPacket(new GrantUpdatePacket((Grant) grant, true));
     }
 
     public void refreshGrants() {

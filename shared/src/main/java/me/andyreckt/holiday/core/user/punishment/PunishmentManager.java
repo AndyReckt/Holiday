@@ -49,7 +49,7 @@ public class PunishmentManager {
                 new ReplaceOptions().upsert(true)
         );
 
-        this.api.getMidnight().sendObject(new PunishmentUpdatePacket((Punishment) punishment));
+        this.api.getRedis().sendPacket(new PunishmentUpdatePacket((Punishment) punishment));
     }
 
     public void refreshPunishments() {

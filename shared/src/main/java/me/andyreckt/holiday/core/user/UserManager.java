@@ -44,6 +44,6 @@ public class UserManager {
                 new Document("_id", profile.getUuid()).append("data", GsonProvider.GSON.toJson(profile)),
                 new ReplaceOptions().upsert(true)
         );
-        api.getMidnight().sendObject(new ProfileUpdatePacket((UserProfile) profile));
+        api.getRedis().sendPacket(new ProfileUpdatePacket((UserProfile) profile));
     }
 }

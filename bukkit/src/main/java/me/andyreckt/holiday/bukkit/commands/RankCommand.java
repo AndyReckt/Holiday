@@ -95,7 +95,7 @@ public class RankCommand { //TODO: Rank import/export
         rank.addPermission(perm);
         api.saveRank(rank);
 
-//        Holiday.getInstance().getApi().getMidnight().sendObject(new PermissionChangePacket(rank)); //TODO: Implement this packet.
+//        Holiday.getInstance().getApi().getMidnight().sendPacket(new PermissionChangePacket(rank)); //TODO: Implement this packet.
 
         sender.sendMessage(Locale.RANK_PERMISSION_ADDED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
@@ -115,7 +115,7 @@ public class RankCommand { //TODO: Rank import/export
         rank.addPermission(perm);
         api.saveRank(rank);
 
-//        Holiday.getInstance().getApi().getMidnight().sendObject(new PermissionChangePacket(rank)); //TODO: Implement this packet.
+//        Holiday.getInstance().getApi().getMidnight().sendPacket(new PermissionChangePacket(rank)); //TODO: Implement this packet.
 
         sender.sendMessage(Locale.RANK_PERMISSION_REMOVED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
@@ -135,7 +135,7 @@ public class RankCommand { //TODO: Rank import/export
         rank.addChild(child.getUuid());
         api.saveRank(rank);
 
-//        Holiday.getInstance().getApi().getMidnight().sendObject(new PermissionChangePacket(rank)); //TODO: Implement this packet.
+//        Holiday.getInstance().getApi().getMidnight().sendPacket(new PermissionChangePacket(rank)); //TODO: Implement this packet.
 
         sender.sendMessage(Locale.RANK_INHERITANCE_ADDED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
@@ -155,7 +155,7 @@ public class RankCommand { //TODO: Rank import/export
         rank.removeChild(child.getUuid());
         api.saveRank(rank);
 
-//        Holiday.getInstance().getApi().getMidnight().sendObject(new PermissionChangePacket(rank)); //TODO: Implement this packet.
+//        Holiday.getInstance().getApi().getMidnight().sendPacket(new PermissionChangePacket(rank)); //TODO: Implement this packet.
 
         sender.sendMessage(Locale.RANK_INHERITANCE_REMOVED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))

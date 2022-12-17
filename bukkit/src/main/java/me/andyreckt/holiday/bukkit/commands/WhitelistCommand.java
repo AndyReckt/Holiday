@@ -29,7 +29,7 @@ public class WhitelistCommand {
         String toSend = Locale.STAFF_WHITELIST_ENABLED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%Holiday.getInstance().getThisServer()%", Holiday.getInstance().getThisServer().getServerName());
-        Holiday.getInstance().getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
     @SubCommand(names = {"off", "disable"}, async = true, description = "Disable the whitelist.")
@@ -39,7 +39,7 @@ public class WhitelistCommand {
         String toSend = Locale.STAFF_WHITELIST_DISABLED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%Holiday.getInstance().getThisServer()%", Holiday.getInstance().getThisServer().getServerName());
-        Holiday.getInstance().getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
 
@@ -51,7 +51,7 @@ public class WhitelistCommand {
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%Holiday.getInstance().getThisServer()%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%rank%", rank.getDisplayName());
-        Holiday.getInstance().getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
 

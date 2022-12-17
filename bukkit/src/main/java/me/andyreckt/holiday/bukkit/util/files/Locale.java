@@ -129,8 +129,8 @@ public enum Locale {
     /* SERVER MANAGER */
     PLAYER_SERVER_MANAGER_RUN_ALL(MESSAGES.get(), "server-manager.player.run-all", "&aSuccessfully ran command '%command%' on all servers."),
     PLAYER_SERVER_MANAGER_RUN_SERVER(MESSAGES.get(), "server-manager.player.run-server", "&aSuccessfully ran command '%command%' on server %server%."),
-    STAFF_SERVER_MANAGER_RUN_ALL(MESSAGES.get(), "server-manager.staff.run-all", "&b[S] &3[%server%] &e%executor% &ehas run command '%command%' on all servers."),
-    STAFF_SERVER_MANAGER_RUN_SERVER(MESSAGES.get(), "server-manager.staff.run-server", "&b[S] &3[%server%] &e%executor% &ehas run command '%command%' on server %serverid%."),
+    STAFF_SERVER_MANAGER_RUN_ALL(MESSAGES.get(), "server-manager.staff.run-all", "&c[A] &3[%server%] &e%executor% &ehas run command '%command%' on all servers."),
+    STAFF_SERVER_MANAGER_RUN_SERVER(MESSAGES.get(), "server-manager.staff.run-server", "&c[A] &3[%server%] &e%executor% &ehas run command '%command%' on server %serverid%."),
     PLAYER_SERVER_MANAGER_INFO(MESSAGES.get(), "server-manager.player.info",
             CC.CHAT_BAR,
             "&bServer Manager",

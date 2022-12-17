@@ -2,12 +2,13 @@ package me.andyreckt.holiday.core.util.redis.pubsub.subscribers;
 
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.grant.GrantManager;
-import me.andyreckt.holiday.core.util.redis.annotations.RedisListener;
+import me.andyreckt.holiday.core.util.redis.messaging.IncomingPacketHandler;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketListener;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.GrantUpdatePacket;
 
-public class GrantUpdateSubscriber {
+public class GrantUpdateSubscriber implements PacketListener {
 
-    @RedisListener
+    @IncomingPacketHandler
     public void onReceive(GrantUpdatePacket packet) {
         GrantManager grantManager = HolidayAPI.getUnsafeAPI().getGrantManager();
         grantManager.getGrants().removeIf(grant -> grant.getGrantId().equals(packet.getGrant().getGrantId()));

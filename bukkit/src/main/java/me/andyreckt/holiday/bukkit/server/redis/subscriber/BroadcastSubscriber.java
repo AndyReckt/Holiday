@@ -1,13 +1,14 @@
 package me.andyreckt.holiday.bukkit.server.redis.subscriber;
 
 import me.andyreckt.holiday.bukkit.util.text.CC;
-import me.andyreckt.holiday.core.util.redis.annotations.RedisListener;
+import me.andyreckt.holiday.core.util.redis.messaging.IncomingPacketHandler;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketListener;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.Bukkit;
 
-public class BroadcastSubscriber {
+public class BroadcastSubscriber implements PacketListener {
 
-    @RedisListener
+    @IncomingPacketHandler
     public void onReceive(BroadcastPacket packet) {
         if(packet.getPermission() != null) {
             Bukkit.getOnlinePlayers().stream()

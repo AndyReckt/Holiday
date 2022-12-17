@@ -103,7 +103,7 @@ public class ChatManager {
                         .replace("%executor%", "&4CONSOLE")
                         .replace("%reason%", punishment.getAddedReason())
                         .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
-                plugin.getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.PUNISHMENTS_SILENT_VIEW.get()));
+                plugin.getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.PUNISHMENTS_SILENT_VIEW.get()));
             }
 
             if (Locale.FILTER_SEND.getBoolean()) {
@@ -111,7 +111,7 @@ public class ChatManager {
                         .replace("%server%", Locale.SERVER_NAME.getString())
                         .replace("%player%", plugin.getNameWithColor(profile))
                         .replace("%message%", message);
-                plugin.getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
+                plugin.getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
             }
 
             return Locale.FILTER_HIGH_ALLOW.getBoolean();
@@ -123,7 +123,7 @@ public class ChatManager {
                         .replace("%server%", Locale.SERVER_NAME.getString())
                         .replace("%player%", plugin.getNameWithColor(profile))
                         .replace("%message%", message);
-                plugin.getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
+                plugin.getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
             }
             return Locale.FILTER_LOW_ALLOW.getBoolean();
         }

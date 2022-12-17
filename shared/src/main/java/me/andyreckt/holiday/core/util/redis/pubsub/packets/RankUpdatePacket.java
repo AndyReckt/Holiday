@@ -3,12 +3,11 @@ package me.andyreckt.holiday.core.util.redis.pubsub.packets;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.andyreckt.holiday.core.user.rank.Rank;
-import me.andyreckt.holiday.core.util.redis.annotations.RedisObject;
+import me.andyreckt.holiday.core.util.redis.messaging.Packet;
 
 @Getter
 @RequiredArgsConstructor
-@RedisObject(id = "RankUpdatePacket")
-public class RankUpdatePacket {
+public class RankUpdatePacket implements Packet {
     private final Rank rank;
     private final boolean delete;
 

@@ -8,7 +8,6 @@ import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
-import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.server.ServerManager;
 import me.andyreckt.holiday.core.user.UserManager;
 import me.andyreckt.holiday.core.user.UserProfile;
@@ -18,15 +17,12 @@ import me.andyreckt.holiday.core.user.rank.Rank;
 import me.andyreckt.holiday.core.user.rank.RankManager;
 import me.andyreckt.holiday.core.util.mongo.MongoManager;
 import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
-import me.andyreckt.holiday.core.util.redis.Midnight;
-import me.andyreckt.holiday.core.util.redis.RedisCommand;
+import me.andyreckt.holiday.core.util.redis.Messaging;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.*;
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.*;
-import redis.clients.jedis.Jedis;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Getter
@@ -34,7 +30,7 @@ public class HolidayAPI implements API {
 
     private static HolidayAPI instance;
 
-    private final Midnight midnight;
+    private final Messaging redis;
     private final MongoManager mongoManager;
     private final UserManager userManager;
     private final RankManager rankManager;
@@ -52,7 +48,7 @@ public class HolidayAPI implements API {
         new me.andyreckt.holiday.api.HolidayAPI();
 
         this.mongoManager = new MongoManager(this, mongoCredentials);
-        this.midnight = new Midnight(redisCredentials.getPool());
+        this.redis = new Messaging(redisCredentials);
         this.userManager = new UserManager(this);
         this.rankManager = new RankManager(this);
         this.grantManager = new GrantManager(this);
@@ -65,17 +61,13 @@ public class HolidayAPI implements API {
     }
 
     private void loadRedis() {
-        Arrays.asList(
-                new GrantUpdateSubscriber(), new ProfileUpdateSubscriber(),
-                new RankUpdateSubscriber(), new PunishmentUpdateSubscriber(),
-                new OnlinePlayersSubscriber(), new ServerKeepAliveSubscriber()
-        ).forEach(midnight::registerListener);
-        Arrays.asList(
-                GrantUpdatePacket.class, ProfileUpdatePacket.class,
-                RankUpdatePacket.class, PunishmentUpdatePacket.class,
-                BroadcastPacket.class, OnlinePlayersPacket.class,
-                ServerKeepAlivePacket.class
-        ).forEach(midnight::registerObject);
+        this.redis.registerAdapter(ServerKeepAlivePacket.class, new ServerKeepAliveSubscriber());
+        this.redis.registerAdapter(GrantUpdatePacket.class, new GrantUpdateSubscriber());
+        this.redis.registerAdapter(RankUpdatePacket.class, new RankUpdateSubscriber());
+        this.redis.registerAdapter(PunishmentUpdatePacket.class, new PunishmentUpdateSubscriber());
+        this.redis.registerAdapter(OnlinePlayersPacket.class, new OnlinePlayersSubscriber());
+        this.redis.registerAdapter(ProfileUpdatePacket.class, new ProfileUpdateSubscriber());
+        this.redis.registerAdapter(BroadcastPacket.class, null);
     }
 
 
@@ -168,28 +160,6 @@ public class HolidayAPI implements API {
     @Override
     public void removeGrant(IGrant grant) {
         this.grantManager.deleteGrant(grant);
-    }
-
-    @Override
-    public <T> T runRedisCommand(RedisCommand<T> redisCommand) {
-        Jedis jedis = this.midnight.getPool().getResource();
-        T result = null;
-        try {
-            result = redisCommand.execute(jedis);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            if (jedis != null) {
-                this.midnight.getPool().returnBrokenResource(jedis);
-                jedis = null;
-            }
-        }
-        finally {
-            if (jedis != null) {
-                this.midnight.getPool().returnResource(jedis);
-            }
-        }
-        return result;
     }
 
     @Override

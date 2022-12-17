@@ -6,12 +6,9 @@ import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
-import me.andyreckt.holiday.core.server.Server;
-import me.andyreckt.holiday.core.util.redis.Midnight;
-import me.andyreckt.holiday.core.util.redis.RedisCommand;
+import me.andyreckt.holiday.core.util.redis.Messaging;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 public class HolidayAPI implements API {
 
@@ -27,13 +24,8 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public <T> T runRedisCommand(RedisCommand<T> command) {
-        return getApi().runRedisCommand(command);
-    }
-
-    @Override
-    public Midnight getMidnight() {
-        return getApi().getMidnight();
+    public Messaging getRedis() {
+        return getApi().getRedis();
     }
 
     @Override

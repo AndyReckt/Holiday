@@ -9,8 +9,6 @@ import me.andyreckt.holiday.core.util.json.GsonProvider;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.RankUpdatePacket;
 import org.bson.Document;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -50,7 +48,7 @@ public class RankManager {
         this.ranks.removeIf(rank1 -> rank1.getUuid().equals(rank.getUuid()));
         this.ranks.add(rank);
 
-        this.api.getMidnight().sendObject(new RankUpdatePacket((Rank) rank));
+        this.api.getRedis().sendPacket(new RankUpdatePacket((Rank) rank));
     }
 
     public void deleteRank(IRank rank) {
@@ -61,7 +59,7 @@ public class RankManager {
                 .filter(grant -> grant.getRank().getUuid().equals(rank.getUuid()))
                 .forEach(grant -> api.getGrantManager().deleteGrant(grant));
 
-        this.api.getMidnight().sendObject(new RankUpdatePacket((Rank) rank, true));
+        this.api.getRedis().sendPacket(new RankUpdatePacket((Rank) rank, true));
     }
 
     public IRank getDefaultRank() {

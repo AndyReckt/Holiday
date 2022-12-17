@@ -3,6 +3,7 @@ package me.andyreckt.holiday.bukkit;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.API;
+import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.commands.*;
@@ -30,13 +31,14 @@ import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 import java.util.concurrent.Executor;
@@ -90,7 +92,7 @@ public final class Holiday extends JavaPlugin implements Listener {
 
             logInformation(time);
         } catch (Exception ex) {
-            Logger.error("An error occurred while enabling the plugin. Showing stacktrace:");
+            Logger.error("An error occurred while enabling the  Showing stacktrace:");
             ex.printStackTrace();
             Logger.error("Stopping the server...");
             Bukkit.getServer().shutdown();
@@ -104,6 +106,14 @@ public final class Holiday extends JavaPlugin implements Listener {
         RedisCredentials redisCreds = new RedisCredentials(Locale.REDIS_HOST.getString(), Locale.REDIS_PORT.getInt(), Locale.REDIS_AUTH.getBoolean(), Locale.REDIS_PASSWORD.getString());
         this.api = API.create(mongoCreds, redisCreds);
         this.thisServer = new Server(Locale.SERVER_NAME.getString(), Locale.SERVER_ID.getString());
+        IServer server = this.getApi().getServer(thisServer.getServerId());
+        if (server == null) return;
+        this.thisServer.setChatMuted(server.isChatMuted());
+        this.thisServer.setChatDelay(server.getChatDelay());
+        this.thisServer.setWhitelisted(server.isWhitelisted());
+        this.thisServer.setWhitelistRank(server.getWhitelistRank());
+        this.thisServer.setWhitelistedPlayers(server.getWhitelistedPlayers());
+        this.thisServer.keepAlive();
     }
 
     private void setupTasks() {
@@ -162,12 +172,8 @@ public final class Holiday extends JavaPlugin implements Listener {
         Arrays.asList(
                 new PlayerListener(), new ChatListener(), this
         ).forEach(this::addListener);
-        Arrays.asList(
-                CrossServerCommandPacket.class
-        ).forEach(packet -> api.getMidnight().registerObject(packet));
-        Arrays.asList(
-                new BroadcastSubscriber(), new ServerSubscriber()
-        ).forEach(sub -> api.getMidnight().registerListener(sub));
+        api.getRedis().registerAdapter(CrossServerCommandPacket.class, new ServerSubscriber());
+        api.getRedis().registerAdapter(BroadcastPacket.class, new BroadcastSubscriber());
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 

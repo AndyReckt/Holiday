@@ -8,7 +8,7 @@ import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.other.Tasks;
+import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
@@ -26,7 +26,6 @@ public class ServerManagerCommand {
     @SneakyThrows
     @SubCommand(names = {"command", "runcommand", "cmd"}, description = "Run a command on a server, or all the servers.", async = true)
     public void runCmd(CommandSender sender, @Param(name = "server") String serverid, @Param(name = "command", wildcard = true) String command) {
-        Logger.debug(GsonProvider.GSON.toJson(Holiday.getInstance().getApi().getMidnight().get("servers", serverid, Server.class)));
         if (!serverid.equalsIgnoreCase("ALL")) {
             IServer server = Holiday.getInstance().getApi().getServer(serverid);
             if (server == null) {
@@ -38,20 +37,20 @@ public class ServerManagerCommand {
                     .replace("%serverid%", Holiday.getInstance().getThisServer().getServerId())
                     .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%command%", command);
-            Holiday.getInstance().getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
+            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
             sender.sendMessage(Locale.PLAYER_SERVER_MANAGER_RUN_SERVER.getString()
                     .replace("%server%", server.getServerName())
                     .replace("%command%", command));
-            Holiday.getInstance().getApi().getMidnight().sendObject(new CrossServerCommandPacket(command, server.getServerId()));
+            Holiday.getInstance().getApi().getRedis().sendPacket(new CrossServerCommandPacket(command, server.getServerId()));
         } else {
             String toSend = Locale.STAFF_SERVER_MANAGER_RUN_ALL.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%command%", command);
-            Holiday.getInstance().getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
+            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
             sender.sendMessage(Locale.PLAYER_SERVER_MANAGER_RUN_ALL.getString()
                     .replace("%command%", command));
-            Holiday.getInstance().getApi().getMidnight().sendObject(new CrossServerCommandPacket(command, "ALL"));
+            Holiday.getInstance().getApi().getRedis().sendPacket(new CrossServerCommandPacket(command, "ALL"));
 
         }
     }
@@ -87,6 +86,7 @@ public class ServerManagerCommand {
         });
     }
 
+    @Command(names = {"serverlist", "serverlistgui", "slgui", "servers"}, description = "Open the server list gui.", permission = Perms.SERVERMANAGER)
     @SubCommand(names = {"list", "servers"}, description = "Get a list of all the servers.")
     public void list(Player sender) {
         new ServerListMenu(Holiday.getInstance().getApi().getServers().values()).openMenu(sender);

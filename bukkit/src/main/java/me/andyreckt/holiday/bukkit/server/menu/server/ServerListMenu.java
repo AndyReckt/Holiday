@@ -9,7 +9,6 @@ import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.bukkit.util.other.Utilities;
 import me.andyreckt.holiday.bukkit.util.text.CC;
-import me.andyreckt.holiday.core.server.Server;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -75,6 +74,9 @@ public class ServerListMenu extends PaginatedMenu {
                             CC.CHAT + "Status: " + status,
                             CC.CHAT + "Players: " + CC.SECONDARY + server.getPlayerCount() + "&7/" + CC.SECONDARY + server.getMaxPlayers(),
                             CC.CHAT + "TPS: " + tps,
+                            "",
+                            CC.I_GRAY + "Click to join this server.",
+                            CC.I_GRAY + "Drop to stop this server.",
                             CC.MENU_BAR)
                     .build();
         }
@@ -88,7 +90,7 @@ public class ServerListMenu extends PaginatedMenu {
                     break;
                 case DROP:
                 case CONTROL_DROP:
-                    Holiday.getInstance().getApi().getMidnight().sendObject(new CrossServerCommandPacket("stop", server.getServerId()));
+                    Holiday.getInstance().getApi().getRedis().sendPacket(new CrossServerCommandPacket("stop", server.getServerId()));
                     break;
                 default:
                     break;

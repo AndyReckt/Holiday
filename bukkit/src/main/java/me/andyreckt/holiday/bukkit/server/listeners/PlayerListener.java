@@ -8,7 +8,6 @@ import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.server.Server;
-import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import me.andyreckt.holiday.core.util.text.HashUtils;
@@ -18,8 +17,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-
-import java.util.Objects;
 
 public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
@@ -73,7 +70,7 @@ public class PlayerListener implements Listener {
         event.setKickMessage(CC.translate(kickMessage));
         String toSend = Locale.PUNISHMENT_BANNED_LOGIN_ALERT.getString()
                 .replace("%player%", player.getName());
-        Holiday.getInstance().getApi().getMidnight().sendObject(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
+        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
         //TODO: broadcast alt login try
     }
 

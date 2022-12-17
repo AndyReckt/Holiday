@@ -20,7 +20,7 @@ public class OnlinePlayersTask {
                 }
             });
 
-            Bungee.getInstance().getApi().getMidnight().sendObject(new OnlinePlayersPacket(map));
+            Bungee.getInstance().getApi().getRedis().sendPacket(new OnlinePlayersPacket(map));
         }, 0, 2, TimeUnit.SECONDS);
     }
 
