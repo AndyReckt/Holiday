@@ -65,6 +65,9 @@ public enum Locale {
     NETWORK_TWITTER(SETTINGS.get(), "network.twitter", "https://twitter.com/examplenetwork"),
     NETWORK_TEAMSPEAK(SETTINGS.get(), "network.teamspeak", "ts.example.com"),
 
+    SERVER_STARTUP(MESSAGES.get(), "server.startup-alert", "&c[A] &a%server% has just started and is now joinable!"),
+    SERVER_SHUTDOWN(MESSAGES.get(), "server.shutdown-alert", "&c[A] %server% just went offline and is no longer joinable!"),
+
 
     /* PUNISHMENTS */
     PUNISHMENT_SILENT_PREFIX(MESSAGES.get(), "punishment.silent-prefix", "&7(Silent) "),
@@ -142,8 +145,22 @@ public enum Locale {
             CC.CHAT_BAR),
     PLAYER_SERVER_MANAGER_INFO_OFFLINE(MESSAGES.get(), "server-manager.player.info-offline", "&cThe server is currently offline or does not exist."),
 
+    /* GAMEMODE */
+    GAMEMODE_UPDATED_SELF(MESSAGES.get(), "gamemode.player.updated-self", "&aSuccessfully updated your gamemode to %gamemode%."),
+    GAMEMODE_UPDATED_OTHER(MESSAGES.get(), "gamemode.player.updated-other", "&aSuccessfully updated %player%'s gamemode to %gamemode%."),
+    GAMEMODE_UPDATED_TARGET(MESSAGES.get(), "gamemode.player.target-updated", "&aYour gamemode has been updated to %gamemode%."),
+    STAFF_GAMEMODE_UPDATED(MESSAGES.get(), "gamemode.staff.updated-other", "&b[S] &3[%server%] &e%executor% &ehas updated %player%'s gamemode to %gamemode%."),
+    STAFF_GAMEMODE_UPDATED_SELF(MESSAGES.get(), "gamemode.staff.updated-self", "&b[S] &3[%server%] &e%executor% &ehas updated their gamemode to %gamemode%."),
 
-
+    /* TELEPORT */
+    TELEPORT_PLAYER(MESSAGES.get(), "teleport.player.teleport", "&aSuccessfully teleported to %player%."),
+    TELEPORT_PLAYER_HERE(MESSAGES.get(), "teleport.player.teleport-here", "&aSuccessfully teleported %player% to you."),
+    TELEPORT_PLAYER_ALL(MESSAGES.get(), "teleport.player.teleport-all", "&aSuccessfully teleported all players to you."),
+    TELEPORT_PLAYER_POSITION(MESSAGES.get(), "teleport.player.teleport-position", "&aSuccessfully teleported to %x%, %y%, %z%."),
+    TELEPORT_STAFF_PLAYER(MESSAGES.get(), "teleport.staff.teleport", "&b[S] &3[%server%] &e%executor% &ehas teleported to %player%."),
+    TELEPORT_STAFF_PLAYER_HERE(MESSAGES.get(), "teleport.staff.teleport-here", "&b[S] &3[%server%] &e%executor% &ehas teleported %player% to them."),
+    TELEPORT_STAFF_PLAYER_ALL(MESSAGES.get(), "teleport.staff.teleport-all", "&b[S] &3[%server%] &e%executor% &ehas teleported all players to them."),
+    TELEPORT_STAFF_PLAYER_POSITION(MESSAGES.get(), "teleport.staff.teleport-position", "&b[S] &3[%server%] &e%executor% &ehas teleported to %x%, %y%, %z%."),
 
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
@@ -161,6 +178,8 @@ public enum Locale {
     PLAYER_ALREADY_WHITELISTED(MESSAGES.get(), "error.player-already-whitelisted", "&cThat player is already whitelisted."),
     PLAYER_NOT_WHITELISTED(MESSAGES.get(), "error.player-not-whitelisted", "&cThat player is not whitelisted."),
     SERVER_NOT_FOUND(MESSAGES.get(), "error.server-not-found", "&cA server with that name could not be found."),
+    NOT_SUPPORTED(MESSAGES.get(), "error.not-supported", "&cThis feature is not supported on 1.7."),
+    MAXIMUM_COORDINATE(MESSAGES.get(), "error.maximum-coordinate", "&cMaximal coordinates are +/- x: 3000000 y: 260/-10 z: 3000000"),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),

@@ -32,7 +32,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @MainCommand(names = {"rank", "ranks"}, description = "Manage ranks.", permission = Perms.RANKS)
-public class RankCommand { //TODO: Rank import/export
+public class RankCommand {
 
     @SubCommand(names = {"create", "add", "new"}, async = true, description = "Create a new rank.", usage = "/rank create <rank>")
     public void create(CommandSender sender, @Param(name = "rank") String string) {

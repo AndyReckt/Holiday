@@ -65,6 +65,36 @@ public class UserProfile implements Profile {
     }
 
     @Override
+    public boolean hasPermission(String permission) {
+        if (this.permissions.contains("*")) {
+            return true;
+        }
+        if (this.permissions.contains(permission)) {
+            return true;
+        }
+        for (IRank rank : getRanks()) {
+            if (rank.getPermissions().contains("*")) {
+                return true;
+            }
+            if (rank.getPermissions().contains(permission)) {
+                return true;
+            }
+
+            for (UUID child : rank.getChilds()) {
+                IRank childRank = HolidayAPI.getUnsafeAPI().getRank(child);
+                if (childRank.getPermissions().contains("*")) {
+                    return true;
+                }
+                if (childRank.getPermissions().contains(permission)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public List<IGrant> getGrants() {
         return HolidayAPI.getUnsafeAPI().getGrants(uuid);
     }

@@ -35,6 +35,11 @@ public enum Perms {
     CHAT_SLOW("command.chat.slow", "core.command.chat.slow"),
     WHITELIST("command.whitelist", "core.command.whitelist"),
     SERVERMANAGER("command.servermanager", "core.command.servermanager"),
+    GAMEMODE("command.gamemode", "core.command.gamemode"),
+    TELEPORT("command.teleport.player", "core.command.teleport"),
+    TELEPORT_ALL("command.teleport.all", "core.command.teleportall"),
+    TELEPORT_HERE("command.teleport.here", "core.command.teleporthere"),
+    TELEPORT_POSITION("command.teleport.position", "core.command.teleportposition"),
 
 
     /* OTHER */

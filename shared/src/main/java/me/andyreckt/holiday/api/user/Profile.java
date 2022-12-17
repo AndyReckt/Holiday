@@ -18,6 +18,7 @@ public interface Profile {
     void addPermission(String permission);
     void removePermission(String permission);
     List<String> getPermissions();
+    boolean hasPermission(String permission);
 
     boolean isLiked();
     void setLiked(boolean liked);

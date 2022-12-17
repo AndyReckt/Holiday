@@ -92,12 +92,14 @@ public final class Holiday extends JavaPlugin implements Listener {
 
             logInformation(time);
         } catch (Exception ex) {
-            Logger.error("An error occurred while enabling the  Showing stacktrace:");
+            Logger.error("An error occurred while enabling the plugin. Showing stacktrace:");
             ex.printStackTrace();
             Logger.error("Stopping the server...");
             Bukkit.getServer().shutdown();
         }
     }
+
+
 
     private void setupApi() {
         MongoCredentials mongoCreds = Locale.MONGO_AUTH.getBoolean() ? new MongoCredentials(
@@ -128,10 +130,12 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.commandManager.registerType(new ProfileParameterType(), Profile.class);
         Arrays.asList(
                 new DebugCommand(), new RankCommand(), new ChatCommand(),
-                new WhitelistCommand(), new ServerManagerCommand()
+                new WhitelistCommand(), new ServerManagerCommand(),
+                new GamemodeCommands()
         ).forEach(commandManager::registerCommandWithSubCommands);
         Arrays.asList(
-                new ChatCommand()
+                new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
+                new TeleportCommands()
         ).forEach(commandManager::registerCommands);
     }
 
@@ -182,7 +186,12 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     private void setupOthers() {
-        Tasks.runAsyncLater(() -> joinable = true, 5 * 20L);
+        Tasks.runAsyncLater(() -> {
+            joinable = true;
+            String str = Locale.SERVER_STARTUP.getString()
+                    .replace("%server%", thisServer.getServerName());
+            api.getRedis().sendPacket(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
+        }, 5 * 20L);
     }
 
     private void addListener(Listener listener) {
@@ -212,6 +221,9 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        String str = Locale.SERVER_SHUTDOWN.getString()
+                .replace("%server%", thisServer.getServerName());
+        api.getRedis().sendPacket(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
         this.serverTask.cancel();
         this.scheduledExecutor.shutdownNow();
     }
