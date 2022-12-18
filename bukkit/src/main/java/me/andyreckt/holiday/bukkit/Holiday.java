@@ -112,7 +112,7 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     private void setupServer() {
-        this.thisServer = new Server(Locale.SERVER_NAME.getString(), Locale.SERVER_ID.getString());
+        this.thisServer = new Server(Locale.SERVER_NAME.getString(), Locale.SERVER_ID.getString(), getServer().getIp(), getServer().getPort());
         IServer server = this.getApi().getServer(thisServer.getServerId());
         if (server == null) return;
         this.thisServer.setChatMuted(server.isChatMuted());

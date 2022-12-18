@@ -6,6 +6,7 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bungee.listener.StaffSwitchListener;
 import me.andyreckt.holiday.bungee.tasks.OnlinePlayersTask;
+import me.andyreckt.holiday.bungee.tasks.ServerCheckerTask;
 import me.andyreckt.holiday.bungee.util.Locale;
 import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
@@ -31,6 +32,7 @@ public class Bungee extends Plugin {
         RedisCredentials redisCreds = new RedisCredentials(Locale.REDIS_HOST.getString(), Locale.REDIS_PORT.getInt(), Locale.REDIS_AUTH.getBoolean(), Locale.REDIS_PASSWORD.getString());
         this.api = API.create(mongoCreds, redisCreds);
         new OnlinePlayersTask();
+        new ServerCheckerTask();
         getProxy().getPluginManager().registerListener(this, new StaffSwitchListener());
     }
 

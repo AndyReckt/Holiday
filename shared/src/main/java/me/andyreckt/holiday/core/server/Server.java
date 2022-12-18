@@ -17,6 +17,9 @@ public class Server implements IServer {
     private final String serverId;
     private final long startupTime;
 
+    private final String address;
+    private final int port;
+
     private double[] tps = new double[]{};
 
     private UUID whitelistRank = HolidayAPI.getUnsafeAPI().getDefaultRank().getUuid();
@@ -35,9 +38,11 @@ public class Server implements IServer {
     private List<UUID> onlinePlayers = new ArrayList<>();
     private List<UUID> whitelistedPlayers = new ArrayList<>();
 
-    public Server(String serverName, String serverId) {
+    public Server(String serverName, String serverId, String address, int port) {
         this.serverName = serverName;
         this.serverId = serverId;
+        this.address = address;
+        this.port = port;
         this.startupTime = System.currentTimeMillis();
     }
 

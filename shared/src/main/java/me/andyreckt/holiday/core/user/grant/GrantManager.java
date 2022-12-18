@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class GrantManager {
+public class GrantManager { //TODO: at some point only load the active grants, and get the rest when needed.
     private final HolidayAPI api;
 
     private final List<IGrant> grants;

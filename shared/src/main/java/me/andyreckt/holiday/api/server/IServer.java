@@ -9,9 +9,14 @@ public interface IServer {
 
     String getServerName();
     String getServerId();
+
     double[] getTps();
+
     boolean isOnline();
     boolean isJoinable();
+
+    String getAddress();
+    int getPort();
 
     int getPlayerCount();
     List<UUID> getOnlinePlayers();

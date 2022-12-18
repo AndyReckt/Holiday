@@ -19,8 +19,8 @@ public class HolidayAPI implements API {
         instance = this;
     }
 
-    private static HolidayAPI getApi() {
-        return instance;
+    private me.andyreckt.holiday.core.HolidayAPI getApi() {
+        return me.andyreckt.holiday.core.HolidayAPI.getUnsafeAPI();
     }
 
     @Override
