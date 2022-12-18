@@ -4,6 +4,7 @@ import io.netty.channel.unix.DomainSocketAddress;
 import lombok.SneakyThrows;
 import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.bungee.Bungee;
+import me.andyreckt.holiday.bungee.util.Locale;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -28,6 +29,7 @@ public class ServerCheckerTask {
     private static Configuration bungeeConfig;
 
     public ServerCheckerTask() {
+        if (!Locale.SERVER_AUTO_ADD.getBoolean()) return;
         setupConfig();
         Bungee.getInstance().getProxy().getScheduler().schedule(Bungee.getInstance(), () -> {
             Bungee.getInstance().getApi().getServers().values().stream().filter(IServer::isOnline).forEach(server -> {

@@ -35,6 +35,7 @@ public enum Locale {
     /* SERVER INFO */
     SERVER_ID(SETTINGS.get(),"proxy.id", "Proxy-1"),
     SERVER_NAME(SETTINGS.get(),"proxy.name", "Proxy #1"),
+    SERVER_AUTO_ADD(SETTINGS.get(),"proxy.auto-server-add", false),
 
     /* COLORS */
     COLOR_PRIMARY(SETTINGS.get(),"color.primary", "AQUA"),

@@ -42,6 +42,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -112,7 +116,7 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     private void setupServer() {
-        this.thisServer = new Server(Locale.SERVER_NAME.getString(), Locale.SERVER_ID.getString(), getServer().getIp(), getServer().getPort());
+        this.thisServer = new Server(Locale.SERVER_NAME.getString(), Locale.SERVER_ID.getString(), getIP(), getServer().getPort());
         IServer server = this.getApi().getServer(thisServer.getServerId());
         if (server == null) return;
         this.thisServer.setChatMuted(server.isChatMuted());
@@ -248,4 +252,17 @@ public final class Holiday extends JavaPlugin implements Listener {
         IRank rank = profile.getDisplayRank();
         return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getName();
     }
+
+    public static String getIP() {
+        String urlString = "https://checkip.amazonaws.com/";
+        try {
+            URL url = new URL(urlString);
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
+                return br.readLine();
+            }
+        } catch (IOException ignored) {}
+
+        return "Not Found";
+    }
+
 }
