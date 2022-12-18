@@ -8,6 +8,8 @@ import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.HolidayAPI;
+import me.andyreckt.holiday.core.user.settings.StaffSettings;
+import me.andyreckt.holiday.core.user.settings.UserSettings;
 import me.andyreckt.holiday.core.util.text.HashUtils;
 
 import java.util.ArrayList;
@@ -29,6 +31,9 @@ public class UserProfile implements Profile {
     private List<String> permissions = new ArrayList<>();
 
     private boolean liked = false;
+
+    private UserSettings settings = new UserSettings();
+    private StaffSettings staffSettings = new StaffSettings();
 
     private final long firstLogin = System.currentTimeMillis();
     private long lastSeen = System.currentTimeMillis();

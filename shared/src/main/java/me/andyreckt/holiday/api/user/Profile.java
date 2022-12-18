@@ -23,6 +23,9 @@ public interface Profile {
     boolean isLiked();
     void setLiked(boolean liked);
 
+    ISettings getSettings();
+    IStaffSettings getStaffSettings();
+
     long getFirstLogin();
     long getLastSeen();
     void setLastSeen(long lastSeen);
