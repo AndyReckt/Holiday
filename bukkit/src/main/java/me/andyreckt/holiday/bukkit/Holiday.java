@@ -20,6 +20,7 @@ import me.andyreckt.holiday.bukkit.server.redis.subscriber.BroadcastSubscriber;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.MessageSubscriber;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.PlayerMessageSubscriber;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.ServerSubscriber;
+import me.andyreckt.holiday.bukkit.server.tasks.RebootTask;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
@@ -78,6 +79,7 @@ public final class Holiday extends JavaPlugin implements Listener {
     private Server thisServer;
 
     private ServerTask serverTask;
+    @Setter private RebootTask rebootTask;
 
 
     @Override
@@ -147,7 +149,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         Arrays.asList(
                 new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
                 new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
-                new ConversationCommands(), new GrantCommands()
+                new ConversationCommands(), new GrantCommands(), new ShutdownCommands()
         ).forEach(commandManager::registerCommands);
     }
 

@@ -44,6 +44,7 @@ public enum Perms {
     TELEPORT_POSITION("command.teleport.position", "core.command.teleportposition"),
     GRANTS_VIEW("command.grants.view", "core.command.grants.view"),
     GRANTS_EDIT("command.grants.edit", "core.command.grants.edit"),
+    REBOOT("command.reboot", "core.command.reboot"),
 
 
     /* OTHER */

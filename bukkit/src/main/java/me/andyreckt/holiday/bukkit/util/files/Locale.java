@@ -36,6 +36,7 @@ public enum Locale {
     SERVER_ID(SETTINGS.get(), "server.bungee-name", "$undefined"),
     SERVER_NAME(SETTINGS.get(), "server.name", "Unknown"),
     BANNED_JOIN(SETTINGS.get(), "server.banned-join", false),
+    FALLBACK_SERVER(SETTINGS.get(), "server.fallback-server-id", "lobby"),
     CHAT_ENABLED(SETTINGS.get(), "server.chat.enabled", true),
     CHAT_FORMAT(SETTINGS.get(), "server.chat.format", "%prefix%%player%%suffix%&7: %message%"),
     LOGIN_WHITELIST(SETTINGS.get(), "server.whitelist-login", "&eThe server is currently &cWhitelisted&e. \\n &eYou need %rank% &eor above to be able to log into the server."),
@@ -186,6 +187,12 @@ public enum Locale {
     GRANT_TARGET(MESSAGES.get(), "grant.target", "&aYou have been granted the rank %rank% &afor a duration of %duration%&a."),
     GRANT_STAFF(MESSAGES.get(), "grant.staff", "&c[A] &3[%server%] %executor% &ehas granted the rank %rank% &eto %player% &efor a duration of %duration%&e."),
 
+    /* REBOOT */
+    REBOOT_STARTED(MESSAGES.get(), "reboot.started", "&aSuccessfully started a reboot task of %time%."),
+    REBOOT_MESSAGE(MESSAGES.get(), "reboot.message", "&cThe server is rebooting in %time%."),
+    REBOOT_NOW(MESSAGES.get(), "reboot.now", "&cThe server is rebooting now."),
+    REBOOT_CANCELLED(MESSAGES.get(), "reboot.cancelled", "&aThe reboot has been cancelled."),
+
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
     RANK_ALREADY_EXISTS(MESSAGES.get(), "error.rank-already-exists", "&cA rank with that name already exists."),
@@ -209,6 +216,7 @@ public enum Locale {
     PLAYER_MESSAGES_DISABLED(MESSAGES.get(), "error.player-messages-disabled", "&cThat player has private messages disabled."),
     OWN_MESSAGES_DISABLED(MESSAGES.get(), "error.own-messages-disabled", "&cYou have private messages disabled."),
     NOBODY_TO_REPLY_TO(MESSAGES.get(), "error.nobody-to-reply-to", "&cYou have nobody to reply to."),
+    SERVER_ALREADY_REBOOTING(MESSAGES.get(), "error.server-already-rebooting", "&cThe server is already rebooting."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),
