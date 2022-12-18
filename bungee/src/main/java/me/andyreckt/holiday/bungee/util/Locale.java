@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import static me.andyreckt.holiday.bungee.util.Locale.FileName.MESSAGES;
 import static me.andyreckt.holiday.bungee.util.Locale.FileName.SETTINGS;
 
 @Getter(value = AccessLevel.PRIVATE)
@@ -39,6 +40,12 @@ public enum Locale {
     COLOR_PRIMARY(SETTINGS.get(),"color.primary", "AQUA"),
     COLOR_SECONDARY(SETTINGS.get(),"color.secondary", "DARK_AQUA"),
     COLOR_CHAT(SETTINGS.get(),"color.chat", "YELLOW"),
+
+    /* STAFF */
+    STAFF_SWITCH_PERM(MESSAGES.get(),"staff.switch.bukkit-perm", "core.staff.switch"),
+    STAFF_SWITCH_JOIN(MESSAGES.get(),"staff.switch.join", "&b[S] %player% &econnected to %server%."),
+    STAFF_SWITCH_LEAVE(MESSAGES.get(),"staff.switch.leave", "&b[S] %player% &edisconnected from %server%."),
+    STAFF_SWITCH_SERVER(MESSAGES.get(),"staff.switch.server", "&b[S] %player% &ejoined %server% from %old%."),
     ;
 
     private final String path;

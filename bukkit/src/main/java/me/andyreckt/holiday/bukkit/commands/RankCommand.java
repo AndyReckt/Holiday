@@ -88,7 +88,7 @@ public class RankCommand {
     public void addperm(CommandSender sender, @Param(name = "rank") IRank rank, @Param(name = "perm") String perm) {
         API api = Holiday.getInstance().getApi();
         if (rank.getPermissions().contains(perm)) {
-            sender.sendMessage(Locale.RANK_PERMISSION_ALREADY_EXISTS.getString().replace("%rank%", rank.getName()).replace("%perm%", perm));
+            sender.sendMessage(Locale.RANK_PERMISSION_ALREADY_EXISTS.getString().replace("%rank%", rank.getName()).replace("%permission%", perm));
             return;
         }
 
@@ -108,11 +108,11 @@ public class RankCommand {
         if (!rank.getPermissions().contains(perm)) {
             sender.sendMessage(Locale.RANK_PERMISSION_DOES_NOT_EXIST.getString()
                     .replace("%rank%", CC.translate(rank.getDisplayName()))
-                    .replace("%perm%", perm));
+                    .replace("%permission%", perm));
             return;
         }
 
-        rank.addPermission(perm);
+        rank.removePermission(perm);
         api.saveRank(rank);
 
 //        Holiday.getInstance().getApi().getMidnight().sendPacket(new PermissionChangePacket(rank)); //TODO: Implement this packet.

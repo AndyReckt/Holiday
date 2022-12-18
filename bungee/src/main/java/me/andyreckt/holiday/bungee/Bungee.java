@@ -2,10 +2,14 @@ package me.andyreckt.holiday.bungee;
 
 import lombok.Getter;
 import me.andyreckt.holiday.api.API;
+import me.andyreckt.holiday.api.user.IRank;
+import me.andyreckt.holiday.api.user.Profile;
+import me.andyreckt.holiday.bungee.listener.StaffSwitchListener;
 import me.andyreckt.holiday.bungee.tasks.OnlinePlayersTask;
 import me.andyreckt.holiday.bungee.util.Locale;
 import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Plugin;
 
 @Getter
@@ -27,6 +31,17 @@ public class Bungee extends Plugin {
         RedisCredentials redisCreds = new RedisCredentials(Locale.REDIS_HOST.getString(), Locale.REDIS_PORT.getInt(), Locale.REDIS_AUTH.getBoolean(), Locale.REDIS_PASSWORD.getString());
         this.api = API.create(mongoCreds, redisCreds);
         new OnlinePlayersTask();
+        getProxy().getPluginManager().registerListener(this, new StaffSwitchListener());
     }
+
+    public String getNameWithColor(Profile profile) {
+        IRank rank = profile.getHighestVisibleRank();
+        return ChatColor.translateAlternateColorCodes('&', (rank.isBold() ? "&l" : "") + (rank.isItalic() ? "&o" : "") + getRankColor(rank) + profile.getName());
+    }
+
+    public ChatColor getRankColor(IRank rank) {
+        return ChatColor.valueOf(rank.getColor().toUpperCase());
+    }
+
 }
 

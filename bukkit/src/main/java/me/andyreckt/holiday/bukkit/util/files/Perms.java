@@ -18,6 +18,7 @@ public enum Perms {
     STAFF_VIEW_NOTIFICATIONS("staff.view-notifications", "core.staff.notifications"),
     STAFF_CHAT_BYPASS("staff.chat-bypass", "core.chat.bypass"),
     STAFF_WHITELIST_BYPASS("staff.whitelist-bypass", "core.whitelist.bypass"),
+    STAFF_SWITCH("staff.switch", "core.staff.switch"),
 
     /* ADMIN */
     ADMIN_CHAT("admin.admin-chat", "core.admin.chat"),
