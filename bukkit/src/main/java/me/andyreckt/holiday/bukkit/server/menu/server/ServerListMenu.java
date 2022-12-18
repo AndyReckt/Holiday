@@ -9,6 +9,7 @@ import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.bukkit.util.other.Utilities;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -74,6 +75,10 @@ public class ServerListMenu extends PaginatedMenu {
                             CC.CHAT + "Status: " + status,
                             CC.CHAT + "Players: " + CC.SECONDARY + server.getPlayerCount() + "&7/" + CC.SECONDARY + server.getMaxPlayers(),
                             CC.CHAT + "TPS: " + tps,
+                            "",
+                            CC.CHAT + "Start Time: " + CC.SECONDARY + TimeUtil.formatDate(server.getStartupTime()),
+                            CC.CHAT + "Uptime: " + CC.SECONDARY + TimeUtil.niceTime(server.getUptime(), true),
+                            CC.CHAT + "Last Updated: " + CC.SECONDARY + TimeUtil.niceTime(System.currentTimeMillis() - server.getLastKeepAlive(), true),
                             "",
                             CC.I_GRAY + "Click to join this server.",
                             CC.I_GRAY + "Drop to stop this server.",
