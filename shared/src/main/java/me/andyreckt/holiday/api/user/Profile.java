@@ -8,6 +8,7 @@ public interface Profile {
     UUID getUuid();
 
     String getName();
+    String getDisplayName();
     void setName(String name);
     String getLowercaseName();
 

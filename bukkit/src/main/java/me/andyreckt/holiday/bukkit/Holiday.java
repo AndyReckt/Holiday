@@ -14,7 +14,9 @@ import me.andyreckt.holiday.bukkit.server.nms.INMS;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8;
 import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
+import me.andyreckt.holiday.bukkit.server.redis.packet.MessagePacket;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.BroadcastSubscriber;
+import me.andyreckt.holiday.bukkit.server.redis.subscriber.MessageSubscriber;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.ServerSubscriber;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.util.Logger;
@@ -81,6 +83,7 @@ public final class Holiday extends JavaPlugin implements Listener {
             this.setupNms();
             this.setupConfigFiles();
             this.setupApi();
+            this.setupServer();
 
             this.setupExecutors();
             this.setupManagers();
@@ -100,13 +103,15 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
 
-
     private void setupApi() {
         MongoCredentials mongoCreds = Locale.MONGO_AUTH.getBoolean() ? new MongoCredentials(
                 Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_USERNAME.getString(), Locale.MONGO_PASSWORD.getString(), Locale.MONGO_DATABASE.getString())
                 : new MongoCredentials(Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_DATABASE.getString());
         RedisCredentials redisCreds = new RedisCredentials(Locale.REDIS_HOST.getString(), Locale.REDIS_PORT.getInt(), Locale.REDIS_AUTH.getBoolean(), Locale.REDIS_PASSWORD.getString());
         this.api = API.create(mongoCreds, redisCreds);
+    }
+
+    private void setupServer() {
         this.thisServer = new Server(Locale.SERVER_NAME.getString(), Locale.SERVER_ID.getString());
         IServer server = this.getApi().getServer(thisServer.getServerId());
         if (server == null) return;
@@ -135,7 +140,8 @@ public final class Holiday extends JavaPlugin implements Listener {
         ).forEach(commandManager::registerCommandWithSubCommands);
         Arrays.asList(
                 new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
-                new TeleportCommands(), new SocialCommands()
+                new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
+                new ConversationCommands()
         ).forEach(commandManager::registerCommands);
     }
 
@@ -178,6 +184,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         ).forEach(this::addListener);
         api.getRedis().registerAdapter(CrossServerCommandPacket.class, new ServerSubscriber());
         api.getRedis().registerAdapter(BroadcastPacket.class, new BroadcastSubscriber());
+        api.getRedis().registerAdapter(MessagePacket.class, new MessageSubscriber());
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 

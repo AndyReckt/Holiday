@@ -46,6 +46,11 @@ public class UserProfile implements Profile {
     }
 
     @Override
+    public String getDisplayName() {
+        return getName(); //TODO: implement
+    }
+
+    @Override
     public String getLowercaseName() {
         return getName().toLowerCase();
     }

@@ -168,6 +168,19 @@ public enum Locale {
     SOCIAL_TEAMSPEAK(MESSAGES.get(), "social.teamspeak", "&aJoin our teamspeak at &3%teamspeak%&a!"),
     SOCIAL_STORE(MESSAGES.get(), "social.store", "&aCheck out our store at &3%store%&a!"),
 
+    /* SETTINGS */
+    SETTINGS_PRIVATE_MESSAGE_ON(MESSAGES.get(), "settings.player.private-message.on", "&aYou have successfully toggled private messages on."),
+    SETTINGS_PRIVATE_MESSAGE_OFF(MESSAGES.get(), "settings.player.private-message.off", "&cYou have successfully toggled private messages off."),
+    SETTINGS_PRIVATE_MESSAGE_SOUNDS_ON(MESSAGES.get(), "settings.player.private-message-sounds.on", "&aYou have successfully toggled private message sounds on."),
+    SETTINGS_PRIVATE_MESSAGE_SOUNDS_OFF(MESSAGES.get(), "settings.player.private-message-sounds.off", "&cYou have successfully toggled private message sounds off."),
+    SETTINGS_STAFF_SOCIAL_SPY_ON(MESSAGES.get(), "settings.staff.social-spy.on", "&aYou have successfully toggled social spy on."),
+    SETTINGS_STAFF_SOCIAL_SPY_OFF(MESSAGES.get(), "settings.staff.social-spy.off", "&cYou have successfully toggled social spy off."),
+
+    /* CONVERSAION */
+    CONVERSATION_FORMAT_SENT(MESSAGES.get(), "conversation.format.sent", "&e(To %player%&e) &f%message%"),
+    CONVERSATION_FORMAT_RECEIVED(MESSAGES.get(), "conversation.format.received", "&e(From %player%&e) &f%message%"),
+    CONVERSATION_FORMAT_SOCIAL_SPY(MESSAGES.get(), "conversation.format.social-spy", "&7[&cSPY&7] &e(<sender> &7» <target>&e) &7<message>"),
+
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
     RANK_ALREADY_EXISTS(MESSAGES.get(), "error.rank-already-exists", "&cA rank with that name already exists."),
@@ -179,6 +192,7 @@ public enum Locale {
     CANNOT_DELETE_DEFAULT_RANK(MESSAGES.get(), "error.cannot-delete-default-rank", "&cYou cannot delete the default rank."),
     NEED_NAME(MESSAGES.get(), "error.need-name", "&cYou need to specify a name."),
     PLAYER_NOT_FOUND(MESSAGES.get(), "error.player-not-found", "&cA player with that name could not be found."),
+    PLAYER_NOT_ONLINE(MESSAGES.get(), "error.player-not-online", "&cThat player is not online."),
     CHAT_CURRENTLY_MUTED(MESSAGES.get(), "error.chat-currently-muted", "&cThe global chat is currently muted."),
     TIME_FORMAT(MESSAGES.get(), "error.time-format", "&cPlease enter a valid time format."),
     PLAYER_ALREADY_WHITELISTED(MESSAGES.get(), "error.player-already-whitelisted", "&cThat player is already whitelisted."),
@@ -186,6 +200,10 @@ public enum Locale {
     SERVER_NOT_FOUND(MESSAGES.get(), "error.server-not-found", "&cA server with that name could not be found."),
     NOT_SUPPORTED(MESSAGES.get(), "error.not-supported", "&cThis feature is not supported on 1.7."),
     MAXIMUM_COORDINATE(MESSAGES.get(), "error.maximum-coordinate", "&cMaximal coordinates are +/- x: 3000000 y: 260/-10 z: 3000000"),
+    CANNOT_MESSAGE_YOURSELF(MESSAGES.get(), "error.cannot-message-yourself", "&cYou cannot message yourself."),
+    PLAYER_MESSAGES_DISABLED(MESSAGES.get(), "error.player-messages-disabled", "&cThat player has private messages disabled."),
+    OWN_MESSAGES_DISABLED(MESSAGES.get(), "error.own-messages-disabled", "&cYou have private messages disabled."),
+    NOBODY_TO_REPLY_TO(MESSAGES.get(), "error.nobody-to-reply-to", "&cYou have nobody to reply to."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),
