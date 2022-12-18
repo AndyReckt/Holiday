@@ -15,8 +15,10 @@ import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8;
 import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
 import me.andyreckt.holiday.bukkit.server.redis.packet.MessagePacket;
+import me.andyreckt.holiday.bukkit.server.redis.packet.PlayerMessagePacket;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.BroadcastSubscriber;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.MessageSubscriber;
+import me.andyreckt.holiday.bukkit.server.redis.subscriber.PlayerMessageSubscriber;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.ServerSubscriber;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.util.Logger;
@@ -145,7 +147,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         Arrays.asList(
                 new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
                 new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
-                new ConversationCommands()
+                new ConversationCommands(), new GrantCommands()
         ).forEach(commandManager::registerCommands);
     }
 
@@ -189,6 +191,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         api.getRedis().registerAdapter(CrossServerCommandPacket.class, new ServerSubscriber());
         api.getRedis().registerAdapter(BroadcastPacket.class, new BroadcastSubscriber());
         api.getRedis().registerAdapter(MessagePacket.class, new MessageSubscriber());
+        api.getRedis().registerAdapter(PlayerMessagePacket.class, new PlayerMessageSubscriber());
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 

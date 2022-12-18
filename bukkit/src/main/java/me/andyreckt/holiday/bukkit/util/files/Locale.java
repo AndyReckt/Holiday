@@ -181,6 +181,11 @@ public enum Locale {
     CONVERSATION_FORMAT_RECEIVED(MESSAGES.get(), "conversation.format.received", "&e(From %player%&e) &f%message%"),
     CONVERSATION_FORMAT_SOCIAL_SPY(MESSAGES.get(), "conversation.format.social-spy", "&7[&cSPY&7] &e(<sender> &7» <target>&e) &7<message>"),
 
+    /* GRANT */
+    GRANT_PLAYER(MESSAGES.get(), "grant.message", "&aYou have granted the rank %rank% &ato %player% &afor a duration of %duration%&a."),
+    GRANT_TARGET(MESSAGES.get(), "grant.target", "&aYou have been granted the rank %rank% &afor a duration of %duration%&a."),
+    GRANT_STAFF(MESSAGES.get(), "grant.staff", "&c[A] &3[%server%] %executor% &ehas granted the rank %rank% &eto %player% &efor a duration of %duration%&e."),
+
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
     RANK_ALREADY_EXISTS(MESSAGES.get(), "error.rank-already-exists", "&cA rank with that name already exists."),
