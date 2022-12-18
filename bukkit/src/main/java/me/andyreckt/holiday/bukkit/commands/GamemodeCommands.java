@@ -19,28 +19,28 @@ import org.bukkit.entity.Player;
         description = "Change your gamemode.")
 public class GamemodeCommands {
 
-    @SubCommand(names = {"c", "creative", "crea", "1"}, permission = Perms.GAMEMODE, description = "Change your gamemode to creative.", usage = "/gamemode creative [player]")
+    @SubCommand(names = {"creative", "c", "crea", "1"}, permission = Perms.GAMEMODE, description = "Change your gamemode to creative.", usage = "/gamemode creative [player]")
     @Command(names = {"gmc", "gm1"}, permission = Perms.GAMEMODE, description = "Change your gamemode to creative.", usage = "/gmc [player]")
     public void creative(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
         target.setGameMode(GameMode.CREATIVE);
         sendMessage(sender, target);
     }
 
-    @SubCommand(names = {"a", "adventure", "adv", "2"}, permission = Perms.GAMEMODE, description = "Change your gamemode to adventure.", usage = "/gamemode adventure [player]")
+    @SubCommand(names = {"adventure", "a", "adv", "2"}, permission = Perms.GAMEMODE, description = "Change your gamemode to adventure.", usage = "/gamemode adventure [player]")
     @Command(names = {"gma", "gm2"}, permission = Perms.GAMEMODE)
     public void adventure(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
         target.setGameMode(GameMode.ADVENTURE);
         sendMessage(sender, target);
     }
 
-    @SubCommand(names = {"s", "survival", "surv" , "0"}, permission = Perms.GAMEMODE, description = "Change your gamemode to survival.", usage = "/gamemode survival [player]")
+    @SubCommand(names = {"survival", "s", "surv" , "0"}, permission = Perms.GAMEMODE, description = "Change your gamemode to survival.", usage = "/gamemode survival [player]")
     @Command(names = {"gms", "gm0"}, permission = Perms.GAMEMODE)
     public void survival(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
         target.setGameMode(GameMode.SURVIVAL);
         sendMessage(sender, target);
     }
 
-    @SubCommand(names = {"sp", "spectator", "spec", "3"}, permission = Perms.GAMEMODE, description = "Change your gamemode to spectator.", usage = "/gamemode spectator [player]")
+    @SubCommand(names = {"spectator", "sp", "spec", "3"}, permission = Perms.GAMEMODE, description = "Change your gamemode to spectator.", usage = "/gamemode spectator [player]")
     @Command(names = {"gmsp", "gm3"}, permission = Perms.GAMEMODE)
     public void spectator(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
         if (Holiday.getInstance().getNms() instanceof NMS_v1_7) {
