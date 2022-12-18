@@ -66,9 +66,14 @@ public enum Locale {
     NETWORK_TWITTER(SETTINGS.get(), "network.twitter", "https://twitter.com/examplenetwork"),
     NETWORK_TEAMSPEAK(SETTINGS.get(), "network.teamspeak", "ts.example.com"),
 
+    /* COOLDOWN */
+    REPORT_COOLDOWN(SETTINGS.get(), "cooldowns.report-in-seconds", 300),
+    HELPOP_COOLDOWN(SETTINGS.get(), "cooldowns.helpop-in-seconds", 150),
+
+    /* SERVER STARTUP */
+
     SERVER_STARTUP(MESSAGES.get(), "server.startup-alert", "&c[A] &a%server% has just started and is now joinable!"),
     SERVER_SHUTDOWN(MESSAGES.get(), "server.shutdown-alert", "&c[A] %server% just went offline and is no longer joinable!"),
-
 
     /* PUNISHMENTS */
     PUNISHMENT_SILENT_PREFIX(MESSAGES.get(), "punishment.silent-prefix", "&7(Silent) "),
@@ -193,6 +198,12 @@ public enum Locale {
     REBOOT_NOW(MESSAGES.get(), "reboot.now", "&cThe server is rebooting now."),
     REBOOT_CANCELLED(MESSAGES.get(), "reboot.cancelled", "&aThe reboot has been cancelled."),
 
+    /* REPORT & HELPOP */
+    REPORT_MESSAGE(MESSAGES.get(), "report.message", "&aYour report has been sent to the staff team."),
+    HELPOP_MESSAGE(MESSAGES.get(), "helpop.message", "&aYou have successfully sent a helpop, a staff member will answer you shortly."),
+    REPORT_FORMAT(MESSAGES.get(), "report.format", "&9[REPORT] &d[%server%] %player% &9reported %target% \\n  &7» &9Reason: &3%reason%"),
+    REPORT_CLICK_MESSAGE(MESSAGES.get(), "report.click-message", "&eClick to join %server%"),
+
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
     RANK_ALREADY_EXISTS(MESSAGES.get(), "error.rank-already-exists", "&cA rank with that name already exists."),
@@ -217,6 +228,8 @@ public enum Locale {
     OWN_MESSAGES_DISABLED(MESSAGES.get(), "error.own-messages-disabled", "&cYou have private messages disabled."),
     NOBODY_TO_REPLY_TO(MESSAGES.get(), "error.nobody-to-reply-to", "&cYou have nobody to reply to."),
     SERVER_ALREADY_REBOOTING(MESSAGES.get(), "error.server-already-rebooting", "&cThe server is already rebooting."),
+    CANNOT_REPORT_YOURSELF(MESSAGES.get(), "error.cannot-report-yourself", "&cYou cannot report yourself."),
+    COOLDOWN(MESSAGES.get(), "error.cooldown", "&cYou cannot do that for another %time%."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),

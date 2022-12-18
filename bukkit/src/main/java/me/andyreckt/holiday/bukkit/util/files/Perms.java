@@ -20,6 +20,7 @@ public enum Perms {
     STAFF_WHITELIST_BYPASS("staff.whitelist-bypass", "core.whitelist.bypass"),
     STAFF_SWITCH("staff.switch", "core.staff.switch"),
     STAFF_SOCIAL_SPY("staff.social-spy", "core.staff.socialspy"),
+    STAFF_VIEW_REPORTS("staff.view-reports", "core.staff.reports"),
 
     /* ADMIN */
     ADMIN_CHAT("admin.admin-chat", "core.admin.chat"),

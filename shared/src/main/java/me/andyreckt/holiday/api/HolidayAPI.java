@@ -25,7 +25,7 @@ public class HolidayAPI implements API {
 
     @Override
     public Messaging getRedis() {
-        return getApi().getRedis();
+        return null;
     }
 
     @Override

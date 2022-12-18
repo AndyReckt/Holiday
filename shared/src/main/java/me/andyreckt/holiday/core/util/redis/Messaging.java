@@ -84,6 +84,8 @@ public class Messaging {
                         if (s1.equalsIgnoreCase(id)) clazz = aClass;
                     }
 
+                    if (clazz == null) return;
+
                     PacketListener listener = adapters.get(clazz);
 
                     for (Method m : listener.getClass().getDeclaredMethods()) {
