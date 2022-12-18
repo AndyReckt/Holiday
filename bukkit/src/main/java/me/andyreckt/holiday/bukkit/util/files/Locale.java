@@ -162,6 +162,12 @@ public enum Locale {
     TELEPORT_STAFF_PLAYER_ALL(MESSAGES.get(), "teleport.staff.teleport-all", "&b[S] &3[%server%] &e%executor% &ehas teleported all players to them."),
     TELEPORT_STAFF_PLAYER_POSITION(MESSAGES.get(), "teleport.staff.teleport-position", "&b[S] &3[%server%] &e%executor% &ehas teleported to %x%, %y%, %z%."),
 
+    /* SOCIAL */
+    SOCIAL_DISCORD(MESSAGES.get(), "social.discord", "&aJoin our discord at &3%discord%&a!"),
+    SOCIAL_TWITTER(MESSAGES.get(), "social.twitter", "&aFollow us on twitter at &3%twitter%&a!"),
+    SOCIAL_TEAMSPEAK(MESSAGES.get(), "social.teamspeak", "&aJoin our teamspeak at &3%teamspeak%&a!"),
+    SOCIAL_STORE(MESSAGES.get(), "social.store", "&aCheck out our store at &3%store%&a!"),
+
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
     RANK_ALREADY_EXISTS(MESSAGES.get(), "error.rank-already-exists", "&cA rank with that name already exists."),

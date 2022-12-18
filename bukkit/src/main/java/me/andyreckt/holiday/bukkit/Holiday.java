@@ -135,7 +135,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         ).forEach(commandManager::registerCommandWithSubCommands);
         Arrays.asList(
                 new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
-                new TeleportCommands()
+                new TeleportCommands(), new SocialCommands()
         ).forEach(commandManager::registerCommands);
     }
 
