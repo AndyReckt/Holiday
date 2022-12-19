@@ -10,6 +10,7 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.rank.RankManageMenu;
 import me.andyreckt.holiday.bukkit.server.menu.rank.RankManagerMenu;
+import me.andyreckt.holiday.bukkit.server.redis.packet.PermissionUpdatePacket;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
@@ -95,8 +96,7 @@ public class RankCommand {
         rank.addPermission(perm);
         api.saveRank(rank);
 
-//        Holiday.getInstance().getApi().getMidnight().sendPacket(new PermissionChangePacket(rank)); //TODO: Implement this packet.
-
+        Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
         sender.sendMessage(Locale.RANK_PERMISSION_ADDED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
                 .replace("%perm%", perm));
@@ -115,8 +115,7 @@ public class RankCommand {
         rank.removePermission(perm);
         api.saveRank(rank);
 
-//        Holiday.getInstance().getApi().getMidnight().sendPacket(new PermissionChangePacket(rank)); //TODO: Implement this packet.
-
+        Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
         sender.sendMessage(Locale.RANK_PERMISSION_REMOVED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
                 .replace("%perm%", perm));
@@ -135,7 +134,7 @@ public class RankCommand {
         rank.addChild(child.getUuid());
         api.saveRank(rank);
 
-//        Holiday.getInstance().getApi().getMidnight().sendPacket(new PermissionChangePacket(rank)); //TODO: Implement this packet.
+        Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
 
         sender.sendMessage(Locale.RANK_INHERITANCE_ADDED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
@@ -155,7 +154,7 @@ public class RankCommand {
         rank.removeChild(child.getUuid());
         api.saveRank(rank);
 
-//        Holiday.getInstance().getApi().getMidnight().sendPacket(new PermissionChangePacket(rank)); //TODO: Implement this packet.
+        Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
 
         sender.sendMessage(Locale.RANK_INHERITANCE_REMOVED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
