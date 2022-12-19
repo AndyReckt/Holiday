@@ -1,10 +1,12 @@
 package me.andyreckt.holiday.core.util.enums;
 
+import lombok.Getter;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.HolidayAPI;
 
 import java.util.UUID;
 
+@Getter
 public enum AlertType {
     REPORT("Report Alerts"),
     REQUEST("Request Alerts")
