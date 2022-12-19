@@ -26,6 +26,7 @@ import me.andyreckt.holiday.bukkit.util.sunset.Sunset;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.ProfileParameterType;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.RankParameterType;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.bukkit.util.text.StringUtils;
 import me.andyreckt.holiday.bukkit.util.uuid.UUIDCache;
 import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
@@ -124,6 +125,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.thisServer.setWhitelistRank(server.getWhitelistRank());
         this.thisServer.setWhitelistedPlayers(server.getWhitelistedPlayers());
         this.thisServer.keepAlive();
+        StringUtils.setSlots(this.thisServer.getMaxPlayers());
     }
 
     private void setupTasks() {

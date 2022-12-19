@@ -24,7 +24,7 @@ public class MessageSubscriber implements PacketListener {
                     return;
                 }
                 String toSend = Locale.CONVERSATION_FORMAT_SOCIAL_SPY.getString()
-                        .replace("%player%", Holiday.getInstance().getDisplayNameWithColor(packet.getSender()))
+                        .replace("%sender%", Holiday.getInstance().getDisplayNameWithColor(packet.getSender()))
                         .replace("%target%", Holiday.getInstance().getDisplayNameWithColor(packet.getTarget()))
                         .replace("%message%", packet.getMessage());
                 player.sendMessage(toSend);

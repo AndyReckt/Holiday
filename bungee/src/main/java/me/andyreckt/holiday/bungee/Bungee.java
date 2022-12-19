@@ -5,6 +5,7 @@ import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bungee.listener.StaffSwitchListener;
+import me.andyreckt.holiday.bungee.tasks.GrantsUpdateTask;
 import me.andyreckt.holiday.bungee.tasks.OnlinePlayersTask;
 import me.andyreckt.holiday.bungee.tasks.ServerCheckerTask;
 import me.andyreckt.holiday.bungee.util.Locale;
@@ -33,6 +34,7 @@ public class Bungee extends Plugin {
         this.api = API.create(mongoCreds, redisCreds);
         new OnlinePlayersTask();
         new ServerCheckerTask();
+        new GrantsUpdateTask();
         getProxy().getPluginManager().registerListener(this, new StaffSwitchListener());
     }
 

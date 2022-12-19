@@ -19,7 +19,7 @@ public class ReportSubscriber implements PacketListener {
                 .replace("%player%", packet.getReporter())
                 .replace("%target%", packet.getReported())
                 .replace("%reason%", packet.getReason())
-                .split("\n");
+                .split("%newline%");
 
         for (String s : message) {
             Clickable clickable = new Clickable(s,

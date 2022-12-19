@@ -28,7 +28,7 @@ public class TeleportCommands {
         String message = Locale.TELEPORT_STAFF_PLAYER.getString()
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
-                .replace("%target%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
+                .replace("%player%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
         Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
@@ -38,7 +38,7 @@ public class TeleportCommands {
         String message = Locale.TELEPORT_STAFF_PLAYER_HERE.getString()
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
-                .replace("%target%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
+                .replace("%player%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
         Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 

@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@MainCommand(names = {"whitelist", "wl"}, permission = Perms.WHITELIST)
+@MainCommand(names = {"whitelist", "wl"}, permission = Perms.WHITELIST, description = "Whitelist command.")
 public class WhitelistCommand {
 
 
@@ -28,7 +28,7 @@ public class WhitelistCommand {
         Bukkit.broadcastMessage(Locale.GLOBAL_WHITELIST_ENABLED.getString());
         String toSend = Locale.STAFF_WHITELIST_ENABLED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%Holiday.getInstance().getThisServer()%", Holiday.getInstance().getThisServer().getServerName());
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
@@ -38,18 +38,18 @@ public class WhitelistCommand {
         Bukkit.broadcastMessage(Locale.GLOBAL_WHITELIST_DISABLED.getString());
         String toSend = Locale.STAFF_WHITELIST_DISABLED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%Holiday.getInstance().getThisServer()%", Holiday.getInstance().getThisServer().getServerName());
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
 
-    @SubCommand(names = {"setrank", "rank"}, async = true, description = "Set the rank required to join the Holiday.getInstance().getThisServer().")
+    @SubCommand(names = {"setrank", "rank"}, async = true, description = "Set the rank required to join the server.")
     public void onRank(CommandSender sender, @Param(name = "rank") IRank rank) {
         Holiday.getInstance().getThisServer().setWhitelistRank(rank);
         sender.sendMessage(CC.translate(Locale.PLAYER_WHITELIST_RANK.getString().replace("%rank%", rank.getDisplayName())));
         String toSend = Locale.STAFF_WHITELIST_RANK.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%Holiday.getInstance().getThisServer()%", Holiday.getInstance().getThisServer().getServerName())
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%rank%", rank.getDisplayName());
         Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }

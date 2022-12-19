@@ -31,6 +31,8 @@ public class UserManager {
 
             this.profiles.put(profile.getUuid(), profile);
         }
+        Profile console = UserProfile.getConsoleProfile();
+        this.profiles.put(console.getUuid(), console);
     }
 
     private Profile loadProfile(Document document) {

@@ -9,6 +9,7 @@ import me.andyreckt.holiday.core.util.redis.messaging.IncomingPacketHandler;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketListener;
 import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 public class HelpopSubscriber implements PacketListener {
 
@@ -17,14 +18,14 @@ public class HelpopSubscriber implements PacketListener {
         String[] message = Locale.HELPOP_FORMAT.getString()
                 .replace("%server%", packet.getServer())
                 .replace("%player%", packet.getSender())
-                .replace("%reason%", packet.getRequest())
-                .split("\n");
+                .replace("%message%", packet.getRequest())
+                .split("%newline%");
         for (String s : message) {
             Clickable clickable = new Clickable(s,
                     Locale.HELPOP_CLICK_MESSAGE.getString()
-                            .replace("<player>", packet.getSender()),
+                            .replace("%player%", packet.getSender()),
                     ClickEvent.Action.SUGGEST_COMMAND,
-                    "/msg " + packet.getSender()
+                    "/msg " + ChatColor.stripColor(packet.getSender())
             );
 
             Bukkit.getOnlinePlayers().forEach(player -> {

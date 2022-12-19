@@ -186,7 +186,7 @@ public enum Locale {
     /* CONVERSAION */
     CONVERSATION_FORMAT_SENT(MESSAGES.get(), "conversation.format.sent", "&e(To %player%&e) &f%message%"),
     CONVERSATION_FORMAT_RECEIVED(MESSAGES.get(), "conversation.format.received", "&e(From %player%&e) &f%message%"),
-    CONVERSATION_FORMAT_SOCIAL_SPY(MESSAGES.get(), "conversation.format.social-spy", "&7[&cSPY&7] &e(<sender> &7» <target>&e) &7<message>"),
+    CONVERSATION_FORMAT_SOCIAL_SPY(MESSAGES.get(), "conversation.format.social-spy", "&7[&cSPY&7] &e(%sender% &7» %target%&e) &7%message%"),
 
     /* GRANT */
     GRANT_PLAYER(MESSAGES.get(), "grant.message", "&aYou have granted the rank %rank% &ato %player% &afor a duration of %duration%&a."),
@@ -202,13 +202,13 @@ public enum Locale {
     /* REPORT & HELPOP */
     REPORT_MESSAGE(MESSAGES.get(), "report.message", "&aYour report has been sent to the staff team."),
     HELPOP_MESSAGE(MESSAGES.get(), "helpop.message", "&aYou have successfully sent a request, a staff member will answer you shortly."),
-    REPORT_FORMAT(MESSAGES.get(), "report.format", "&9[REPORT] &d[%server%] %player% &9reported %target% \\n  &7» &9Reason: &3%reason%"),
+    REPORT_FORMAT(MESSAGES.get(), "report.format", "&9[REPORT] &3[%server%] %player% &9reported %target% %newline%  &7» &9Reason: &3%reason%"),
     REPORT_CLICK_MESSAGE(MESSAGES.get(), "report.click-message", "&eClick to join %server%"),
-    HELPOP_FORMAT(MESSAGES.get(), "helpop.format", "&2[HELPOP] &d[%server%] %player% &2needs help \\n  &7» &Request: &a%message%"),
+    HELPOP_FORMAT(MESSAGES.get(), "helpop.format", "&2[HELPOP] &3[%server%] %player% &2needs help %newline%  &7» &aRequest: &a%message%"),
     HELPOP_CLICK_MESSAGE(MESSAGES.get(), "helpop.click-message", "&eClick to answer %player%"),
 
     /* GENERAL COMMANDS */
-    PING(MESSAGES.get(), "ping", "&aYour ping is %ping%ms."),
+    PING(MESSAGES.get(), "ping.self", "&aYour ping is %ping%ms."),
     PING_OTHER(MESSAGES.get(), "ping.other", "&a%player%'s ping is %ping%ms &7(difference: %difference%ms)"),
     RENAME(MESSAGES.get(), "rename", "&aYou have successfully renamed your %item% to &r%name%&a."),
 
@@ -296,7 +296,11 @@ public enum Locale {
     }
 
     public String getString() {
-        return CC.translate((String) this.def);
+        return CC.translate(s());
+    }
+
+    public String getRawString() {
+        return s();
     }
 
     public String getStringNetwork() {
@@ -317,6 +321,10 @@ public enum Locale {
 
     public List<String> getStringList() {
         return (List<String>) this.def;
+    }
+
+    private String s() {
+        return ((String) this.def).replace("\\n", "\n").replace("\n", "\n");
     }
 
 
