@@ -11,9 +11,10 @@ public class StaffSettings implements IStaffSettings {
 
     private boolean socialSpy = false;
     private boolean vanished = false;
+
     private boolean staffChat = false;
     private boolean adminChat = false;
-    private boolean reportAlerts = false;
-    private boolean requestAlerts = false;
+
+    private StaffAlerts alerts = new StaffAlerts();
 
 }

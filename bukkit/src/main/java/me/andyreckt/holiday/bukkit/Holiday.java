@@ -97,7 +97,7 @@ public final class Holiday extends JavaPlugin implements Listener {
             this.setupListeners();
             this.setupCommands();
             this.setupSoftDependencies();
-            this.setupOthers();
+            this.finishSetup();
 
             logInformation(time);
         } catch (Exception ex) {
@@ -173,7 +173,6 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.scheduledExecutor = Executors.newScheduledThreadPool(2);
     }
 
-
     public void setupConfigFiles() {
         Locale.init(this);
         Perms.init(this);
@@ -203,14 +202,12 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     private void setupSoftDependencies() {
-
-    }
-
-    private void setupOthers() {
         if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
             this.protocolEnabled = true;
         }
+    }
 
+    private void finishSetup() {
         Tasks.runAsyncLater(() -> {
             joinable = true;
             String str = Locale.SERVER_STARTUP.getString()

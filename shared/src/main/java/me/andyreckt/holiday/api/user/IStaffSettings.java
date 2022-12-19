@@ -4,17 +4,17 @@ public interface IStaffSettings {
 
     boolean isSocialSpy();
     boolean isVanished();
+
+    IStaffAlerts getAlerts();
+
     boolean isStaffChat();
     boolean isAdminChat();
-    boolean isReportAlerts();
-    boolean isRequestAlerts();
 
     void setSocialSpy(boolean socialSpy);
     void setVanished(boolean vanished);
+
     void setStaffChat(boolean staffChat);
     void setAdminChat(boolean adminChat);
-    void setReportAlerts(boolean reportAlerts);
-    void setRequestAlerts(boolean requestAlerts);
 
     //TODO: Change the alerts to their own object. -> Alerts for every staff command to limit abuse.
 

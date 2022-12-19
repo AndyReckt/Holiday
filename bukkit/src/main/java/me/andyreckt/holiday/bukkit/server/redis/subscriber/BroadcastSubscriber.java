@@ -11,9 +11,16 @@ public class BroadcastSubscriber implements PacketListener {
     @IncomingPacketHandler
     public void onReceive(BroadcastPacket packet) {
         if(packet.getPermission() != null) {
-            Bukkit.getOnlinePlayers().stream()
-                    .filter(player -> player.hasPermission(packet.getPermission()))
-                    .forEach(player -> player.sendMessage(CC.translate(packet.getMessage())));
+            if (packet.getAlertType() != null) {
+                Bukkit.getOnlinePlayers().stream()
+                        .filter(player -> player.hasPermission(packet.getPermission()))
+                        .filter(player -> packet.getAlertType().isAlerts(player.getUniqueId()))
+                        .forEach(player -> player.sendMessage(CC.translate(packet.getMessage())));
+            } else {
+                Bukkit.getOnlinePlayers().stream()
+                        .filter(player -> player.hasPermission(packet.getPermission()))
+                        .forEach(player -> player.sendMessage(CC.translate(packet.getMessage())));
+            }
         } else {
             Bukkit.broadcastMessage(CC.translate(packet.getMessage()));
         }
