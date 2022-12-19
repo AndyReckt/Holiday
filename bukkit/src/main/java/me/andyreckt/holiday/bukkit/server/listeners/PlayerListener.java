@@ -82,6 +82,7 @@ public class PlayerListener implements Listener {
         if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) return;
 
         Server server = Holiday.getInstance().getThisServer();
+        if (!server.isWhitelisted()) return;
         IRank rank = server.getWhitelistRank();
 
         if (profile.getHighestRank().isAboveOrEqual(rank)) return;
