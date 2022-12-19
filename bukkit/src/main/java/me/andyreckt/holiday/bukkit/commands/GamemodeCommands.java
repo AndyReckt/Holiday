@@ -9,6 +9,7 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
@@ -58,7 +59,8 @@ public class GamemodeCommands {
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%gamemode%", target.getGameMode().name());
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(string, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+            Holiday.getInstance().getApi().getRedis().sendPacket(
+                    new BroadcastPacket(string, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.GAMEMODE));
         } else {
             target.sendMessage(Locale.GAMEMODE_UPDATED_TARGET.getString().replace("%gamemode%", target.getGameMode().name()));
             sender.sendMessage(Locale.GAMEMODE_UPDATED_OTHER.getString().replace("%gamemode%", target.getGameMode().name()).replace("%player%", target.getName()));
@@ -67,7 +69,8 @@ public class GamemodeCommands {
                     .replace("%executor%", sender instanceof Player ? Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())) : "Console")
                     .replace("%gamemode%", target.getGameMode().name())
                     .replace("%player%", target.getName());
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(string, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+            Holiday.getInstance().getApi().getRedis().sendPacket(
+                    new BroadcastPacket(string, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.GAMEMODE));
         }
     }
 }

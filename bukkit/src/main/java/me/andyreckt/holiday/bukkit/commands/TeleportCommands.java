@@ -5,6 +5,7 @@ import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -19,7 +20,8 @@ public class TeleportCommands {
         String message = Locale.TELEPORT_STAFF_PLAYER_ALL.getString()
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())));
-        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+        Holiday.getInstance().getApi().getRedis().sendPacket(
+                new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.TELEPORT));
     }
 
     @Command(names = {"teleport", "tp"}, permission = Perms.TELEPORT, description = "Teleport to a player.", usage = "/tp <player>")
@@ -29,7 +31,8 @@ public class TeleportCommands {
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
                 .replace("%player%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
-        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+        Holiday.getInstance().getApi().getRedis().sendPacket(
+                new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.TELEPORT));
     }
 
     @Command(names = {"teleporthere", "tph", "tphere", "s"}, permission = Perms.TELEPORT_HERE, description = "Teleport a player to you.", usage = "/tph <player>")
@@ -56,7 +59,8 @@ public class TeleportCommands {
                 .replace("%x%", String.valueOf(x))
                 .replace("%y%", String.valueOf(y))
                 .replace("%z%", String.valueOf(z));
-        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+        Holiday.getInstance().getApi().getRedis().sendPacket(
+                new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.TELEPORT));
     }
 
 }

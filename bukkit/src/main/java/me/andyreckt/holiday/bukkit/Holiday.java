@@ -21,6 +21,7 @@ import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.menu.MenuAPI;
+import me.andyreckt.holiday.bukkit.util.menu.anvilgui.AnvilGUI;
 import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.bukkit.util.sunset.Sunset;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.ProfileParameterType;
@@ -30,6 +31,7 @@ import me.andyreckt.holiday.bukkit.util.text.StringUtils;
 import me.andyreckt.holiday.bukkit.util.uuid.UUIDCache;
 import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
+import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
@@ -149,7 +151,7 @@ public final class Holiday extends JavaPlugin implements Listener {
                 new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
                 new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
                 new ConversationCommands(), new GrantCommands(), new ShutdownCommands(),
-                new GeneralCommands(), new OtherCommands()
+                new GeneralCommands(), new OtherCommands(), new StaffCommands()
         ).forEach(commandManager::registerCommands);
         this.commandManager.removeCommands(Locale.DISABLED_COMMANDS.getStringList());
     }
@@ -213,7 +215,7 @@ public final class Holiday extends JavaPlugin implements Listener {
             joinable = true;
             String str = Locale.SERVER_STARTUP.getString()
                     .replace("%server%", thisServer.getServerName());
-            api.getRedis().sendPacket(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
+            api.getRedis().sendPacket(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER));
         }, 5 * 20L);
     }
 
@@ -246,7 +248,7 @@ public final class Holiday extends JavaPlugin implements Listener {
     public void onDisable() {
         String str = Locale.SERVER_SHUTDOWN.getString()
                 .replace("%server%", thisServer.getServerName());
-        api.getRedis().sendPacket(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
+        api.getRedis().sendPacket(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER));
         this.serverTask.cancel();
         this.scheduledExecutor.shutdownNow();
     }

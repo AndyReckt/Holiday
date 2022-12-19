@@ -10,6 +10,7 @@ import me.andyreckt.holiday.bukkit.util.player.PermissionUtils;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
+import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import me.andyreckt.holiday.core.util.text.HashUtils;
 import org.bukkit.entity.Player;
@@ -72,7 +73,8 @@ public class PlayerListener implements Listener {
         event.setKickMessage(CC.translate(kickMessage));
         String toSend = Locale.PUNISHMENT_BANNED_LOGIN_ALERT.getString()
                 .replace("%player%", player.getName());
-        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get()));
+        Holiday.getInstance().getApi().getRedis().sendPacket(
+                new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.BANNED_LOGIN));
         //TODO: broadcast alt login try
     }
 
