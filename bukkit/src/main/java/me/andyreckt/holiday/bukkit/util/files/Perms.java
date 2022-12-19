@@ -48,7 +48,16 @@ public enum Perms {
     GRANTS_EDIT("command.grants.edit", "core.command.grants.edit"),
     REBOOT("command.reboot", "core.command.reboot"),
     RENAME("command.rename", "core.command.rename"),
-
+    GARBAGE("command.garbage", "core.command.garbage"),
+    FLY("command.fly", "core.command.fly"),
+    GIVE("command.give", "core.command.give"),
+    GIVEALL("command.giveall", "core.command.giveall"),
+    CRAFT("command.craft", "core.command.craft"),
+    ENCHANT("command.enchant", "core.command.enchant"),
+    CLEAR("command.clear", "core.command.clear"),
+    HEAL("command.heal", "core.command.heal"),
+    FEED("command.feed", "core.command.feed"),
+    DEMOMODE("command.demomode", "core.command.demomode"),
 
     /* OTHER */
     NONE(null, ""),

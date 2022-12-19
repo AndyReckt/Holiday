@@ -77,6 +77,8 @@ public final class Holiday extends JavaPlugin implements Listener {
     private ServerTask serverTask;
     @Setter private RebootTask rebootTask;
 
+    private boolean protocolEnabled = false;
+
 
     @Override
     public void onEnable() {
@@ -148,7 +150,7 @@ public final class Holiday extends JavaPlugin implements Listener {
                 new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
                 new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
                 new ConversationCommands(), new GrantCommands(), new ShutdownCommands(),
-                new GeneralCommands()
+                new GeneralCommands(), new OtherCommands()
         ).forEach(commandManager::registerCommands);
     }
 
@@ -205,6 +207,10 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     private void setupOthers() {
+        if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+            this.protocolEnabled = true;
+        }
+
         Tasks.runAsyncLater(() -> {
             joinable = true;
             String str = Locale.SERVER_STARTUP.getString()

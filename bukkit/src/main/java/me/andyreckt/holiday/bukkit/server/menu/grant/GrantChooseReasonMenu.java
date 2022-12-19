@@ -89,8 +89,13 @@ public class GrantChooseReasonMenu extends GlassMenu {
                         .replace("%rank%", rank.getDisplayName())
                         .replace("%duration%", TimeUtil.getDuration(duration))
                         .replace("%reason%", reason);
-
+                String str2 = Locale.GRANT_PLAYER.getString()
+                        .replace("%rank%", rank.getDisplayName())
+                        .replace("%duration%", TimeUtil.getDuration(duration))
+                        .replace("%reason%", reason);
+                player.sendMessage(CC.translate(str2));
                 Holiday.getInstance().getApi().getRedis().sendPacket(new PlayerMessagePacket(profile.getUuid(), str));
+
             },
                 new ItemBuilder(Material.ENCHANTED_BOOK)
                         .displayname(CC.SECONDARY + "Confirm Grant")
