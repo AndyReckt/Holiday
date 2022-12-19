@@ -13,10 +13,7 @@ import me.andyreckt.holiday.bukkit.server.listeners.PlayerListener;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8;
-import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
-import me.andyreckt.holiday.bukkit.server.redis.packet.MessagePacket;
-import me.andyreckt.holiday.bukkit.server.redis.packet.PlayerMessagePacket;
-import me.andyreckt.holiday.bukkit.server.redis.packet.ReportPacket;
+import me.andyreckt.holiday.bukkit.server.redis.packet.*;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.*;
 import me.andyreckt.holiday.bukkit.server.tasks.RebootTask;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
@@ -139,6 +136,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.commandManager.setPermissionMessage(Locale.NO_PERMISSION.getString());
         this.commandManager.registerType(new RankParameterType(), IRank.class);
         this.commandManager.registerType(new ProfileParameterType(), Profile.class);
+
         Arrays.asList(
                 new DebugCommand(), new RankCommand(), new ChatCommand(),
                 new WhitelistCommand(), new ServerManagerCommand(),
@@ -179,7 +177,7 @@ public final class Holiday extends JavaPlugin implements Listener {
     }
 
     private void setupManagers() {
-        this.uuidCache = new UUIDCache();
+        this.uuidCache = new UUIDCache(this);
         this.menuAPI = new MenuAPI(this);
         this.chatManager = new ChatManager(this);
     }
@@ -188,12 +186,13 @@ public final class Holiday extends JavaPlugin implements Listener {
         Arrays.asList(
                 new PlayerListener(), new ChatListener(), this
         ).forEach(this::addListener);
+
         api.getRedis().registerAdapter(CrossServerCommandPacket.class, new ServerSubscriber());
         api.getRedis().registerAdapter(BroadcastPacket.class, new BroadcastSubscriber());
         api.getRedis().registerAdapter(MessagePacket.class, new MessageSubscriber());
         api.getRedis().registerAdapter(PlayerMessagePacket.class, new PlayerMessageSubscriber());
         api.getRedis().registerAdapter(ReportPacket.class, new ReportSubscriber());
-
+        api.getRedis().registerAdapter(HelpopPacket.class, new HelpopSubscriber());
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
@@ -259,7 +258,15 @@ public final class Holiday extends JavaPlugin implements Listener {
         return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getName();
     }
 
+    public String getDisplayNameWithColorAndVanish(Profile profile) {
+        return (profile.getStaffSettings().isVanished() ? CC.GRAY + "*" : "") + getDisplayNameWithColor(profile);
+    }
+
     public static String getIP() {
+        if (Locale.USE_CUSTOM_IP.getBoolean()) {
+            return Locale.CUSTOM_IP.getString();
+        }
+
         String urlString = "https://checkip.amazonaws.com/";
         try {
             URL url = new URL(urlString);
@@ -268,7 +275,7 @@ public final class Holiday extends JavaPlugin implements Listener {
             }
         } catch (IOException ignored) {}
 
-        return "Not Found";
+        return "127.0.0.1";
     }
 
 }

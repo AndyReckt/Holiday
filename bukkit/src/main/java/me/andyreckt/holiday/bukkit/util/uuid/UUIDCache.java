@@ -15,16 +15,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class UUIDCache {
 
     private static final Map<UUID, String> map = new ConcurrentHashMap<>();
+    private final Holiday plugin;
 
-    public UUIDCache() {
-        RMap<String, String> cache = Holiday.getInstance().getApi().getRedis().getClient().getMap("uuid-cache");
+    public UUIDCache(Holiday plugin) {
+        this.plugin = plugin;
+
+        RMap<String, String> cache = plugin.getApi().getRedis().getClient().getMap("uuid-cache");
         for (Map.Entry<String, String> cacheEntry : cache.entrySet()) {
             UUID uuid = UUID.fromString(cacheEntry.getKey());
             String name = cacheEntry.getValue();
             map.put(uuid, name);
         }
-        Holiday.getInstance().getApi().getRedis().registerAdapter(UpdateUUIDCachePacket.class, new UpdateUUIDCacheSubscriber());
-        new UUIDCacheListener(Holiday.getInstance());
+
+        this.plugin.getApi().getRedis().registerAdapter(UpdateUUIDCachePacket.class, new UpdateUUIDCacheSubscriber());
+        new UUIDCacheListener(plugin);
     }
 
     public UUID uuid(String name) {
@@ -42,8 +46,8 @@ public final class UUIDCache {
 
     public void update(final UUID uuid, final String name) {
         map.put(uuid, name);
-        Holiday.getInstance().getApi().getRedis().getClient().getMap("uuid-cache").put(uuid.toString(), name);
-        Holiday.getInstance().getApi().getRedis().sendPacket(new UpdateUUIDCachePacket(uuid, name));
+        this.plugin.getApi().getRedis().getClient().getMap("uuid-cache").put(uuid.toString(), name);
+        this.plugin.getApi().getRedis().sendPacket(new UpdateUUIDCachePacket(uuid, name));
     }
 
     @RequiredArgsConstructor @Getter

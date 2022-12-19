@@ -21,6 +21,7 @@ public enum Perms {
     STAFF_SWITCH("staff.switch", "core.staff.switch"),
     STAFF_SOCIAL_SPY("staff.social-spy", "core.staff.socialspy"),
     STAFF_VIEW_REPORTS("staff.view-reports", "core.staff.reports"),
+    STAFF_VIEW_HELPOP("staff.view-helpop", "core.staff.helpop"),
 
     /* ADMIN */
     ADMIN_CHAT("admin.admin-chat", "core.admin.chat"),
@@ -46,6 +47,7 @@ public enum Perms {
     GRANTS_VIEW("command.grants.view", "core.command.grants.view"),
     GRANTS_EDIT("command.grants.edit", "core.command.grants.edit"),
     REBOOT("command.reboot", "core.command.reboot"),
+    RENAME("command.rename", "core.command.rename"),
 
 
     /* OTHER */

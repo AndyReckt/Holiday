@@ -1,16 +1,20 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.server.redis.packet.HelpopPacket;
 import me.andyreckt.holiday.bukkit.server.redis.packet.ReportPacket;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
+import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
+import me.andyreckt.holiday.bukkit.util.other.PlayerList;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +39,7 @@ public class GeneralCommands {
             Cooldown oldCd = reportCooldownMap.get(sender.getUniqueId());
             if (oldCd.hasExpired()) reportCooldownMap.remove(sender.getUniqueId());
             else {
-                sender.sendMessage(Locale.COOLDOWN.getString().replace("%time%", TimeUtil.getDuration(oldCd.getRemaining()))));
+                sender.sendMessage(Locale.COOLDOWN.getString().replace("%time%", TimeUtil.getDuration(oldCd.getRemaining())));
                 return;
             }
         }
@@ -60,42 +64,38 @@ public class GeneralCommands {
     @Command(names = {"request", "helpop", "helpme", "question", "ask",}, async = true)
     public void request(Player sender, @Param(name = "reason", wildcard = true) String reason) {
 
-        BasicConfigurationFile messages = Holiday.getInstance().getMessages();
-
         if (helpopCooldownMap.containsKey(sender.getUniqueId())) {
             Cooldown oldCd = helpopCooldownMap.get(sender.getUniqueId());
             if (oldCd.hasExpired()) helpopCooldownMap.remove(sender.getUniqueId());
             else {
-                sender.sendMessage(CC.translate(messages.getString("COMMANDS.GENERAL.HELPOP.COOLDOWN").replace("<time>", TimeUtil.getDuration(oldCd.getRemaining()))));
+                sender.sendMessage(Locale.COOLDOWN.getString().replace("%time%", TimeUtil.getDuration(oldCd.getRemaining())));
                 return;
             }
         }
 
-        Cooldown cd = Cooldown.fromSeconds(Holiday.getInstance().getSettings().getInteger("COOLDOWNS.HELPOP"));
+        Cooldown cd = Cooldown.fromSeconds(Locale.HELPOP_COOLDOWN.getInt());
         helpopCooldownMap.put(sender.getUniqueId(), cd);
 
-        sender.sendMessage(CC.translate(messages.getString("COMMANDS.GENERAL.HELPOP.SUBMITTED")));
-        Holiday.getInstance().getRedis().sendPacket(new StaffMessages.HelpopPacket(
-                Holiday.getInstance().getProfileHandler().getByPlayer(sender).getDisplayName(),
+        sender.sendMessage(Locale.HELPOP_MESSAGE.getString());
+        Holiday.getInstance().getApi().getRedis().sendPacket(new HelpopPacket(
+                Holiday.getInstance().getDisplayNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())),
                 reason,
-                Holiday.getInstance().getSettings().getString("SERVER.NICENAME")
+                Holiday.getInstance().getThisServer().getServerName()
         ));
     }
 
     @Command(names = {"ping", "ms", "latency"})
     public void ping(Player sender, @Param(name = "target", baseValue = "self") Player target) {
         if (target != sender) {
-            for (String s : Holiday.getInstance().getMessages().getStringList("COMMANDS.GENERAL.PING.OTHER")) {
-                sender.sendMessage(CC.translate(
-                        s.replace("<ping>", String.valueOf(Utilities.getPing(target)))
-                                .replace("<player>", Holiday.getInstance().getProfileHandler().getByPlayer(target).getDisplayNameWithColor())
-                                .replace("<difference>",
-                                        String.valueOf((Math.max(Utilities.getPing(sender), Utilities.getPing(target)) - Math.min(Utilities.getPing(sender), Utilities.getPing(target))))
-                                )));
-            }
+            String diff = String.valueOf(Math.max(sender.spigot().getPing(), target.spigot().getPing()) - Math.min(sender.spigot().getPing(), target.spigot().getPing()));
+            String str = Locale.PING_OTHER.getString()
+                    .replace("%player%", target.getName())
+                    .replace("%ping%", String.valueOf(target.spigot().getPing()))
+                    .replace("%difference%", diff);
+
+            sender.sendMessage(str);
         } else {
-            sender.sendMessage(CC.translate(
-                    Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.PING.SELF").replace("<ping>", String.valueOf(Utilities.getPing(target)))));
+            sender.sendMessage(Locale.PING.getString().replace("%ping%", String.valueOf(sender.spigot().getPing())));
         }
     }
 
@@ -103,9 +103,9 @@ public class GeneralCommands {
     public void list(CommandSender sender) {
         StringBuilder builder = new StringBuilder();
 
-        Rank[] ranks = Holiday.getInstance().getRankHandler().ranks().toArray(new Rank[]{});
+        IRank[] ranks = Holiday.getInstance().getApi().getRanksSorted().toArray(new IRank[]{});
 
-        Arrays.stream(ranks).sorted((o1, o2) -> -(o1.getPriority() - o2.getPriority())).filter(Rank::isVisible).forEach(rank
+        Arrays.stream(ranks).filter(IRank::isVisible).forEach(rank
                 -> builder.append(CC.translate(rank.getDisplayName())).append(CC.GRAY).append(", "));
 
         builder.setCharAt(builder.length() - 2, '.');
@@ -124,7 +124,7 @@ public class GeneralCommands {
         sender.sendMessage(CC.translate(builder.toString()));
     }
 
-    @Command(names = "rename", permission = "holiday.rename")
+    @Command(names = "rename", permission = Perms.RENAME)
     public void rename(Player sender, @Param(name = "name", wildcard = true) String name) {
         ItemStack is = sender.getItemInHand();
         if (is == null || is.getType().equals(Material.AIR)) {
@@ -139,9 +139,9 @@ public class GeneralCommands {
 
         sender.updateInventory();
         sender.sendMessage(CC.translate(
-                Holiday.getInstance().getMessages().getString("COMMANDS.GENERAL.RENAME")
-                        .replace("<item>", itemName)
-                        .replace("<name>", name)
+                Locale.RENAME.getString()
+                        .replace("%item%", itemName)
+                        .replace("%name%", name)
         ));
     }
 

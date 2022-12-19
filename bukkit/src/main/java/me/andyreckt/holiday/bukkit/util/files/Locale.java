@@ -35,6 +35,8 @@ public enum Locale {
     /* SERVER */
     SERVER_ID(SETTINGS.get(), "server.bungee-name", "$undefined"),
     SERVER_NAME(SETTINGS.get(), "server.name", "Unknown"),
+    USE_CUSTOM_IP(SETTINGS.get(), "server.use-custom-ip", false),
+    CUSTOM_IP(SETTINGS.get(), "server.custom-ip", "172.18.0.1"),
     BANNED_JOIN(SETTINGS.get(), "server.banned-join", false),
     FALLBACK_SERVER(SETTINGS.get(), "server.fallback-server-id", "lobby"),
     CHAT_ENABLED(SETTINGS.get(), "server.chat.enabled", true),
@@ -71,7 +73,6 @@ public enum Locale {
     HELPOP_COOLDOWN(SETTINGS.get(), "cooldowns.helpop-in-seconds", 150),
 
     /* SERVER STARTUP */
-
     SERVER_STARTUP(MESSAGES.get(), "server.startup-alert", "&c[A] &a%server% has just started and is now joinable!"),
     SERVER_SHUTDOWN(MESSAGES.get(), "server.shutdown-alert", "&c[A] %server% just went offline and is no longer joinable!"),
 
@@ -200,9 +201,16 @@ public enum Locale {
 
     /* REPORT & HELPOP */
     REPORT_MESSAGE(MESSAGES.get(), "report.message", "&aYour report has been sent to the staff team."),
-    HELPOP_MESSAGE(MESSAGES.get(), "helpop.message", "&aYou have successfully sent a helpop, a staff member will answer you shortly."),
+    HELPOP_MESSAGE(MESSAGES.get(), "helpop.message", "&aYou have successfully sent a request, a staff member will answer you shortly."),
     REPORT_FORMAT(MESSAGES.get(), "report.format", "&9[REPORT] &d[%server%] %player% &9reported %target% \\n  &7» &9Reason: &3%reason%"),
     REPORT_CLICK_MESSAGE(MESSAGES.get(), "report.click-message", "&eClick to join %server%"),
+    HELPOP_FORMAT(MESSAGES.get(), "helpop.format", "&2[HELPOP] &d[%server%] %player% &2needs help \\n  &7» &Request: &a%message%"),
+    HELPOP_CLICK_MESSAGE(MESSAGES.get(), "helpop.click-message", "&eClick to answer %player%"),
+
+    /* GENERAL COMMANDS */
+    PING(MESSAGES.get(), "ping", "&aYour ping is %ping%ms."),
+    PING_OTHER(MESSAGES.get(), "ping.other", "&a%player%'s ping is %ping%ms &7(difference: %difference%ms)"),
+    RENAME(MESSAGES.get(), "rename", "&aYou have successfully renamed your %item% to &r%name%&a."),
 
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
