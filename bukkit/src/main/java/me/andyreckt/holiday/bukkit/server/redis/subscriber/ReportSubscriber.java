@@ -1,10 +1,8 @@
 package me.andyreckt.holiday.bukkit.server.redis.subscriber;
 
 import me.andyreckt.holiday.bukkit.server.redis.packet.ReportPacket;
-import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.Clickable;
 import me.andyreckt.holiday.core.util.redis.messaging.IncomingPacketHandler;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketListener;

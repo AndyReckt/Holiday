@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
+import me.andyreckt.holiday.bungee.listener.PermissionsListener;
 import me.andyreckt.holiday.bungee.listener.StaffSwitchListener;
 import me.andyreckt.holiday.bungee.tasks.GrantsUpdateTask;
 import me.andyreckt.holiday.bungee.tasks.OnlinePlayersTask;
@@ -36,6 +37,7 @@ public class Bungee extends Plugin {
         new ServerCheckerTask();
         new GrantsUpdateTask();
         getProxy().getPluginManager().registerListener(this, new StaffSwitchListener());
+        getProxy().getPluginManager().registerListener(this, new PermissionsListener());
     }
 
     public String getNameWithColor(Profile profile) {

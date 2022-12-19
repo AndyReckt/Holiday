@@ -7,7 +7,7 @@ import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
-import me.andyreckt.holiday.bukkit.util.other.Utilities;
+import me.andyreckt.holiday.bukkit.util.player.PlayerUtils;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.bukkit.Material;
@@ -91,7 +91,7 @@ public class ServerListMenu extends PaginatedMenu {
             switch (clickType) {
                 case LEFT:
                 case RIGHT:
-                    Utilities.sendToServer(player, server.getServerName());
+                    PlayerUtils.sendToServer(player, server.getServerName());
                     break;
                 case DROP:
                 case CONTROL_DROP:

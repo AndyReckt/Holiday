@@ -54,6 +54,21 @@ public class Sunset {
 
 
 
+    public void removeCommands(List<String> commands) {
+        for (org.bukkit.command.Command command : getCommandMap().getCommands()) {
+            if (commands.contains(command.getName())) {
+                command.unregister(getCommandMap());
+            }
+            if (command.getAliases() != null) {
+                for (String alias : command.getAliases()) {
+                    if (commands.contains(alias)) {
+                        command.unregister(getCommandMap());
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * Scans all the static methods in a class and checks if any is a command.

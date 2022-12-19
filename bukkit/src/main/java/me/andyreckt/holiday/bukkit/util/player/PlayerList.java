@@ -1,4 +1,4 @@
-package me.andyreckt.holiday.bukkit.util.other;
+package me.andyreckt.holiday.bukkit.util.player;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

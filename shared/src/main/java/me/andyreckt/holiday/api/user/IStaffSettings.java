@@ -16,6 +16,4 @@ public interface IStaffSettings {
     void setStaffChat(boolean staffChat);
     void setAdminChat(boolean adminChat);
 
-    //TODO: Change the alerts to their own object. -> Alerts for every staff command to limit abuse.
-
 }

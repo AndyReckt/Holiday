@@ -43,6 +43,13 @@ public enum Locale {
     CHAT_FORMAT(SETTINGS.get(), "server.chat.format", "%prefix%%player%%suffix%&7: %message%"),
     LOGIN_WHITELIST(SETTINGS.get(), "server.whitelist-login", "&eThe server is currently &cWhitelisted&e. \\n &eYou need %rank% &eor above to be able to log into the server."),
 
+    DISABLED_COMMANDS(SETTINGS.get(), "server.disabled-commands", "save-all", "save-off", "save-on", "w",
+            "bukkit:op", "bukkit:deop", "bukkit:ban", "bukkit:kick", "bukkit:mute", "bukkit:tempmute", "bukkit:unmute",
+            "bukkit:tempban", "bukkit:unban", "bukkit:banip", "bukkit:unbanip", "bukkit:tempbanip", "bukkit:banlist",
+            "bukkit:pardon", "bukkit:pardonip", "bukkit:whitelist", "bukkit:reload", "bukkit:stop", "bukkit:save-all",
+            "bukkit:save-off", "bukkit:save-on", "bukkit:say", "bukkit:tell", "bukkit:me",
+            "bukkit:w", "bukkit:broadcast", "bukkit:bc", "bukkit:bcast"),
+
     /* COLORS */
     COLOR_PRIMARY(SETTINGS.get(), "color.primary", "AQUA"),
     COLOR_SECONDARY(SETTINGS.get(), "color.secondary", "DARK_AQUA"),

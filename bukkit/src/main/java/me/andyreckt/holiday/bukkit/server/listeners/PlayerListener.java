@@ -6,6 +6,7 @@ import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
+import me.andyreckt.holiday.bukkit.util.player.PermissionUtils;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
@@ -16,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 public class PlayerListener implements Listener {
@@ -90,5 +92,17 @@ public class PlayerListener implements Listener {
 
         event.setResult(PlayerLoginEvent.Result.KICK_WHITELIST);
         event.setKickMessage(CC.translate(Locale.LOGIN_WHITELIST.getString().replace("%rank%", rank.getDisplayName())));
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onJoinPermissions(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+
+        if (profile.isOp()) {
+            player.setOp(true);
+        }
+
+        PermissionUtils.updatePermissions(player.getUniqueId());
     }
 }

@@ -3,10 +3,9 @@ package me.andyreckt.holiday.bukkit.server.tasks;
 import lombok.Getter;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
-import me.andyreckt.holiday.bukkit.util.other.Utilities;
+import me.andyreckt.holiday.bukkit.util.player.PlayerUtils;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
-import net.sf.cglib.core.Local;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -51,14 +50,14 @@ public class RebootTask {
 
         if (time == 0) {
             Bukkit.broadcastMessage(CC.translate(restart));
-            Bukkit.getOnlinePlayers().forEach(player -> Utilities.sendToServer(player, fallbackServer));
+            Bukkit.getOnlinePlayers().forEach(player -> PlayerUtils.sendToServer(player, fallbackServer));
             Bukkit.getServer().shutdown();
             active = false;
             cancel();
         }
 
         if (time == 2000) {
-            Bukkit.getOnlinePlayers().forEach(player -> Utilities.sendToServer(player, fallbackServer));
+            Bukkit.getOnlinePlayers().forEach(player -> PlayerUtils.sendToServer(player, fallbackServer));
         }
 
         if (rebootTimes.contains(time))

@@ -79,6 +79,9 @@ public class UserProfile implements Profile {
         if (this.permissions.contains("*")) {
             return true;
         }
+        if (permissions.contains("-" + permission)) {
+            return false;
+        }
         if (this.permissions.contains(permission)) {
             return true;
         }
@@ -86,6 +89,11 @@ public class UserProfile implements Profile {
             if (rank.getPermissions().contains("*")) {
                 return true;
             }
+
+            if (rank.getPermissions().contains("-" + permission)) {
+                return false;
+            }
+
             if (rank.getPermissions().contains(permission)) {
                 return true;
             }
@@ -95,6 +103,11 @@ public class UserProfile implements Profile {
                 if (childRank.getPermissions().contains("*")) {
                     return true;
                 }
+
+                if (childRank.getPermissions().contains("-" + permission)) {
+                    return false;
+                }
+
                 if (childRank.getPermissions().contains(permission)) {
                     return true;
                 }

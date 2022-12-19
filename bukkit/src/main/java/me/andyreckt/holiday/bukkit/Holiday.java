@@ -140,7 +140,6 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.commandManager.setPermissionMessage(Locale.NO_PERMISSION.getString());
         this.commandManager.registerType(new RankParameterType(), IRank.class);
         this.commandManager.registerType(new ProfileParameterType(), Profile.class);
-
         Arrays.asList(
                 new DebugCommand(), new RankCommand(), new ChatCommand(),
                 new WhitelistCommand(), new ServerManagerCommand(),
@@ -152,6 +151,7 @@ public final class Holiday extends JavaPlugin implements Listener {
                 new ConversationCommands(), new GrantCommands(), new ShutdownCommands(),
                 new GeneralCommands(), new OtherCommands()
         ).forEach(commandManager::registerCommands);
+        this.commandManager.removeCommands(Locale.DISABLED_COMMANDS.getStringList());
     }
 
     private void setupNms() {
@@ -197,6 +197,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         api.getRedis().registerAdapter(PlayerMessagePacket.class, new PlayerMessageSubscriber());
         api.getRedis().registerAdapter(ReportPacket.class, new ReportSubscriber());
         api.getRedis().registerAdapter(HelpopPacket.class, new HelpopSubscriber());
+        api.getRedis().registerAdapter(PermissionUpdatePacket.class, new PermissionUpdateSubscriber());
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
