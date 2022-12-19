@@ -9,6 +9,7 @@ import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
 import me.andyreckt.holiday.bukkit.util.other.PlayerList;
+import me.andyreckt.holiday.bukkit.util.other.Utilities;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.text.CC;
@@ -87,15 +88,15 @@ public class GeneralCommands {
     @Command(names = {"ping", "ms", "latency"})
     public void ping(Player sender, @Param(name = "target", baseValue = "self") Player target) {
         if (target != sender) {
-            String diff = String.valueOf(Math.max(sender.spigot().getPing(), target.spigot().getPing()) - Math.min(sender.spigot().getPing(), target.spigot().getPing()));
+            String diff = String.valueOf(Math.max(Utilities.getPing(sender), Utilities.getPing(target)) - Math.min(Utilities.getPing(sender), Utilities.getPing(target)));
             String str = Locale.PING_OTHER.getString()
                     .replace("%player%", target.getName())
-                    .replace("%ping%", String.valueOf(target.spigot().getPing()))
+                    .replace("%ping%", String.valueOf(Utilities.getPing(target)))
                     .replace("%difference%", diff);
 
             sender.sendMessage(str);
         } else {
-            sender.sendMessage(Locale.PING.getString().replace("%ping%", String.valueOf(sender.spigot().getPing())));
+            sender.sendMessage(Locale.PING.getString().replace("%ping%", String.valueOf(Utilities.getPing(sender))));
         }
     }
 

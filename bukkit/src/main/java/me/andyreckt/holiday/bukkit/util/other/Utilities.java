@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.util.other;
 
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.util.nms.BukkitReflection;
 import org.bukkit.entity.Player;
 
 import java.io.ByteArrayOutputStream;
@@ -21,5 +22,9 @@ public class Utilities {
         }
 
         player.sendPluginMessage(Holiday.getInstance(), "BungeeCord", b.toByteArray());
+    }
+
+    public static int getPing(Player player) {
+        return BukkitReflection.getPing(player);
     }
 }
