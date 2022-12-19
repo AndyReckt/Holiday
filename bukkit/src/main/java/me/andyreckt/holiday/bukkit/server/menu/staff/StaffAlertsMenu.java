@@ -21,6 +21,7 @@ public class StaffAlertsMenu extends PaginatedMenu {
 
     public StaffAlertsMenu() {
         this.setUpdateAfterClick(true);
+        this.setGlassColor(10);
     }
 
     @Override
@@ -34,10 +35,16 @@ public class StaffAlertsMenu extends PaginatedMenu {
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
         for (AlertType value : AlertType.values()) {
-            if (value.isAdmin() && !player.hasPermission(Perms.ADMIN_VIEW_NOTIFICATIONS.get())) continue;
+            if (value.isAdmin()) continue;
             buttons.put(buttons.size(), new StaffAlertsButton(value, profile));
         }
-        
+
+        for (AlertType value : AlertType.values()) {
+            if (!value.isAdmin()) continue;
+            if (!player.hasPermission(Perms.ADMIN_VIEW_NOTIFICATIONS.get())) continue;
+            buttons.put(buttons.size(), new StaffAlertsButton(value, profile));
+        }
+
         return buttons;
     }
 
@@ -55,7 +62,7 @@ public class StaffAlertsMenu extends PaginatedMenu {
         public ItemStack getButtonItem(Player p0) {
             boolean bool = alert.isAlerts(profile);
             return new ItemBuilder(Material.NOTE_BLOCK)
-                    .displayname(CC.CHAT + alert.getName())
+                    .displayname(CC.SECONDARY + alert.getName())
                     .lore("",
                             CC.CHAT + "Click to " + (bool ? CC.RED + "disable" : CC.GREEN + "enable") + CC.CHAT + " this alert.",
                             "",
