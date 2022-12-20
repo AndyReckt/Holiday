@@ -26,7 +26,12 @@ public class PermissionUtils {
         if (player == null) return;
 
         if (attachments.containsKey(uuid)) {
-            player.removeAttachment(attachments.get(uuid));
+            player.getEffectivePermissions().forEach(permission -> {
+                if (permission.getAttachment() == attachments.get(uuid)) {
+                    player.removeAttachment(attachments.get(uuid));
+                }
+            });
+
             attachments.remove(uuid);
         }
 
