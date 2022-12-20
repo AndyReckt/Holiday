@@ -60,7 +60,7 @@ public class GamemodeCommands {
                     .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%gamemode%", target.getGameMode().name());
             Holiday.getInstance().getApi().getRedis().sendPacket(
-                    new BroadcastPacket(string, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.GAMEMODE));
+                    new BroadcastPacket(string, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
         } else {
             target.sendMessage(Locale.GAMEMODE_UPDATED_TARGET.getString().replace("%gamemode%", target.getGameMode().name()));
             sender.sendMessage(Locale.GAMEMODE_UPDATED_OTHER.getString().replace("%gamemode%", target.getGameMode().name()).replace("%player%", target.getName()));
@@ -70,7 +70,7 @@ public class GamemodeCommands {
                     .replace("%gamemode%", target.getGameMode().name())
                     .replace("%player%", target.getName());
             Holiday.getInstance().getApi().getRedis().sendPacket(
-                    new BroadcastPacket(string, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.GAMEMODE));
+                    new BroadcastPacket(string, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
         }
     }
 }

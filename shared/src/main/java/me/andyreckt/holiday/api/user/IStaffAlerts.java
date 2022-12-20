@@ -5,8 +5,7 @@ public interface IStaffAlerts {
     boolean isReportAlerts();
     boolean isRequestAlerts();
     boolean isChatAlerts();
-    boolean isGamemodeAlerts();
-    boolean isTeleportAlerts();
+    boolean isAbuseAlerts();
     boolean isWhitelistAlerts();
     boolean isServerAlerts();
     boolean isServerManagerAlerts();
@@ -17,8 +16,7 @@ public interface IStaffAlerts {
     void setReportAlerts(boolean reportAlerts);
     void setRequestAlerts(boolean requestAlerts);
     void setChatAlerts(boolean chatAlerts);
-    void setGamemodeAlerts(boolean gamemodeAlerts);
-    void setTeleportAlerts(boolean teleportAlerts);
+    void setAbuseAlerts(boolean gamemodeAlerts);
     void setWhitelistAlerts(boolean whitelistAlerts);
     void setServerAlerts(boolean serverAlerts);
     void setServerManagerAlerts(boolean serverManagerAlerts);

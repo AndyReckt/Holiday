@@ -21,7 +21,7 @@ public class TeleportCommands {
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())));
         Holiday.getInstance().getApi().getRedis().sendPacket(
-                new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.TELEPORT));
+                new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
     @Command(names = {"teleport", "tp"}, permission = Perms.TELEPORT, description = "Teleport to a player.", usage = "/tp <player>")
@@ -32,7 +32,7 @@ public class TeleportCommands {
                 .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
                 .replace("%player%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
         Holiday.getInstance().getApi().getRedis().sendPacket(
-                new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.TELEPORT));
+                new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
     @Command(names = {"teleporthere", "tph", "tphere", "s"}, permission = Perms.TELEPORT_HERE, description = "Teleport a player to you.", usage = "/tph <player>")
@@ -60,7 +60,7 @@ public class TeleportCommands {
                 .replace("%y%", String.valueOf(y))
                 .replace("%z%", String.valueOf(z));
         Holiday.getInstance().getApi().getRedis().sendPacket(
-                new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.TELEPORT));
+                new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
 }

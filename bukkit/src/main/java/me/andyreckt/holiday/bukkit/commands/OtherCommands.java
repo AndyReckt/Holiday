@@ -9,6 +9,8 @@ import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.*;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.StringUtils;
+import me.andyreckt.holiday.core.util.enums.AlertType;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -28,9 +30,22 @@ public class OtherCommands { //TODO: add staff broadcasts
     @Command(names = "fly", permission = Perms.FLY)
     public void fly(Player sender) {
         sender.setAllowFlight(!sender.getAllowFlight());
+        String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
         if (sender.getAllowFlight()) {
             sender.sendMessage(Locale.FLY_ENABLED.getString());
+            String toSend = Locale.FLY_ENABLED_STAFF.getString()
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%executor%", executor);
+            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                    toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
+            ));
         } else {
+            String toSend = Locale.FLY_DISABLED_STAFF.getString()
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%executor%", sender.getName());
+            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                    toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
+            ));
             sender.sendMessage(Locale.FLY_DISABLED.getString());
         }
     }
@@ -39,6 +54,7 @@ public class OtherCommands { //TODO: add staff broadcasts
     public void give(Player sender, @Param(name = "player") Player target, @Param(name = "material") String material, @Param(name = "amount") int amount) {
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         if (mat != null) {
+            String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
             ItemStack Item = new ItemStack(mat, amount);
             PlayerInventory inv = target.getInventory();
             inv.addItem(Item);
@@ -53,6 +69,16 @@ public class OtherCommands { //TODO: add staff broadcasts
                     .replace("%material%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
             target.sendMessage(CC.translate(y));
+
+            String toSend = Locale.GIVE_STAFF.getString()
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%executor%", executor)
+                    .replace("%player%", target.getName())
+                    .replace("%material%", mat.name())
+                    .replace("%amount%", String.valueOf(amount));
+            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                    toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
+            ));
         } else {
             sender.sendMessage(Locale.INVALID_MATERIAL.getString());
         }
@@ -61,6 +87,7 @@ public class OtherCommands { //TODO: add staff broadcasts
     @Command(names = {"giveall"}, permission = Perms.GIVEALL)
     public void giveall(Player sender, @Param(name = "material") String material, @Param(name = "amount") int amount) {
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
+        String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
         if (mat != null) {
             ItemStack Item = new ItemStack(mat, amount);
             String x = Locale.GIVE_ALL.getString()
@@ -77,6 +104,14 @@ public class OtherCommands { //TODO: add staff broadcasts
                 player.updateInventory();
                 player.sendMessage(y);
             }
+            String toSend = Locale.GIVE_ALL_STAFF.getString()
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%executor%", executor)
+                    .replace("%material%", mat.name())
+                    .replace("%amount%", String.valueOf(amount));
+            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                    toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
+            ));
         } else {
             sender.sendMessage(Locale.INVALID_MATERIAL.getString());
         }
@@ -86,6 +121,7 @@ public class OtherCommands { //TODO: add staff broadcasts
     public void giveme(Player sender, @Param(name = "material") String material, @Param(name = "amount") int amount) {
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         if (mat != null) {
+            String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
             ItemStack Item = new ItemStack(mat, amount);
             PlayerInventory inv = sender.getInventory();
             inv.addItem(Item);
@@ -94,6 +130,14 @@ public class OtherCommands { //TODO: add staff broadcasts
                     .replace("%material%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
             sender.sendMessage(x);
+            String toSend = Locale.GIVE_SELF_STAFF.getString()
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%executor%", executor)
+                    .replace("%material%", mat.name())
+                    .replace("%amount%", String.valueOf(amount));
+            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                    toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
+            ));
         } else {
             sender.sendMessage(Locale.INVALID_MATERIAL.getString());
         }
@@ -112,9 +156,17 @@ public class OtherCommands { //TODO: add staff broadcasts
                 clearPlayer(player);
                 player.sendMessage(Locale.CLEAR_SELF.getString());
             } else {
+                String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
                 clearPlayer(target);
                 target.sendMessage(Locale.CLEAR_TARGET.getString().replace("%player%", sender.getName()));
                 player.sendMessage(Locale.CLEAR_SENDER.getString().replace("%player%", target.getName()));
+                String toSend = Locale.CLEAR_PLAYER_STAFF.getString()
+                        .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
+                        .replace("%executor%", executor)
+                        .replace("%player%", target.getName());
+                Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                        toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
+                ));
             }
         } else {
             clearPlayer(target);
@@ -128,11 +180,26 @@ public class OtherCommands { //TODO: add staff broadcasts
         target.setHealth(target.getMaxHealth());
         if (sender instanceof Player) {
             Player player = (Player) sender;
+            String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
             if (target == player) {
                 player.sendMessage(Locale.HEAL_SELF.getString());
+                String toSend = Locale.HEAL_STAFF.getString()
+                        .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
+                        .replace("%executor%", executor)
+                        .replace("%player%", "himself");
+                Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                        toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
+                ));
             } else {
                 target.sendMessage(Locale.HEAL_TARGET.getString().replace("%player%", sender.getName()));
                 player.sendMessage(Locale.HEAL_SENDER.getString().replace("%player%", target.getName()));
+                String toSend = Locale.HEAL_STAFF.getString()
+                        .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
+                        .replace("%executor%", executor)
+                        .replace("%player%", target.getName());
+                Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                        toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
+                ));
             }
         } else {
             target.sendMessage(Locale.HEAL_TARGET.getString().replace("%player%", "Console"));
@@ -201,7 +268,6 @@ public class OtherCommands { //TODO: add staff broadcasts
             sender.sendMessage(CC.translate("&cYou need ProtocolLib in order to run this command"));
             return;
         }
-
 
         final PacketContainer packet = new PacketContainer(PacketType.Play.Server.GAME_STATE_CHANGE);
         packet.getIntegers().write(0, 5);

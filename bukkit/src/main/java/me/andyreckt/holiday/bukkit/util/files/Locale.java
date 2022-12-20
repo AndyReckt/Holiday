@@ -243,6 +243,15 @@ public enum Locale {
     FEED_SELF(MESSAGES.get(), "feed.self", "&aYou have successfully fed yourself."),
     DEMO_SCREEN(MESSAGES.get(), "demo-screen", "&aYou have successfully sent the demo screen to %player%."),
 
+    /* GENERAL COMMANDS STAFF ALERTS */
+    FLY_ENABLED_STAFF(MESSAGES.get(), "fly.enabled-staff", "&b[S] &3[%server%] %executor% &ehas enabled fly mode."),
+    FLY_DISABLED_STAFF(MESSAGES.get(), "fly.disabled-staff", "&b[S] &3[%server%] %executor% &ehas disabled fly mode."),
+    GIVE_STAFF(MESSAGES.get(), "give.sender-staff", "&b[S] &3[%server%] %executor% &ehas given %amount% %item% to %player%."),
+    GIVE_ALL_STAFF(MESSAGES.get(), "give.all-staff", "&b[S] &3[%server%] %executor% &ehas given %amount% %item% to all players."),
+    GIVE_SELF_STAFF(MESSAGES.get(), "give.yourself-staff", "&b[S] &3[%server%] %executor% &ehas given himself %amount% %item%."),
+    CLEAR_PLAYER_STAFF(MESSAGES.get(), "clear.player-staff", "&b[S] &3[%server%] %executor% &ehas cleared the inventory of %player%."),
+    HEAL_STAFF(MESSAGES.get(), "heal.staff", "&b[S] &3[%server%] %executor% &ehas healed %player%."),
+
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
     RANK_ALREADY_EXISTS(MESSAGES.get(), "error.rank-already-exists", "&cA rank with that name already exists."),

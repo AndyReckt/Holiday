@@ -14,10 +14,9 @@ public enum AlertType {
     REQUEST("Request Alerts"),
     SILENT_PUNISHMENT("Silent Punishment Alerts"),
     CHAT("Chat Alerts"),
-    GAMEMODE("Gamemode Alerts"),
-    TELEPORT("Teleport Alerts"),
     WHITELIST("Whitelist Alerts"),
     ALT_LOGIN("Alt Login Alerts"),
+    ABUSE("Abuse Alerts"),
 
     SERVER("Server Alerts", true),
     SERVER_MANAGER("Server Manager Alerts", true),
@@ -42,10 +41,8 @@ public enum AlertType {
                 return profile.getStaffSettings().getAlerts().isRequestAlerts();
             case CHAT:
                 return profile.getStaffSettings().getAlerts().isChatAlerts();
-            case GAMEMODE:
-                return profile.getStaffSettings().getAlerts().isGamemodeAlerts();
-            case TELEPORT:
-                return profile.getStaffSettings().getAlerts().isTeleportAlerts();
+            case ABUSE:
+                return profile.getStaffSettings().getAlerts().isAbuseAlerts();
             case WHITELIST:
                 return profile.getStaffSettings().getAlerts().isWhitelistAlerts();
             case SERVER:
@@ -77,12 +74,8 @@ public enum AlertType {
                 profile.getStaffSettings().getAlerts().setChatAlerts(alerts);
                 HolidayAPI.getUnsafeAPI().saveProfile(profile);
                 break;
-            case GAMEMODE:
-                profile.getStaffSettings().getAlerts().setGamemodeAlerts(alerts);
-                HolidayAPI.getUnsafeAPI().saveProfile(profile);
-                break;
-            case TELEPORT:
-                profile.getStaffSettings().getAlerts().setTeleportAlerts(alerts);
+            case ABUSE:
+                profile.getStaffSettings().getAlerts().setAbuseAlerts(alerts);
                 HolidayAPI.getUnsafeAPI().saveProfile(profile);
                 break;
             case WHITELIST:
