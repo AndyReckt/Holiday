@@ -95,15 +95,16 @@ public class PunishmentRemoveCommands {
         String issuerName = profile == UserProfile.getConsoleProfile() ? "&4Console" : Holiday.getInstance().getNameWithColor(profile);
         String targetName = Holiday.getInstance().getNameWithColor(target);
 
-        toSend = toSend.replace("%player%", issuerName)
-                .replace("%issuer%", targetName)
+        toSend = toSend.replace("%executor%", issuerName)
+                .replace("%player%", targetName)
+                .replace("%silent%", silent ? Locale.PUNISHMENT_SILENT_PREFIX.getString() : "")
                 .replace("%reason%", data.getRevokedReason());
 
         if (!silent) {
             Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend));
         } else {
             Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
-                    Locale.PUNISHMENT_SILENT_PREFIX.getString() + toSend,
+                    toSend,
                     Perms.PUNISHMENTS_SILENT_VIEW.get(),
                     AlertType.SILENT_PUNISHMENT));
         }

@@ -154,8 +154,9 @@ public class PunishmentCommands {
         String issuerName = issuer == UserProfile.getConsoleProfile() ? "&4Console" : Holiday.getInstance().getNameWithColor(issuer);
         String targetName = Holiday.getInstance().getNameWithColor(target);
 
-        toSend = toSend.replace("%player%", issuerName)
-                .replace("%issuer%", targetName)
+        toSend = toSend.replace("%executor%", issuerName)
+                .replace("%player%", targetName)
+                .replace("%silent%", silent ? Locale.PUNISHMENT_SILENT_PREFIX.getString() : "")
                 .replace("%reason%", punishment.getAddedReason())
                 .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
 
@@ -163,7 +164,7 @@ public class PunishmentCommands {
             Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend));
         } else {
             Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
-                    Locale.PUNISHMENT_SILENT_PREFIX.getString() + toSend,
+                    toSend,
                     Perms.PUNISHMENTS_SILENT_VIEW.get(),
                     AlertType.SILENT_PUNISHMENT));
         }
