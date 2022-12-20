@@ -24,7 +24,7 @@ public class PunishmentRemoveCommands {
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Appealed";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.BAN, fReason, silent, sender);
     }
@@ -36,7 +36,7 @@ public class PunishmentRemoveCommands {
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Appealed";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.IP_BAN, fReason, silent, sender);
     }
@@ -48,7 +48,7 @@ public class PunishmentRemoveCommands {
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Appealed";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.MUTE, fReason, silent, sender);
     }
@@ -60,7 +60,7 @@ public class PunishmentRemoveCommands {
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Appealed";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.BLACKLIST, fReason, silent, sender);
     }

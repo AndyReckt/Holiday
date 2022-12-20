@@ -28,7 +28,7 @@ public class PunishmentCommands {
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.PERMANENT, fReason, silent, sender);
     }
@@ -42,7 +42,7 @@ public class PunishmentCommands {
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.PERMANENT, fReason, silent, sender);
     }
@@ -56,7 +56,7 @@ public class PunishmentCommands {
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.PERMANENT, fReason, silent, sender);
     }
@@ -71,7 +71,7 @@ public class PunishmentCommands {
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.getDuration(duration), fReason, silent, sender);
     }
@@ -85,7 +85,7 @@ public class PunishmentCommands {
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.PERMANENT, fReason, silent, sender);
     }
@@ -100,7 +100,7 @@ public class PunishmentCommands {
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.getDuration(duration), fReason, silent, sender);
     }

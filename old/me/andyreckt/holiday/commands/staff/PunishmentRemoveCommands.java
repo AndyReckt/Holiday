@@ -18,7 +18,7 @@ public class PunishmentRemoveCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Appealed";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Appealed";
         unPunish(profile, target, PunishmentType.UNBAN, fReason, silent, sender);
     }
 
@@ -27,7 +27,7 @@ public class PunishmentRemoveCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Appealed";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Appealed";
         unPunish(profile, target, PunishmentType.UNIP_BAN, fReason, silent, sender);
     }
 
@@ -36,7 +36,7 @@ public class PunishmentRemoveCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Appealed";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Appealed";
         unPunish(profile, target, PunishmentType.UNMUTE, fReason, silent, sender);
     }
 
@@ -45,7 +45,7 @@ public class PunishmentRemoveCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Appealed";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Appealed";
         unPunish(profile, target, PunishmentType.UNBLACKLIST, fReason, silent, sender);
     }
 

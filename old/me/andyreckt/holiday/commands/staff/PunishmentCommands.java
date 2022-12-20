@@ -22,7 +22,7 @@ public class PunishmentCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, "ban", PunishmentType.BAN, fReason, silent, sender);
     }
@@ -35,7 +35,7 @@ public class PunishmentCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, "blacklist", PunishmentType.BLACKLIST, fReason, silent, sender);
     }
@@ -48,7 +48,7 @@ public class PunishmentCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, "ip-ban", PunishmentType.IP_BAN, fReason, silent, sender);
     }
@@ -62,7 +62,7 @@ public class PunishmentCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, "tempban", PunishmentType.TEMP_BAN, duration, fReason, silent, sender);
     }
@@ -75,7 +75,7 @@ public class PunishmentCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, "mute", PunishmentType.MUTE, fReason, silent, sender);
     }
@@ -89,7 +89,7 @@ public class PunishmentCommands {
         Profile profile = Holiday.getInstance().getProfileHandler().getByCommandSender(sender);
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
         String fReason = reason.replace("-s", "");
-        if (fReason.equals("")) fReason = "Cheating";
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         punish(profile, target, "tempmute", PunishmentType.TEMP_MUTE, duration, fReason, silent, sender);
     }

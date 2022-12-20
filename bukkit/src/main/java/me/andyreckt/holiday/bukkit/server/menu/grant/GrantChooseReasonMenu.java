@@ -90,6 +90,7 @@ public class GrantChooseReasonMenu extends GlassMenu {
                         .replace("%duration%", TimeUtil.getDuration(duration))
                         .replace("%reason%", reason);
                 String str2 = Locale.GRANT_PLAYER.getString()
+                        .replace("%player%", profile.getName())
                         .replace("%rank%", rank.getDisplayName())
                         .replace("%duration%", TimeUtil.getDuration(duration))
                         .replace("%reason%", reason);
