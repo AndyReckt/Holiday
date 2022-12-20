@@ -245,8 +245,8 @@ public enum Locale {
     KILL_ALL(MESSAGES.get(), "kill-all", "&aYou have removed all the entities. &7(%total%)"),
     MAX_PLAYERS(MESSAGES.get(), "max-players", "&aYou have successfully set the slots to %amount%."),
     ITEM_STACKED(MESSAGES.get(), "item-stacked", "&aYou have successfully stacked your item."),
-    SUDO_PLAYER(MESSAGES.get(), "sudo.player", "&aYou have successfully forced %player% to say %text%."),
-    SUDO_ALL_PLAYER(MESSAGES.get(), "sudo.all.player", "&aYou have successfully forced all players to say %text%."),
+    SUDO_PLAYER(MESSAGES.get(), "sudo.player", "&aYou have successfully forced %player% to say %text%"),
+    SUDO_ALL_PLAYER(MESSAGES.get(), "sudo.all.player", "&aYou have successfully forced all players to say %text%"),
 
 
     /* GENERAL COMMANDS STAFF ALERTS */
@@ -257,8 +257,8 @@ public enum Locale {
     GIVE_SELF_STAFF(MESSAGES.get(), "give.yourself-staff", "&b[S] &3[%server%] %executor% &ehas given himself %amount% %item%."),
     CLEAR_PLAYER_STAFF(MESSAGES.get(), "clear.player-staff", "&b[S] &3[%server%] %executor% &ehas cleared the inventory of %player%."),
     HEAL_STAFF(MESSAGES.get(), "heal.staff", "&b[S] &3[%server%] %executor% &ehas healed %player%."),
-    SUDO_STAFF(MESSAGES.get(), "sudo.staff", "&b[S] &3[%server%] %executor% &ehas forced %player% to say %text%."),
-    SUDO_ALL_STAFF(MESSAGES.get(), "sudo.all.staff", "&b[S] &3[%server%] %executor% &ehas forced all players to say %text%."),
+    SUDO_STAFF(MESSAGES.get(), "sudo.staff", "&b[S] &3[%server%] %executor% &ehas forced %player% to say %text%"),
+    SUDO_ALL_STAFF(MESSAGES.get(), "sudo.all.staff", "&b[S] &3[%server%] %executor% &ehas forced all players to say %text%"),
 
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),

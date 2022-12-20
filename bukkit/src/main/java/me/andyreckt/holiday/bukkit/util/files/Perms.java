@@ -74,6 +74,8 @@ public enum Perms {
     SUDO("command.sudo", "core.command.sudo"),
     SUDOALL("command.sudoall", "core.command.sudoall"),
     INVSEE("command.invsee", "core.command.invsee"),
+    CHECK_PUNISHMENTS("command.check-punishments", "core.command.checkpunishments"),
+    PUNISHMENT_LIST("command.punishment-list", "core.command.punishmentlist"),
 
     /* OTHER */
     NONE(null, ""),

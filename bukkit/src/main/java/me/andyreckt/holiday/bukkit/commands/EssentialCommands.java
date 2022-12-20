@@ -6,6 +6,8 @@ import com.comphenix.protocol.events.PacketContainer;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.server.menu.punishments.check.PunishmentCheckMenu;
+import me.andyreckt.holiday.bukkit.server.menu.punishments.list.PunishmentListMenu;
 import me.andyreckt.holiday.bukkit.server.menu.staff.InvSeeMenu;
 import me.andyreckt.holiday.bukkit.server.redis.packet.HelpopPacket;
 import me.andyreckt.holiday.bukkit.server.redis.packet.ReportPacket;
@@ -509,8 +511,18 @@ public class EssentialCommands {
     }
 
     @Command(names = {"invsee", "inv"}, permission = Perms.INVSEE)
-    public static void invsee(Player player, @Param(name = "player") Player target) {
+    public void invsee(Player player, @Param(name = "player") Player target) {
         new InvSeeMenu(target).openMenu(player);
+    }
+
+    @Command(names = {"check", "c", "checkban", "checkpun", "checkpunishments", "punishments", "bancheck", "mutecheck", "punishmentcheck", "punishcheck", "pcheck"}, permission = Perms.CHECK_PUNISHMENTS)
+    public void check(Player player, @Param(name = "player") Profile target) {
+        new PunishmentCheckMenu(target).openMenu(player);
+    }
+
+    @Command(names = {"punishmentlist", "plist", "banlist", "mutelist", "blacklistlist"}, permission = Perms.PUNISHMENT_LIST)
+    public void punishmentsList(Player player) {
+        new PunishmentListMenu().openMenu(player);
     }
 
 
