@@ -236,14 +236,6 @@ public final class Holiday extends JavaPlugin implements Listener {
         Logger.log(" ");
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void startupCheck(PlayerLoginEvent event) {
-        if (!this.joinable) {
-            event.setKickMessage(CC.translate("&cServer is still starting up."));
-            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
-        }
-    }
-
     @Override
     public void onDisable() {
         String str = Locale.SERVER_SHUTDOWN.getString()

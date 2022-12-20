@@ -19,13 +19,6 @@ import java.util.*;
  */
 public class PlayerUtil {
 
-    public static Comparator<Player> RANK_ORDER = ((o1, o2) -> {
-        Profile p1 = Holiday.getInstance().getProfileHandler().getByUUID(o1.getUniqueId());
-        Profile p2 = Holiday.getInstance().getProfileHandler().getByUUID(o2.getUniqueId());
-        return - (p1.getDisplayRank().getPriority() - p2.getDisplayRank().getPriority());
-    });
-
-
     public static void clearPlayer(Player player) {
         player.setHealth(20.0D);
         player.setFoodLevel(20);

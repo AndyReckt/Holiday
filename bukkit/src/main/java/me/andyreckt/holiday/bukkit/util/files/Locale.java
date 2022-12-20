@@ -79,6 +79,11 @@ public enum Locale {
     REPORT_COOLDOWN(SETTINGS.get(), "cooldowns.report-in-seconds", 300),
     HELPOP_COOLDOWN(SETTINGS.get(), "cooldowns.helpop-in-seconds", 150),
 
+    /* NAMEMC */
+    NAMEMC_MESSAGE(SETTINGS.get(), "namemc.liked-message", "&eThanks for liking our namemc!"),
+    NAMEMC_RANK_ENABLED(SETTINGS.get(), "namemc.rank.enabled", false),
+    NAMEMC_RANK_NAME(SETTINGS.get(), "namemc.rank.name", "Voter"),
+
     /* SERVER STARTUP */
     SERVER_STARTUP(MESSAGES.get(), "server.startup-alert", "&c[A] &a%server% has just started and is now joinable!"),
     SERVER_SHUTDOWN(MESSAGES.get(), "server.shutdown-alert", "&c[A] %server% just went offline and is no longer joinable!"),
@@ -101,7 +106,7 @@ public enum Locale {
     PUNISHMENT_MUTE_REVOKED(MESSAGES.get(), "punishment.revoked.mute", "%silent%&a%player% &ahas been unmuted by %executor% &afor %reason%."),
     PUNISHMENT_BLACKLIST_REVOKED(MESSAGES.get(), "punishment.revoked.blacklist", "%silent%&a%player% &ahas been unblacklisted by %executor% &afor %reason%."),
     PUNISHMENT_BANNED_LOGIN_ALERT(MESSAGES.get(), "punishment.alert.banned", "&c[A] &c%player% tried to join but is banned!"),
-    PUNISHMENT_ALT_LOGIN_ALERT(MESSAGES.get(), "punishment.alert.alt", "&c[A] &c%player% might be alting while banned! &7(%alt%)"),
+    PUNISHMENT_ALT_LOGIN_ALERT(MESSAGES.get(), "punishment.alert.alt", "&c[A] &c%player% might be alting while banned! &7(%alts%)"),
 
     /* RANKS */
     RANK_SUCCESSFULLY_CREATED(MESSAGES.get(), "rank.successfully-created", "&aSuccessfully created rank %rank%."),

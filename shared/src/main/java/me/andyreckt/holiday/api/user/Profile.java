@@ -62,13 +62,11 @@ public interface Profile {
     List<IPunishment> getActivePunishments();
     List<IPunishment> getActivePunishments(IPunishment.PunishmentType type);
 
+    List<Profile> getAlts();
+    List<String> getAltsFormatted();
 
     //TODO: Add disguise-related methods
     //TODO: Add settings-related methods
     //TODO: Add staff-related methods
-
-    List<Profile> getAlts();
-    List<String> formatAlts();
-
 
 }

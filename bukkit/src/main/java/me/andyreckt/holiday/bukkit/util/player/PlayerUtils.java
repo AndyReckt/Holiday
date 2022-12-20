@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class PlayerUtils {
 
@@ -32,14 +33,21 @@ public class PlayerUtils {
         return BukkitReflection.getPing(player);
     }
 
-    public static boolean hasVotedOnNameMC(UUID uuid) {
-        try (Scanner scanner = new Scanner(
-                new URL("https://api.namemc.com/server/" + Locale.NETWORK_IP.getString() + "/likes?profile=" + uuid.toString())
-                        .openStream()).useDelimiter("\\A")) {
-            return Boolean.parseBoolean(scanner.next());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public static CompletableFuture<Boolean> hasVotedOnNameMC(UUID uuid) {
+        String server = Locale.NETWORK_IP.getString();
+
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                URL url = new URL("https://api.namemc.com/server/" + server + "/likes?profile=" + uuid.toString());
+                Scanner scanner = new Scanner(url.openStream());
+
+                return Boolean.parseBoolean(scanner.next());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        });
     }
+
 }

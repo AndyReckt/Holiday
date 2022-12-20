@@ -12,10 +12,7 @@ import me.andyreckt.holiday.core.user.settings.StaffSettings;
 import me.andyreckt.holiday.core.user.settings.UserSettings;
 import me.andyreckt.holiday.core.util.text.HashUtils;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter @Setter
@@ -228,20 +225,37 @@ public class UserProfile implements Profile {
         List<String> ips = getIps();
         HolidayAPI.getUnsafeAPI().getUserManager().getProfiles().forEach((uuid, profile) -> {
             if (profile.getIps().stream().anyMatch(ips::contains)) {
-                toReturn.add(profile);
+                if (!toReturn.contains(profile)) {
+                    toReturn.add(profile);
+                }
             }
         });
         return toReturn;
     }
 
     @Override
-    public List<String> formatAlts() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+    public List<String> getAltsFormatted() {
+        List<String> toReturn = new ArrayList<>();
+        getAlts().forEach(profile -> {
+            if (profile.isBlacklisted()) {
+                toReturn.add("&4" + profile.getName());
+            } else if (profile.isBanned() || profile.isIpBanned()) {
+                toReturn.add("&c" + profile.getName());
+            } else if (profile.isMuted()) {
+                toReturn.add("&e&o" + profile.getName());
+            } else if (profile.isOnline()) {
+                toReturn.add("&a" + profile.getName());
+            } else {
+                toReturn.add("&7" + profile.getName());
+            }
+        });
+        return toReturn;
     }
 
     public static UserProfile getConsoleProfile() {
         UserProfile console = new UserProfile(UUID.fromString("00000000-0000-0000-0000-000000000000"));
         console.setName("Console");
+        console.setPermissions(Collections.singletonList("*"));
         return console;
     }
 

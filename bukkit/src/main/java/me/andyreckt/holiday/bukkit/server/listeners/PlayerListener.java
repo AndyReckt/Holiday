@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.bukkit.server.listeners;
 
+import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
@@ -7,8 +8,11 @@ import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.player.PermissionUtils;
+import me.andyreckt.holiday.bukkit.util.player.PlayerUtils;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.server.Server;
+import me.andyreckt.holiday.core.user.UserProfile;
+import me.andyreckt.holiday.core.user.grant.Grant;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
@@ -20,6 +24,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+
+import java.util.stream.Collectors;
 
 public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
@@ -35,6 +41,14 @@ public class PlayerListener implements Listener {
         }
 
         Holiday.getInstance().getApi().saveProfile(profile);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onLoinStartupCheck(PlayerLoginEvent event) {
+        if (!Holiday.getInstance().isJoinable()) {
+            event.setKickMessage(CC.translate("&cServer is still starting up."));
+            event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
+        }
     }
 
 
@@ -107,4 +121,50 @@ public class PlayerListener implements Listener {
 
         PermissionUtils.updatePermissions(player.getUniqueId());
     }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onJoinAlts(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+
+        if (profile.getAlts().stream().anyMatch(Profile::isBanned)) {
+            String toSend = Locale.PUNISHMENT_ALT_LOGIN_ALERT.getString()
+                    .replace("%player%", player.getName())
+                    .replace("%alts%", profile.getAlts().stream().filter(Profile::isBanned).map(Profile::getName).collect(Collectors.joining(", ")));
+            Holiday.getInstance().getApi().getRedis().sendPacket(
+                    new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.ALT_LOGIN));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onJoinLiked(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+
+        if (profile.isLiked()) return;
+
+        PlayerUtils.hasVotedOnNameMC(player.getUniqueId()).whenCompleteAsync((voted, ignored) -> {
+            if (!voted) return;
+
+            player.sendMessage(Locale.NAMEMC_MESSAGE.getString());
+            profile.setLiked(true);
+            Holiday.getInstance().getApi().saveProfile(profile);
+
+            if (!Locale.NAMEMC_RANK_ENABLED.getBoolean()) return;
+
+            IRank rank = Holiday.getInstance().getApi().getRank(Locale.NAMEMC_RANK_NAME.getString());
+            IGrant grant = new Grant(
+                    profile.getUuid(),
+                    rank,
+                    UserProfile.getConsoleProfile().getUuid(),
+                    "Liked on NameMC",
+                    "$undefined",
+                    TimeUtil.PERMANENT
+            );
+
+            Holiday.getInstance().getApi().saveGrant(grant);
+        });
+    }
+
+
 }
