@@ -35,7 +35,7 @@ public class UserManager {
         this.profiles.put(console.getUuid(), console);
     }
 
-    private Profile loadProfile(Document document) {
+    public Profile loadProfile(Document document) {
         return GsonProvider.GSON.fromJson(document.getString("data"), UserProfile.class);
     }
 

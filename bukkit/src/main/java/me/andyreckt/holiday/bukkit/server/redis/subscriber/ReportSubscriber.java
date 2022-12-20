@@ -26,11 +26,9 @@ public class ReportSubscriber implements PacketListener {
                     "/join " + packet.getServer()
             );
 
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                if (player.hasPermission(Perms.STAFF_VIEW_REPORTS.get())) {
-                    clickable.sendToPlayer(player);
-                }
-            });
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(player -> player.hasPermission(Perms.STAFF_VIEW_REPORTS.get()))
+                    .forEach(clickable::sendToPlayer);
         }
     }
 }

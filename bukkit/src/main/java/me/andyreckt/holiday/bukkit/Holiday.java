@@ -21,7 +21,6 @@ import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.menu.MenuAPI;
-import me.andyreckt.holiday.bukkit.util.menu.anvilgui.AnvilGUI;
 import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.bukkit.util.sunset.Sunset;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.ProfileParameterType;
@@ -38,9 +37,6 @@ import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
@@ -151,7 +147,7 @@ public final class Holiday extends JavaPlugin implements Listener {
                 new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
                 new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
                 new ConversationCommands(), new GrantCommands(), new ShutdownCommands(),
-                new GeneralCommands(), new OtherCommands(), new StaffCommands(),
+                new EssentialCommands(), new StaffCommands(),
                 new PunishmentCommands(), new PunishmentRemoveCommands()
         ).forEach(commandManager::registerCommands);
         this.commandManager.removeCommands(Locale.DISABLED_COMMANDS.getStringList());
@@ -201,6 +197,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         api.getRedis().registerAdapter(ReportPacket.class, new ReportSubscriber());
         api.getRedis().registerAdapter(HelpopPacket.class, new HelpopSubscriber());
         api.getRedis().registerAdapter(PermissionUpdatePacket.class, new PermissionUpdateSubscriber());
+        api.getRedis().registerAdapter(KickPacket.class, new KickSubscriber());
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }

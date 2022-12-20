@@ -68,12 +68,18 @@ public enum Perms {
     UNIPBAN("command.unipban", "core.command.unipban"),
     UNMUTE("command.unmute", "core.command.unmute"),
     UNBLACKLIST("command.unblacklist", "core.command.unblacklist"),
+    KILLALL("command.killall", "core.command.killall"),
+    SET_MAX_PLAYERS("command.setmaxplayers", "core.command.slots"),
+    MORE("command.more", "core.command.more"),
+    SUDO("command.sudo", "core.command.sudo"),
+    SUDOALL("command.sudoall", "core.command.sudoall"),
+    INVSEE("command.invsee", "core.command.invsee"),
 
     /* OTHER */
     NONE(null, ""),
     OP(null, "op"),
-    ;
 
+    ;
 
     private final String path;
     @Setter private String perm;

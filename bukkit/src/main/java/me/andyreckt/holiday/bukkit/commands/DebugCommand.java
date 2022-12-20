@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import com.mongodb.client.model.Filters;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
@@ -12,6 +13,7 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
+import org.bson.Document;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -67,6 +69,23 @@ public class DebugCommand {
         }
         Logger.debug(GsonProvider.GSON.toJson(Holiday.getInstance().getApi().getServer(Holiday.getInstance().getThisServer().getServerId())));
 
+    }
+
+    @SubCommand(names = "db", description = "Database debug")
+    public void dbDebugging(CommandSender sender, @Param(name = "player", baseValue = "self") Profile profile) {
+        if (!Logger.DEV) {
+            sender.sendMessage(CC.translate("&cThis command is not available in production"));
+            return;
+        }
+        long savestart = System.currentTimeMillis();
+        Holiday.getInstance().getApi().saveProfile(profile);
+        long saveend = System.currentTimeMillis();
+        long loadstart = System.currentTimeMillis();
+        Document doc = HolidayAPI.getUnsafeAPI().getMongoManager().getProfiles().find(Filters.eq("_id", profile.getUuid())).first();
+        Profile profile1 = HolidayAPI.getUnsafeAPI().getUserManager().loadProfile(doc);
+        long loadend = System.currentTimeMillis();
+        sender.sendMessage("Saving Profile: " + (saveend - savestart) + "ms");
+        sender.sendMessage("Loading Profile: " + (loadend - loadstart) + "ms");
     }
 }
 

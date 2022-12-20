@@ -69,7 +69,7 @@ public class PlayerListener implements Listener {
         Locale locale;
         switch (punishment.getType()) {
             case BAN:
-                locale = Locale.PUNISHMENT_BAN_KICK;
+                locale = punishment.getDuration() == TimeUtil.PERMANENT ? Locale.PUNISHMENT_BAN_KICK : Locale.PUNISHMENT_TEMP_BAN_KICK;
                 break;
             case IP_BAN:
                 locale = Locale.PUNISHMENT_IP_BAN_KICK;
@@ -81,7 +81,8 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        String kickMessage = locale.getStringNetwork().replace("%reason%", punishment.getAddedReason())
+        String kickMessage = locale.getStringNetwork()
+                .replace("%reason%", punishment.getAddedReason())
                 .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
         event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
         event.setKickMessage(CC.translate(kickMessage));

@@ -4,6 +4,7 @@ import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.server.redis.packet.KickPacket;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
@@ -127,16 +128,38 @@ public class PunishmentCommands {
         Holiday.getInstance().getApi().savePunishment(punishment);
 
         sendPunishmentBroadcast(punishment, silent);
+        kickPlayer(target, punishment);
+    }
+
+    private void kickPlayer(Profile target, IPunishment punishment) {
+        String toSend = "";
+        switch (punishment.getType()) {
+            case BAN:
+                toSend = punishment.getDuration() == TimeUtil.PERMANENT ? Locale.PUNISHMENT_BAN_KICK.getStringNetwork() : Locale.PUNISHMENT_TEMP_BAN_KICK.getStringNetwork();
+                break;
+            case IP_BAN:
+                toSend = Locale.PUNISHMENT_IP_BAN_KICK.getStringNetwork();
+                break;
+            case BLACKLIST:
+                toSend = Locale.PUNISHMENT_BLACKLIST_KICK.getStringNetwork();
+                break;
+            default:
+                return;
+        }
+        if (punishment.getType() == IPunishment.PunishmentType.MUTE) return;
+        toSend = toSend.replace("%reason%", punishment.getAddedReason())
+                .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+        Holiday.getInstance().getApi().getRedis().sendPacket(new KickPacket(punishment, toSend));
     }
 
     private void sendPunishmentBroadcast(IPunishment punishment, boolean silent) {
         String toSend = "";
         switch (punishment.getType()) {
             case BAN:
-                toSend = Locale.PUNISHMENT_BAN_MESSAGE.getString();
+                toSend = punishment.getDuration() == TimeUtil.PERMANENT ? Locale.PUNISHMENT_BAN_MESSAGE.getString() : Locale.PUNISHMENT_TEMP_BAN_MESSAGE.getString();
                 break;
             case MUTE:
-                toSend = Locale.PUNISHMENT_MUTE_MESSAGE.getString();
+                toSend = punishment.getDuration() == TimeUtil.PERMANENT ? Locale.PUNISHMENT_MUTE_MESSAGE.getString() : Locale.PUNISHMENT_TEMP_MUTE_MESSAGE.getString();
                 break;
             case BLACKLIST:
                 toSend = Locale.PUNISHMENT_BLACKLIST_MESSAGE.getString();

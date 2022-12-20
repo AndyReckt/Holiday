@@ -107,7 +107,7 @@ public final class CC {
 
 
 	public static String translate(String input) {
-		return ChatColor.translateAlternateColorCodes('&', input);
+		return ChatColor.translateAlternateColorCodes('&', input).replace("\n", "\n");
 	}
 
 	public static List<String> translate(List<String> input) {

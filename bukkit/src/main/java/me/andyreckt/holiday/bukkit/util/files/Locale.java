@@ -242,6 +242,12 @@ public enum Locale {
     FEED_TARGET(MESSAGES.get(), "feed.target", "&aYou have been fed by %player%."),
     FEED_SELF(MESSAGES.get(), "feed.self", "&aYou have successfully fed yourself."),
     DEMO_SCREEN(MESSAGES.get(), "demo-screen", "&aYou have successfully sent the demo screen to %player%."),
+    KILL_ALL(MESSAGES.get(), "kill-all", "&aYou have removed all the entities. &7(%total%)"),
+    MAX_PLAYERS(MESSAGES.get(), "max-players", "&aYou have successfully set the slots to %amount%."),
+    ITEM_STACKED(MESSAGES.get(), "item-stacked", "&aYou have successfully stacked your item."),
+    SUDO_PLAYER(MESSAGES.get(), "sudo.player", "&aYou have successfully forced %player% to say %text%."),
+    SUDO_ALL_PLAYER(MESSAGES.get(), "sudo.all.player", "&aYou have successfully forced all players to say %text%."),
+
 
     /* GENERAL COMMANDS STAFF ALERTS */
     FLY_ENABLED_STAFF(MESSAGES.get(), "fly.enabled-staff", "&b[S] &3[%server%] %executor% &ehas enabled fly mode."),
@@ -251,6 +257,8 @@ public enum Locale {
     GIVE_SELF_STAFF(MESSAGES.get(), "give.yourself-staff", "&b[S] &3[%server%] %executor% &ehas given himself %amount% %item%."),
     CLEAR_PLAYER_STAFF(MESSAGES.get(), "clear.player-staff", "&b[S] &3[%server%] %executor% &ehas cleared the inventory of %player%."),
     HEAL_STAFF(MESSAGES.get(), "heal.staff", "&b[S] &3[%server%] %executor% &ehas healed %player%."),
+    SUDO_STAFF(MESSAGES.get(), "sudo.staff", "&b[S] &3[%server%] %executor% &ehas forced %player% to say %text%."),
+    SUDO_ALL_STAFF(MESSAGES.get(), "sudo.all.staff", "&b[S] &3[%server%] %executor% &ehas forced all players to say %text%."),
 
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
@@ -286,6 +294,7 @@ public enum Locale {
     CANNOT_PUNISH_PLAYER(MESSAGES.get(), "error.cannot-punish-player", "&cYou cannot punish that player."),
     PLAYER_ALREADY_PUNISHED(MESSAGES.get(), "error.player-already-punished", "&cThat player is already punished."),
     PLAYER_NOT_PUNISHED(MESSAGES.get(), "error.player-not-punished", "&cThat player is not punished."),
+    ITEM_ALREADY_STACKED(MESSAGES.get(), "error.item-already-stacked", "&cThat item is already stacked."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),
@@ -344,11 +353,11 @@ public enum Locale {
     }
 
     public String getString() {
-        return CC.translate(s());
+        return CC.translate((String) this.def);
     }
 
     public String getRawString() {
-        return s();
+        return (String) this.def;
     }
 
     public String getStringNetwork() {
@@ -369,10 +378,6 @@ public enum Locale {
 
     public List<String> getStringList() {
         return (List<String>) this.def;
-    }
-
-    private String s() {
-        return ((String) this.def).replace("\\n", "\n").replace("\n", "\n");
     }
 
 

@@ -15,6 +15,30 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
 
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onChatMute(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+        IPunishment punishment = profile.getActivePunishments().stream()
+                .filter(punishment1 -> punishment1.getType() == IPunishment.PunishmentType.MUTE)
+                .findFirst().orElse(null);
+        if (punishment != null) {
+            event.setCancelled(true);
+
+            String toSend = "";
+
+            if (punishment.getDuration() == TimeUtil.PERMANENT) {
+                toSend = Locale.PUNISHMENT_MUTE_PLAYER.getString();
+            } else {
+                toSend = Locale.PUNISHMENT_TEMP_MUTE_PLAYER.getString();
+            }
+
+            toSend.replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+
+            player.sendMessage(toSend);
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
