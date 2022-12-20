@@ -11,6 +11,7 @@ import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 public class GrantManager { //TODO: at some point only load the active grants, and get the rest when needed.
@@ -55,6 +56,11 @@ public class GrantManager { //TODO: at some point only load the active grants, a
         api.getMongoManager().getGrants().deleteOne(Filters.eq("_id", grant.getGrantId()));
 
         this.api.getRedis().sendPacket(new GrantUpdatePacket((Grant) grant, true));
+    }
+
+    public void revokeGrant(IGrant grant, UUID revokedBy, String revokedOn, String revokedReason) {
+        grant.revoke(revokedBy, revokedOn, revokedReason);
+        saveGrant(grant);
     }
 
     public void refreshGrants() {

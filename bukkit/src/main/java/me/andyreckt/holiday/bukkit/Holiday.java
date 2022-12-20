@@ -151,7 +151,8 @@ public final class Holiday extends JavaPlugin implements Listener {
                 new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
                 new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
                 new ConversationCommands(), new GrantCommands(), new ShutdownCommands(),
-                new GeneralCommands(), new OtherCommands(), new StaffCommands()
+                new GeneralCommands(), new OtherCommands(), new StaffCommands(),
+                new PunishmentCommands(), new PunishmentRemoveCommands()
         ).forEach(commandManager::registerCommands);
         this.commandManager.removeCommands(Locale.DISABLED_COMMANDS.getStringList());
     }
@@ -263,7 +264,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         return (profile.getStaffSettings().isVanished() ? CC.GRAY + "*" : "") + getDisplayNameWithColor(profile);
     }
 
-    public static String getIP() {
+    private String getIP() {
         if (Locale.USE_CUSTOM_IP.getBoolean()) {
             return Locale.CUSTOM_IP.getString();
         }

@@ -12,6 +12,7 @@ import java.util.UUID;
 public enum AlertType {
     REPORT("Report Alerts"),
     REQUEST("Request Alerts"),
+    SILENT_PUNISHMENT("Silent Punishment Alerts"),
     CHAT("Chat Alerts"),
     GAMEMODE("Gamemode Alerts"),
     TELEPORT("Teleport Alerts"),
@@ -55,6 +56,8 @@ public enum AlertType {
                 return profile.getStaffSettings().getAlerts().isBannedLoginAlerts();
             case ALT_LOGIN:
                 return profile.getStaffSettings().getAlerts().isAltLoginAlerts();
+            case SILENT_PUNISHMENT:
+                return profile.getStaffSettings().getAlerts().isSilentPunishmentAlerts();
         }
 
         return false;
@@ -100,6 +103,10 @@ public enum AlertType {
                 break;
             case ALT_LOGIN:
                 profile.getStaffSettings().getAlerts().setAltLoginAlerts(alerts);
+                HolidayAPI.getUnsafeAPI().saveProfile(profile);
+                break;
+            case SILENT_PUNISHMENT:
+                profile.getStaffSettings().getAlerts().setSilentPunishmentAlerts(alerts);
                 HolidayAPI.getUnsafeAPI().saveProfile(profile);
                 break;
         }

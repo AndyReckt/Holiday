@@ -54,8 +54,8 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public void removeGrant(IGrant grant) {
-        getApi().removeGrant(grant);
+    public void revokeGrant(IGrant grant, UUID revokedBy, String revokedOn, String revokedReason) {
+        getApi().revokeGrant(grant, revokedBy, revokedOn, revokedReason);
     }
 
     @Override
@@ -89,8 +89,8 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public void addPunishment(IPunishment punishment) {
-        getApi().addPunishment(punishment);
+    public void savePunishment(IPunishment punishment) {
+        getApi().savePunishment(punishment);
     }
 
     @Override

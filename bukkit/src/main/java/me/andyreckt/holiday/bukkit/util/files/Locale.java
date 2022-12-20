@@ -274,6 +274,9 @@ public enum Locale {
     LEVEL_NOT_IN_BOUNDS(MESSAGES.get(), "error.level-no-in-bounds", "&cLevel must be between 0 and 10."),
     NEED_ITEM_IN_HAND(MESSAGES.get(), "error.need-item-in-hand", "&cYou need to hold an item in your hand."),
     DOES_NOT_HAVE_ENCHANTMENT(MESSAGES.get(), "error.does-not-have-enchantment", "&cThat item does not have the enchantment %enchant%."),
+    CANNOT_PUNISH_PLAYER(MESSAGES.get(), "error.cannot-punish-player", "&cYou cannot punish that player."),
+    PLAYER_ALREADY_PUNISHED(MESSAGES.get(), "error.player-already-punished", "&cThat player is already punished."),
+    PLAYER_NOT_PUNISHED(MESSAGES.get(), "error.player-not-punished", "&cThat player is not punished."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),

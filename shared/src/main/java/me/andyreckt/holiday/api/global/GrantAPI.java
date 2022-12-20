@@ -17,5 +17,5 @@ public interface GrantAPI {
 
     void saveGrant(IGrant grant);
 
-    void removeGrant(IGrant grant);
+    void revokeGrant(IGrant grant, UUID revokedBy, String revokedOn, String revokedReason);
 }

@@ -13,7 +13,7 @@ public interface PunishmentAPI {
 
     List<IPunishment> getPunishments();
 
-    void addPunishment(IPunishment punishment);
+    void savePunishment(IPunishment punishment);
 
     void refreshPunishments();
 

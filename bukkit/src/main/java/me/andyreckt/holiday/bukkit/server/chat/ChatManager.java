@@ -96,7 +96,7 @@ public class ChatManager {
                         UserProfile.getConsoleProfile().getUuid(),
                         Locale.FILTER_HIGH_MUTE_REASON.getString().replace("%word%", filtered)
                 );
-                plugin.getApi().addPunishment(punishment);
+                plugin.getApi().savePunishment(punishment);
                 String toSend = Locale.PUNISHMENT_MUTE_MESSAGE.getString()
                         .replace("%silent%", Locale.PUNISHMENT_SILENT_PREFIX.getString())
                         .replace("%player%", Holiday.getInstance().getNameWithColor(profile))

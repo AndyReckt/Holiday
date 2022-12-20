@@ -12,6 +12,7 @@ public interface IStaffAlerts {
     boolean isServerManagerAlerts();
     boolean isBannedLoginAlerts();
     boolean isAltLoginAlerts();
+    boolean isSilentPunishmentAlerts();
 
     void setReportAlerts(boolean reportAlerts);
     void setRequestAlerts(boolean requestAlerts);
@@ -23,4 +24,5 @@ public interface IStaffAlerts {
     void setServerManagerAlerts(boolean serverManagerAlerts);
     void setBannedLoginAlerts(boolean bannedLoginAlerts);
     void setAltLoginAlerts(boolean altLoginAlerts);
+    void setSilentPunishmentAlerts(boolean silentPunishmentAlerts);
 }

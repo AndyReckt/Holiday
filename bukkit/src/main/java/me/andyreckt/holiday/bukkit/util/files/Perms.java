@@ -58,6 +58,16 @@ public enum Perms {
     HEAL("command.heal", "core.command.heal"),
     FEED("command.feed", "core.command.feed"),
     DEMOMODE("command.demomode", "core.command.demomode"),
+    BAN("command.ban", "core.command.ban"),
+    IPBAN("command.ipban", "core.command.ipban"),
+    TEMPBAN("command.tempban", "core.command.tempban"),
+    MUTE("command.mute", "core.command.mute"),
+    TEMPMUTE("command.tempmute", "core.command.tempmute"),
+    BLACKLIST("command.blacklist", "core.command.blacklist"),
+    UNBAN("command.unban", "core.command.unban"),
+    UNIPBAN("command.unipban", "core.command.unipban"),
+    UNMUTE("command.unmute", "core.command.unmute"),
+    UNBLACKLIST("command.unblacklist", "core.command.unblacklist"),
 
     /* OTHER */
     NONE(null, ""),
