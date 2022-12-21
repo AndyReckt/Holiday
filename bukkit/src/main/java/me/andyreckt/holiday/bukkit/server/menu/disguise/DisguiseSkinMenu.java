@@ -56,7 +56,7 @@ public class DisguiseSkinMenu extends PaginatedMenu {
         buttons.put(3, new EasyButton(new ItemBuilder(Material.SKULL_ITEM)
                 .durability(SkullType.PLAYER.ordinal())
                 .owner(disguise.getDisplayName())
-                .displayname(CC.SECONDARY + "Disguise as " + disguise.getSkinName())
+                .displayname(CC.SECONDARY + "Disguise as " + disguise.getDisplayName())
                 .build(), o -> {
             disguise.setSkinName(disguise.getDisplayName());
             new DisguiseMenu(disguise).openMenu(player);
