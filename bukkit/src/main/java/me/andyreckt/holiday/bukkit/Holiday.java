@@ -150,7 +150,6 @@ public final class Holiday extends JavaPlugin implements Listener {
                 new EssentialCommands(), new StaffCommands(),
                 new PunishmentCommands(), new PunishmentRemoveCommands()
         ).forEach(commandManager::registerCommands);
-        this.commandManager.removeCommands(Locale.DISABLED_COMMANDS.getStringList());
     }
 
     private void setupNms() {

@@ -525,6 +525,25 @@ public class EssentialCommands {
         new PunishmentListMenu().openMenu(player);
     }
 
+    @Command(names = {"alts", "alt", "accounts", "associatedaccounts", "listallaccounts"}, permission = Perms.ALTS, async = true)
+    public void alts(CommandSender sender, @Param(name = "player") Profile target) {
+        StringBuilder alts = new StringBuilder();
+        alts.append("&7[");
+        int i = 0;
+        for (String alt : target.getAltsFormatted()) {
+            i++;
+            if (i == target.getAlts().size()) {
+                alts.append(alt);
+            } else {
+                alts.append(alt).append("&7, ");
+            }
+        }
+        alts.append("&7] (").append(i).append(i == 1 ? " account" : " accounts").append(")");
+
+        sender.sendMessage(CC.translate("&7[&aOnline&7, &7Offline&7, &eMuted&7, &cBanned&7, &4Blacklisted&7]"));
+        sender.sendMessage(CC.translate("&7&oThe accounts associated to this profile are: "));
+        sender.sendMessage(CC.translate(alts.toString()));
+    }
 
 
 

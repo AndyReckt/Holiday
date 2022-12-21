@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
@@ -50,23 +51,6 @@ public class Sunset {
         this.plugin = plugin;
         this.typesMap = new HashMap<>();
         this.registerDefaultTypes();
-    }
-
-
-
-    public void removeCommands(List<String> commands) {
-        for (org.bukkit.command.Command command : getCommandMap().getCommands()) {
-            if (commands.contains(command.getName())) {
-                command.unregister(getCommandMap());
-            }
-            if (command.getAliases() != null) {
-                for (String alias : command.getAliases()) {
-                    if (commands.contains(alias)) {
-                        command.unregister(getCommandMap());
-                    }
-                }
-            }
-        }
     }
 
 
@@ -275,7 +259,7 @@ public class Sunset {
         if (!commandAnnotation.usage().equalsIgnoreCase("none")) usage = new StringBuilder(commandAnnotation.usage());
 
         SunsetCommand command = new SunsetCommand(this, method, instance, commandAnnotation, ChatColor.RED + usage.toString(), aliases);
-        getCommandMap().register(plugin.getName(), command);
+        getCommandMap().register(plugin.getDescription().getName(), command);
     }
 
 

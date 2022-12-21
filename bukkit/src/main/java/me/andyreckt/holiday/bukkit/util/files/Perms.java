@@ -76,6 +76,7 @@ public enum Perms {
     INVSEE("command.invsee", "core.command.invsee"),
     CHECK_PUNISHMENTS("command.check-punishments", "core.command.checkpunishments"),
     PUNISHMENT_LIST("command.punishment-list", "core.command.punishmentlist"),
+    ALTS("command.alts", "core.command.alts"),
 
     /* OTHER */
     NONE(null, ""),
