@@ -3,10 +3,7 @@ package me.andyreckt.holiday.core.user;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.andyreckt.holiday.api.user.IGrant;
-import me.andyreckt.holiday.api.user.IPunishment;
-import me.andyreckt.holiday.api.user.IRank;
-import me.andyreckt.holiday.api.user.Profile;
+import me.andyreckt.holiday.api.user.*;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.settings.StaffSettings;
 import me.andyreckt.holiday.core.user.settings.UserSettings;
@@ -40,6 +37,8 @@ public class UserProfile implements Profile {
     private int credits = 0;
 
     private ChatChannel chatChannel = ChatChannel.GLOBAL;
+
+    private IDisguise disguise = null;
 
     public UserProfile(UUID uuid) {
         this.uuid = uuid;
@@ -253,6 +252,11 @@ public class UserProfile implements Profile {
             }
         });
         return toReturn;
+    }
+
+    @Override
+    public boolean isDisguised() {
+        return disguise != null;
     }
 
     public static UserProfile getConsoleProfile() {

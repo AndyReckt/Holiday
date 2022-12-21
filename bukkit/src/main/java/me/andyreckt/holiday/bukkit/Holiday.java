@@ -17,6 +17,7 @@ import me.andyreckt.holiday.bukkit.server.redis.packet.*;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.*;
 import me.andyreckt.holiday.bukkit.server.tasks.RebootTask;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
+import me.andyreckt.holiday.bukkit.user.disguise.DisguiseManager;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
@@ -61,6 +62,7 @@ public final class Holiday extends JavaPlugin implements Listener {
     private Sunset commandManager;
     private MenuAPI menuAPI;
     private ChatManager chatManager;
+    private DisguiseManager disguiseManager;
 
     private UUIDCache uuidCache;
 
@@ -182,6 +184,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.uuidCache = new UUIDCache(this);
         this.menuAPI = new MenuAPI(this);
         this.chatManager = new ChatManager(this);
+        this.disguiseManager = new DisguiseManager(this);
     }
 
     private void setupListeners() {

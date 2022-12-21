@@ -65,7 +65,9 @@ public interface Profile {
     List<Profile> getAlts();
     List<String> getAltsFormatted();
 
-    //TODO: Add disguise-related methods
+    IDisguise getDisguise();
+    void setDisguise(IDisguise disguise);
+    boolean isDisguised();
     //TODO: Add settings-related methods
     //TODO: Add staff-related methods
 

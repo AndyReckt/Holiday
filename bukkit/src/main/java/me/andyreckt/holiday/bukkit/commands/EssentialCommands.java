@@ -599,6 +599,8 @@ public class EssentialCommands {
         ));
     }
 
+    //TODO: add /lag command
+
 
     private int killAll(Class<? extends Entity> clazz) {
         int total = 0;
