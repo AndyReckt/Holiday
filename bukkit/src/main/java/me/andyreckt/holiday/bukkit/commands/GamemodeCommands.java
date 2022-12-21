@@ -1,7 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
 import me.andyreckt.holiday.bukkit.Holiday;
-import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7;
+import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7_R4;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
@@ -44,7 +44,7 @@ public class GamemodeCommands {
     @SubCommand(names = {"spectator", "sp", "spec", "3"}, permission = Perms.GAMEMODE, description = "Change your gamemode to spectator.", usage = "/gamemode spectator [player]")
     @Command(names = {"gmsp", "gm3"}, permission = Perms.GAMEMODE)
     public void spectator(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
-        if (Holiday.getInstance().getNms() instanceof NMS_v1_7) {
+        if (Holiday.getInstance().getNms() instanceof NMS_v1_7_R4) {
             sender.sendMessage(CC.RED + "Spectator mode is not supported on 1.7.");
             return;
         }

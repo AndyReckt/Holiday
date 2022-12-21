@@ -22,6 +22,7 @@ public class UserProfile implements Profile {
 
     private String ip = "";
     private List<String> ips = new ArrayList<>();
+    private HashSet<UUID> alts = new HashSet<>();
 
     private List<String> permissions = new ArrayList<>();
 
@@ -46,7 +47,10 @@ public class UserProfile implements Profile {
 
     @Override
     public String getDisplayName() {
-        return getName(); //TODO: implement
+        if (isDisguised()) {
+            return disguise.getDisplayName();
+        }
+        return getName();
     }
 
     @Override
@@ -157,7 +161,10 @@ public class UserProfile implements Profile {
 
     @Override
     public IRank getDisplayRank() {
-        //TODO: Add support for disguises
+        if (isDisguised()) {
+            return disguise.getDisguiseRank();
+        }
+
         return getHighestVisibleRank();
     }
 
@@ -222,23 +229,10 @@ public class UserProfile implements Profile {
     }
 
     @Override
-    public List<Profile> getAlts() {
-        List<Profile> toReturn = new ArrayList<>();
-        List<String> ips = getIps();
-        HolidayAPI.getUnsafeAPI().getUserManager().getProfiles().forEach((uuid, profile) -> {
-            if (profile.getIps().stream().anyMatch(ips::contains)) {
-                if (!toReturn.contains(profile)) {
-                    toReturn.add(profile);
-                }
-            }
-        });
-        return toReturn;
-    }
-
-    @Override
     public List<String> getAltsFormatted() {
         List<String> toReturn = new ArrayList<>();
-        getAlts().forEach(profile -> {
+        getAlts().forEach(uuid -> {
+            Profile profile = HolidayAPI.getUnsafeAPI().getProfile(uuid);
             if (profile.isBlacklisted()) {
                 toReturn.add("&4" + profile.getName());
             } else if (profile.isBanned() || profile.isIpBanned()) {

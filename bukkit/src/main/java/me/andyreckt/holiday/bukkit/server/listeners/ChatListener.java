@@ -67,7 +67,7 @@ public class ChatListener implements Listener {
 
             event.setCancelled(true);
             if (message.startsWith(Locale.STAFF_CHAT_PREFIX.getRawString())) {
-                message = message.replace(Locale.STAFF_CHAT_PREFIX.getRawString(), "");
+                message = message.substring(Locale.STAFF_CHAT_PREFIX.getRawString().length());
             }
 
             String toSend = Locale.STAFF_CHAT.getString()
@@ -90,7 +90,7 @@ public class ChatListener implements Listener {
 
             event.setCancelled(true);
             if (message.startsWith(Locale.ADMIN_CHAT_PREFIX.getRawString())) {
-                message = message.replace(Locale.ADMIN_CHAT_PREFIX.getRawString(), "");
+                message = message.substring(Locale.ADMIN_CHAT_PREFIX.getRawString().length());
             }
 
             String toSend = Locale.ADMIN_CHAT.getString()
@@ -150,9 +150,6 @@ public class ChatListener implements Listener {
             }
         }
     }
-
-    //TODO: add support for staff chat
-
 
 
 }

@@ -1,6 +1,8 @@
 package me.andyreckt.holiday.api.user;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface Profile {
@@ -62,13 +64,13 @@ public interface Profile {
     List<IPunishment> getActivePunishments();
     List<IPunishment> getActivePunishments(IPunishment.PunishmentType type);
 
-    List<Profile> getAlts();
+    Set<UUID> getAlts();
     List<String> getAltsFormatted();
 
     IDisguise getDisguise();
     void setDisguise(IDisguise disguise);
     boolean isDisguised();
-    //TODO: Add settings-related methods
+
     //TODO: Add staff-related methods
 
 }

@@ -1,8 +1,10 @@
 package me.andyreckt.holiday.bukkit.server.menu.punishments.check.submenu;
 
 import me.andyreckt.holiday.api.user.IPunishment;
+import me.andyreckt.holiday.bukkit.server.menu.punishments.check.PunishmentCheckMenu;
 import me.andyreckt.holiday.bukkit.server.menu.punishments.check.button.PunishmentCheckButton;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
+import me.andyreckt.holiday.bukkit.util.menu.Menu;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
 import lombok.NonNull;
 import me.andyreckt.holiday.api.user.Profile;
@@ -45,4 +47,10 @@ public class BanMenu extends PaginatedMenu {
         }
         return toReturn;
     }
+
+    @Override
+    public Menu backButton() {
+        return new PunishmentCheckMenu(punished);
+    }
 }
+

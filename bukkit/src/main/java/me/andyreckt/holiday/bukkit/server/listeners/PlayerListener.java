@@ -5,6 +5,7 @@ import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.player.PermissionUtils;
@@ -25,6 +26,8 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class PlayerListener implements Listener {
@@ -38,6 +41,21 @@ public class PlayerListener implements Listener {
 
         if (!profile.getIp().equalsIgnoreCase(HashUtils.hash(event.getAddress().getHostAddress()))) {
             profile.addNewCurrentIP(event.getAddress().getHostAddress());
+        }
+
+        for (Map.Entry<UUID, Profile> entry : Holiday.getInstance().getApi().getProfiles().entrySet()) {
+            Profile alt = entry.getValue();
+
+            if (alt.getUuid().equals(profile.getUuid())) {
+                continue;
+            }
+
+            if (alt.getIp().equalsIgnoreCase(profile.getIp())) {
+                alt.getAlts().add(profile.getUuid());
+                profile.getAlts().add(alt.getUuid());
+                Holiday.getInstance().getApi().saveProfile(alt);
+            }
+
         }
 
         Holiday.getInstance().getApi().saveProfile(profile);
@@ -111,6 +129,17 @@ public class PlayerListener implements Listener {
         event.setKickMessage(CC.translate(Locale.LOGIN_WHITELIST.getString().replace("%rank%", rank.getDisplayName())));
     }
 
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onJoinDisguise(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+
+        if (profile.isDisguised()) {
+            player.setDisplayName(profile.getDisguise().getDisplayName());
+            Holiday.getInstance().getDisguiseManager().disguise((Disguise) profile.getDisguise(), false);
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onJoinPermissions(PlayerJoinEvent event) {
         Player player = event.getPlayer();
@@ -128,10 +157,14 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
-        if (profile.getAlts().stream().anyMatch(Profile::isBanned)) {
+        if (profile.getAlts().stream().map(Holiday.getInstance().getApi()::getProfile).anyMatch(Profile::isBanned)) {
             String toSend = Locale.PUNISHMENT_ALT_LOGIN_ALERT.getString()
                     .replace("%player%", player.getName())
-                    .replace("%alts%", profile.getAlts().stream().filter(Profile::isBanned).map(Profile::getName).collect(Collectors.joining(", ")));
+                    .replace("%alts%", profile.getAlts().stream()
+                            .map(Holiday.getInstance().getApi()::getProfile)
+                            .filter(Profile::isBanned)
+                            .map(Profile::getName)
+                            .collect(Collectors.joining(", ")));
             Holiday.getInstance().getApi().getRedis().sendPacket(
                     new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.ALT_LOGIN));
         }
@@ -161,7 +194,7 @@ public class PlayerListener implements Listener {
                     "Liked on NameMC",
                     "$undefined",
                     TimeUtil.PERMANENT
-            );
+            ); //TODO: Add NameMC login message and toggle
 
             Holiday.getInstance().getApi().saveGrant(grant);
         });

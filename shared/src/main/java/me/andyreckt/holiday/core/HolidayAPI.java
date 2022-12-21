@@ -170,25 +170,33 @@ public class HolidayAPI implements API {
     @Override
     public List<IPunishment> getPunishments(UUID uniqueId) {
         Profile profile = this.getProfile(uniqueId);
-        List<IPunishment> toReturn = new ArrayList<>();
+        Set<IPunishment> toReturn = new HashSet<>();
         for (IPunishment punishment : this.punishmentManager.getPunishments()) {
             if (punishment.getPunished().equals(uniqueId)) {
                 toReturn.add(punishment);
             }
-            if (punishment.getIp().equalsIgnoreCase(profile.getIp()) && (punishment.getType() == IPunishment.PunishmentType.IP_BAN || punishment.getType() == IPunishment.PunishmentType.BLACKLIST)) {
-                if (!toReturn.contains(punishment)) {
-                    toReturn.add(punishment);
+
+            if (punishment.getType() == IPunishment.PunishmentType.IP_BAN) {
+                for (UUID alt : profile.getAlts()) {
+                    if (punishment.getPunished().equals(alt)) {
+                        toReturn.add(punishment);
+                    }
                 }
             }
+
             if (punishment.getType() == IPunishment.PunishmentType.BLACKLIST) {
                 if (profile.getIps().contains(punishment.getIp())) {
-                    if (!toReturn.contains(punishment)) {
+                    toReturn.add(punishment);
+                }
+                for (UUID alt : profile.getAlts()) {
+                    Profile altProfile = this.getProfile(alt);
+                    if (altProfile.getIp().equals(punishment.getIp())) {
                         toReturn.add(punishment);
                     }
                 }
             }
         }
-        return toReturn;
+        return new ArrayList<>(toReturn);
     }
 
     @Override

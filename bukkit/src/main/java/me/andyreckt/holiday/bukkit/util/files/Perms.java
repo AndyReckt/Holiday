@@ -77,6 +77,9 @@ public enum Perms {
     CHECK_PUNISHMENTS("command.check-punishments", "core.command.checkpunishments"),
     PUNISHMENT_LIST("command.punishment-list", "core.command.punishmentlist"),
     ALTS("command.alts", "core.command.alts"),
+    DISGUISE("command.disguise", "core.command.disguise"),
+    DISGUISE_CUSTOM_NAME("command.disguise.custom-name", "core.command.disguise.custom"),
+    DISGUISE_RANK("command.disguise.rank", "core.command.disguise.rank"),
 
     /* OTHER */
     NONE(null, ""),

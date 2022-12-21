@@ -89,6 +89,58 @@ public enum Locale {
     STAFF_CHAT_PREFIX(SETTINGS.get(), "staff-chat.prefix", "@"),
     ADMIN_CHAT_PREFIX(SETTINGS.get(), "admin-chat.prefix", "#"),
 
+    DISGUISE_MESSAGE(SETTINGS.get(), "disguise.messages", "&eYou are now disguised as %name% &7(%skin%)"),
+    DISGUISE_MESSAGE_STAFF(SETTINGS.get(), "disguise.message-staff", "&b[S] &3[%server%] %player% &edisguised as %name% &7(%skin%)"),
+    DISGUISE_MESSAGE_STAFF_OFF(SETTINGS.get(), "disguise.message-staff-off", "&b[S] &3[%server%] %player% &eundisguised"),
+    DISGUISE_MESSAGE_OFF(SETTINGS.get(), "disguise.message-off", "&eYou are no longer disguised"),
+    DISGUISE_NAMES(SETTINGS.get(), "disguise.names", "Stompaay",
+            "nepheloid",
+            "TheKEKS",
+            "Lyrik",
+            "KleinEsmeree",
+            "HANDSOMEPLT445",
+            "Garfi3Id",
+            "latteishorse12",
+            "Glueckspilz1",
+            "wxszz",
+            "CabotBoy13",
+            "NeoPlayZ_",
+            "EICushWaffel",
+            "Ender_Leon",
+            "SHAWTYSPAT",
+            "baxikkAngel__",
+            "pokeopoly85",
+            "DiamondDamonen",
+            "KingOfFire1334",
+            "MaliessIlmig",
+            "xxClementxx2002"),
+    DISGUISE_SKINS(SETTINGS.get(), "disguise.skins", "Hiss_Y",
+            "ka_0221",
+            "_BrokenMouse",
+            "zacles",
+            "badpoo",
+            "younbuffalo",
+            "Fruitberry",
+            "uchtiv",
+            "iil",
+            "tartzy",
+            "Dawnlend",
+            "zombeep",
+            "Nexo_Craft",
+            "M4xtern",
+            "mxyrey",
+            "tooty22",
+            "oT4q",
+            "VerifiedMove",
+            "Ducksolz",
+            "7922"),
+
+
+
+
+
+
+
     /* SERVER STARTUP */
     SERVER_STARTUP(MESSAGES.get(), "server.startup-alert", "&c[A] &a%server% has just started and is now joinable!"),
     SERVER_SHUTDOWN(MESSAGES.get(), "server.shutdown-alert", "&c[A] %server% just went offline and is no longer joinable!"),
@@ -302,6 +354,8 @@ public enum Locale {
     PLAYER_ALREADY_PUNISHED(MESSAGES.get(), "error.player-already-punished", "&cThat player is already punished."),
     PLAYER_NOT_PUNISHED(MESSAGES.get(), "error.player-not-punished", "&cThat player is not punished."),
     ITEM_ALREADY_STACKED(MESSAGES.get(), "error.item-already-stacked", "&cThat item is already stacked."),
+    ALREADY_DISGUISED(MESSAGES.get(), "error.already-disguised", "&cYou are already disguised."),
+    NOT_DISGUISED(MESSAGES.get(), "error.not-disguised", "&cYou are not disguised."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),

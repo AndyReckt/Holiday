@@ -1,6 +1,10 @@
 package me.andyreckt.holiday.bukkit.server.nms;
 
+import me.andyreckt.holiday.bukkit.user.disguise.Disguise;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
+import java.util.UUID;
 
 public interface INMS {
 
@@ -16,4 +20,7 @@ public interface INMS {
 
     double[] recentTps();
 
+    void disguise(Disguise disguise);
+
+    void unDisguise(Disguise disguise);
 }

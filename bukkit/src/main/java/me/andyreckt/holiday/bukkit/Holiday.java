@@ -11,8 +11,8 @@ import me.andyreckt.holiday.bukkit.server.chat.ChatManager;
 import me.andyreckt.holiday.bukkit.server.listeners.ChatListener;
 import me.andyreckt.holiday.bukkit.server.listeners.PlayerListener;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
-import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7;
-import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8;
+import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7_R4;
+import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8_R3;
 import me.andyreckt.holiday.bukkit.server.redis.packet.*;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.*;
 import me.andyreckt.holiday.bukkit.server.tasks.RebootTask;
@@ -149,18 +149,18 @@ public final class Holiday extends JavaPlugin implements Listener {
                 new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
                 new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
                 new ConversationCommands(), new GrantCommands(), new ShutdownCommands(),
-                new EssentialCommands(), new StaffCommands(),
+                new EssentialCommands(), new StaffCommands(), new DisguiseCommands(),
                 new PunishmentCommands(), new PunishmentRemoveCommands()
         ).forEach(commandManager::registerCommands);
     }
 
     private void setupNms() {
         if (this.getServer().getVersion().contains("1.7")) {
-            this.nms = new NMS_v1_7();
+            this.nms = new NMS_v1_7_R4();
             Logger.log(ChatColor.GREEN + "FOUND COMPATIBLE SPIGOT VERSION, IT IS RECOMMENDED TO CHANGE TO 1.8.8, LOADING PLUGIN");
         }
         else if (this.getServer().getVersion().contains("1.8")) {
-            this.nms = new NMS_v1_8();
+            this.nms = new NMS_v1_8_R3();
             Logger.log(ChatColor.GREEN + "FOUND FULLY COMPATIBLE SPIGOT VERSION, LOADING PLUGIN");
         } else {
             Logger.error(ChatColor.RED + "FOUND INCOMPATIBLE/UNKNOWN VERSION, DISABLING");
@@ -184,7 +184,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         this.uuidCache = new UUIDCache(this);
         this.menuAPI = new MenuAPI(this);
         this.chatManager = new ChatManager(this);
-        this.disguiseManager = new DisguiseManager(this);
+        this.disguiseManager = new DisguiseManager(this, this.nms);
     }
 
     private void setupListeners() {
@@ -200,6 +200,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         api.getRedis().registerAdapter(HelpopPacket.class, new HelpopSubscriber());
         api.getRedis().registerAdapter(PermissionUpdatePacket.class, new PermissionUpdateSubscriber());
         api.getRedis().registerAdapter(KickPacket.class, new KickSubscriber());
+        api.getRedis().registerAdapter(DisguisePacket.class, new DisguiseSubscriber());
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }

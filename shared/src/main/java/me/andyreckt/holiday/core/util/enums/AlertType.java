@@ -15,7 +15,7 @@ public enum AlertType {
     SILENT_PUNISHMENT("Silent Punishment Alerts"),
     STAFF_CHAT("Staff Chat"),
     ADMIN_CHAT("Admin Chat"),
-    WHITELIST("Whitelist Alerts"),
+    DISGUISES("Whitelist Alerts"),
     ALT_LOGIN("Alt Login Alerts"),
     ABUSE("Abuse Alerts"),
 
@@ -45,8 +45,8 @@ public enum AlertType {
             case ADMIN_CHAT:
                 return profile.getStaffSettings().getAlerts().isAdminChat();
             case ABUSE:
-                return profile.getStaffSettings().getAlerts().isAbuseAlerts();
-            case WHITELIST:
+                return profile.getStaffSettings().getAlerts().isDisguiseAlerts();
+            case DISGUISES:
                 return profile.getStaffSettings().getAlerts().isWhitelistAlerts();
             case SERVER:
                 return profile.getStaffSettings().getAlerts().isServerAlerts();
@@ -82,10 +82,10 @@ public enum AlertType {
                 HolidayAPI.getUnsafeAPI().saveProfile(profile);
                 break;
             case ABUSE:
-                profile.getStaffSettings().getAlerts().setAbuseAlerts(alerts);
+                profile.getStaffSettings().getAlerts().setDisguiseAlerts(alerts);
                 HolidayAPI.getUnsafeAPI().saveProfile(profile);
                 break;
-            case WHITELIST:
+            case DISGUISES:
                 profile.getStaffSettings().getAlerts().setWhitelistAlerts(alerts);
                 HolidayAPI.getUnsafeAPI().saveProfile(profile);
                 break;

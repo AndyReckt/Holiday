@@ -10,7 +10,7 @@ public class StaffAlerts implements IStaffAlerts {
     private boolean requestAlerts = true;
     private boolean staffChat = true;
     private boolean adminChat = true;
-    private boolean abuseAlerts = true;
+    private boolean disguiseAlerts = true;
     private boolean whitelistAlerts = true;
     private boolean serverAlerts = true;
     private boolean serverManagerAlerts = true;
