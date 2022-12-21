@@ -257,7 +257,7 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     public String getDisplayNameWithColor(Profile profile) {
         IRank rank = profile.getDisplayRank();
-        return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getName();
+        return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getDisplayName();
     }
 
     public String getDisplayNameWithColorAndVanish(Profile profile) {
