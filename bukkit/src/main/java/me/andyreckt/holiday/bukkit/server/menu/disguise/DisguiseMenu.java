@@ -12,6 +12,7 @@ import me.andyreckt.holiday.bukkit.util.menu.buttons.DisplayButton;
 import me.andyreckt.holiday.bukkit.util.menu.buttons.EasyButton;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.StringUtil;
+import me.andyreckt.holiday.core.util.http.Skin;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -75,7 +76,7 @@ public class DisguiseMenu extends GlassMenu {
                 new ItemBuilder(Material.SKULL_ITEM)
                         .durability(SkullType.PLAYER.ordinal())
                         .displayname(CC.PRIMARY + "Change Skin")
-                        .owner("anon")
+                        .texture(Skin.getSkinByName("anon").join().getValue())
                         .build(),
                 o -> new DisguiseSkinMenu(disguise).openMenu(player)));
         buttons.put(16, new EasyButton(
