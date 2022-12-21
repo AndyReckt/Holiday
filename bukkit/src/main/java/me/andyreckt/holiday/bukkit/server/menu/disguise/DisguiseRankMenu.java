@@ -1,9 +1,8 @@
 package me.andyreckt.holiday.bukkit.server.menu.disguise;
 
 import me.andyreckt.holiday.api.user.IRank;
-import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
-import me.andyreckt.holiday.bukkit.user.disguise.Disguise;
+import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;

@@ -1,20 +1,17 @@
 package me.andyreckt.holiday.bukkit.server.menu.disguise;
 
-import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
-import me.andyreckt.holiday.bukkit.user.disguise.Disguise;
+import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.GlassMenu;
 import me.andyreckt.holiday.bukkit.util.menu.anvilgui.AnvilGUI;
-import me.andyreckt.holiday.bukkit.util.menu.buttons.AnvilButton;
 import me.andyreckt.holiday.bukkit.util.menu.buttons.DisplayButton;
 import me.andyreckt.holiday.bukkit.util.menu.buttons.EasyButton;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.StringUtil;
-import me.andyreckt.holiday.bukkit.util.text.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;

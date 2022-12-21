@@ -2,9 +2,9 @@ package me.andyreckt.holiday.bukkit.server.nms.impl;
 
 import lombok.SneakyThrows;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
-import me.andyreckt.holiday.bukkit.user.disguise.Disguise;
+import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.other.Tasks;
-import me.andyreckt.holiday.bukkit.util.player.Skin;
+import me.andyreckt.holiday.core.util.http.Skin;
 import net.minecraft.server.v1_7_R4.*;
 import net.minecraft.util.com.mojang.authlib.GameProfile;
 import net.minecraft.util.com.mojang.authlib.properties.Property;

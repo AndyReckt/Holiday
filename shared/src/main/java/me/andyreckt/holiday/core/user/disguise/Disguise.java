@@ -1,11 +1,10 @@
-package me.andyreckt.holiday.bukkit.user.disguise;
+package me.andyreckt.holiday.core.user.disguise;
 
 import lombok.*;
 import me.andyreckt.holiday.api.user.IDisguise;
 import me.andyreckt.holiday.api.user.IRank;
-import me.andyreckt.holiday.bukkit.Holiday;
-import me.andyreckt.holiday.bukkit.util.player.Skin;
-import me.andyreckt.holiday.core.user.rank.Rank;
+import me.andyreckt.holiday.core.HolidayAPI;
+import me.andyreckt.holiday.core.util.http.Skin;
 
 import java.util.UUID;
 
@@ -18,17 +17,9 @@ public class Disguise implements IDisguise {
     private String skinName;
     private UUID disguiseRank;
 
-
-    public Disguise(UUID uuid) {
-        this.uuid = uuid;
-        this.displayName = Holiday.getInstance().getDisguiseManager().getRandomName();
-        this.skinName = Holiday.getInstance().getDisguiseManager().getRandomSkin().getName();
-        this.disguiseRank = Holiday.getInstance().getApi().getDefaultRank().getUuid();
-    }
-
     @Override
     public IRank getDisguiseRank() {
-        return Holiday.getInstance().getApi().getRank(disguiseRank);
+        return HolidayAPI.getUnsafeAPI().getRank(disguiseRank);
     }
 
     @Override

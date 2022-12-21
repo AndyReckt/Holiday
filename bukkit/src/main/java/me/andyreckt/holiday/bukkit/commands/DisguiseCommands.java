@@ -3,7 +3,7 @@ package me.andyreckt.holiday.bukkit.commands;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.disguise.DisguiseMenu;
-import me.andyreckt.holiday.bukkit.user.disguise.Disguise;
+import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
@@ -38,7 +38,14 @@ public class DisguiseCommands {
         }
 
         cooldownMap.put(player.getUniqueId(), Cooldown.fromMinutes(3));
-        new DisguiseMenu(new Disguise(player.getUniqueId())).openMenu(player);
+        Disguise disguise = new Disguise(
+                player.getUniqueId(),
+                Holiday.getInstance().getDisguiseManager().getRandomName(),
+                Holiday.getInstance().getDisguiseManager().getRandomSkin().getName(),
+                Holiday.getInstance().getApi().getDefaultRank().getUuid());
+
+
+        new DisguiseMenu(disguise).openMenu(player);
     }
 
     @Command(names = {"undisguise", "undis", "unnick"}, permission = Perms.DISGUISE, description = "Undisguise yourself.")

@@ -1,14 +1,14 @@
 package me.andyreckt.holiday.bukkit.server.menu.disguise;
 
 import me.andyreckt.holiday.bukkit.Holiday;
-import me.andyreckt.holiday.bukkit.user.disguise.Disguise;
+import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.Menu;
 import me.andyreckt.holiday.bukkit.util.menu.anvilgui.AnvilGUI;
 import me.andyreckt.holiday.bukkit.util.menu.buttons.EasyButton;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
-import me.andyreckt.holiday.bukkit.util.player.Skin;
+import me.andyreckt.holiday.core.util.http.Skin;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import org.bukkit.Material;
 import org.bukkit.SkullType;

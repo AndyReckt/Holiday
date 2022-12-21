@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.user.*;
 import me.andyreckt.holiday.core.HolidayAPI;
+import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.core.user.settings.StaffSettings;
 import me.andyreckt.holiday.core.user.settings.UserSettings;
 import me.andyreckt.holiday.core.util.enums.ChatChannel;
@@ -39,7 +40,7 @@ public class UserProfile implements Profile {
 
     private ChatChannel chatChannel = ChatChannel.GLOBAL;
 
-    private IDisguise disguise = null;
+    private Disguise disguise = null;
 
     public UserProfile(UUID uuid) {
         this.uuid = uuid;
@@ -246,6 +247,11 @@ public class UserProfile implements Profile {
             }
         });
         return toReturn;
+    }
+
+    @Override
+    public void setDisguise(IDisguise disguise) {
+        this.disguise = (Disguise) disguise;
     }
 
     @Override

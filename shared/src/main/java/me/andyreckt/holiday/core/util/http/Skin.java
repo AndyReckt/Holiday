@@ -1,11 +1,10 @@
-package me.andyreckt.holiday.bukkit.util.player;
+package me.andyreckt.holiday.core.util.http;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import me.andyreckt.holiday.bukkit.Holiday;
 
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -61,6 +60,6 @@ public class Skin {
             Skin skin = new Skin(name, texture, signature);
             SKINS.put(name, skin);
             return skin;
-        }, Holiday.getInstance().getExecutor());
+        });
     }
 }

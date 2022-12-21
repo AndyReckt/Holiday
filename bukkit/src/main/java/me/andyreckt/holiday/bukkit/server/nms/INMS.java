@@ -1,10 +1,7 @@
 package me.andyreckt.holiday.bukkit.server.nms;
 
-import me.andyreckt.holiday.bukkit.user.disguise.Disguise;
+import me.andyreckt.holiday.core.user.disguise.Disguise;
 import org.bukkit.entity.Player;
-
-import java.util.Map;
-import java.util.UUID;
 
 public interface INMS {
 
