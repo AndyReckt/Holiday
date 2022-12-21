@@ -4,7 +4,8 @@ public interface IStaffAlerts {
 
     boolean isReportAlerts();
     boolean isRequestAlerts();
-    boolean isChatAlerts();
+    boolean isStaffChat();
+    boolean isAdminChat();
     boolean isAbuseAlerts();
     boolean isWhitelistAlerts();
     boolean isServerAlerts();
@@ -15,7 +16,8 @@ public interface IStaffAlerts {
 
     void setReportAlerts(boolean reportAlerts);
     void setRequestAlerts(boolean requestAlerts);
-    void setChatAlerts(boolean chatAlerts);
+    void setStaffChat(boolean staffChat);
+    void setAdminChat(boolean adminChat);
     void setAbuseAlerts(boolean gamemodeAlerts);
     void setWhitelistAlerts(boolean whitelistAlerts);
     void setServerAlerts(boolean serverAlerts);

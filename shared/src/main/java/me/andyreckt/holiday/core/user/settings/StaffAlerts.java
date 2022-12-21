@@ -8,7 +8,8 @@ import me.andyreckt.holiday.api.user.IStaffAlerts;
 public class StaffAlerts implements IStaffAlerts {
     private boolean reportAlerts = true;
     private boolean requestAlerts = true;
-    private boolean chatAlerts = true;
+    private boolean staffChat = true;
+    private boolean adminChat = true;
     private boolean abuseAlerts = true;
     private boolean whitelistAlerts = true;
     private boolean serverAlerts = true;

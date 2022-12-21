@@ -84,6 +84,11 @@ public enum Locale {
     NAMEMC_RANK_ENABLED(SETTINGS.get(), "namemc.rank.enabled", false),
     NAMEMC_RANK_NAME(SETTINGS.get(), "namemc.rank.name", "Voter"),
 
+    STAFF_CHAT(SETTINGS.get(), "staff-chat.format", "&b[SC] &3[%server%] %player%&e: %message%"),
+    ADMIN_CHAT(SETTINGS.get(), "admin-chat.format", "&c[AC] &3[%server%] %player%&e: %message%"),
+    STAFF_CHAT_PREFIX(SETTINGS.get(), "staff-chat.prefix", "@"),
+    ADMIN_CHAT_PREFIX(SETTINGS.get(), "admin-chat.prefix", "#"),
+
     /* SERVER STARTUP */
     SERVER_STARTUP(MESSAGES.get(), "server.startup-alert", "&c[A] &a%server% has just started and is now joinable!"),
     SERVER_SHUTDOWN(MESSAGES.get(), "server.shutdown-alert", "&c[A] %server% just went offline and is no longer joinable!"),
@@ -247,6 +252,8 @@ public enum Locale {
     ITEM_STACKED(MESSAGES.get(), "item-stacked", "&aYou have successfully stacked your item."),
     SUDO_PLAYER(MESSAGES.get(), "sudo.player", "&aYou have successfully forced %player% to say %text%"),
     SUDO_ALL_PLAYER(MESSAGES.get(), "sudo.all.player", "&aYou have successfully forced all players to say %text%"),
+    CHAT_CHANNEL_JOIN(MESSAGES.get(), "chat-channel.join", "&aYou have joined the %channel% chat."),
+    CHAT_CHANNEL_LEAVE(MESSAGES.get(), "chat-channel.leave", "&aYou have left the %channel% chat."),
 
 
     /* GENERAL COMMANDS STAFF ALERTS */

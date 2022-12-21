@@ -13,7 +13,8 @@ public enum AlertType {
     REPORT("Report Alerts"),
     REQUEST("Request Alerts"),
     SILENT_PUNISHMENT("Silent Punishment Alerts"),
-    CHAT("Chat Alerts"),
+    STAFF_CHAT("Staff Chat"),
+    ADMIN_CHAT("Admin Chat"),
     WHITELIST("Whitelist Alerts"),
     ALT_LOGIN("Alt Login Alerts"),
     ABUSE("Abuse Alerts"),
@@ -39,8 +40,10 @@ public enum AlertType {
                 return profile.getStaffSettings().getAlerts().isReportAlerts();
             case REQUEST:
                 return profile.getStaffSettings().getAlerts().isRequestAlerts();
-            case CHAT:
-                return profile.getStaffSettings().getAlerts().isChatAlerts();
+            case STAFF_CHAT:
+                return profile.getStaffSettings().getAlerts().isStaffChat();
+            case ADMIN_CHAT:
+                return profile.getStaffSettings().getAlerts().isAdminChat();
             case ABUSE:
                 return profile.getStaffSettings().getAlerts().isAbuseAlerts();
             case WHITELIST:
@@ -70,8 +73,12 @@ public enum AlertType {
                 profile.getStaffSettings().getAlerts().setRequestAlerts(alerts);
                 HolidayAPI.getUnsafeAPI().saveProfile(profile);
                 break;
-            case CHAT:
-                profile.getStaffSettings().getAlerts().setChatAlerts(alerts);
+            case STAFF_CHAT:
+                profile.getStaffSettings().getAlerts().setStaffChat(alerts);
+                HolidayAPI.getUnsafeAPI().saveProfile(profile);
+                break;
+            case ADMIN_CHAT:
+                profile.getStaffSettings().getAlerts().setAdminChat(alerts);
                 HolidayAPI.getUnsafeAPI().saveProfile(profile);
                 break;
             case ABUSE:

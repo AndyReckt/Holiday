@@ -19,8 +19,10 @@ import me.andyreckt.holiday.bukkit.util.player.PlayerUtils;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
+import me.andyreckt.holiday.core.util.enums.ChatChannel;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -545,7 +547,57 @@ public class EssentialCommands {
         sender.sendMessage(CC.translate(alts.toString()));
     }
 
+    @Command(names = {"sc", "staffchat", "staffc"}, permission = Perms.STAFF_CHAT, async = true)
+    public void staffchat(Player player, @Param(name = "message", wildcard = true, baseValue = "$toggle$") String message) {
+        UserProfile profile = (UserProfile) Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
+        if (message.equalsIgnoreCase("$toggle$")) {
+            boolean bool = profile.getChatChannel() == ChatChannel.STAFF;
+            Locale locale = (!bool) ? Locale.CHAT_CHANNEL_JOIN : Locale.CHAT_CHANNEL_LEAVE;
+            player.sendMessage(locale.getString().replace("%channel%", ChatChannel.STAFF.getName()));
+            profile.setChatChannel(bool ? ChatChannel.GLOBAL : ChatChannel.STAFF);
+            Holiday.getInstance().getApi().saveProfile(profile);
+            return;
+        }
+
+        String playerName = Holiday.getInstance().getNameWithColor(profile);
+        String server = Holiday.getInstance().getThisServer().getServerName();
+        String toSend = Locale.STAFF_CHAT.getString()
+                .replace("%player%", playerName)
+                .replace("%server%", server)
+                .replace("%message%", message);
+        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                toSend,
+                Perms.STAFF_CHAT.get(),
+                AlertType.STAFF_CHAT
+        ));
+    }
+
+    @Command(names = {"adminchat", "achat", "ac"}, permission = Perms.ADMIN_CHAT, async = true)
+    public void adminchat(Player player, @Param(name = "message", wildcard = true, baseValue = "$toggle$") String message) {
+        UserProfile profile = (UserProfile) Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+
+        if (message.equalsIgnoreCase("$toggle$")) {
+            boolean bool = profile.getChatChannel() == ChatChannel.ADMIN;
+            Locale locale = (!bool) ? Locale.CHAT_CHANNEL_JOIN : Locale.CHAT_CHANNEL_LEAVE;
+            player.sendMessage(locale.getString().replace("%channel%", ChatChannel.ADMIN.getName()));
+            profile.setChatChannel(bool ? ChatChannel.GLOBAL : ChatChannel.ADMIN);
+            Holiday.getInstance().getApi().saveProfile(profile);
+            return;
+        }
+
+        String playerName = Holiday.getInstance().getNameWithColor(profile);
+        String server = Holiday.getInstance().getThisServer().getServerName();
+        String toSend = Locale.ADMIN_CHAT.getString()
+                .replace("%player%", playerName)
+                .replace("%server%", server)
+                .replace("%message%", message);
+        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                toSend,
+                Perms.ADMIN_CHAT.get(),
+                AlertType.ADMIN_CHAT
+        ));
+    }
 
 
     private int killAll(Class<? extends Entity> clazz) {

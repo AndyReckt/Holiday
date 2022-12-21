@@ -39,7 +39,7 @@ public class ChatCommand {
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().getRedis().sendPacket(
-                new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.CHAT));
+                new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
     @SubCommand(names = "mute", permission = Perms.CHAT_MUTE, async = true, usage = "/chat mute", description = "Mutes the chat")
@@ -55,7 +55,7 @@ public class ChatCommand {
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().getRedis().sendPacket(
                 new BroadcastPacket(Holiday.getInstance().getChatManager().isChatMuted() ? toSendMuted : toSendUnmuted,
-                        Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.CHAT));
+                        Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
     @SubCommand(names = "slow", permission = Perms.CHAT_SLOW, async = true, usage = "/chat slow (duration)", description = "Slows the chat")
@@ -74,7 +74,7 @@ public class ChatCommand {
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%delay%", TimeUtil.getDuration(time));
         Holiday.getInstance().getApi().getRedis().sendPacket(
-                new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.CHAT));
+                new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
     @SubCommand(names = {"unslow"}, permission = Perms.CHAT_SLOW, async = true, usage = "/chat unslow", description = "Unslows the chat")
@@ -87,7 +87,7 @@ public class ChatCommand {
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().getRedis().sendPacket(
-                new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.CHAT));
+                new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
 

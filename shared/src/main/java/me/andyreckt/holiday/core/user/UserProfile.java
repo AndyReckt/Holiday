@@ -10,6 +10,7 @@ import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.settings.StaffSettings;
 import me.andyreckt.holiday.core.user.settings.UserSettings;
+import me.andyreckt.holiday.core.util.enums.ChatChannel;
 import me.andyreckt.holiday.core.util.text.HashUtils;
 
 import java.util.*;
@@ -37,6 +38,8 @@ public class UserProfile implements Profile {
 
     private int coins = 0;
     private int credits = 0;
+
+    private ChatChannel chatChannel = ChatChannel.GLOBAL;
 
     public UserProfile(UUID uuid) {
         this.uuid = uuid;

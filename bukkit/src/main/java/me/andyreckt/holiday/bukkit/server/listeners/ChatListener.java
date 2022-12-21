@@ -6,7 +6,11 @@ import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
+import me.andyreckt.holiday.core.util.enums.AlertType;
+import me.andyreckt.holiday.core.util.enums.ChatChannel;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -39,6 +43,69 @@ public class ChatListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.LOW)
+    public void onChatStaff(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        UserProfile profile = (UserProfile) Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+
+        if (profile.getChatChannel() == null) {
+            profile.setChatChannel(ChatChannel.GLOBAL);
+            Holiday.getInstance().getApi().saveProfile(profile);
+            return;
+        }
+
+        String playerName = Holiday.getInstance().getNameWithColor(profile);
+        String server = Holiday.getInstance().getThisServer().getServerName();
+        String message = event.getMessage();
+
+        if (profile.getChatChannel() == ChatChannel.STAFF || message.startsWith(Locale.STAFF_CHAT_PREFIX.getRawString())) {
+            if (!player.hasPermission(Perms.STAFF_CHAT.get())) {
+                profile.setChatChannel(ChatChannel.GLOBAL);
+                Holiday.getInstance().getApi().saveProfile(profile);
+                return;
+            }
+
+            event.setCancelled(true);
+            if (message.startsWith(Locale.STAFF_CHAT_PREFIX.getRawString())) {
+                message = message.replace(Locale.STAFF_CHAT_PREFIX.getRawString(), "");
+            }
+
+            String toSend = Locale.STAFF_CHAT.getString()
+                    .replace("%player%", playerName)
+                    .replace("%server%", server)
+                    .replace("%message%", message);
+            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                    toSend,
+                    Perms.STAFF_CHAT.get(),
+                    AlertType.STAFF_CHAT
+            ));
+        }
+
+        if (profile.getChatChannel() == ChatChannel.ADMIN || message.startsWith(Locale.ADMIN_CHAT_PREFIX.getRawString())) {
+            if (!player.hasPermission(Perms.ADMIN_CHAT.get())) {
+                profile.setChatChannel(ChatChannel.GLOBAL);
+                Holiday.getInstance().getApi().saveProfile(profile);
+                return;
+            }
+
+            event.setCancelled(true);
+            if (message.startsWith(Locale.ADMIN_CHAT_PREFIX.getRawString())) {
+                message = message.replace(Locale.ADMIN_CHAT_PREFIX.getRawString(), "");
+            }
+
+            String toSend = Locale.ADMIN_CHAT.getString()
+                    .replace("%player%", playerName)
+                    .replace("%server%", server)
+                    .replace("%message%", message);
+            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                    toSend,
+                    Perms.ADMIN_CHAT.get(),
+                    AlertType.ADMIN_CHAT
+            ));
+        }
+
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
@@ -60,7 +127,7 @@ public class ChatListener implements Listener {
         event.setFormat(CC.translate(message));
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onChatCheck(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
