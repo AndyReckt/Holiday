@@ -53,7 +53,7 @@ public class DisguiseSkinMenu extends PaginatedMenu {
     public Map<Integer, Button> getGlobalButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(3, new EasyButton(new ItemBuilder(Material.SKULL_ITEM)
+        buttons.put(18, new EasyButton(new ItemBuilder(Material.SKULL_ITEM)
                 .durability(SkullType.PLAYER.ordinal())
                 .owner(disguise.getDisplayName())
                 .displayname(CC.SECONDARY + "Disguise as " + disguise.getDisplayName())
@@ -62,7 +62,7 @@ public class DisguiseSkinMenu extends PaginatedMenu {
             new DisguiseMenu(disguise).openMenu(player);
         }));
 
-        buttons.put(5, new EasyButton(
+        buttons.put(26, new EasyButton(
                 new ItemBuilder(Material.ANVIL)
                         .displayname(CC.PRIMARY + "Enter skin").build(), o -> {
             new AnvilGUI.Builder()
