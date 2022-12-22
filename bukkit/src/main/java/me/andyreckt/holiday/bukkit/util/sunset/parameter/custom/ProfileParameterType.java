@@ -22,22 +22,30 @@ public class ProfileParameterType implements PType<Profile> {
             sender.sendMessage(Locale.NEED_NAME.getString());
         }
 
+        Holiday plugin = Holiday.getInstance();
+
         if (sender instanceof Player && (source.equalsIgnoreCase("self"))) {
-            return Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId());
+            return plugin.getApi().getProfile(((Player) sender).getUniqueId());
         }
 
         if (Bukkit.getPlayer(source) != null) {
-            return Holiday.getInstance().getApi().getProfile(Bukkit.getPlayer(source).getUniqueId());
+            return plugin.getApi().getProfile(Bukkit.getPlayer(source).getUniqueId());
         }
 
-        if (Holiday.getInstance().getUuidCache().uuid(source.toLowerCase()) == null) {
+        UUID cachedUUID = null;
+
+        if (plugin.getDisguiseManager().isDisguised(source)) {
+            cachedUUID = plugin.getDisguiseManager().getDisguise(source).getUuid();
+        }
+
+        if (plugin.getUuidCache().uuid(source.toLowerCase()) == null && cachedUUID == null) {
             sender.sendMessage(Locale.PLAYER_NOT_FOUND.getString());
             return (null);
         }
 
-        UUID cachedUUID = Holiday.getInstance().getUuidCache().uuid(source.toLowerCase());
+        cachedUUID = plugin.getUuidCache().uuid(source.toLowerCase());
 
-        return Holiday.getInstance().getApi().getProfile(cachedUUID); //should work
+        return plugin.getApi().getProfile(cachedUUID); //should work
     }
 
     @Override

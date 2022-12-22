@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.util.files;
 
 
+import com.sun.scenario.Settings;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -93,6 +94,7 @@ public enum Locale {
     DISGUISE_MESSAGE_STAFF(SETTINGS.get(), "disguise.message-staff", "&b[S] &3[%server%] %player% &edisguised as %name% &7(%skin%)"),
     DISGUISE_MESSAGE_STAFF_OFF(SETTINGS.get(), "disguise.message-staff-off", "&b[S] &3[%server%] %player% &eundisguised"),
     DISGUISE_MESSAGE_OFF(SETTINGS.get(), "disguise.message-off", "&eYou are no longer disguised"),
+    DISGUISE_LIST(SETTINGS.get(), "disguise.list-format", "  &7- &e%name% &7(%skin%) &b%originalName%"),
     DISGUISE_NAMES(SETTINGS.get(), "disguise.names", "Stompaay",
             "nepheloid",
             "TheKEKS",

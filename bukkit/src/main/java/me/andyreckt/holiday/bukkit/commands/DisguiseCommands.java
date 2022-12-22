@@ -1,8 +1,11 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.disguise.DisguiseMenu;
+import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
@@ -61,6 +64,40 @@ public class DisguiseCommands {
         player.sendMessage(Locale.DISGUISE_MESSAGE_OFF.getString());
     }
 
-    //TODO: disguise list and manual disguise commands.
+    @Command(names = {"manualdisguise", "mdis", "mnick"}, permission = Perms.DISGUISE_MANUAL, description = "Disguise yourself as another player.")
+    public void manualDisguise(Player player, @Param(name = "name") String name, @Param(name = "skin") String skin, @Param(name = "rank", baseValue = "default") IRank rank) {
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+
+        if (profile.isDisguised()) {
+            player.sendMessage(Locale.ALREADY_DISGUISED.getString());
+            return;
+        }
+
+        Disguise disguise = new Disguise(
+                player.getUniqueId(),
+                name,
+                skin,
+                rank.getUuid());
+
+        Holiday.getInstance().getDisguiseManager().disguise(disguise, true);
+        player.sendMessage(Locale.DISGUISE_MESSAGE.getString()
+                .replace("%name%", Holiday.getInstance().getDisplayNameWithColor(
+                        Holiday.getInstance().getApi().getProfile(player.getUniqueId()))));
+    }
+
+    @Command(names = {"disguiselist", "dislist", "nicklist"}, permission = Perms.DISGUISE_LIST, description = "List all disguises.")
+    public void disguiseList(Player player) {
+        player.sendMessage(CC.CHAT_BAR);
+        Holiday.getInstance().getDisguiseManager().getDisguises().values().forEach(disguise -> {
+            Profile profile = Holiday.getInstance().getApi().getProfile(disguise.getUuid());
+            String originalName = Holiday.getInstance().getNameWithColor(profile);
+            String name = Holiday.getInstance().getDisplayNameWithColor(profile);
+            player.sendMessage(Locale.DISGUISE_LIST.getString()
+                    .replace("%name%", name)
+                    .replace("%skin%", disguise.getSkin().getName())
+                    .replace("%originalName%", originalName));
+        });
+        player.sendMessage(CC.CHAT_BAR);
+    }
 
 }

@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.bukkit.user.disguise;
 
+import lombok.Getter;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class DisguiseManager {
 
     private final Holiday plugin;
+    @Getter
     private final HashMap<UUID, Disguise> disguises;
     private final INMS nms;
 
@@ -42,8 +44,16 @@ public class DisguiseManager {
         return disguises.containsKey(uuid);
     }
 
+    public boolean isDisguised(String name) {
+        return disguises.values().stream().anyMatch(disguise -> disguise.getDisplayName().equalsIgnoreCase(name));
+    }
+
     public Disguise getDisguise(UUID uuid) {
         return disguises.get(uuid);
+    }
+
+    public Disguise getDisguise(String name) {
+        return disguises.values().stream().filter(disguise -> disguise.getDisplayName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     public void addDisguise(Disguise disguise) {
