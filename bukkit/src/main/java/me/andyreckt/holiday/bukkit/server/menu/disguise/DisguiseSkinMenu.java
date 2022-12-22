@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.server.menu.disguise;
 
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
@@ -69,6 +70,10 @@ public class DisguiseSkinMenu extends PaginatedMenu {
                     .text("Skin Name")
                     .title("Enter skin")
                     .onComplete((player1, text) -> {
+                        if (text.contains(" ")) {
+                            player1.sendMessage(Locale.CANNOT_CONTAIN_SPACES.getString());
+                            return AnvilGUI.Response.text(disguise.getSkinName());
+                        }
                         disguise.setSkinName(text);
                         new DisguiseMenu(disguise).openMenu(player1);
                         return AnvilGUI.Response.close();

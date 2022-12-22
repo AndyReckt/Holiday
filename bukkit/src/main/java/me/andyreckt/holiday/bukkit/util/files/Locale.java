@@ -358,6 +358,8 @@ public enum Locale {
     ITEM_ALREADY_STACKED(MESSAGES.get(), "error.item-already-stacked", "&cThat item is already stacked."),
     ALREADY_DISGUISED(MESSAGES.get(), "error.already-disguised", "&cYou are already disguised."),
     NOT_DISGUISED(MESSAGES.get(), "error.not-disguised", "&cYou are not disguised."),
+    NOBODY_DISGUISED(MESSAGES.get(), "error.nobody-disguised", "&cThere is nobody disguised."),
+    CANNOT_CONTAIN_SPACES(MESSAGES.get(), "error.cannot-contain-spaces", "&cThis cannot contain spaces."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),

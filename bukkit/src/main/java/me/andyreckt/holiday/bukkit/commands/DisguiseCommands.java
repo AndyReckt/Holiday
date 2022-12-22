@@ -81,12 +81,18 @@ public class DisguiseCommands {
 
         Holiday.getInstance().getDisguiseManager().disguise(disguise, true);
         player.sendMessage(Locale.DISGUISE_MESSAGE.getString()
+                .replace("%skin%", skin)
                 .replace("%name%", Holiday.getInstance().getDisplayNameWithColor(
                         Holiday.getInstance().getApi().getProfile(player.getUniqueId()))));
     }
 
     @Command(names = {"disguiselist", "dislist", "nicklist"}, permission = Perms.DISGUISE_LIST, description = "List all disguises.")
     public void disguiseList(Player player) {
+        if (Holiday.getInstance().getDisguiseManager().getDisguises().isEmpty()) {
+            player.sendMessage(Locale.NOBODY_DISGUISED.getString());
+            return;
+        }
+
         player.sendMessage(CC.CHAT_BAR);
         Holiday.getInstance().getDisguiseManager().getDisguises().values().forEach(disguise -> {
             Profile profile = Holiday.getInstance().getApi().getProfile(disguise.getUuid());

@@ -53,10 +53,14 @@ public class DisguiseMenu extends GlassMenu {
             buttons.put(11, new EasyButton(
                     new ItemBuilder(Material.ANVIL)
                             .displayname(CC.PRIMARY + "Change Name").build(), o -> {
-                new AnvilGUI.Builder()
+                    new AnvilGUI.Builder()
                         .text("Name")
                         .title("Change Name")
                         .onComplete((player1, text) -> {
+                            if (text.contains(" ")) {
+                                player1.sendMessage(Locale.CANNOT_CONTAIN_SPACES.getString());
+                                return AnvilGUI.Response.text(disguise.getDisplayName());
+                            }
                             disguise.setDisplayName(text);
                             new DisguiseMenu(disguise).openMenu(player1);
                             return AnvilGUI.Response.close();
