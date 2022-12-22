@@ -175,7 +175,7 @@ public class PunishmentCommands {
         Profile target = Holiday.getInstance().getApi().getProfile(punishment.getPunished());
 
         String issuerName = issuer == UserProfile.getConsoleProfile() ? "&4Console" : Holiday.getInstance().getNameWithColor(issuer);
-        String targetName = Holiday.getInstance().getNameWithColor(target);
+        String targetName = Holiday.getInstance().getDisplayNameWithColor(target);
 
         toSend = toSend.replace("%executor%", issuerName)
                 .replace("%player%", targetName)
