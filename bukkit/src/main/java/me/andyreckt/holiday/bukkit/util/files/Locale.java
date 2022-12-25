@@ -322,7 +322,7 @@ public enum Locale {
             "&3&lWorlds&7:",
             "%worlds%",
             "%bar%"),
-    LAG_WORLDS(MESSAGES.get(), "lag.worlds", " &7* &3<name>&7: &eChunks Loaded&7: &d<chunks>&7, &eEntities&7: &d<entities>"),
+    LAG_WORLDS(MESSAGES.get(), "lag.worlds", " &7* &3%name%&7: &eChunks Loaded&7: &d%chunks%&7, &eEntities&7: &d%entities%"),
 
 
     /* GENERAL COMMANDS STAFF ALERTS */
