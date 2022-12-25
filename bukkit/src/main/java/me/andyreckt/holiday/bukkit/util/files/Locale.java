@@ -360,6 +360,8 @@ public enum Locale {
     NOT_DISGUISED(MESSAGES.get(), "error.not-disguised", "&cYou are not disguised."),
     NOBODY_DISGUISED(MESSAGES.get(), "error.nobody-disguised", "&cThere is nobody disguised."),
     CANNOT_CONTAIN_SPACES(MESSAGES.get(), "error.cannot-contain-spaces", "&cThis cannot contain spaces."),
+    PLAYER_ALREADY_HAS_PERMISSION(MESSAGES.get(), "error.player-already-has-permission", "&cThat player already has this permission."),
+    PLAYER_DOES_NOT_HAVE_PERMISSION(MESSAGES.get(), "error.player-does-not-have-permission", "&cThat player does not have this permission."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),

@@ -82,6 +82,7 @@ public enum Perms {
     DISGUISE_LIST("command.disguise.list", "core.command.disguise.list"),
     DISGUISE_CUSTOM_NAME("command.disguise.custom-name", "core.command.disguise.custom"),
     DISGUISE_RANK("command.disguise.rank", "core.command.disguise.rank"),
+    USER("command.user", "core.command.user"),
 
     /* OTHER */
     NONE(null, ""),
