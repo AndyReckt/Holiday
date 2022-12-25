@@ -35,7 +35,7 @@ public class UserConstants {
 
     public static void reloadPlayer(Player player) {
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
-        if (Locale.SERVER_PLAYER_DISPLAYNAME.getBoolean()) player.setDisplayName(getDisplayNameWithColor(profile));
+        if (Locale.SERVER_PLAYER_DISPLAYNAME.getBoolean()) player.setDisplayName(profile.getDisplayRank().getPrefix() + getDisplayNameWithColor(profile));
         if (Locale.SERVER_PLAYER_LISTNAME.getBoolean()) player.setPlayerListName(getDisplayNameWithColor(profile));
     }
 
