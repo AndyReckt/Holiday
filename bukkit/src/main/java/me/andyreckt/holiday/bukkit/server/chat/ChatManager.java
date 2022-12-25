@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
@@ -99,7 +100,7 @@ public class ChatManager {
                 plugin.getApi().savePunishment(punishment);
                 String toSend = Locale.PUNISHMENT_MUTE_MESSAGE.getString()
                         .replace("%silent%", Locale.PUNISHMENT_SILENT_PREFIX.getString())
-                        .replace("%player%", Holiday.getInstance().getNameWithColor(profile))
+                        .replace("%player%", UserConstants.getDisplayNameWithColor(profile))
                         .replace("%executor%", "&4CONSOLE")
                         .replace("%reason%", punishment.getAddedReason())
                         .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
@@ -109,7 +110,7 @@ public class ChatManager {
             if (Locale.FILTER_SEND.getBoolean()) {
                 String toSend = Locale.FILTER_MESSAGE.getString()
                         .replace("%server%", Locale.SERVER_NAME.getString())
-                        .replace("%player%", plugin.getNameWithColor(profile))
+                        .replace("%player%", UserConstants.getDisplayNameWithColor(profile))
                         .replace("%message%", message);
                 plugin.getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
             }
@@ -121,7 +122,7 @@ public class ChatManager {
             if (Locale.FILTER_SEND.getBoolean()) {
                 String toSend = Locale.FILTER_MESSAGE.getString()
                         .replace("%server%", Locale.SERVER_NAME.getString())
-                        .replace("%player%", plugin.getNameWithColor(profile))
+                        .replace("%player%", UserConstants.getNameWithColor(profile))
                         .replace("%message%", message);
                 plugin.getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
             }

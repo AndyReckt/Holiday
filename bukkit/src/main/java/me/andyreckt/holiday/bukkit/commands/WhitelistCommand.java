@@ -3,6 +3,7 @@ package me.andyreckt.holiday.bukkit.commands;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
@@ -28,7 +29,7 @@ public class WhitelistCommand {
         Holiday.getInstance().getThisServer().setWhitelisted(true);
         Bukkit.broadcastMessage(Locale.GLOBAL_WHITELIST_ENABLED.getString());
         String toSend = Locale.STAFF_WHITELIST_ENABLED.getString()
-                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().getRedis().sendPacket(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
@@ -39,7 +40,7 @@ public class WhitelistCommand {
         Holiday.getInstance().getThisServer().setWhitelisted(false);
         Bukkit.broadcastMessage(Locale.GLOBAL_WHITELIST_DISABLED.getString());
         String toSend = Locale.STAFF_WHITELIST_DISABLED.getString()
-                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().getRedis().sendPacket(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
@@ -51,7 +52,7 @@ public class WhitelistCommand {
         Holiday.getInstance().getThisServer().setWhitelistRank(rank);
         sender.sendMessage(CC.translate(Locale.PLAYER_WHITELIST_RANK.getString().replace("%rank%", rank.getDisplayName())));
         String toSend = Locale.STAFF_WHITELIST_RANK.getString()
-                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%rank%", rank.getDisplayName());
         Holiday.getInstance().getApi().getRedis().sendPacket(
@@ -67,7 +68,7 @@ public class WhitelistCommand {
         }
 
         Holiday.getInstance().getThisServer().getWhitelistedPlayers().add(player.getUniqueId());
-        sender.sendMessage(CC.translate(Locale.PLAYER_WHITELIST_ADDED.getString().replace("%player%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId())))));
+        sender.sendMessage(CC.translate(Locale.PLAYER_WHITELIST_ADDED.getString().replace("%player%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId())))));
     }
 
     @SubCommand(names = {"remove"}, async = true, description = "Remove a player from the whitelist.")
@@ -78,7 +79,7 @@ public class WhitelistCommand {
         }
 
         Holiday.getInstance().getThisServer().getWhitelistedPlayers().remove(player.getUniqueId());
-        sender.sendMessage(CC.translate(Locale.PLAYER_WHITELIST_REMOVED.getString().replace("%player%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId())))));
+        sender.sendMessage(CC.translate(Locale.PLAYER_WHITELIST_REMOVED.getString().replace("%player%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId())))));
     }
 
     @SubCommand(names = {"status", "info"}, async = true, description = "Get information about the whitelist status.")
@@ -94,7 +95,7 @@ public class WhitelistCommand {
 
         for (UUID uid : Holiday.getInstance().getThisServer().getWhitelistedPlayers()) {
             Profile pr = Holiday.getInstance().getApi().getProfile(uid);
-            s.append(CC.CHAT).append(Holiday.getInstance().getNameWithColor(pr)).append(CC.CHAT).append(", ");
+            s.append(CC.CHAT).append(UserConstants.getNameWithColor(pr)).append(CC.CHAT).append(", ");
         }
         if (s.length() > 5)
             s = new StringBuilder(s.substring(0, s.length() - 4));

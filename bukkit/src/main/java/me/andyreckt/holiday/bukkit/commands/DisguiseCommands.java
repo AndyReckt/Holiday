@@ -4,6 +4,7 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.disguise.DisguiseMenu;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
@@ -82,7 +83,7 @@ public class DisguiseCommands {
         Holiday.getInstance().getDisguiseManager().disguise(disguise, true);
         player.sendMessage(Locale.DISGUISE_MESSAGE.getString()
                 .replace("%skin%", skin)
-                .replace("%name%", Holiday.getInstance().getDisplayNameWithColor(
+                .replace("%name%", UserConstants.getDisplayNameWithColor(
                         Holiday.getInstance().getApi().getProfile(player.getUniqueId()))));
     }
 
@@ -96,8 +97,8 @@ public class DisguiseCommands {
         player.sendMessage(CC.CHAT_BAR);
         Holiday.getInstance().getDisguiseManager().getDisguises().values().forEach(disguise -> {
             Profile profile = Holiday.getInstance().getApi().getProfile(disguise.getUuid());
-            String originalName = Holiday.getInstance().getNameWithColor(profile);
-            String name = Holiday.getInstance().getDisplayNameWithColor(profile);
+            String originalName = UserConstants.getNameWithColor(profile);
+            String name = UserConstants.getDisplayNameWithColor(profile);
             player.sendMessage(Locale.DISGUISE_LIST.getString()
                     .replace("%name%", name)
                     .replace("%skin%", disguise.getSkin().getName())

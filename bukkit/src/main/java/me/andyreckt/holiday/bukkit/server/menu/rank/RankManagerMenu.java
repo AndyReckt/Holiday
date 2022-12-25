@@ -2,6 +2,7 @@ package me.andyreckt.holiday.bukkit.server.menu.rank;
 
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.item.Heads;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
@@ -64,7 +65,7 @@ public class RankManagerMenu extends PaginatedMenu {
 
         @Override
         public ItemStack getButtonItem(Player p0) {
-            ChatColor color = Holiday.getInstance().getRankColor(rank);
+            ChatColor color = UserConstants.getRankColor(rank);
             return new ItemBuilder(Material.WOOL)
                     .durability(StringUtil.convertChatColorToWoolData(color))
                     .displayname(rank.getDisplayName())

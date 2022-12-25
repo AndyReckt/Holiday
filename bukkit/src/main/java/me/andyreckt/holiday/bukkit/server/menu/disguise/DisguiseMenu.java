@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.server.menu.disguise;
 
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
@@ -92,7 +93,7 @@ public class DisguiseMenu extends GlassMenu {
                     player.closeInventory();
                     Holiday.getInstance().getDisguiseManager().disguise(disguise, true);
                     String toSend = Locale.DISGUISE_MESSAGE.getString()
-                            .replace("%name%", Holiday.getInstance().getDisplayNameWithColor(Holiday.getInstance().getApi().getProfile(o.getUniqueId())))
+                            .replace("%name%", UserConstants.getDisplayNameWithColor(Holiday.getInstance().getApi().getProfile(o.getUniqueId())))
                             .replace("%skin%", disguise.getSkinName());
                     player.sendMessage(toSend);
                 }));

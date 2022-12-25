@@ -13,6 +13,7 @@ import me.andyreckt.holiday.bukkit.server.menu.staff.InvSeeMenu;
 import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
 import me.andyreckt.holiday.bukkit.server.redis.packet.HelpopPacket;
 import me.andyreckt.holiday.bukkit.server.redis.packet.ReportPacket;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
@@ -70,8 +71,8 @@ public class EssentialCommands {
         Profile targetProfile = Holiday.getInstance().getApi().getProfile(target.getUniqueId());
 
         ReportPacket packet = new ReportPacket(
-                Holiday.getInstance().getDisplayNameWithColor(profile),
-                Holiday.getInstance().getDisplayNameWithColor(targetProfile),
+                UserConstants.getDisplayNameWithColor(profile),
+                UserConstants.getDisplayNameWithColor(targetProfile),
                 reason,
                 Holiday.getInstance().getThisServer().getServerName()
         );
@@ -96,7 +97,7 @@ public class EssentialCommands {
 
         sender.sendMessage(Locale.HELPOP_MESSAGE.getString());
         Holiday.getInstance().getApi().getRedis().sendPacket(new HelpopPacket(
-                Holiday.getInstance().getDisplayNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())),
+                UserConstants.getDisplayNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())),
                 reason,
                 Holiday.getInstance().getThisServer().getServerName()
         ));
@@ -172,7 +173,7 @@ public class EssentialCommands {
     @Command(names = "fly", permission = Perms.FLY)
     public void fly(Player sender) {
         sender.setAllowFlight(!sender.getAllowFlight());
-        String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
+        String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
         if (sender.getAllowFlight()) {
             sender.sendMessage(Locale.FLY_ENABLED.getString());
             String toSend = Locale.FLY_ENABLED_STAFF.getString()
@@ -196,7 +197,7 @@ public class EssentialCommands {
     public void give(Player sender, @Param(name = "player") Player target, @Param(name = "material") String material, @Param(name = "amount") int amount) {
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         if (mat != null) {
-            String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
+            String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
             ItemStack Item = new ItemStack(mat, amount);
             PlayerInventory inv = target.getInventory();
             inv.addItem(Item);
@@ -229,7 +230,7 @@ public class EssentialCommands {
     @Command(names = {"giveall"}, permission = Perms.GIVEALL)
     public void giveall(Player sender, @Param(name = "material") String material, @Param(name = "amount") int amount) {
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
-        String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
+        String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
         if (mat != null) {
             ItemStack Item = new ItemStack(mat, amount);
             String x = Locale.GIVE_ALL.getString()
@@ -263,7 +264,7 @@ public class EssentialCommands {
     public void giveme(Player sender, @Param(name = "material") String material, @Param(name = "amount") int amount) {
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         if (mat != null) {
-            String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
+            String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
             ItemStack Item = new ItemStack(mat, amount);
             PlayerInventory inv = sender.getInventory();
             inv.addItem(Item);
@@ -298,7 +299,7 @@ public class EssentialCommands {
                 clearPlayer(player);
                 player.sendMessage(Locale.CLEAR_SELF.getString());
             } else {
-                String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
+                String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
                 clearPlayer(target);
                 target.sendMessage(Locale.CLEAR_TARGET.getString().replace("%player%", sender.getName()));
                 player.sendMessage(Locale.CLEAR_SENDER.getString().replace("%player%", target.getName()));
@@ -322,7 +323,7 @@ public class EssentialCommands {
         target.setHealth(target.getMaxHealth());
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            String executor = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
+            String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
             if (target == player) {
                 player.sendMessage(Locale.HEAL_SELF.getString());
                 String toSend = Locale.HEAL_STAFF.getString()
@@ -484,7 +485,7 @@ public class EssentialCommands {
         target.chat(msg);
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            String senderName = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
+            String senderName = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
             String toSend = Locale.SUDO_STAFF.getString()
                     .replace("%executor%", senderName)
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
@@ -506,7 +507,7 @@ public class EssentialCommands {
         sender.sendMessage(Locale.SUDO_ALL_PLAYER.getString().replace("%text%", msg));
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            String senderName = Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
+            String senderName = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
             String toSend = Locale.SUDO_ALL_STAFF.getString()
                     .replace("%executor%", senderName)
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
@@ -563,7 +564,7 @@ public class EssentialCommands {
             return;
         }
 
-        String playerName = Holiday.getInstance().getNameWithColor(profile);
+        String playerName = UserConstants.getNameWithColor(profile);
         String server = Holiday.getInstance().getThisServer().getServerName();
         String toSend = Locale.STAFF_CHAT.getString()
                 .replace("%player%", playerName)
@@ -589,7 +590,7 @@ public class EssentialCommands {
             return;
         }
 
-        String playerName = Holiday.getInstance().getNameWithColor(profile);
+        String playerName = UserConstants.getNameWithColor(profile);
         String server = Holiday.getInstance().getThisServer().getServerName();
         String toSend = Locale.ADMIN_CHAT.getString()
                 .replace("%player%", playerName)
@@ -635,7 +636,7 @@ public class EssentialCommands {
             return;
         }
 
-        sender.sendMessage(Locale.PULLING_PLAYER.getString().replace("%player%", Holiday.getInstance().getDisplayNameWithColor(player)));
+        sender.sendMessage(Locale.PULLING_PLAYER.getString().replace("%player%", UserConstants.getDisplayNameWithColor(player)));
         Holiday.getInstance().getApi().getRedis().sendPacket(new CrossServerCommandPacket(
                 "sendtoserver " + player.getDisplayName() + " " + Holiday.getInstance().getThisServer().getServerId(), player.getCurrentServer().getServerId()));
     }
@@ -657,7 +658,7 @@ public class EssentialCommands {
         }
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
         sender.sendMessage(Locale.SENDING_PLAYER.getString()
-                .replace("%player%", Holiday.getInstance().getDisplayNameWithColor(profile))
+                .replace("%player%", UserConstants.getDisplayNameWithColor(profile))
                 .replace("%server%", data.getServerName()));
         PlayerUtils.sendToServer(player, server);
     }
@@ -666,7 +667,7 @@ public class EssentialCommands {
     public void find(CommandSender sender, @Param(name = "player") Profile player) {
         if (player.isOnline()) {
             sender.sendMessage(Locale.PLAYER_CONNECTED_TO.getString()
-                    .replace("%player%", Holiday.getInstance().getDisplayNameWithColor(player))
+                    .replace("%player%", UserConstants.getDisplayNameWithColor(player))
                     .replace("%server%", player.getCurrentServer().getServerName()));
         } else {
             sender.sendMessage(Locale.PLAYER_NOT_ONLINE.getString());

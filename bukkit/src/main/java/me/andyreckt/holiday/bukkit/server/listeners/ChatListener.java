@@ -3,6 +3,7 @@ package me.andyreckt.holiday.bukkit.server.listeners;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.text.CC;
@@ -54,7 +55,7 @@ public class ChatListener implements Listener {
             return;
         }
 
-        String playerName = Holiday.getInstance().getNameWithColor(profile);
+        String playerName = UserConstants.getNameWithColor(profile);
         String server = Holiday.getInstance().getThisServer().getServerName();
         String message = event.getMessage();
 
@@ -121,7 +122,7 @@ public class ChatListener implements Listener {
 
         String message = Locale.CHAT_FORMAT.getString()
                 .replace("%prefix%", profile.getDisplayRank().getPrefix())
-                .replace("%player%", Holiday.getInstance().getDisplayNameWithColor(profile))
+                .replace("%player%", UserConstants.getDisplayNameWithColor(profile))
                 .replace("%suffix%", profile.getDisplayRank().getSuffix())
                 .replace("%message%", "%2$s");
         event.setFormat(CC.translate(message));

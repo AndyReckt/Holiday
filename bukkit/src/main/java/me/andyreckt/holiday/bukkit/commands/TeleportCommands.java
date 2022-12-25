@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
@@ -19,7 +20,7 @@ public class TeleportCommands {
         sender.sendMessage(Locale.TELEPORT_PLAYER_ALL.getString());
         String message = Locale.TELEPORT_STAFF_PLAYER_ALL.getString()
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
-                .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())));
+                .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())));
         Holiday.getInstance().getApi().getRedis().sendPacket(
                 new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
@@ -29,8 +30,8 @@ public class TeleportCommands {
         sender.teleport(target.getLocation());
         String message = Locale.TELEPORT_STAFF_PLAYER.getString()
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
-                .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
-                .replace("%player%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
+                .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
+                .replace("%player%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
         Holiday.getInstance().getApi().getRedis().sendPacket(
                 new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
@@ -40,8 +41,8 @@ public class TeleportCommands {
         target.teleport(sender.getLocation());
         String message = Locale.TELEPORT_STAFF_PLAYER_HERE.getString()
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
-                .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
-                .replace("%player%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
+                .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
+                .replace("%player%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
         Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
@@ -55,7 +56,7 @@ public class TeleportCommands {
         sender.teleport(location);
         String message = Locale.TELEPORT_STAFF_PLAYER_POSITION.getString()
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
-                .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
+                .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
                 .replace("%x%", String.valueOf(x))
                 .replace("%y%", String.valueOf(y))
                 .replace("%z%", String.valueOf(z));

@@ -2,6 +2,7 @@ package me.andyreckt.holiday.bukkit.commands;
 
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7_R4;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
@@ -57,7 +58,7 @@ public class GamemodeCommands {
             sender.sendMessage(Locale.GAMEMODE_UPDATED_SELF.getString().replace("%gamemode%", target.getGameMode().name()));
             String string = Locale.STAFF_GAMEMODE_UPDATED_SELF.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
-                    .replace("%executor%", Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                    .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%gamemode%", target.getGameMode().name());
             Holiday.getInstance().getApi().getRedis().sendPacket(
                     new BroadcastPacket(string, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
@@ -66,7 +67,7 @@ public class GamemodeCommands {
             sender.sendMessage(Locale.GAMEMODE_UPDATED_OTHER.getString().replace("%gamemode%", target.getGameMode().name()).replace("%player%", target.getName()));
             String string = Locale.STAFF_GAMEMODE_UPDATED.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
-                    .replace("%executor%", sender instanceof Player ? Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())) : "Console")
+                    .replace("%executor%", sender instanceof Player ? UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())) : "Console")
                     .replace("%gamemode%", target.getGameMode().name())
                     .replace("%player%", target.getName());
             Holiday.getInstance().getApi().getRedis().sendPacket(

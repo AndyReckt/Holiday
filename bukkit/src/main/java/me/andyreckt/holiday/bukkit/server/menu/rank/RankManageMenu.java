@@ -3,6 +3,7 @@ package me.andyreckt.holiday.bukkit.server.menu.rank;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
@@ -69,7 +70,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(12, new EasyButton(
                 new ItemBuilder(Material.WOOL)
                         .displayname(CC.SECONDARY + "Set Color")
-                        .durability(StringUtil.convertChatColorToWoolData(Holiday.getInstance().getRankColor(rank)))
+                        .durability(StringUtil.convertChatColorToWoolData(UserConstants.getRankColor(rank)))
                         .lore("", CC.I_GRAY + "Click to change the color of this rank.")
                         .build(),
                 (u) -> new RankColorMenu(rank).openMenu(player))

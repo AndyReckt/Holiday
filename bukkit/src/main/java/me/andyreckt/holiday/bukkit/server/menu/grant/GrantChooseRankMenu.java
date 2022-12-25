@@ -3,6 +3,7 @@ package me.andyreckt.holiday.bukkit.server.menu.grant;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
@@ -52,7 +53,7 @@ public class GrantChooseRankMenu extends PaginatedMenu {
         @Override
         public ItemStack getButtonItem(Player p0) {
             return new ItemBuilder(Material.WOOL)
-                    .damage(StringUtil.convertChatColorToWoolData(Holiday.getInstance().getRankColor(rank)))
+                    .damage(StringUtil.convertChatColorToWoolData(UserConstants.getRankColor(rank)))
                     .displayname(rank.getDisplayName())
                     .build();
         }

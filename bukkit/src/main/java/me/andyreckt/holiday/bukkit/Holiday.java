@@ -246,24 +246,6 @@ public final class Holiday extends JavaPlugin {
         this.scheduledExecutor.shutdownNow();
     }
 
-    public ChatColor getRankColor(IRank rank) {
-        return ChatColor.valueOf(rank.getColor().toUpperCase());
-    }
-
-    public String getNameWithColor(Profile profile) {
-        IRank rank = profile.getHighestVisibleRank();
-        return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getName();
-    }
-
-    public String getDisplayNameWithColor(Profile profile) {
-        IRank rank = profile.getDisplayRank();
-        return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getDisplayName();
-    }
-
-    public String getDisplayNameWithColorAndVanish(Profile profile) {
-        return (profile.getStaffSettings().isVanished() ? CC.GRAY + "*" : "") + getDisplayNameWithColor(profile);
-    }
-
     private String getIP() {
         if (Locale.USE_CUSTOM_IP.getBoolean()) {
             return Locale.CUSTOM_IP.getString();

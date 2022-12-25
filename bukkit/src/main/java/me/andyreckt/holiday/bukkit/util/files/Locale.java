@@ -42,6 +42,8 @@ public enum Locale {
     CHAT_ENABLED(SETTINGS.get(), "server.chat.enabled", true),
     CHAT_FORMAT(SETTINGS.get(), "server.chat.format", "%prefix%%player%%suffix%&7: %message%"),
     LOGIN_WHITELIST(SETTINGS.get(), "server.whitelist-login", "&eThe server is currently &cWhitelisted&e. \\n &eYou need %rank% &eor above to be able to log into the server."),
+    SERVER_PLAYER_DISPLAYNAME(SETTINGS.get(), "server.change-player-displayname", true),
+    SERVER_PLAYER_LISTNAME(SETTINGS.get(), "server.change-player-listname", false),
 
     // DISABLED_COMMANDS(SETTINGS.get(), "server.disabled-commands", "save-all", "save-off", "save-on", "w",
     //         "bukkit:op", "bukkit:deop", "bukkit:ban", "bukkit:kick", "bukkit:mute", "bukkit:tempmute", "bukkit:unmute",

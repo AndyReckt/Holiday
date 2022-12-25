@@ -5,6 +5,7 @@ import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
@@ -180,7 +181,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onJoinLiked(PlayerJoinEvent event) {
+    public void onJoinOther(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
@@ -207,6 +208,7 @@ public class PlayerListener implements Listener {
 
             Holiday.getInstance().getApi().saveGrant(grant);
         });
+        UserConstants.reloadPlayer(player);
     }
 
 

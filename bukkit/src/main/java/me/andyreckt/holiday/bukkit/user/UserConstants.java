@@ -1,0 +1,48 @@
+package me.andyreckt.holiday.bukkit.user;
+
+import lombok.experimental.UtilityClass;
+import me.andyreckt.holiday.api.user.IRank;
+import me.andyreckt.holiday.api.user.Profile;
+import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.util.files.Locale;
+import me.andyreckt.holiday.bukkit.util.text.CC;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+import java.util.UUID;
+
+@UtilityClass
+public class UserConstants {
+
+    public static String getDisplayNameWithColorAndVanish(Profile profile) {
+        return (profile.getStaffSettings().isVanished() ? CC.GRAY + "*" : "") + getDisplayNameWithColor(profile);
+    }
+
+    public static String getDisplayNameWithColor(Profile profile) {
+        IRank rank = profile.getDisplayRank();
+        return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getDisplayName();
+    }
+
+    public static ChatColor getRankColor(IRank rank) {
+        return ChatColor.valueOf(rank.getColor().toUpperCase());
+    }
+
+    public static String getNameWithColor(Profile profile) {
+        IRank rank = profile.getHighestVisibleRank();
+        return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getName();
+    }
+
+    public static void reloadPlayer(Player player) {
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+        if (Locale.SERVER_PLAYER_DISPLAYNAME.getBoolean()) player.setDisplayName(getDisplayNameWithColor(profile));
+        if (Locale.SERVER_PLAYER_LISTNAME.getBoolean()) player.setPlayerListName(getDisplayNameWithColor(profile));
+    }
+
+    public static void reloadPlayer(UUID uuid) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null) reloadPlayer(player);
+    }
+
+
+}

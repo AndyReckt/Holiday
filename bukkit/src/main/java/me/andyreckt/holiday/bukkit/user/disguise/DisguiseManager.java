@@ -5,6 +5,7 @@ import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
 import me.andyreckt.holiday.bukkit.server.redis.packet.DisguisePacket;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
@@ -12,6 +13,7 @@ import me.andyreckt.holiday.core.util.http.Skin;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
+import org.bukkit.Bukkit;
 import org.redisson.api.RMap;
 
 import java.util.*;
@@ -83,14 +85,15 @@ public class DisguiseManager {
             plugin.getApi().getRedis().getClient().getMap("disguise-cache").put(disguise.getUuid().toString(), GsonProvider.GSON.toJson(disguise));
             String toSend = Locale.DISGUISE_MESSAGE_STAFF.getString()
                     .replace("%server%", plugin.getThisServer().getServerName())
-                    .replace("%player%", plugin.getNameWithColor(profile))
-                    .replace("%name%",plugin.getDisplayNameWithColor(profile))
+                    .replace("%player%", UserConstants.getNameWithColor(profile))
+                    .replace("%name%",UserConstants.getDisplayNameWithColor(profile))
                     .replace("%skin%", disguise.getSkinName());
             plugin.getApi().getRedis().sendPacket(new DisguisePacket(disguise, false));
             plugin.getApi().getRedis().sendPacket(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.DISGUISES
             ));
         }
+        UserConstants.reloadPlayer(disguise.getUuid());
     }
 
     public void unDisguise(Disguise disguise) {
@@ -102,10 +105,11 @@ public class DisguiseManager {
         plugin.getApi().getRedis().sendPacket(new DisguisePacket(disguise, true));
         String toSend = Locale.DISGUISE_MESSAGE_STAFF_OFF.getString()
                 .replace("%server%", plugin.getThisServer().getServerName())
-                .replace("%player%", plugin.getNameWithColor(profile));
+                .replace("%player%", UserConstants.getNameWithColor(profile));
         plugin.getApi().getRedis().sendPacket(new BroadcastPacket(
                 toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.DISGUISES
         ));
+        UserConstants.reloadPlayer(disguise.getUuid());
     }
 
     public List<String> getUnusedNames() {

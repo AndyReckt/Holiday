@@ -3,6 +3,7 @@ package me.andyreckt.holiday.bukkit.commands;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.redis.packet.MessagePacket;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
@@ -44,7 +45,7 @@ public class ConversationCommands {
         }
 
         String toSend = Locale.CONVERSATION_FORMAT_SENT.getString()
-                .replace("%player%", Holiday.getInstance().getDisplayNameWithColor(target))
+                .replace("%player%", UserConstants.getDisplayNameWithColor(target))
                 .replace("%message%", message);
 
         player.sendMessage(toSend);
@@ -87,7 +88,7 @@ public class ConversationCommands {
         }
 
         String toSend = Locale.CONVERSATION_FORMAT_SENT.getString()
-                .replace("%player%", Holiday.getInstance().getDisplayNameWithColor(target))
+                .replace("%player%", UserConstants.getDisplayNameWithColor(target))
                 .replace("%message%", message);
 
         player.sendMessage(toSend);

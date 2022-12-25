@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -59,7 +60,7 @@ public class PlayerList { //PVPTEMPLE
 		return this.players.stream()
 				.map(Player::getUniqueId)
 				.map(uid -> Holiday.getInstance().getApi().getProfile(uid))
-				.map(profile -> Holiday.getInstance().getDisplayNameWithColorAndVanish(profile) + CC.GRAY)
+				.map(profile -> UserConstants.getDisplayNameWithColorAndVanish(profile) + CC.GRAY)
 				.collect(Collectors.toList());
 	}
 

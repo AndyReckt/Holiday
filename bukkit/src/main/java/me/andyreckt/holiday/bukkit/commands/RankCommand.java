@@ -11,6 +11,7 @@ import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.rank.RankManageMenu;
 import me.andyreckt.holiday.bukkit.server.menu.rank.RankManagerMenu;
 import me.andyreckt.holiday.bukkit.server.redis.packet.PermissionUpdatePacket;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
@@ -68,7 +69,7 @@ public class RankCommand {
                     CC.CHAT + "Display Name: " + rank.getDisplayName() + "\n" +
                             CC.CHAT + "Prefix: " + rank.getPrefix() + "\n" +
                             CC.CHAT + "Suffix: " + rank.getSuffix() + "\n" +
-                            CC.CHAT + "Color: " + Holiday.getInstance().getRankColor(rank) + rank.getColor() + "\n" +
+                            CC.CHAT + "Color: " + UserConstants.getRankColor(rank) + rank.getColor() + "\n" +
                             CC.CHAT + "Priority: " + CC.PRIMARY + rank.getPriority() + "\n" +
                             CC.CHAT + "Default: " + yesNo(rank.isDefault()) + "\n" +
                             CC.CHAT + "Visible: " + yesNo(rank.isVisible()) + "\n" +

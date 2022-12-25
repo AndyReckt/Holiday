@@ -2,6 +2,7 @@ package me.andyreckt.holiday.bukkit.commands;
 
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
@@ -36,7 +37,7 @@ public class ChatCommand {
 
         Bukkit.broadcastMessage(Locale.GLOBAL_CHAT_CLEAR.getString());
         String toSend = Locale.STAFF_CHAT_CLEAR.getString()
-                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().getRedis().sendPacket(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
@@ -48,10 +49,10 @@ public class ChatCommand {
         Holiday.getInstance().getChatManager().setChatMuted(!Holiday.getInstance().getChatManager().isChatMuted());
         Bukkit.broadcastMessage(Holiday.getInstance().getChatManager().isChatMuted() ? Locale.GLOBAL_CHAT_MUTED.getString() : Locale.GLOBAL_CHAT_UNMUTED.getString());
         String toSendMuted = Locale.STAFF_CHAT_MUTED.getString()
-                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         String toSendUnmuted = Locale.STAFF_CHAT_UNMUTED.getString()
-                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().getRedis().sendPacket(
                 new BroadcastPacket(Holiday.getInstance().getChatManager().isChatMuted() ? toSendMuted : toSendUnmuted,
@@ -70,7 +71,7 @@ public class ChatCommand {
         Holiday.getInstance().getChatManager().setChatDelay(time);
         Bukkit.broadcastMessage(Locale.GLOBAL_CHAT_SLOWED.getString().replace("%delay%", TimeUtil.getDuration(time)));
         String toSend = Locale.STAFF_CHAT_SLOWED.getString()
-                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%delay%", TimeUtil.getDuration(time));
         Holiday.getInstance().getApi().getRedis().sendPacket(
@@ -84,7 +85,7 @@ public class ChatCommand {
         Holiday.getInstance().getChatManager().setChatDelay(0L);
         Bukkit.broadcastMessage(Locale.GLOBAL_CHAT_UNSLOWED.getString());
         String toSend = Locale.STAFF_CHAT_UNSLOWED.getString()
-                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().getRedis().sendPacket(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));

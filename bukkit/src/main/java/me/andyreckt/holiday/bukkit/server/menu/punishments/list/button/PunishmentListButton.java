@@ -2,6 +2,7 @@ package me.andyreckt.holiday.bukkit.server.menu.punishments.list.button;
 
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.text.CC;
@@ -36,6 +37,6 @@ public class PunishmentListButton extends Button {
     }
 
     private String nameWithColor(UUID uuid) {
-        return Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(uuid));
+        return UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(uuid));
     }
 }

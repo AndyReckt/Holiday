@@ -3,6 +3,7 @@ package me.andyreckt.holiday.bukkit.commands;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
@@ -37,7 +38,7 @@ public class GrantCommands {
         Holiday.getInstance().getApi().saveGrant(grant);
 
         String str = Locale.GRANT_PLAYER.getString()
-                .replace("%player%", Holiday.getInstance().getNameWithColor(target))
+                .replace("%player%", UserConstants.getNameWithColor(target))
                 .replace("%rank%", rank.getDisplayName())
                 .replace("%duration%", ti);
         sender.sendMessage(CC.translate(str));

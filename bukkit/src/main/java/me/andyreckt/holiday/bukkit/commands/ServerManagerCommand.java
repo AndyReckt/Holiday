@@ -5,6 +5,7 @@ import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.server.ServerListMenu;
 import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
@@ -36,7 +37,7 @@ public class ServerManagerCommand {
             String toSend = Locale.STAFF_SERVER_MANAGER_RUN_SERVER.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%serverid%", Holiday.getInstance().getThisServer().getServerId())
-                    .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                    .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%command%", command);
             Holiday.getInstance().getApi().getRedis().sendPacket(
                     new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER_MANAGER));
@@ -47,7 +48,7 @@ public class ServerManagerCommand {
         } else {
             String toSend = Locale.STAFF_SERVER_MANAGER_RUN_ALL.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
-                    .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : Holiday.getInstance().getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
+                    .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%command%", command);
             Holiday.getInstance().getApi().getRedis().sendPacket(
                     new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER_MANAGER));

@@ -3,6 +3,7 @@ package me.andyreckt.holiday.bukkit.server.redis.subscriber;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.redis.packet.MessagePacket;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.core.util.redis.messaging.IncomingPacketHandler;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketListener;
@@ -25,8 +26,8 @@ public class MessageSubscriber implements PacketListener {
                     return;
                 }
                 String toSend = Locale.CONVERSATION_FORMAT_SOCIAL_SPY.getString()
-                        .replace("%sender%", Holiday.getInstance().getDisplayNameWithColor(packet.getSender()))
-                        .replace("%target%", Holiday.getInstance().getDisplayNameWithColor(packet.getTarget()))
+                        .replace("%sender%", UserConstants.getDisplayNameWithColor(packet.getSender()))
+                        .replace("%target%", UserConstants.getDisplayNameWithColor(packet.getTarget()))
                         .replace("%message%", packet.getMessage());
                 player.sendMessage(toSend);
             }
@@ -36,7 +37,7 @@ public class MessageSubscriber implements PacketListener {
         Player player = Bukkit.getPlayer(packet.getTarget().getUuid());
 
         String toSend = Locale.CONVERSATION_FORMAT_RECEIVED.getString()
-                .replace("%player%", Holiday.getInstance().getDisplayNameWithColor(packet.getSender()))
+                .replace("%player%", UserConstants.getDisplayNameWithColor(packet.getSender()))
                 .replace("%message%", packet.getMessage());
 
         player.sendMessage(toSend);

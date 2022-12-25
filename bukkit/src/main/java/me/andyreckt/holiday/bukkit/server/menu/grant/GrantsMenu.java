@@ -4,6 +4,7 @@ import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
@@ -92,7 +93,7 @@ public class GrantsMenu extends PaginatedMenu {
                         CC.CHAT + "Rank: " + CC.PRIMARY + grant.getRank().getDisplayName(),
                         CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),
                         CC.MENU_BAR,
-                        CC.CHAT + "Issued By: " + CC.PRIMARY + Holiday.getInstance().getNameWithColor(issuer),
+                        CC.CHAT + "Issued By: " + CC.PRIMARY + UserConstants.getNameWithColor(issuer),
                         CC.CHAT + "Issued On: " + CC.PRIMARY + grant.getIssuedOn(),
                         CC.CHAT + "Issued Reason: " + CC.PRIMARY + grant.getReason(),
                         CC.MENU_BAR
@@ -105,11 +106,11 @@ public class GrantsMenu extends PaginatedMenu {
                         CC.CHAT + "Rank: " + CC.PRIMARY + grant.getRank().getDisplayName(),
                         CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),
                         CC.MENU_BAR,
-                        CC.CHAT + "Issued By: " + CC.PRIMARY + Holiday.getInstance().getNameWithColor(issuer),
+                        CC.CHAT + "Issued By: " + CC.PRIMARY + UserConstants.getNameWithColor(issuer),
                         CC.CHAT + "Issued On: " + CC.PRIMARY + grant.getIssuedOn(),
                         CC.CHAT + "Issued Reason: " + CC.PRIMARY + grant.getReason(),
                         CC.MENU_BAR,
-                        CC.CHAT + "Removed By: " + CC.PRIMARY + Holiday.getInstance().getNameWithColor(remover),
+                        CC.CHAT + "Removed By: " + CC.PRIMARY + UserConstants.getNameWithColor(remover),
                         CC.CHAT + "Removed On: " + CC.PRIMARY + grant.getRevokedOn(),
                         CC.CHAT + "Removed Reason: " + CC.PRIMARY + grant.getRevokeReason(),
                         CC.MENU_BAR

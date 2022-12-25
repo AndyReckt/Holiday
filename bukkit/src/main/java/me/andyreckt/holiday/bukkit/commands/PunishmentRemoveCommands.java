@@ -4,6 +4,7 @@ import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
@@ -92,8 +93,8 @@ public class PunishmentRemoveCommands {
 
         if (toSend.equals("")) return;
 
-        String issuerName = profile == UserProfile.getConsoleProfile() ? "&4Console" : Holiday.getInstance().getNameWithColor(profile);
-        String targetName = Holiday.getInstance().getDisplayNameWithColor(target);
+        String issuerName = profile == UserProfile.getConsoleProfile() ? "&4Console" : UserConstants.getNameWithColor(profile);
+        String targetName = UserConstants.getDisplayNameWithColor(target);
 
         toSend = toSend.replace("%executor%", issuerName)
                 .replace("%player%", targetName)
