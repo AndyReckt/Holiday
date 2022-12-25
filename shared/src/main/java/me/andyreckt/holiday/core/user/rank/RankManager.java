@@ -10,6 +10,7 @@ import me.andyreckt.holiday.core.util.redis.pubsub.packets.RankUpdatePacket;
 import org.bson.Document;
 
 import java.util.Queue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Getter
@@ -39,11 +40,13 @@ public class RankManager {
     }
 
     public void saveRank(IRank rank) {
-        api.getMongoManager().getRanks().replaceOne(
-                Filters.eq("_id", rank.getUuid()),
-                new Document("data", GsonProvider.GSON.toJson(rank)).append("_id", rank.getUuid()),
-                new ReplaceOptions().upsert(true)
-        );
+        CompletableFuture.runAsync(() -> {
+            api.getMongoManager().getRanks().replaceOne(
+                    Filters.eq("_id", rank.getUuid()),
+                    new Document("data", GsonProvider.GSON.toJson(rank)).append("_id", rank.getUuid()),
+                    new ReplaceOptions().upsert(true)
+            );
+        });
 
         this.ranks.removeIf(rank1 -> rank1.getUuid().equals(rank.getUuid()));
         this.ranks.add(rank);

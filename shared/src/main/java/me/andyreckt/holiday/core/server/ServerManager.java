@@ -9,6 +9,7 @@ import org.redisson.api.RMap;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerManager {
@@ -44,6 +45,8 @@ public class ServerManager {
 
     public void keepAlive(Server server) {
         api.getRedis().sendPacket(new ServerKeepAlivePacket(server));
-        api.getRedis().getClient().getMap("server-map").put(server.getServerId(), GsonProvider.GSON.toJson(server));
+        CompletableFuture.runAsync(() -> {
+            api.getRedis().getClient().getMap("server-map").put(server.getServerId(), GsonProvider.GSON.toJson(server));
+        });
     }
 }

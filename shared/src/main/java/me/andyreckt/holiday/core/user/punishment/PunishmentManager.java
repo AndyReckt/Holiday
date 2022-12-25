@@ -12,6 +12,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Getter
 public class PunishmentManager {
@@ -59,11 +60,13 @@ public class PunishmentManager {
         this.punishments.removeIf(pun -> pun.getId().equals(punishment.getId()));
         this.punishments.add(punishment);
 
-        api.getMongoManager().getPunishments().replaceOne(
-                Filters.eq("_id", punishment.getId()),
-                new Document("data", GsonProvider.GSON.toJson(punishment)).append("_id", punishment.getId()),
-                new ReplaceOptions().upsert(true)
-        );
+        CompletableFuture.runAsync(() -> {
+            api.getMongoManager().getPunishments().replaceOne(
+                    Filters.eq("_id", punishment.getId()),
+                    new Document("data", GsonProvider.GSON.toJson(punishment)).append("_id", punishment.getId()),
+                    new ReplaceOptions().upsert(true)
+            );
+        });
 
         this.api.getRedis().sendPacket(new PunishmentUpdatePacket((Punishment) punishment));
     }

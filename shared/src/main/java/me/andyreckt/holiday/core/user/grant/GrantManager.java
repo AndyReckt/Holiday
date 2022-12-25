@@ -12,6 +12,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Getter
 public class GrantManager { //TODO: at some point only load the active grants, and get the rest when needed.
@@ -41,11 +42,13 @@ public class GrantManager { //TODO: at some point only load the active grants, a
         this.grants.removeIf(grant1 -> grant1.getGrantId().equals(grant.getGrantId()));
         this.grants.add(grant);
 
-        api.getMongoManager().getGrants().replaceOne(
-                Filters.eq("_id", grant.getGrantId()),
-                new Document("data", GsonProvider.GSON.toJson(grant)).append("_id", grant.getGrantId()),
-                new ReplaceOptions().upsert(true)
-        );
+        CompletableFuture.runAsync(() -> {
+            api.getMongoManager().getGrants().replaceOne(
+                    Filters.eq("_id", grant.getGrantId()),
+                    new Document("data", GsonProvider.GSON.toJson(grant)).append("_id", grant.getGrantId()),
+                    new ReplaceOptions().upsert(true)
+            );
+        });
 
         this.api.getRedis().sendPacket(new GrantUpdatePacket((Grant) grant));
     }
