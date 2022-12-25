@@ -1,7 +1,6 @@
 package me.andyreckt.holiday.bukkit.util.files;
 
 
-import com.sun.scenario.Settings;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -221,7 +220,6 @@ public enum Locale {
             "&ePlayers: &3%players%&7/&3%maxplayers%",
             "&eServer TPS: %tps%",
             CC.CHAT_BAR),
-    PLAYER_SERVER_MANAGER_INFO_OFFLINE(MESSAGES.get(), "server-manager.player.info-offline", "&cThe server is currently offline or does not exist."),
 
     /* GAMEMODE */
     GAMEMODE_UPDATED_SELF(MESSAGES.get(), "gamemode.player.updated-self", "&aSuccessfully updated your gamemode to %gamemode%."),
@@ -278,7 +276,7 @@ public enum Locale {
     HELPOP_FORMAT(MESSAGES.get(), "helpop.format", "&2[HELPOP] &3[%server%] %player% &2needs help %newline%  &7» &aRequest: &a%message%"),
     HELPOP_CLICK_MESSAGE(MESSAGES.get(), "helpop.click-message", "&eClick to answer %player%"),
 
-    /* GENERAL COMMANDS */
+    /* ESSENTIALS COMMANDS */
     PING(MESSAGES.get(), "ping.self", "&aYour ping is %ping%ms."),
     PING_OTHER(MESSAGES.get(), "ping.other", "&a%player%'s ping is %ping%ms &7(difference: %difference%ms)"),
     RENAME(MESSAGES.get(), "rename", "&aYou have successfully renamed your %item% to &r%name%&a."),
@@ -308,6 +306,23 @@ public enum Locale {
     SUDO_ALL_PLAYER(MESSAGES.get(), "sudo.all.player", "&aYou have successfully forced all players to say %text%"),
     CHAT_CHANNEL_JOIN(MESSAGES.get(), "chat-channel.join", "&aYou have joined the %channel% chat."),
     CHAT_CHANNEL_LEAVE(MESSAGES.get(), "chat-channel.leave", "&aYou have left the %channel% chat."),
+    JOINING_SERVER(MESSAGES.get(), "join-server", "&aJoining %server%..."),
+    PULLING_PLAYER(MESSAGES.get(), "pull-player", "&aPulling %player% to your server..."),
+    SENDING_PLAYER(MESSAGES.get(), "send-player", "&aSending %player% to %server%..."),
+    PLAYER_CONNECTED_TO(MESSAGES.get(), "player-connected-to", "&a%player% is currently connected to %server%."),
+    LAG_MESSAGE(MESSAGES.get(), "lag.message",
+            "%bar%",
+            "&3&lServer Info&7:",
+            " &7* &eTPS&7: &d%tps%",
+            " &7* &eUptime&7: &6%uptime%",
+            " &7* &eMemory Max&7: &d%mem_max% &eMB",
+            " &7* &eMemory Allocated&7: &d%mem_allocated% &eMB",
+            " &7* &eMemory Available&7: &d%mem_available% &eMB",
+            " ",
+            "&3&lWorlds&7:",
+            "%worlds%",
+            "%bar%"),
+    LAG_WORLDS(MESSAGES.get(), "lag.worlds", " &7* &3<name>&7: &eChunks Loaded&7: &d<chunks>&7, &eEntities&7: &d<entities>"),
 
 
     /* GENERAL COMMANDS STAFF ALERTS */
@@ -338,7 +353,7 @@ public enum Locale {
     PACKET_ERROR(MESSAGES.get(), "error.packet", "&cAn error occurred while sending the packet."),
     PLAYER_ALREADY_WHITELISTED(MESSAGES.get(), "error.player-already-whitelisted", "&cThat player is already whitelisted."),
     PLAYER_NOT_WHITELISTED(MESSAGES.get(), "error.player-not-whitelisted", "&cThat player is not whitelisted."),
-    SERVER_NOT_FOUND(MESSAGES.get(), "error.server-not-found", "&cA server with that name could not be found."),
+    SERVER_NOT_FOUND(MESSAGES.get(), "error.server-not-found", "&cThe server is currently offline or does not exist."),
     NOT_SUPPORTED(MESSAGES.get(), "error.not-supported", "&cThis feature is not supported on 1.7."),
     MAXIMUM_COORDINATE(MESSAGES.get(), "error.maximum-coordinate", "&cMaximal coordinates are +/- x: 3000000 y: 260/-10 z: 3000000"),
     CANNOT_MESSAGE_YOURSELF(MESSAGES.get(), "error.cannot-message-yourself", "&cYou cannot message yourself."),

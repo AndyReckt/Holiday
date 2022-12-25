@@ -1,5 +1,7 @@
 package me.andyreckt.holiday.api.user;
 
+import me.andyreckt.holiday.api.server.IServer;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,6 +60,8 @@ public interface Profile {
     boolean isBanned();
     boolean isIpBanned();
     boolean isBlacklisted();
+
+    IServer getCurrentServer();
 
     List<IPunishment> getPunishments();
     List<IPunishment> getPunishments(IPunishment.PunishmentType type);

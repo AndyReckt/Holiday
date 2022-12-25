@@ -3,6 +3,7 @@ package me.andyreckt.holiday.core.user;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.*;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
@@ -207,6 +208,11 @@ public class UserProfile implements Profile {
     @Override
     public boolean isBlacklisted() {
         return HolidayAPI.getUnsafeAPI().getPunishments(uuid).stream().filter(IPunishment::isActive).anyMatch(type -> type.getType() == IPunishment.PunishmentType.BLACKLIST);
+    }
+
+    @Override
+    public IServer getCurrentServer() {
+        return !isOnline() ? null : HolidayAPI.getUnsafeAPI().getServer(uuid);
     }
 
     @Override

@@ -61,14 +61,11 @@ public class ServerManagerCommand {
     @SubCommand(names = {"info", "status"}, description = "Get information about a server.", async = true)
     public void info(CommandSender sender, @Param(name = "server") String serverid) {
         IServer server = Holiday.getInstance().getApi().getServer(serverid);
-        if (server == null) {
+        if (server == null || !server.isOnline()) {
             sender.sendMessage(Locale.SERVER_NOT_FOUND.getString());
             return;
         }
-        if (!server.isOnline()) {
-            sender.sendMessage(Locale.PLAYER_SERVER_MANAGER_INFO_OFFLINE.getString());
-            return;
-        }
+
         String status = server.isWhitelisted() ? CC.CHAT + "Whitelisted" : CC.GREEN + "Online";
 
         StringBuilder sb = new StringBuilder(" ");

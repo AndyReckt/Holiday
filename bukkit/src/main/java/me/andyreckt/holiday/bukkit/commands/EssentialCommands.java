@@ -3,12 +3,14 @@ package me.andyreckt.holiday.bukkit.commands;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
+import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.punishments.check.PunishmentCheckMenu;
 import me.andyreckt.holiday.bukkit.server.menu.punishments.list.PunishmentListMenu;
 import me.andyreckt.holiday.bukkit.server.menu.staff.InvSeeMenu;
+import me.andyreckt.holiday.bukkit.server.redis.packet.CrossServerCommandPacket;
 import me.andyreckt.holiday.bukkit.server.redis.packet.HelpopPacket;
 import me.andyreckt.holiday.bukkit.server.redis.packet.ReportPacket;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
@@ -24,6 +26,7 @@ import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.enums.ChatChannel;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
+import net.minecraft.util.org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -599,7 +602,113 @@ public class EssentialCommands {
         ));
     }
 
-    //TODO: add /lag command
+    @Command(names = "join", permission = Perms.JOIN)
+    public void join(Player sender, @Param(name = "server") String server) {
+        IServer data = Holiday.getInstance().getApi().getServer(server);
+
+        if (data == null || !data.isOnline()) {
+            sender.sendMessage(Locale.SERVER_NOT_FOUND.getString());
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("&cAvailable servers: ");
+            for (Map.Entry<String, IServer> entry : Holiday.getInstance().getApi().getServers().entrySet()) {
+                if (entry.getValue().isOnline()) sb.append("&c").append(entry.getKey()).append("&7,");
+            }
+            sender.sendMessage(CC.translate(sb.substring(0, sb.length() - 3)));
+            return;
+        }
+        sender.sendMessage(Locale.JOINING_SERVER.getString().replace("%server%", data.getServerName()));
+        PlayerUtils.sendToServer(sender, server);
+    }
+
+
+    @Command(names = "pull", permission = Perms.PULL)
+    public void pull(Player sender, @Param(name = "player") Profile player) {
+
+        if (!player.isOnline()) {
+            sender.sendMessage(Locale.PLAYER_NOT_ONLINE.getString());
+            return;
+        }
+
+        if (player.getCurrentServer() == null) {
+            sender.sendMessage(Locale.PLAYER_NOT_ONLINE.getString());
+            return;
+        }
+
+        sender.sendMessage(Locale.PULLING_PLAYER.getString().replace("%player%", Holiday.getInstance().getDisplayNameWithColor(player)));
+        Holiday.getInstance().getApi().getRedis().sendPacket(new CrossServerCommandPacket(
+                "sendtoserver " + player.getDisplayName() + " " + Holiday.getInstance().getThisServer().getServerId(), player.getCurrentServer().getServerId()));
+    }
+
+    @Command(names = "sendtoserver", permission = Perms.SEND_TO_SERVER)
+    public void send(CommandSender sender, @Param(name = "player") Player player, @Param(name = "server") String server) {
+        IServer data = Holiday.getInstance().getApi().getServer(server);
+
+        if (data == null || !data.isOnline()) {
+            sender.sendMessage(Locale.SERVER_NOT_FOUND.getString());
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("&cAvailable servers: ");
+            for (Map.Entry<String, IServer> entry : Holiday.getInstance().getApi().getServers().entrySet()) {
+                if (entry.getValue().isOnline()) sb.append("&c").append(entry.getKey()).append("&7,");
+            }
+            sender.sendMessage(CC.translate(sb.substring(0, sb.length() - 3)));
+            return;
+        }
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+        sender.sendMessage(Locale.SENDING_PLAYER.getString()
+                .replace("%player%", Holiday.getInstance().getDisplayNameWithColor(profile))
+                .replace("%server%", data.getServerName()));
+        PlayerUtils.sendToServer(player, server);
+    }
+
+    @Command(names = {"find", "search"}, permission = Perms.FIND)
+    public void find(CommandSender sender, @Param(name = "player") Profile player) {
+        if (player.isOnline()) {
+            sender.sendMessage(Locale.PLAYER_CONNECTED_TO.getString()
+                    .replace("%player%", Holiday.getInstance().getDisplayNameWithColor(player))
+                    .replace("%server%", player.getCurrentServer().getServerName()));
+        } else {
+            sender.sendMessage(Locale.PLAYER_NOT_ONLINE.getString());
+        }
+    }
+
+    @Command(names = {"lag", "serverlag"}, permission = Perms.LAG)
+    public void lag(CommandSender sender) {
+        StringBuilder sb = new StringBuilder(" ");
+        for (double tps : Holiday.getInstance().getNms().recentTps()) {
+            sb.append(format(tps));
+            sb.append(", ");
+        }
+
+        IServer server = Holiday.getInstance().getThisServer();
+
+        String uptime = DurationFormatUtils.formatDurationWords(server.getUptime(), true, true);
+        String tps = sb.substring(0, sb.length() - 2);
+
+        Locale.LAG_MESSAGE.getStringList().forEach(s -> {
+            if (s.equalsIgnoreCase("%worlds%")) {
+                for (World world : Bukkit.getWorlds()) {
+                    sender.sendMessage(CC.translate(
+                            Locale.LAG_WORLDS.getString()
+                                    .replace("%name%", world.getName())
+                                    .replace("%chunks%", String.valueOf(world.getLoadedChunks().length))
+                                    .replace("%entities%", String.valueOf(world.getEntities().size())))
+                    );
+                }
+            } else
+                sender.sendMessage(CC.translate(s
+                        .replace("%bar%", CC.CHAT_BAR)
+                        .replace("%tps%", tps)
+                        .replace("%uptime%", uptime)
+                        .replace("%mem_max%", String.valueOf(Runtime.getRuntime().maxMemory() / 1024 / 1024))
+                        .replace("%mem_allocated%", String.valueOf(Runtime.getRuntime().totalMemory() / 1024 / 1024))
+                        .replace("%mem_available%", String.valueOf(Runtime.getRuntime().freeMemory() / 1024 / 1024))
+                ));
+        });
+    }
+
+
 
 
     private int killAll(Class<? extends Entity> clazz) {
@@ -612,6 +721,12 @@ public class EssentialCommands {
         }
         return total;
     }
+
+    private String format(double tps) {
+        return ((tps > 18.0) ? CC.GREEN : (tps > 16.0) ? CC.YELLOW : CC.RED)
+                + ((tps > 20.0) ? "*" : "") + Math.min(Math.round(tps * 100.0) / 100.0, 20.0);
+    }
+
 
     private void clearPlayer(Player player) {
         player.getInventory().clear();
