@@ -62,7 +62,7 @@ public class Punishment implements IPunishment {
         if (!isActive()) return false;
         if (duration == TimeUtil.PERMANENT) return false;
         if (getRemainingTime() <= 0) {
-            revoke(UserProfile.getConsoleProfile().getUuid(), "Automatic");
+            this.revoke(UserProfile.getConsoleProfile().getUuid(), "Automatic");
             return true;
         }
         return false;

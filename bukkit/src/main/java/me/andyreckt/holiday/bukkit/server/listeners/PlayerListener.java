@@ -102,16 +102,22 @@ public class PlayerListener implements Listener {
                 return;
         }
 
+        punishment.check();
+        if (!punishment.isActive()) {
+            Holiday.getInstance().getApi().savePunishment(punishment);
+            return;
+        }
+
+
         String kickMessage = locale.getStringNetwork()
                 .replace("%reason%", punishment.getAddedReason())
-                .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+                .replace("%duration%", TimeUtil.getDuration(punishment.getRemainingTime()));
         event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
         event.setKickMessage(CC.translate(kickMessage));
         String toSend = Locale.PUNISHMENT_BANNED_LOGIN_ALERT.getString()
                 .replace("%player%", player.getName());
         Holiday.getInstance().getApi().getRedis().sendPacket(
                 new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.BANNED_LOGIN));
-        //TODO: broadcast alt login try
     }
 
     @EventHandler(priority = EventPriority.LOW)
