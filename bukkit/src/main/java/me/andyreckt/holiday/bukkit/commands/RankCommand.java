@@ -100,7 +100,7 @@ public class RankCommand {
         Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
         sender.sendMessage(Locale.RANK_PERMISSION_ADDED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
-                .replace("%perm%", perm));
+                .replace("%permission%", perm));
     }
 
     @SubCommand(names = {"removeperm", "remperm", "removepermission", "rempermission"}, async = true, description = "Remove a permission from a rank.", usage = "/rank removeperm <rank> <permission>")
