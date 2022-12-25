@@ -420,7 +420,7 @@ public enum Locale {
     }
 
     public String getString() {
-        return CC.translate((String) this.def);
+        return CC.translate((String) this.def).replace("\\n", "\n").replace("\n", "\n");
     }
 
     public String getRawString() {
@@ -428,7 +428,7 @@ public enum Locale {
     }
 
     public String getStringNetwork() {
-        return CC.translate(CC.addNetworkPlaceholder((String) this.def));
+        return CC.translate(CC.addNetworkPlaceholder(getString()));
     }
 
     public boolean getBoolean() {

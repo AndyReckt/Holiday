@@ -23,6 +23,7 @@ import me.andyreckt.holiday.core.util.redis.pubsub.packets.*;
 import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.*;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Getter
@@ -77,12 +78,12 @@ public class HolidayAPI implements API {
 
     @Override
     public Profile getProfile(UUID uuid) {
-        return this.userManager.getProfiles().computeIfAbsent(uuid, k -> new UserProfile(uuid));
+        return this.userManager.getProfile(uuid);
     }
 
     @Override
-    public HashMap<UUID, Profile> getProfiles() {
-        return this.userManager.getProfiles();
+    public CompletableFuture<HashMap<UUID, Profile>> getAllProfiles() {
+        return this.userManager.getAllProfilesDb();
     }
 
     @Override

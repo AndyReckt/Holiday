@@ -43,22 +43,25 @@ public class PlayerListener implements Listener {
             profile.addNewCurrentIP(event.getAddress().getHostAddress());
         }
 
-        for (Map.Entry<UUID, Profile> entry : Holiday.getInstance().getApi().getProfiles().entrySet()) {
-            Profile alt = entry.getValue();
 
-            if (alt.getUuid().equals(profile.getUuid())) {
-                continue;
+        Holiday.getInstance().getApi().getAllProfiles().whenCompleteAsync((map, ignored) -> {
+            for (Map.Entry<UUID, Profile> entry : map.entrySet()) {
+                Profile alt = entry.getValue();
+
+                if (alt.getUuid().equals(profile.getUuid())) {
+                    continue;
+                }
+
+                if (alt.getIp().equalsIgnoreCase(profile.getIp())) {
+                    alt.getAlts().add(profile.getUuid());
+                    profile.getAlts().add(alt.getUuid());
+                    Holiday.getInstance().getApi().saveProfile(alt);
+                }
+
             }
 
-            if (alt.getIp().equalsIgnoreCase(profile.getIp())) {
-                alt.getAlts().add(profile.getUuid());
-                profile.getAlts().add(alt.getUuid());
-                Holiday.getInstance().getApi().saveProfile(alt);
-            }
-
-        }
-
-        Holiday.getInstance().getApi().saveProfile(profile);
+            Holiday.getInstance().getApi().saveProfile(profile);
+        });
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

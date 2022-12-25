@@ -11,28 +11,29 @@ import org.bson.Document;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 public class UserManager {
     private final HolidayAPI api;
 
-    private final HashMap<UUID, Profile> profiles;
+    private final ConcurrentHashMap<UUID, Profile> profiles;
 
     public UserManager(HolidayAPI api) {
         this.api = api;
-        this.profiles = new HashMap<>();
-
-        this.loadProfiles();
+        this.profiles = new ConcurrentHashMap<>();
+        Profile console = UserProfile.getConsoleProfile();
+        this.profiles.put(console.getUuid(), console);
+//        this.loadProfiles();
     }
 
     private void loadProfiles() {
-        for (Document document : api.getMongoManager().getProfiles().find()) {
-            Profile profile = loadProfile(document);
-
-            this.profiles.put(profile.getUuid(), profile);
-        }
-        Profile console = UserProfile.getConsoleProfile();
-        this.profiles.put(console.getUuid(), console);
+        getAllProfilesDb().whenCompleteAsync((map, ignored) -> {
+            this.profiles.putAll(map);
+            Profile console = UserProfile.getConsoleProfile();
+            this.profiles.put(console.getUuid(), console);
+        });
     }
 
     public Profile loadProfile(Document document) {
@@ -41,11 +42,35 @@ public class UserManager {
 
     public void saveProfile(Profile profile) {
         this.profiles.put(profile.getUuid(), profile);
-        api.getMongoManager().getProfiles().replaceOne(
-                Filters.eq("_id", profile.getUuid()),
-                new Document("_id", profile.getUuid()).append("data", GsonProvider.GSON.toJson(profile)),
-                new ReplaceOptions().upsert(true)
-        );
-        api.getRedis().sendPacket(new ProfileUpdatePacket((UserProfile) profile));
+        CompletableFuture.runAsync(() -> {
+            api.getMongoManager().getProfiles().replaceOne(
+                    Filters.eq("_id", profile.getUuid()),
+                    new Document("_id", profile.getUuid()).append("data", GsonProvider.GSON.toJson(profile)),
+                    new ReplaceOptions().upsert(true)
+            );
+            api.getRedis().sendPacket(new ProfileUpdatePacket((UserProfile) profile));
+        });
+    }
+
+
+    public Profile getProfile(UUID uuid) {
+        if (profiles.containsKey(uuid)) {
+            return profiles.get(uuid);
+        }
+
+        Document document = api.getMongoManager().getProfiles().find(Filters.eq("_id", uuid)).first();
+        Profile profile = document == null ? new UserProfile(uuid) : loadProfile(document);
+        this.saveProfile(profile);
+        return profile;
+    }
+
+    public CompletableFuture<HashMap<UUID, Profile>> getAllProfilesDb() {
+        return CompletableFuture.supplyAsync(() -> {
+            HashMap<UUID, Profile> profiles = new HashMap<>();
+            for (Document document : api.getMongoManager().getProfiles().find()) {
+                profiles.put(UUID.fromString(document.getString("_id")), loadProfile(document));
+            }
+            return profiles;
+        });
     }
 }

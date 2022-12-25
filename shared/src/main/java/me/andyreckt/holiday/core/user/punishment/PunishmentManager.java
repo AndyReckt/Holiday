@@ -32,6 +32,22 @@ public class PunishmentManager {
             IPunishment punishment = loadPunishment(document);
             punishments.add(punishment);
         }
+        List<IPunishment> punishments = new ArrayList<>(this.punishments);
+        punishments.sort((o1, o2) -> {
+            if (o1.isActive() && !o2.isActive()) {
+                return -1;
+            } else if (!o1.isActive() && o2.isActive()) {
+                return 1;
+            }
+            if (o1.getAddedAt() > o2.getAddedAt()) {
+                return 1;
+            } else if (o1.getAddedAt() < o2.getAddedAt()) {
+                return -1;
+            }
+            return 0;
+        });
+        this.punishments.clear();
+        this.punishments.addAll(punishments);
     }
 
     private IPunishment loadPunishment(Document document) {

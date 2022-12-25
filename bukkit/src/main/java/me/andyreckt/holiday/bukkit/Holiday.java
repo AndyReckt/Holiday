@@ -51,7 +51,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledExecutorService;
 
 @Getter
-public final class Holiday extends JavaPlugin implements Listener {
+public final class Holiday extends JavaPlugin {
 
     @Getter
     private static Holiday instance;
@@ -189,7 +189,7 @@ public final class Holiday extends JavaPlugin implements Listener {
 
     private void setupListeners() {
         Arrays.asList(
-                new PlayerListener(), new ChatListener(), this
+                new PlayerListener(), new ChatListener()
         ).forEach(this::addListener);
 
         api.getRedis().registerAdapter(CrossServerCommandPacket.class, new ServerSubscriber());
@@ -199,7 +199,7 @@ public final class Holiday extends JavaPlugin implements Listener {
         api.getRedis().registerAdapter(ReportPacket.class, new ReportSubscriber());
         api.getRedis().registerAdapter(HelpopPacket.class, new HelpopSubscriber());
         api.getRedis().registerAdapter(PermissionUpdatePacket.class, new PermissionUpdateSubscriber());
-        api.getRedis().registerAdapter(KickPacket.class, new KickSubscriber());
+        api.getRedis().registerAdapter(KickPlayerPacket.class, new KickPlayerSubscriber());
         api.getRedis().registerAdapter(DisguisePacket.class, new DisguiseSubscriber());
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");

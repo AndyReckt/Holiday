@@ -4,7 +4,7 @@ import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
-import me.andyreckt.holiday.bukkit.server.redis.packet.KickPacket;
+import me.andyreckt.holiday.bukkit.server.redis.packet.KickPlayerPacket;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
@@ -45,7 +45,7 @@ public class PunishmentCommands {
         String fReason = reason.replace("-s", "");
         if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
-        punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.PERMANENT, fReason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.BLACKLIST, TimeUtil.PERMANENT, fReason, silent, sender);
     }
 
     @Command(names = {"ipban", "ipb", "banip", "ban-ip"}, async = true, permission = Perms.IPBAN)
@@ -59,7 +59,7 @@ public class PunishmentCommands {
         String fReason = reason.replace("-s", "");
         if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
-        punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.PERMANENT, fReason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.IP_BAN, TimeUtil.PERMANENT, fReason, silent, sender);
     }
 
     @Command(names = {"tempban", "tban", "tb"}, async = true, permission = Perms.TEMPBAN)
@@ -88,7 +88,7 @@ public class PunishmentCommands {
         String fReason = reason.replace("-s", "");
         if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
-        punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.PERMANENT, fReason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.MUTE, TimeUtil.PERMANENT, fReason, silent, sender);
     }
 
     @Command(names = {"tempmute", "tmute"}, async = true, permission = Perms.TEMPMUTE)
@@ -103,7 +103,7 @@ public class PunishmentCommands {
         String fReason = reason.replace("-s", "");
         if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
-        punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.getDuration(duration), fReason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.MUTE, TimeUtil.getDuration(duration), fReason, silent, sender);
     }
 
 
@@ -118,7 +118,7 @@ public class PunishmentCommands {
             sender.sendMessage(Locale.PLAYER_ALREADY_PUNISHED.getString());
             return;
         }
-        IPunishment punishment = new Punishment(
+        Punishment punishment = new Punishment(
                 target.getUuid(),
                 punishmentType,
                 duration,
@@ -128,10 +128,10 @@ public class PunishmentCommands {
         Holiday.getInstance().getApi().savePunishment(punishment);
 
         sendPunishmentBroadcast(punishment, silent);
-        kickPlayer(target, punishment);
+        kickPlayer(punishment);
     }
 
-    private void kickPlayer(Profile target, IPunishment punishment) {
+    private void kickPlayer(IPunishment punishment) {
         String toSend = "";
         switch (punishment.getType()) {
             case BAN:
@@ -143,13 +143,11 @@ public class PunishmentCommands {
             case BLACKLIST:
                 toSend = Locale.PUNISHMENT_BLACKLIST_KICK.getStringNetwork();
                 break;
-            default:
-                return;
         }
         if (punishment.getType() == IPunishment.PunishmentType.MUTE) return;
         toSend = toSend.replace("%reason%", punishment.getAddedReason())
                 .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
-        Holiday.getInstance().getApi().getRedis().sendPacket(new KickPacket(punishment, toSend));
+        Holiday.getInstance().getApi().getRedis().sendPacket(new KickPlayerPacket((Punishment) punishment, toSend));
     }
 
     private void sendPunishmentBroadcast(IPunishment punishment, boolean silent) {

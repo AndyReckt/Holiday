@@ -8,7 +8,6 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 @MainCommand(names = "user", permission = Perms.USER, description = "User command.")
 public class UserCommand {

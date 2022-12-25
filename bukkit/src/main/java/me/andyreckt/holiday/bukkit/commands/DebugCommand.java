@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ReplaceOptions;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
@@ -15,6 +16,7 @@ import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
+import org.checkerframework.checker.signature.qual.SignatureUnknown;
 
 import java.util.List;
 
@@ -71,6 +73,15 @@ public class DebugCommand {
 
     }
 
+    @SubCommand(names = "loadedprofilesamount", description = "Loaded profiles amount", async = true)
+    public void loadedProfilesAmount(CommandSender sender) {
+        if (!Logger.DEV) {
+            sender.sendMessage(CC.translate("&cThis command is not available in production"));
+            return;
+        }
+        sender.sendMessage("Loaded profiles amount: " + HolidayAPI.getUnsafeAPI().getUserManager().getProfiles().size());
+    }
+
     @SubCommand(names = "db", description = "Database debug")
     public void dbDebugging(CommandSender sender, @Param(name = "player", baseValue = "self") Profile profile) {
         if (!Logger.DEV) {
@@ -78,7 +89,11 @@ public class DebugCommand {
             return;
         }
         long savestart = System.currentTimeMillis();
-        Holiday.getInstance().getApi().saveProfile(profile);
+        HolidayAPI.getUnsafeAPI().getMongoManager().getProfiles().replaceOne(
+                Filters.eq("_id", profile.getUuid()),
+                new Document("_id", profile.getUuid()).append("data", GsonProvider.GSON.toJson(profile)),
+                new ReplaceOptions().upsert(true)
+        );
         long saveend = System.currentTimeMillis();
         long loadstart = System.currentTimeMillis();
         Document doc = HolidayAPI.getUnsafeAPI().getMongoManager().getProfiles().find(Filters.eq("_id", profile.getUuid())).first();

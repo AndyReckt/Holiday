@@ -9,6 +9,7 @@ import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.util.redis.Messaging;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public class HolidayAPI implements API {
 
@@ -64,8 +65,8 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public HashMap<UUID, Profile> getProfiles() {
-        return getApi().getProfiles();
+    public CompletableFuture<HashMap<UUID, Profile>> getAllProfiles() {
+        return getApi().getAllProfiles();
     }
 
     @Override
