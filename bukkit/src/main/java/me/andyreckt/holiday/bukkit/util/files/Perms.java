@@ -88,6 +88,7 @@ public enum Perms {
     SEND_TO_SERVER("command.sendtoserver", "core.command.sendtoserver"),
     FIND("command.find", "core.command.find"),
     LAG("command.lag", "core.command.lag"),
+    RELOAD("command.reload", "core.command.reload"),
 
     /* OTHER */
     NONE(null, ""),

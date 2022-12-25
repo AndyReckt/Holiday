@@ -323,6 +323,7 @@ public enum Locale {
             "%worlds%",
             "%bar%"),
     LAG_WORLDS(MESSAGES.get(), "lag.worlds", " &7* &3%name%&7: &eChunks Loaded&7: &d%chunks%&7, &eEntities&7: &d%entities%"),
+    RELOAD_CONFIG(MESSAGES.get(), "reload.config", "&aYou have successfully reloaded the config files."),
 
 
     /* GENERAL COMMANDS STAFF ALERTS */

@@ -708,6 +708,12 @@ public class EssentialCommands {
         });
     }
 
+    @Command(names = "reloadconfig", permission = Perms.RELOAD)
+    public void reloadConfig(CommandSender sender) {
+        Holiday.getInstance().setupConfigFiles();
+        sender.sendMessage(Locale.RELOAD_CONFIG.getString());
+    }
+
 
 
 
