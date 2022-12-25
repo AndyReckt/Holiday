@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.bukkit.server.redis.subscriber;
 
+import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.util.redis.messaging.IncomingPacketHandler;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketListener;
@@ -21,6 +22,7 @@ public class BroadcastSubscriber implements PacketListener {
                         .filter(player -> player.hasPermission(packet.getPermission()))
                         .forEach(player -> player.sendMessage(CC.translate(packet.getMessage())));
             }
+            Logger.log(CC.translate(packet.getMessage()));
         } else {
             Bukkit.broadcastMessage(CC.translate(packet.getMessage()));
         }
