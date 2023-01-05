@@ -4,6 +4,7 @@ public interface IStaffSettings {
 
     boolean isSocialSpy();
     boolean isVanished();
+    boolean isStaffMode();
 
     IStaffAlerts getAlerts();
 
@@ -12,6 +13,7 @@ public interface IStaffSettings {
 
     void setSocialSpy(boolean socialSpy);
     void setVanished(boolean vanished);
+    void setStaffMode(boolean staffMode);
 
     void setStaffChat(boolean staffChat);
     void setAdminChat(boolean adminChat);

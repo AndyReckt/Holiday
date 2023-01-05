@@ -11,6 +11,7 @@ public class StaffSettings implements IStaffSettings {
 
     private boolean socialSpy = false;
     private boolean vanished = false;
+    private boolean staffMode = false;
 
     private boolean staffChat = false;
     private boolean adminChat = false;
