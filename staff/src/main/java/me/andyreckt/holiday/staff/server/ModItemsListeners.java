@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class ModItems implements Listener {
+public class ModItemsListeners implements Listener {
         @EventHandler
         public void onClick(PlayerInteractEvent event) {
             if (event.getItem() == null) return;
