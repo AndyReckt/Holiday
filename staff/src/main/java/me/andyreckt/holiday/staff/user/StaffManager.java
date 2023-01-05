@@ -30,15 +30,15 @@ public class StaffManager {
 
 
     public void toggleStaffMode(Player player) {
-        this.toggleStaffMode(player, playerDataMap.containsKey(player.getUniqueId()), false);
+        this.toggleStaffMode(player, !playerDataMap.containsKey(player.getUniqueId()), true);
     }
 
     public void toggleStaffMode(Player player, boolean bool, boolean save) {
         this.clearPlayer(player);
-        if (bool) {
+        if (!bool) {
             PlayerData data = playerDataMap.remove(player.getUniqueId());
             if (SLocale.AUTOMATIC_VANISH.getBoolean()) {
-                this.vanish(player, false);
+                this.vanish(player, false, false);
             }
 
             player.teleport(data.getLocation());
@@ -55,7 +55,7 @@ public class StaffManager {
             }
             player.setFlySpeed(data.getFlySpeed());
             player.setWalkSpeed(data.getWalkSpeed());
-            player.sendMessage(SLocale.STAFF_MOD_DISABLED.toString());
+            player.sendMessage(SLocale.STAFF_MOD_DISABLED.getString());
         } else {
             PlayerData data = new PlayerData(player);
             playerDataMap.put(player.getUniqueId(), data);
@@ -64,8 +64,9 @@ public class StaffManager {
             this.updateItems(player, true);
 
             if (SLocale.AUTOMATIC_VANISH.getBoolean()) {
-                this.vanish(player, true);
+                this.vanish(player, true, true);
             }
+            player.sendMessage(SLocale.STAFF_MOD_ENABLED.getString());
         }
         if (save) {
             Profile profile = api.getProfile(player.getUniqueId());
@@ -74,24 +75,22 @@ public class StaffManager {
         }
     }
 
-
-    public void vanish(Player player) {
+    public void vanish(Player player, boolean items) {
         boolean old = api.getProfile(player.getUniqueId()).getStaffSettings().isVanished();
-        vanish(player, !old);
+        this.vanish(player, !old, items);
     }
 
-    public void vanish(Player player, boolean bool) {
+    public void vanish(Player player, boolean bool, boolean items) {
         Profile profile = api.getProfile(player.getUniqueId());
 
-        this.updateVisibility(player);
-
-        SLocale locale = bool ? SLocale.VANISH_OFF : SLocale.VANISH_ON;
+        SLocale locale = !bool ? SLocale.VANISH_OFF : SLocale.VANISH_ON;
 
         player.sendMessage(locale.getString());
         profile.getStaffSettings().setVanished(bool);
         api.saveProfile(profile);
 
-        this.updateItems(player, false);
+        this.updateVisibility(player);
+        if (items) this.updateItems(player, false);
     }
 
     private void updateVisibility(Player player) {

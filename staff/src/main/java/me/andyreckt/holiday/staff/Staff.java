@@ -33,7 +33,7 @@ public class Staff extends JavaPlugin {
             this.setupConfigFiles();
             this.setupCommands();
             this.staffManager = new StaffManager(this);
-            this.setupListener();
+            this.setupListeners();
 
         } catch (Exception ex) {
             Logger.error("An error occurred while enabling the staff addon. Showing stacktrace:");
@@ -43,7 +43,7 @@ public class Staff extends JavaPlugin {
 
     }
 
-    private void setupListener() {
+    private void setupListeners() {
         getServer().getPluginManager().registerEvents(new ModListeners(), this);
         getServer().getPluginManager().registerEvents(new FreezeListeners(), this);
         getServer().getPluginManager().registerEvents(new ModItemsListeners(), this);
