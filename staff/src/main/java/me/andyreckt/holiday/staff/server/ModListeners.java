@@ -54,6 +54,7 @@ public class ModListeners implements Listener {
         public void onItemDrop(PlayerDropItemEvent event) {
             Profile profile = Holiday.getInstance().getApi().getProfile(event.getPlayer().getUniqueId());
             if(!profile.getStaffSettings().isStaffMode()) return;
+            if (event.getPlayer().hasMetadata("staff.build")) return;
             event.setCancelled(true);
             event.getPlayer().updateInventory();
         }
@@ -62,6 +63,7 @@ public class ModListeners implements Listener {
         public void onBlockPlace(BlockPlaceEvent event) {
             Profile profile = Holiday.getInstance().getApi().getProfile(event.getPlayer().getUniqueId());
             if(!profile.getStaffSettings().isStaffMode()) return;
+            if (event.getPlayer().hasMetadata("staff.build")) return;
             event.setCancelled(true);
             event.getPlayer().updateInventory();
         }
@@ -70,6 +72,7 @@ public class ModListeners implements Listener {
         public void onBlockBreak(BlockBreakEvent event) {
             Profile profile = Holiday.getInstance().getApi().getProfile(event.getPlayer().getUniqueId());
             if(!profile.getStaffSettings().isStaffMode()) return;
+            if (event.getPlayer().hasMetadata("staff.build")) return;
             event.setCancelled(true);
             event.getPlayer().updateInventory();
         }
@@ -78,6 +81,7 @@ public class ModListeners implements Listener {
         public void onItemPickup(PlayerPickupItemEvent event) {
             Profile profile = Holiday.getInstance().getApi().getProfile(event.getPlayer().getUniqueId());
             if(!profile.getStaffSettings().isStaffMode()) return;
+            if (event.getPlayer().hasMetadata("staff.build")) return;
             event.setCancelled(true);
             event.getPlayer().updateInventory();
         }
@@ -86,6 +90,7 @@ public class ModListeners implements Listener {
         public void onInventoryClick(InventoryClickEvent event) {
             Profile profile = Holiday.getInstance().getApi().getProfile(event.getWhoClicked().getUniqueId());
             if(!profile.getStaffSettings().isStaffMode()) return;
+            if (event.getWhoClicked().hasMetadata("staff.build")) return;
             event.setCancelled(true);
             ((Player) event.getWhoClicked()).updateInventory();
         }

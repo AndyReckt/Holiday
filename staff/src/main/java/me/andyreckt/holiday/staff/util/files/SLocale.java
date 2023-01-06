@@ -29,6 +29,8 @@ public enum SLocale {
     VANISH_OFF(MESSAGES.get(), "vanish-off", "&cYou have disabled vanish."),
     STAFF_MOD_DISABLED(MESSAGES.get(), "staff-mode-disabled", "&cYou have disabled staff mode."),
     STAFF_MOD_ENABLED(MESSAGES.get(), "staff-mode-enabled", "&aYou have enabled staff mode."),
+    BUILD_ENABLED(MESSAGES.get(), "build-enabled", "&aYou have enabled build mode."),
+    BUILD_DISABLED(MESSAGES.get(), "build-disabled", "&cYou have disabled build mode."),
     ;
 
 

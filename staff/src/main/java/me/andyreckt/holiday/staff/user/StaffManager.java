@@ -3,6 +3,7 @@ package me.andyreckt.holiday.staff.user;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.staff.Staff;
 import me.andyreckt.holiday.staff.util.files.SLocale;
 import me.andyreckt.holiday.staff.util.files.SPerms;
@@ -69,9 +70,11 @@ public class StaffManager {
             player.sendMessage(SLocale.STAFF_MOD_ENABLED.getString());
         }
         if (save) {
-            Profile profile = api.getProfile(player.getUniqueId());
-            profile.getStaffSettings().setStaffMode(bool);
-            api.saveProfile(profile);
+            Tasks.runAsyncLater(() -> {
+                Profile profile = api.getProfile(player.getUniqueId());
+                profile.getStaffSettings().setStaffMode(bool);
+                api.saveProfile(profile);
+            }, 3L);
         }
     }
 

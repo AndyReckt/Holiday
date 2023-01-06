@@ -13,7 +13,8 @@ import java.io.File;
 @Getter(value = AccessLevel.PRIVATE)
 public enum SPerms {
 
-    SEE_VANISHED("see-vanished", "staff.see-vanished"),
+    BUILD("build", "staff.build"),
+    SEE_VANISHED("see-vanished", "staff.see"),
     STAFF("staff", "staff.staff"),
 
 
