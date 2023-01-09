@@ -31,6 +31,13 @@ public enum SLocale {
     STAFF_MOD_ENABLED(MESSAGES.get(), "staff-mode-enabled", "&aYou have enabled staff mode."),
     BUILD_ENABLED(MESSAGES.get(), "build-enabled", "&aYou have enabled build mode."),
     BUILD_DISABLED(MESSAGES.get(), "build-disabled", "&cYou have disabled build mode."),
+    FREEZE_FROZEN(MESSAGES.get(), "freeze-frozen", "&cYou have frozen %player%&c."),
+    FREEZE_UNFROZEN(MESSAGES.get(), "freeze-unfrozen", "&aYou have unfrozen %player%&a."),
+    FREEZE_UNFROZEN_TARGET(MESSAGES.get(), "freeze-unfrozen-target", "&aYou have been unfrozen."),
+    FREEZE_RECURRENT_MESSAGE(MESSAGES.get(), "freeze-recurrent-message",
+            " ", "&cYou have been frozen, you have 5 minutes to join our Teamspeak @ %teamspeak%.",
+            "&4Do not log out! &7&oDoing so will result in a ban.", " "),
+
     ;
 
 
@@ -95,6 +102,13 @@ public enum SLocale {
 
     public String getStringNetwork() {
         return CC.translate(CC.addNetworkPlaceholder(getString()));
+    }
+
+    public List<String> getStringListNetwork() {
+        List<String> list = getStringList();
+        list.replaceAll(CC::addNetworkPlaceholder);
+        list.replaceAll(CC::translate);
+        return list;
     }
 
     public boolean getBoolean() {

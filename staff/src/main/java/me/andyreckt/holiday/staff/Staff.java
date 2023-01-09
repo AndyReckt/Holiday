@@ -6,6 +6,7 @@ import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.staff.commands.Commands;
 import me.andyreckt.holiday.staff.server.FreezeListeners;
+import me.andyreckt.holiday.staff.server.FreezeMessageTask;
 import me.andyreckt.holiday.staff.server.ModItemsListeners;
 import me.andyreckt.holiday.staff.server.ModListeners;
 import me.andyreckt.holiday.staff.user.StaffManager;
@@ -34,6 +35,7 @@ public class Staff extends JavaPlugin {
             this.setupCommands();
             this.staffManager = new StaffManager(this);
             this.setupListeners();
+            new FreezeMessageTask();
 
         } catch (Exception ex) {
             Logger.error("An error occurred while enabling the staff addon. Showing stacktrace:");

@@ -112,4 +112,9 @@ public class ModListeners implements Listener {
             if (!profile.getStaffSettings().isVanished()) return;
             event.setCancelled(true);
         }
+
+        @EventHandler
+        public void onLogoutRemoveBuild(PlayerQuitEvent event) {
+            if (event.getPlayer().hasMetadata("staff.build")) event.getPlayer().removeMetadata("staff.build", Staff.getInstance());
+        }
     }

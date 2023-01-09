@@ -6,6 +6,7 @@ import me.andyreckt.holiday.staff.Staff;
 import me.andyreckt.holiday.staff.util.files.SLocale;
 import me.andyreckt.holiday.staff.util.files.SPerms;
 import me.andyreckt.holiday.staff.util.sunset.annotations.Command;
+import me.andyreckt.holiday.staff.util.sunset.annotations.Param;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Commands {
+public class Commands { //TODO: send staff alert & send freeze logout message
 
     private Map<UUID, Cooldown> cooldownMap = new ConcurrentHashMap<>();
 
@@ -34,11 +35,25 @@ public class Commands {
     public void build(Player player) {
         if (cooldown(player.getUniqueId())) return;
         if (player.hasMetadata("staff.build")) {
-            player.removeMetadata("staff.build", Holiday.getInstance());
+            player.removeMetadata("staff.build", Staff.getInstance());
             player.sendMessage(SLocale.BUILD_DISABLED.getString());
         } else {
-            player.setMetadata("staff.build", new FixedMetadataValue(Holiday.getInstance(), true));
+            player.setMetadata("staff.build", new FixedMetadataValue(Staff.getInstance(), true));
             player.sendMessage(SLocale.BUILD_ENABLED.getString());
+        }
+    }
+
+    @Command(names = "freeze", permission = SPerms.FREEZE, description = "Freeze a player.")
+    public void freeze(Player player, @Param(name = "target") Player target) {
+        if (cooldown(player.getUniqueId())) return;
+        if (target.hasMetadata("frozen")) {
+            target.removeMetadata("frozen", Staff.getInstance());
+            player.sendMessage(SLocale.FREEZE_UNFROZEN.getString().replace("%player%", target.getName()));
+            target.sendMessage(SLocale.FREEZE_UNFROZEN_TARGET.getString());
+        } else {
+            target.setMetadata("frozen", new FixedMetadataValue(Staff.getInstance(), true));
+            player.sendMessage(SLocale.FREEZE_FROZEN.getString().replace("%player%", target.getName()));
+            SLocale.FREEZE_RECURRENT_MESSAGE.getStringListNetwork().forEach(player::sendMessage);
         }
     }
 

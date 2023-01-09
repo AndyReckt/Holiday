@@ -16,6 +16,7 @@ public enum SPerms {
     BUILD("build", "staff.build"),
     SEE_VANISHED("see-vanished", "staff.see"),
     STAFF("staff", "staff.staff"),
+    FREEZE("freeze", "staff.freeze"),
 
 
     /* OTHER */

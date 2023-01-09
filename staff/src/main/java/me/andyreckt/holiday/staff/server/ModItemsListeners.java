@@ -7,9 +7,12 @@ import me.andyreckt.holiday.staff.util.item.Items;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -45,6 +48,25 @@ public class ModItemsListeners implements Listener {
                     if (cooldown(event.getPlayer().getUniqueId())) return;
                     items.accept(event);
                 }
+            }
+        }
+
+        @EventHandler
+        public void onPlace(BlockPlaceEvent event) {
+            if (event.getItemInHand() == null) return;
+            Profile profile = Holiday.getInstance().getApi().getProfile(event.getPlayer().getUniqueId());
+            if (!profile.getStaffSettings().isStaffMode()) return;
+            for (Items items : Items.values()) {
+                if (event.getItemInHand().isSimilar(items.getItem())) event.setCancelled(true);
+            }
+        }
+
+        @EventHandler
+        public void onDrop(PlayerDropItemEvent event) {
+            Profile profile = Holiday.getInstance().getApi().getProfile(event.getPlayer().getUniqueId());
+            if (!profile.getStaffSettings().isStaffMode()) return;
+            for (Items items : Items.values()) {
+                if (event.getItemDrop().getItemStack().isSimilar(items.getItem())) event.setCancelled(true);
             }
         }
 
