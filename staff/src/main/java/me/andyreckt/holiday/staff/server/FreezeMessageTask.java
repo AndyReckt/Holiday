@@ -15,6 +15,10 @@ public class FreezeMessageTask extends BukkitRunnable {
     public void run() {
         Bukkit.getOnlinePlayers().stream()
                 .filter(player -> player.hasMetadata("frozen"))
-                .forEach(player -> SLocale.FREEZE_RECURRENT_MESSAGE.getStringListNetwork().forEach(player::sendMessage));
+                .forEach(player -> {
+                    for (String message : SLocale.FREEZE_RECURRENT_MESSAGE.getStringListNetwork()) {
+                        player.sendMessage(message);
+                    }
+                });
     }
 }
