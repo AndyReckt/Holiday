@@ -8,6 +8,7 @@ import me.andyreckt.holiday.bukkit.server.redis.packet.DisguisePacket;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
+import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.core.util.http.Skin;
 import me.andyreckt.holiday.core.util.enums.AlertType;
@@ -93,7 +94,7 @@ public class DisguiseManager {
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.DISGUISES
             ));
         }
-        UserConstants.reloadPlayer(disguise.getUuid());
+        Tasks.runLater(() -> UserConstants.reloadPlayer(disguise.getUuid()), 5L);
     }
 
     public void unDisguise(Disguise disguise) {
@@ -109,7 +110,7 @@ public class DisguiseManager {
         plugin.getApi().getRedis().sendPacket(new BroadcastPacket(
                 toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.DISGUISES
         ));
-        UserConstants.reloadPlayer(disguise.getUuid());
+        Tasks.runLater(() -> UserConstants.reloadPlayer(disguise.getUuid()), 5L);
     }
 
     public List<String> getUnusedNames() {
