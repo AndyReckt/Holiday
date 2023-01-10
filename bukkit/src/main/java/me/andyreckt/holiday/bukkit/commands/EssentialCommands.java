@@ -204,12 +204,12 @@ public class EssentialCommands {
             target.updateInventory();
             String x = Locale.GIVE_SENDER.getString()
                     .replace("%player%", target.getName())
-                    .replace("%material%", mat.name())
+                    .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
             sender.sendMessage(CC.translate(x));
             String y = Locale.GIVE_TARGET.getString()
                     .replace("%player%", sender.getName())
-                    .replace("%material%", mat.name())
+                    .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
             target.sendMessage(CC.translate(y));
 
@@ -217,7 +217,7 @@ public class EssentialCommands {
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", executor)
                     .replace("%player%", target.getName())
-                    .replace("%material%", mat.name())
+                    .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
             Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
@@ -234,11 +234,11 @@ public class EssentialCommands {
         if (mat != null) {
             ItemStack Item = new ItemStack(mat, amount);
             String x = Locale.GIVE_ALL.getString()
-                    .replace("%material%", mat.name())
+                    .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
             String y = Locale.GIVE_ALL_BROADCAST.getString()
                     .replace("%player%", sender.getName())
-                    .replace("%material%", mat.name())
+                    .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
             sender.sendMessage(x);
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -250,7 +250,7 @@ public class EssentialCommands {
             String toSend = Locale.GIVE_ALL_STAFF.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", executor)
-                    .replace("%material%", mat.name())
+                    .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
             Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
@@ -270,13 +270,13 @@ public class EssentialCommands {
             inv.addItem(Item);
             sender.updateInventory();
             String x = Locale.GIVE_YOURSELF.getString()
-                    .replace("%material%", mat.name())
+                    .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
             sender.sendMessage(x);
             String toSend = Locale.GIVE_SELF_STAFF.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", executor)
-                    .replace("%material%", mat.name())
+                    .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
             Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
