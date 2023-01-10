@@ -43,7 +43,7 @@ public enum Locale {
     COLOR_CHAT(SETTINGS.get(),"color.chat", "YELLOW"),
 
     /* STAFF */
-    STAFF_SWITCH_PERM(MESSAGES.get(),"staff.switch.bukkit-perm", "core.staff.switch"),
+    STAFF_SWITCH_PERM(MESSAGES.get(),"staff.switch.perm", "core.staff.switch"),
     STAFF_SWITCH_JOIN(MESSAGES.get(),"staff.switch.join", "&b[S] %player% &econnected to %server%."),
     STAFF_SWITCH_LEAVE(MESSAGES.get(),"staff.switch.leave", "&b[S] %player% &edisconnected from %server%."),
     STAFF_SWITCH_SERVER(MESSAGES.get(),"staff.switch.server", "&b[S] %player% &ejoined %server% from %old%."),
