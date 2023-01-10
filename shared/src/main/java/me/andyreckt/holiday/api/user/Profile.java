@@ -74,7 +74,4 @@ public interface Profile {
     IDisguise getDisguise();
     void setDisguise(IDisguise disguise);
     boolean isDisguised();
-
-    //TODO: Add staff-related methods
-
 }

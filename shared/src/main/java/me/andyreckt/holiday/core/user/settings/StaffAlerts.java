@@ -18,4 +18,4 @@ public class StaffAlerts implements IStaffAlerts {
     private boolean altLoginAlerts = true;
     private boolean silentPunishmentAlerts = true;
 
-} //TODO: All needed alerts & a menu to toggle them
+} //TODO: Add more alerts if needed.

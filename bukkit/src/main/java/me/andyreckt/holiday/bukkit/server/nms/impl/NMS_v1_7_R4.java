@@ -162,9 +162,6 @@ public class NMS_v1_7_R4 implements INMS {
                     });
 
             player.setDisplayName(name);
-            //TODO: Bukkit displayname & tablist name
-//            plugin.getProfileHandler().getByPlayer(player).setBukkitDisplayName();
-//            plugin.getProfileHandler().getByPlayer(player).setPlayerListName();
         });
     }
 
