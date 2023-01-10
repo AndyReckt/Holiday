@@ -3,6 +3,7 @@ package me.andyreckt.holiday.staff.commands;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
 import me.andyreckt.holiday.staff.Staff;
+import me.andyreckt.holiday.staff.server.StaffListMenu;
 import me.andyreckt.holiday.staff.util.files.SLocale;
 import me.andyreckt.holiday.staff.util.files.SPerms;
 import me.andyreckt.holiday.staff.util.sunset.annotations.Command;
@@ -55,6 +56,11 @@ public class Commands { //TODO: send staff alert & send freeze logout message
             player.sendMessage(SLocale.FREEZE_FROZEN.getString().replace("%player%", target.getName()));
             SLocale.FREEZE_RECURRENT_MESSAGE.getStringListNetwork().forEach(player::sendMessage);
         }
+    }
+
+    @Command(names = "stafflist", permission = SPerms.LIST, description = "View the staff list.")
+    public void staffList(Player player) {
+        new StaffListMenu().openMenu(player);
     }
 
     private boolean cooldown(UUID uuid) {
