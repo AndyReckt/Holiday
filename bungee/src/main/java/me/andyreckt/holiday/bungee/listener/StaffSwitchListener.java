@@ -32,7 +32,7 @@ public class StaffSwitchListener implements Listener {
                 String toSend = Locale.STAFF_SWITCH_SERVER.getString()
                         .replace("%player%", playername)
                         .replace("%server%", server)
-                        .replace("%oldserver%", oldServer);
+                        .replace("%old%", oldServer);
                 Bungee.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
             }
         }
