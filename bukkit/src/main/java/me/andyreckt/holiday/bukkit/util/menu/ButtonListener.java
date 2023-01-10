@@ -24,11 +24,11 @@ public class ButtonListener implements Listener {
     }
 
     public static void onInventoryClose(Player player) {
-        final Menu openMenu = Menu.currentlyOpenedMenus.get(player.getName());
+        final Menu openMenu = Menu.currentlyOpenedMenus.get(player.getUniqueId());
         if (openMenu != null) {
             openMenu.setInventory(player.getOpenInventory().getTopInventory());
             openMenu.onClose(player);
-            Menu.currentlyOpenedMenus.remove(player.getName());
+            Menu.currentlyOpenedMenus.remove(player.getUniqueId());
             if (openMenu instanceof PaginatedMenu) {
                 return;
             }
@@ -39,11 +39,11 @@ public class ButtonListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryClose(final InventoryCloseEvent event) {
         final Player player = (Player) event.getPlayer();
-        final Menu openMenu = Menu.currentlyOpenedMenus.get(player.getName());
+        final Menu openMenu = Menu.currentlyOpenedMenus.get(player.getUniqueId());
         if (openMenu != null) {
             openMenu.setInventory(event.getInventory());
             openMenu.onClose(player);
-            Menu.currentlyOpenedMenus.remove(player.getName());
+            Menu.currentlyOpenedMenus.remove(player.getUniqueId());
         }
         player.setMetadata("scanglitch", new FixedMetadataValue(this.plugin, true));
     }
@@ -51,7 +51,7 @@ public class ButtonListener implements Listener {
     @EventHandler
     public void onButtonPress(final InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
-        final Menu openMenu = Menu.currentlyOpenedMenus.get(player.getName());
+        final Menu openMenu = Menu.currentlyOpenedMenus.get(player.getUniqueId());
         if (openMenu != null) {
             if (event.getSlot() != event.getRawSlot()) {
                 if (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
@@ -71,8 +71,8 @@ public class ButtonListener implements Listener {
                     event.setCancelled(cancel);
                 }
                 button.clicked(player, event.getSlot(), event.getClick(), event.getHotbarButton());
-                if (Menu.currentlyOpenedMenus.containsKey(player.getName())) {
-                    final Menu newMenu = Menu.currentlyOpenedMenus.get(player.getName());
+                if (Menu.currentlyOpenedMenus.containsKey(player.getUniqueId())) {
+                    final Menu newMenu = Menu.currentlyOpenedMenus.get(player.getUniqueId());
                     if (newMenu == openMenu) {
                         final boolean buttonUpdate = button.shouldUpdate(player, event.getSlot(), event.getClick());
                         if (buttonUpdate) {

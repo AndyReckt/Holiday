@@ -34,7 +34,7 @@ public class DisguiseRankMenu extends PaginatedMenu {
     @Override
     public Map<Integer, Button> getAllPagesButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        for (IRank rank : Holiday.getInstance().getApi().getRanks()) {
+        for (IRank rank : Holiday.getInstance().getApi().getRanksSorted()) {
             if (!player.hasPermission(Perms.DISGUISE_RANK.get().replace("rank", rank.getName()))) continue;
             buttons.put(buttons.size(), new EasyButton(
                     new ItemBuilder(Material.WOOL)
