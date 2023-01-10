@@ -42,7 +42,7 @@ public class StaffManager {
                 this.vanish(player, false, false);
             }
 
-            player.teleport(data.getLocation());
+            if (SLocale.TELEPORT_BACK.getBoolean()) player.teleport(data.getLocation());
             player.getInventory().setContents(data.getInvContents());
             player.getInventory().setArmorContents(data.getArmorContents());
             player.setGameMode(data.getGameMode());

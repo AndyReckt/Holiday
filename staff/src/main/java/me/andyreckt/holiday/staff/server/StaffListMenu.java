@@ -8,9 +8,11 @@ import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -52,8 +54,21 @@ public class StaffListMenu extends PaginatedMenu {
                     .lore(CC.MENU_BAR,
                             CC.CHAT + "StaffMode: " + yesNo(profile.getStaffSettings().isStaffMode()),
                             CC.CHAT + "Vanished: " + yesNo(profile.getStaffSettings().isVanished()),
+                            CC.CHAT + "Server: " + profile.getCurrentServer().getServerName(),
+                            onServer(profile) ? CC.I_GRAY + "Click to teleport to " + profile.getName() + "." :
+                                    CC.I_GRAY + "Click to join " + profile.getCurrentServer().getServerName() + ".",
                             CC.MENU_BAR)
                     .build();
+        }
+
+        @Override
+        public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
+            if (onServer(profile)) player.teleport(Bukkit.getPlayer(profile.getUuid()).getLocation());
+            else player.performCommand("join " + profile.getCurrentServer().getServerId());
+        }
+
+        private boolean onServer(Profile profile) {
+            return Bukkit.getPlayer(profile.getUuid()) != null;
         }
 
         private String yesNo(boolean bool) {

@@ -22,6 +22,7 @@ public enum SLocale {
     /* SETTINGS */
     UPDATE_VISIBILITY(SETTINGS.get(),"vanish-update-visibility", true),
     AUTOMATIC_VANISH(SETTINGS.get(),"automatic-vanish", true),
+    TELEPORT_BACK(SETTINGS.get(),"teleport-back", true),
 
 
     /* MESSAGES */
