@@ -1,0 +1,8 @@
+name: "StaffAddon"
+main: "me.andyreckt.holiday.staff.Staff"
+version: "1.0"
+api-version: "1.8"
+authors: ["AndyReckt", "Scifi"]
+description: "Holiday's Staff addon"
+website: "https://github.com/AndyReckt/Holiday"
+depend: ["Holiday"]
