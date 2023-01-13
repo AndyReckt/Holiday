@@ -21,8 +21,8 @@ public class HolidayAPI implements API {
     }
 
     private me.andyreckt.holiday.core.HolidayAPI getApi() {
-        throw new UnsupportedOperationException("Not implemented yet.");
-//        return me.andyreckt.holiday.core.HolidayAPI.getUnsafeAPI();
+//        throw new UnsupportedOperationException("Not implemented yet.");
+        return me.andyreckt.holiday.core.HolidayAPI.getUnsafeAPI();
     }
 
     @Override
