@@ -40,7 +40,7 @@ public class Bungee extends Plugin {
         getProxy().getPluginManager().registerListener(this, new StaffSwitchListener());
         getProxy().getPluginManager().registerListener(this, new PermissionsListener());
         getProxy().getPluginManager().registerListener(this, new PlayerListener());
-    }
+    }//TODO: MOTD, Maintenance and other stuff
 
     public String getNameWithColor(Profile profile) {
         IRank rank = profile.getHighestVisibleRank();

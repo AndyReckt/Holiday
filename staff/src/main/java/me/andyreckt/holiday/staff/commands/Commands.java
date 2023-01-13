@@ -1,7 +1,13 @@
 package me.andyreckt.holiday.staff.commands;
 
+import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.user.UserConstants;
+import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
+import me.andyreckt.holiday.core.HolidayAPI;
+import me.andyreckt.holiday.core.util.enums.AlertType;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import me.andyreckt.holiday.staff.Staff;
 import me.andyreckt.holiday.staff.server.StaffListMenu;
 import me.andyreckt.holiday.staff.util.files.SLocale;
@@ -15,21 +21,44 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Commands { //TODO: send staff alert & send freeze logout message
+public class Commands {
 
     private Map<UUID, Cooldown> cooldownMap = new ConcurrentHashMap<>();
 
     @Command(names = {"staffmode", "staff", "modmode", "mod"}, permission = SPerms.STAFF, description = "Toggle staff mode.")
     public void staff(Player player) {
+
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+        boolean modmodded = profile.getStaffSettings().isStaffMode();
+        SLocale locale;
+
+        if (modmodded) locale = SLocale.ALERTS_MODMODE_OFF;
+        else locale = SLocale.ALERTS_MODMODE_ON;
+
+        String toSend = locale.getString()
+                .replace("%player%", UserConstants.getNameWithColor(profile))
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
+
+        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
         Staff.getInstance().getStaffManager().toggleStaffMode(player);
     }
 
     @Command(names = {"vanish", "v"}, permission = SPerms.STAFF, description = "Toggle vanish.")
     public void vanish(Player player) {
         if (cooldown(player.getUniqueId())) return;
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+        boolean vanished = profile.getStaffSettings().isVanished();
+        SLocale locale;
 
-        Staff.getInstance().getStaffManager().vanish(player,
-                Holiday.getInstance().getApi().getProfile(player.getUniqueId()).getStaffSettings().isStaffMode());
+        if (vanished) locale = SLocale.ALERTS_VANISH_OFF;
+        else locale = SLocale.ALERTS_VANISH_ON;
+
+        String toSend = locale.getString()
+                            .replace("%player%", UserConstants.getNameWithColor(profile))
+                            .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
+
+        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
+        Staff.getInstance().getStaffManager().vanish(player, profile.getStaffSettings().isStaffMode());
     }
 
     @Command(names = "build", permission = SPerms.BUILD, description = "Toggle build mode.")
@@ -44,7 +73,7 @@ public class Commands { //TODO: send staff alert & send freeze logout message
         }
     }
 
-    @Command(names = "freeze", permission = SPerms.FREEZE, description = "Freeze a player.")
+    @Command(names = {"freeze", "ss"}, permission = SPerms.FREEZE, description = "Freeze a player.")
     public void freeze(Player player, @Param(name = "target") Player target) {
         if (cooldown(player.getUniqueId())) return;
         if (target.hasMetadata("frozen")) {
@@ -56,6 +85,18 @@ public class Commands { //TODO: send staff alert & send freeze logout message
             player.sendMessage(SLocale.FREEZE_FROZEN.getString().replace("%player%", target.getName()));
             SLocale.FREEZE_RECURRENT_MESSAGE.getStringListNetwork().forEach(player::sendMessage);
         }
+
+        Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
+        Profile targetProfile = Holiday.getInstance().getApi().getProfile(target.getUniqueId());
+        SLocale locale = target.hasMetadata("frozen") ? SLocale.ALERTS_FREEZE_ON : SLocale.ALERTS_FREEZE_OFF;
+
+        String toSend = locale.getString()
+                .replace("%player%", UserConstants.getNameWithColor(profile))
+                .replace("%target%", UserConstants.getNameWithColor(targetProfile))
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
+
+        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
+
     }
 
     @Command(names = "stafflist", permission = SPerms.LIST, description = "View the staff list.")
@@ -77,7 +118,5 @@ public class Commands { //TODO: send staff alert & send freeze logout message
             return false;
         }
     }
-
-    //TODO: freeze
 
 }

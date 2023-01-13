@@ -1,5 +1,10 @@
 package me.andyreckt.holiday.staff.server;
 
+import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.util.files.Perms;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
+import me.andyreckt.holiday.staff.Staff;
+import me.andyreckt.holiday.staff.util.files.SLocale;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class FreezeListeners implements Listener {
     @EventHandler
@@ -81,4 +87,15 @@ public class FreezeListeners implements Listener {
             event.getPlayer().teleport(event.getFrom());
         }
     }
+
+    @EventHandler
+    public void onLogout(PlayerQuitEvent event) {
+        Player p = event.getPlayer();
+        if (p == null) return;
+        if (!p.hasMetadata("frozen")) return;
+        p.removeMetadata("frozen", Staff.getInstance());
+        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(SLocale.ALERTS_FREEZE_LOGOUT.getString(), Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+    }
+
+
 }
