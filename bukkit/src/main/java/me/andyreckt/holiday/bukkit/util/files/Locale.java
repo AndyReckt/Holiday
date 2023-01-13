@@ -25,6 +25,8 @@ public enum Locale {
     MONGO_USERNAME(SETTINGS.get(), "mongo.username", "foo"),
     MONGO_PASSWORD(SETTINGS.get(), "mongo.password", "bar"),
     MONGO_DATABASE(SETTINGS.get(), "mongo.database", "holiday"),
+    MONGO_URI_MODE(SETTINGS.get(), "mongo.uri-mode", false),
+    MONGO_URI(SETTINGS.get(), "mongo.uri", "mongodb://localhost:27017"),
 
     /* REDIS */
     REDIS_HOST(SETTINGS.get(), "redis.host", "localhost"),

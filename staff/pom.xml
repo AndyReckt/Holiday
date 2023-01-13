@@ -7,12 +7,12 @@
     <parent>
         <groupId>me.andyreckt</groupId>
         <artifactId>holiday</artifactId>
-        <version>1.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <groupId>me.andyreckt.holiday</groupId>
     <artifactId>staff</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>me.andyreckt.holiday</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.0</version>
+            <version>1.0.1</version>
             <scope>provided</scope>
         </dependency>
         <!-- Paper 1.8.8 -->

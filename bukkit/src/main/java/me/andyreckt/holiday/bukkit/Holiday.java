@@ -113,6 +113,9 @@ public final class Holiday extends JavaPlugin {
         MongoCredentials mongoCreds = Locale.MONGO_AUTH.getBoolean() ? new MongoCredentials(
                 Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_USERNAME.getString(), Locale.MONGO_PASSWORD.getString(), Locale.MONGO_DATABASE.getString())
                 : new MongoCredentials(Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_DATABASE.getString());
+        if (Locale.MONGO_URI_MODE.getBoolean()) {
+            mongoCreds = new MongoCredentials(Locale.MONGO_URI.getString(), Locale.MONGO_DATABASE.getString());
+        }
         RedisCredentials redisCreds = new RedisCredentials(Locale.REDIS_HOST.getString(), Locale.REDIS_PORT.getInt(), Locale.REDIS_AUTH.getBoolean(), Locale.REDIS_PASSWORD.getString());
         this.api = API.create(mongoCreds, redisCreds);
     }
