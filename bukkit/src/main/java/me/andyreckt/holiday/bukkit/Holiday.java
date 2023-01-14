@@ -13,6 +13,7 @@ import me.andyreckt.holiday.bukkit.server.listeners.PlayerListener;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7_R4;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8_R3;
+import me.andyreckt.holiday.bukkit.server.placeholder.PlaceholderAPIExpansion;
 import me.andyreckt.holiday.bukkit.server.redis.packet.*;
 import me.andyreckt.holiday.bukkit.server.redis.subscriber.*;
 import me.andyreckt.holiday.bukkit.server.tasks.RebootTask;
