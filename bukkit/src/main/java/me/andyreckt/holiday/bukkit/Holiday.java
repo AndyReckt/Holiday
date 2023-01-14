@@ -209,8 +209,12 @@ public final class Holiday extends JavaPlugin {
     }
 
     private void setupSoftDependencies() {
-        if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib")) {
             this.protocolEnabled = true;
+        }
+
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceholderAPIExpansion(this).register();
         }
     }
 
