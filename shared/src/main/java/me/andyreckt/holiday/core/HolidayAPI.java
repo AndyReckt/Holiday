@@ -62,6 +62,7 @@ public class HolidayAPI implements API {
         this.jedis = redisCredentials.isAuth() ?
                   new JedisPool(new JedisPoolConfig(), redisCredentials.getHostname(), redisCredentials.getPort(), 20_000, redisCredentials.getPassword())
                 : new JedisPool(new JedisPoolConfig(), redisCredentials.getHostname(), redisCredentials.getPort(), 20_000);
+
         PacketHandler.init();
 
         this.userManager = new UserManager(this);

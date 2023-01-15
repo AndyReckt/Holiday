@@ -47,11 +47,34 @@ public class SunsetSubCommand extends org.bukkit.command.Command {
                 commandSender.sendMessage(ChatColor.RED + "This command can only be executed as a player.");
                 return false;
             }
+            if (!command.permission().get().equalsIgnoreCase("")) {
+                if (command.permission().get().equalsIgnoreCase("op")) {
+                    if (commandSender instanceof Player && (!commandSender.hasPermission("op")) && (!commandSender.isOp())) {
+                        commandSender.sendMessage(sunset.getPermissionMessage());
+                        return false;
+                    }
+                }
+                if (!commandSender.hasPermission(command.permission().get())) {
+                    commandSender.sendMessage(sunset.getPermissionMessage());
+                    return false;
+                }
+            }
 
             Sunset.HelpBuilder builder = new Sunset.HelpBuilder(s, command.description());
             for (Method method : methods) {
                 SubCommand subCommand = method.getAnnotation(SubCommand.class);
                 if (subCommand == null) continue;
+
+                if (!subCommand.permission().get().equalsIgnoreCase("")) {
+                    if (subCommand.permission().get().equalsIgnoreCase("op")) {
+                        if (!commandSender.hasPermission("op") && !commandSender.isOp()) {
+                            continue;
+                        }
+                    }
+                    if (!commandSender.hasPermission(subCommand.permission().get())) {
+                        continue;
+                    }
+                }
 
                 String arg = subCommand.names()[0];
                 List<Param> params = new ArrayList<>();

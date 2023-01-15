@@ -50,7 +50,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.Consumer;
 
 @Getter
 public final class Holiday extends JavaPlugin {
