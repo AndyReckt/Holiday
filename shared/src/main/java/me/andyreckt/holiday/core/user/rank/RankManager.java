@@ -56,12 +56,12 @@ public class RankManager {
 
     public void deleteRank(IRank rank) {
         api.getMongoManager().getRanks().deleteOne(Filters.eq("_id", rank.getUuid()));
-        this.ranks.removeIf(rank1 -> rank1.getUuid().equals(rank.getUuid()));
 
         api.getGrantManager().getGrants().stream()
                 .filter(grant -> grant.getRank().getUuid().equals(rank.getUuid()))
                 .forEach(grant -> api.getGrantManager().deleteGrant(grant));
 
+        this.ranks.removeIf(rank1 -> rank1.getUuid().equals(rank.getUuid()));
         this.api.getRedis().sendPacket(new RankUpdatePacket((Rank) rank, true));
     }
 
