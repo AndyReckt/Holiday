@@ -25,9 +25,9 @@ jobs:
     - name: Build with Maven
       run: mvn -B install --file pom.xml
     - name: Create Artifacts directory 
-      run: mkdir staging && cp bukkit/target/*.jar staging && cp bungee/target/*.jar staging && cp staff/target/*.jar staging && cp shared/target/*.jar staging
+      run: mkdir staging && cp bukkit/target/holiday-bukkit.jar staging && cp bungee/target/holiday-bungee.jar staging && cp staff/target/holiday-staff.jar staging && cp shared/target/*.jar staging
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: Package
+        name: PLugins
         path: staging
