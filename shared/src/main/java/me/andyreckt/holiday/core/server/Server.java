@@ -20,7 +20,7 @@ public class Server implements IServer {
     private final String address;
     private final int port;
 
-    private double[] tps = new double[]{};
+    private double[] tps = new double[3];
 
     private UUID whitelistRank = HolidayAPI.getUnsafeAPI().getDefaultRank().getUuid();
 
