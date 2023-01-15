@@ -126,6 +126,14 @@ public class RankManageMenu extends GlassMenu {
                 }, (x) -> rank.isVisible())
         );
 
+        buttons.put(20, new EasyButton(
+                new ItemBuilder(Material.BOOK)
+                        .displayname(CC.SECONDARY + "Permissions")
+                        .lore("", CC.I_GRAY + "Click to change the permissions of this rank.")
+                        .build(),
+                (u) -> new RankPermissionMenu(rank).openMenu(player))
+        );
+
         buttons.put(21, new BooleanButton<>(
                 new ItemBuilder(Material.RAW_FISH)
                         .durability(3)
@@ -164,6 +172,14 @@ public class RankManageMenu extends GlassMenu {
                     api.saveRank(rank);
                     new RankManageMenu(rank).openMenu(player);
                 }, (x) -> rank.isOp())
+        );
+
+        buttons.put(24, new EasyButton(
+                new ItemBuilder(Material.BOOK_AND_QUILL)
+                        .displayname(CC.SECONDARY + "Inheritances")
+                        .lore("", CC.I_GRAY + "Click to change the inheritances of this rank.")
+                        .build(),
+                (u) -> new RankInheritanceMenu(rank).openMenu(player))
         );
 
         return buttons;

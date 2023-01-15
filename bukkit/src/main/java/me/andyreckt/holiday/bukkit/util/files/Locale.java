@@ -179,6 +179,7 @@ public enum Locale {
     RANK_INHERITANCE_REMOVED(MESSAGES.get(), "rank.inheritance-removed", "&aSuccessfully removed inheritance '%child%' from rank %rank%."),
     RANK_PRIORITY_SET(MESSAGES.get(), "rank.priority-set", "&aSuccessfully set priority of rank %rank% to %priority%."),
     RANK_ENTER_NAME(MESSAGES.get(), "rank.edit-name", "&aPlease enter the new name of the rank."),
+    RANK_ENTER_PERMISSION(MESSAGES.get(), "rank.edit-permission", "&aPlease enter the permission you want to add."),
     RANK_ENTER_NAME_SUCCESS(MESSAGES.get(), "rank.edit-name-success", "&aSuccessfully changed the name of the rank to %name%."),
     RANK_ENTER_DISPLAY_NAME(MESSAGES.get(), "rank.edit-display-name", "&aPlease enter the new display name of the rank."),
     RANK_ENTER_DISPLAY_NAME_SUCCESS(MESSAGES.get(), "rank.edit-display-name-success", "&aSuccessfully changed the display name of the rank to %name%."),
