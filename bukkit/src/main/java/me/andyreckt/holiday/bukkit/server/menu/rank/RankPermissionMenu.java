@@ -11,6 +11,7 @@ import me.andyreckt.holiday.bukkit.util.menu.Menu;
 import me.andyreckt.holiday.bukkit.util.menu.buttons.ConversationButton;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
@@ -48,7 +49,7 @@ public class RankPermissionMenu extends PaginatedMenu {
                 (x, pair) -> {
                     rank.addPermission(pair.getB());
                     Holiday.getInstance().getApi().saveRank(rank);
-                    Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
+                    PacketHandler.send(new PermissionUpdatePacket());
                     pair.getA().getForWhom().sendRawMessage(Locale.RANK_PERMISSION_ADDED.getString()
                             .replace("%rank%", CC.translate(rank.getDisplayName()))
                             .replace("%permission%", pair.getB()));
@@ -86,7 +87,7 @@ public class RankPermissionMenu extends PaginatedMenu {
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             rank.removePermission(permission);
             Holiday.getInstance().getApi().saveRank(rank);
-            Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
+            PacketHandler.send(new PermissionUpdatePacket());
             new RankPermissionMenu(rank).openMenu(player);
         }
     }

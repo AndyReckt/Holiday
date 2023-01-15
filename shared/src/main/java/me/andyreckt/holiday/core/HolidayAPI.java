@@ -3,6 +3,7 @@ package me.andyreckt.holiday.core;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.API;
+import me.andyreckt.holiday.api.global.RedisCommand;
 import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
@@ -10,20 +11,22 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.server.ServerManager;
 import me.andyreckt.holiday.core.user.UserManager;
-import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.grant.GrantManager;
 import me.andyreckt.holiday.core.user.punishment.PunishmentManager;
 import me.andyreckt.holiday.core.user.rank.Rank;
 import me.andyreckt.holiday.core.user.rank.RankManager;
 import me.andyreckt.holiday.core.util.mongo.MongoManager;
 import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
-import me.andyreckt.holiday.core.util.redis.Messaging;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.*;
-import me.andyreckt.holiday.core.util.redis.pubsub.subscribers.*;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Getter
@@ -31,7 +34,6 @@ public class HolidayAPI implements API {
 
     private static HolidayAPI instance;
 
-    private final Messaging redis;
     private final MongoManager mongoManager;
     private final UserManager userManager;
     private final RankManager rankManager;
@@ -39,17 +41,29 @@ public class HolidayAPI implements API {
     private final ServerManager serverManager;
     private final PunishmentManager punishmentManager;
 
+    private final JedisPool jedis;
     @Setter
     private HashMap<UUID, String> onlinePlayers;
+
+    @Getter
+    private final RedisCredentials redisCredentials;
+
+    @Setter
+    private Consumer<BroadcastPacket> broadcastConsumer;
 
 
 
     public HolidayAPI(MongoCredentials mongoCredentials, RedisCredentials redisCredentials) {
         instance = this;
         new me.andyreckt.holiday.api.HolidayAPI();
+        this.redisCredentials = redisCredentials;
 
         this.mongoManager = new MongoManager(this, mongoCredentials);
-        this.redis = new Messaging(redisCredentials);
+        this.jedis = redisCredentials.isAuth() ?
+                  new JedisPool(new JedisPoolConfig(), redisCredentials.getHostname(), redisCredentials.getPort(), 20_000, redisCredentials.getPassword())
+                : new JedisPool(new JedisPoolConfig(), redisCredentials.getHostname(), redisCredentials.getPort(), 20_000);
+        PacketHandler.init();
+
         this.userManager = new UserManager(this);
         this.rankManager = new RankManager(this);
         this.grantManager = new GrantManager(this);
@@ -57,20 +71,7 @@ public class HolidayAPI implements API {
         this.punishmentManager = new PunishmentManager(this);
 
         this.onlinePlayers = new HashMap<>();
-
-        this.loadRedis();
     }
-
-    private void loadRedis() {
-        this.redis.registerAdapter(ServerKeepAlivePacket.class, new ServerKeepAliveSubscriber());
-        this.redis.registerAdapter(GrantUpdatePacket.class, new GrantUpdateSubscriber());
-        this.redis.registerAdapter(RankUpdatePacket.class, new RankUpdateSubscriber());
-        this.redis.registerAdapter(PunishmentUpdatePacket.class, new PunishmentUpdateSubscriber());
-        this.redis.registerAdapter(OnlinePlayersPacket.class, new OnlinePlayersSubscriber());
-        this.redis.registerAdapter(ProfileUpdatePacket.class, new ProfileUpdateSubscriber());
-        this.redis.registerAdapter(BroadcastPacket.class, null);
-    }
-
 
     public static HolidayAPI getUnsafeAPI() {
         return instance;
@@ -234,4 +235,26 @@ public class HolidayAPI implements API {
     public IServer getServer(UUID playerId) {
         return this.getServer(this.onlinePlayers.get(playerId));
     }
+
+    @Override
+    public <T> T runRedisCommand(RedisCommand<T> redisCommand) {
+        Jedis jedis = this.jedis.getResource();
+        if (redisCredentials.isAuth()) {
+            jedis.auth(redisCredentials.getPassword());
+        }
+        jedis.connect();
+
+        T result = null;
+        try {
+            result = redisCommand.execute(jedis);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            jedis.close();
+        }
+        return result;
+    }
+
 }

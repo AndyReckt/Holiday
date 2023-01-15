@@ -11,6 +11,7 @@ import me.andyreckt.holiday.bukkit.util.other.Cooldown;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.punishment.Punishment;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.entity.Player;
 
@@ -104,7 +105,7 @@ public class ChatManager {
                         .replace("%executor%", "&4CONSOLE")
                         .replace("%reason%", punishment.getAddedReason())
                         .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
-                plugin.getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.PUNISHMENTS_SILENT_VIEW.get()));
+                PacketHandler.send(new BroadcastPacket(toSend, Perms.PUNISHMENTS_SILENT_VIEW.get()));
             }
 
             if (Locale.FILTER_SEND.getBoolean()) {
@@ -112,7 +113,7 @@ public class ChatManager {
                         .replace("%server%", Locale.SERVER_NAME.getString())
                         .replace("%player%", UserConstants.getDisplayNameWithColor(profile))
                         .replace("%message%", message);
-                plugin.getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
+                PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
             }
 
             return Locale.FILTER_HIGH_ALLOW.getBoolean();
@@ -124,7 +125,7 @@ public class ChatManager {
                         .replace("%server%", Locale.SERVER_NAME.getString())
                         .replace("%player%", UserConstants.getNameWithColor(profile))
                         .replace("%message%", message);
-                plugin.getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
+                PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
             }
             return Locale.FILTER_LOW_ALLOW.getBoolean();
         }

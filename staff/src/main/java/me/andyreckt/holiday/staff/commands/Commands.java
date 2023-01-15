@@ -7,6 +7,7 @@ import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.util.enums.AlertType;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import me.andyreckt.holiday.staff.Staff;
 import me.andyreckt.holiday.staff.server.StaffListMenu;
@@ -39,7 +40,7 @@ public class Commands {
                 .replace("%player%", UserConstants.getNameWithColor(profile))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
 
-        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
+        PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
         Staff.getInstance().getStaffManager().toggleStaffMode(player);
     }
 
@@ -57,7 +58,7 @@ public class Commands {
                             .replace("%player%", UserConstants.getNameWithColor(profile))
                             .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
 
-        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
+        PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
         Staff.getInstance().getStaffManager().vanish(player, profile.getStaffSettings().isStaffMode());
     }
 
@@ -95,7 +96,7 @@ public class Commands {
                 .replace("%target%", UserConstants.getNameWithColor(targetProfile))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
 
-        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
+        PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
 
     }
 

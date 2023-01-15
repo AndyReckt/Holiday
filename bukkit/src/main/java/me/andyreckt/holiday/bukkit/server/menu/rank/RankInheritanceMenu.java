@@ -13,6 +13,7 @@ import me.andyreckt.holiday.bukkit.util.menu.buttons.ConversationButton;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.StringUtil;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -57,7 +58,7 @@ public class RankInheritanceMenu extends PaginatedMenu {
                     }
                     rank.addChild(child.getUuid());
                     Holiday.getInstance().getApi().saveRank(rank);
-                    Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
+                    PacketHandler.send(new PermissionUpdatePacket());
                     pair.getA().getForWhom().sendRawMessage(Locale.RANK_INHERITANCE_ADDED.getString()
                             .replace("%rank%", CC.translate(rank.getDisplayName()))
                             .replace("%child%", CC.translate(child.getDisplayName())));
@@ -97,7 +98,7 @@ public class RankInheritanceMenu extends PaginatedMenu {
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             rank.removeChild(child.getUuid());
             Holiday.getInstance().getApi().saveRank(rank);
-            Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
+            PacketHandler.send(new PermissionUpdatePacket());
             new RankInheritanceMenu(rank).openMenu(player);
         }
     }

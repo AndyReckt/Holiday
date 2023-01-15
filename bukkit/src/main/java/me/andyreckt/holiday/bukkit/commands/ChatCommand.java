@@ -11,6 +11,7 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -39,7 +40,7 @@ public class ChatCommand {
         String toSend = Locale.STAFF_CHAT_CLEAR.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
-        Holiday.getInstance().getApi().getRedis().sendPacket(
+        PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
@@ -54,7 +55,7 @@ public class ChatCommand {
         String toSendUnmuted = Locale.STAFF_CHAT_UNMUTED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
-        Holiday.getInstance().getApi().getRedis().sendPacket(
+        PacketHandler.send(
                 new BroadcastPacket(Holiday.getInstance().getChatManager().isChatMuted() ? toSendMuted : toSendUnmuted,
                         Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
@@ -74,7 +75,7 @@ public class ChatCommand {
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%delay%", TimeUtil.getDuration(time));
-        Holiday.getInstance().getApi().getRedis().sendPacket(
+        PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
@@ -87,7 +88,7 @@ public class ChatCommand {
         String toSend = Locale.STAFF_CHAT_UNSLOWED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
-        Holiday.getInstance().getApi().getRedis().sendPacket(
+        PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 

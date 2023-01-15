@@ -14,8 +14,6 @@ import me.andyreckt.holiday.bukkit.server.nms.INMS;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7_R4;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8_R3;
 import me.andyreckt.holiday.bukkit.server.placeholder.PlaceholderAPIExpansion;
-import me.andyreckt.holiday.bukkit.server.redis.packet.*;
-import me.andyreckt.holiday.bukkit.server.redis.subscriber.*;
 import me.andyreckt.holiday.bukkit.server.tasks.RebootTask;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.user.disguise.DisguiseManager;
@@ -30,11 +28,13 @@ import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.RankParameterTyp
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.StringUtils;
 import me.andyreckt.holiday.bukkit.util.uuid.UUIDCache;
+import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,6 +50,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Consumer;
 
 @Getter
 public final class Holiday extends JavaPlugin {
@@ -196,15 +197,25 @@ public final class Holiday extends JavaPlugin {
                 new PlayerListener(), new ChatListener()
         ).forEach(this::addListener);
 
-        api.getRedis().registerAdapter(CrossServerCommandPacket.class, new ServerSubscriber());
-        api.getRedis().registerAdapter(BroadcastPacket.class, new BroadcastSubscriber());
-        api.getRedis().registerAdapter(MessagePacket.class, new MessageSubscriber());
-        api.getRedis().registerAdapter(PlayerMessagePacket.class, new PlayerMessageSubscriber());
-        api.getRedis().registerAdapter(ReportPacket.class, new ReportSubscriber());
-        api.getRedis().registerAdapter(HelpopPacket.class, new HelpopSubscriber());
-        api.getRedis().registerAdapter(PermissionUpdatePacket.class, new PermissionUpdateSubscriber());
-        api.getRedis().registerAdapter(KickPlayerPacket.class, new KickPlayerSubscriber());
-        api.getRedis().registerAdapter(DisguisePacket.class, new DisguiseSubscriber());
+        HolidayAPI _api = (HolidayAPI) api;
+
+        _api.setBroadcastConsumer(packet -> {
+            if(packet.getPermission() != null) {
+                if (packet.getAlertType() != null) {
+                    Bukkit.getOnlinePlayers().stream()
+                            .filter(player -> player.hasPermission(packet.getPermission()))
+                            .filter(player -> packet.getAlertType().isAlerts(player.getUniqueId()))
+                            .forEach(player -> player.sendMessage(CC.translate(packet.getMessage())));
+                } else {
+                    Bukkit.getOnlinePlayers().stream()
+                            .filter(player -> player.hasPermission(packet.getPermission()))
+                            .forEach(player -> player.sendMessage(CC.translate(packet.getMessage())));
+                }
+                Logger.log(CC.translate(packet.getMessage()));
+            } else {
+                Bukkit.broadcastMessage(CC.translate(packet.getMessage()));
+            }
+        });
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
@@ -224,7 +235,7 @@ public final class Holiday extends JavaPlugin {
             joinable = true;
             String str = Locale.SERVER_STARTUP.getString()
                     .replace("%server%", thisServer.getServerName());
-            api.getRedis().sendPacket(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER));
+            PacketHandler.send(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER));
         }, 5 * 20L);
     }
 
@@ -249,7 +260,7 @@ public final class Holiday extends JavaPlugin {
     public void onDisable() {
         String str = Locale.SERVER_SHUTDOWN.getString()
                 .replace("%server%", thisServer.getServerName());
-        api.getRedis().sendPacket(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER));
+        PacketHandler.send(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER));
         this.serverTask.cancel();
         this.scheduledExecutor.shutdownNow();
     }

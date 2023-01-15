@@ -1,5 +1,5 @@
 main: me.andyreckt.holiday.bungee.Bungee
-version: "1.0"
+version: "1.1.0"
 api-version: 1.8
 author: AndyReckt
 name: Holiday

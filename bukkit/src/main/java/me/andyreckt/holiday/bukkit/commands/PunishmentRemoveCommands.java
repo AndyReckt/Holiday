@@ -12,6 +12,7 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -102,9 +103,9 @@ public class PunishmentRemoveCommands {
                 .replace("%reason%", data.getRevokedReason());
 
         if (!silent) {
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend));
+            PacketHandler.send(new BroadcastPacket(toSend));
         } else {
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+            PacketHandler.send(new BroadcastPacket(
                     toSend,
                     Perms.PUNISHMENTS_SILENT_VIEW.get(),
                     AlertType.SILENT_PUNISHMENT));

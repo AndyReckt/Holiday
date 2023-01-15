@@ -6,6 +6,7 @@ import lombok.Getter;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.ProfileUpdatePacket;
 import org.bson.Document;
 
@@ -48,7 +49,7 @@ public class UserManager {
                     new Document("_id", profile.getUuid()).append("data", GsonProvider.GSON.toJson(profile)),
                     new ReplaceOptions().upsert(true)
             );
-            api.getRedis().sendPacket(new ProfileUpdatePacket((UserProfile) profile));
+            PacketHandler.send(new ProfileUpdatePacket((UserProfile) profile));
         });
     }
 

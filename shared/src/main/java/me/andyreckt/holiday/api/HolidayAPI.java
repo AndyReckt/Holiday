@@ -1,12 +1,13 @@
 package me.andyreckt.holiday.api;
 
 import lombok.Getter;
+import me.andyreckt.holiday.api.global.RedisCommand;
 import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
-import me.andyreckt.holiday.core.util.redis.Messaging;
+
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -23,11 +24,6 @@ public class HolidayAPI implements API {
     private me.andyreckt.holiday.core.HolidayAPI getApi() {
 //        throw new UnsupportedOperationException("Not implemented yet.");
         return me.andyreckt.holiday.core.HolidayAPI.getUnsafeAPI();
-    }
-
-    @Override
-    public Messaging getRedis() {
-        return null;
     }
 
     @Override
@@ -166,4 +162,8 @@ public class HolidayAPI implements API {
     }
 
 
+    @Override
+    public <T> T runRedisCommand(RedisCommand<T> command) {
+        return getApi().runRedisCommand(command);
+    }
 }

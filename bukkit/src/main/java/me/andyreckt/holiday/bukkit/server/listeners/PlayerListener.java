@@ -17,6 +17,7 @@ import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.grant.Grant;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import me.andyreckt.holiday.core.util.text.HashUtils;
 import org.bukkit.entity.Player;
@@ -117,7 +118,7 @@ public class PlayerListener implements Listener {
         event.setKickMessage(CC.translate(kickMessage));
         String toSend = Locale.PUNISHMENT_BANNED_LOGIN_ALERT.getString()
                 .replace("%player%", player.getName());
-        Holiday.getInstance().getApi().getRedis().sendPacket(
+        PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.BANNED_LOGIN));
     }
 
@@ -175,7 +176,7 @@ public class PlayerListener implements Listener {
                             .filter(Profile::isBanned)
                             .map(Profile::getName)
                             .collect(Collectors.joining(", ")));
-            Holiday.getInstance().getApi().getRedis().sendPacket(
+            PacketHandler.send(
                     new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.ALT_LOGIN));
         }
     }

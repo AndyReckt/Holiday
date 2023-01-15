@@ -1,6 +1,6 @@
 name: "Holiday"
 main: "me.andyreckt.holiday.bukkit.Holiday"
-version: "1.0"
+version: "1.1.0"
 api-version: "1.8"
 authors: ["AndyReckt", "Scifi"]
 description: "Holiday is an Open Source server core which manages ranks, punishments, and more."

@@ -4,8 +4,8 @@ import lombok.Getter;
 import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.ServerKeepAlivePacket;
-import org.redisson.api.RMap;
 
 import java.util.Map;
 import java.util.UUID;
@@ -26,12 +26,14 @@ public class ServerManager {
     }
 
     private void load() {
-        RMap<String, String> serverMap = api.getRedis().getClient().getMap("server-map");
-        for (Map.Entry<String, String> serverEntry : serverMap.entrySet()) {
-            String serverId = serverEntry.getKey();
-            String json = serverEntry.getValue();
-            servers.put(serverId, GsonProvider.GSON.fromJson(json, Server.class));
-        }
+        api.runRedisCommand(redis -> {
+            for (Map.Entry<String, String> serverEntry : redis.hgetAll("servers").entrySet()) {
+                String serverId = serverEntry.getKey();
+                String json = serverEntry.getValue();
+                servers.put(serverId, GsonProvider.GSON.fromJson(json, Server.class));
+            }
+            return null;
+        });
     }
 
 
@@ -44,9 +46,12 @@ public class ServerManager {
     }
 
     public void keepAlive(Server server) {
-        api.getRedis().sendPacket(new ServerKeepAlivePacket(server));
+        PacketHandler.send(new ServerKeepAlivePacket(server));
         CompletableFuture.runAsync(() -> {
-            api.getRedis().getClient().getMap("server-map").put(server.getServerId(), GsonProvider.GSON.toJson(server));
+            api.runRedisCommand(redis -> {
+                redis.hset("servers", server.getServerId(), GsonProvider.GSON.toJson(server));
+                return null;
+            });
         });
     }
 }

@@ -10,6 +10,7 @@ import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
 import me.andyreckt.holiday.bukkit.util.player.PlayerUtils;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -95,7 +96,7 @@ public class ServerListMenu extends PaginatedMenu {
                     break;
                 case DROP:
                 case CONTROL_DROP:
-                    Holiday.getInstance().getApi().getRedis().sendPacket(new CrossServerCommandPacket("stop", server.getServerId()));
+                    PacketHandler.send(new CrossServerCommandPacket("stop", server.getServerId()));
                     break;
                 default:
                     break;

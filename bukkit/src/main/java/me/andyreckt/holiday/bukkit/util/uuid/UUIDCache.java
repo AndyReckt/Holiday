@@ -3,10 +3,8 @@ package me.andyreckt.holiday.bukkit.util.uuid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.andyreckt.holiday.bukkit.Holiday;
-import me.andyreckt.holiday.core.util.redis.messaging.IncomingPacketHandler;
 import me.andyreckt.holiday.core.util.redis.messaging.Packet;
-import me.andyreckt.holiday.core.util.redis.messaging.PacketListener;
-import org.redisson.api.RMap;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 
 import java.util.Map;
 import java.util.UUID;
@@ -20,14 +18,13 @@ public final class UUIDCache {
     public UUIDCache(Holiday plugin) {
         this.plugin = plugin;
 
-        RMap<String, String> cache = plugin.getApi().getRedis().getClient().getMap("uuid-cache");
-        for (Map.Entry<String, String> cacheEntry : cache.entrySet()) {
-            UUID uuid = UUID.fromString(cacheEntry.getKey());
-            String name = cacheEntry.getValue();
-            map.put(uuid, name);
-        }
+        plugin.getApi().runRedisCommand(redis -> {
+            for (Map.Entry<String, String> entry : redis.hgetAll("uuid-cache").entrySet()) {
+                map.put(UUID.fromString(entry.getKey()), entry.getValue());
+            }
+            return null;
+        });
 
-        this.plugin.getApi().getRedis().registerAdapter(UpdateUUIDCachePacket.class, new UpdateUUIDCacheSubscriber());
         new UUIDCacheListener(plugin);
     }
 
@@ -46,20 +43,21 @@ public final class UUIDCache {
 
     public void update(final UUID uuid, final String name) {
         map.put(uuid, name);
-        this.plugin.getApi().getRedis().getClient().getMap("uuid-cache").put(uuid.toString(), name);
-        this.plugin.getApi().getRedis().sendPacket(new UpdateUUIDCachePacket(uuid, name));
+        plugin.getApi().runRedisCommand(redis -> {
+            redis.hset("uuid-cache", uuid.toString(), name);
+            return null;
+        });
+        PacketHandler.send(new UpdateUUIDCachePacket(uuid, name));
     }
 
     @RequiredArgsConstructor @Getter
     public static class UpdateUUIDCachePacket implements Packet {
         private final UUID uuid;
         private final String name;
-    }
 
-    public static class UpdateUUIDCacheSubscriber implements PacketListener {
-        @IncomingPacketHandler
-        public void onPacket(UpdateUUIDCachePacket packet) {
-            map.put(packet.getUuid(), packet.getName());
+        @Override
+        public void onReceive() {
+            map.put(uuid, name);
         }
     }
 

@@ -6,6 +6,7 @@ import lombok.Getter;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.PunishmentUpdatePacket;
 import org.bson.Document;
 
@@ -68,7 +69,7 @@ public class PunishmentManager {
             );
         });
 
-        this.api.getRedis().sendPacket(new PunishmentUpdatePacket((Punishment) punishment));
+        PacketHandler.send(new PunishmentUpdatePacket((Punishment) punishment));
     }
 
     public void refreshPunishments() {

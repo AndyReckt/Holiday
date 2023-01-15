@@ -3,6 +3,7 @@ package me.andyreckt.holiday.core.util.redis.pubsub.packets;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.messaging.Packet;
 
@@ -26,4 +27,10 @@ public class BroadcastPacket implements Packet {
         this.alertType = null;
     }
 
+    @Override
+    public void onReceive() {
+        if (HolidayAPI.getUnsafeAPI().getBroadcastConsumer() != null) {
+            HolidayAPI.getUnsafeAPI().getBroadcastConsumer().accept(this);
+        }
+    }
 }

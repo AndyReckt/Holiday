@@ -9,6 +9,7 @@ import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.core.user.UserProfile;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -50,7 +51,7 @@ public class ConversationCommands {
 
         player.sendMessage(toSend);
 
-        Holiday.getInstance().getApi().getRedis().sendPacket(new MessagePacket((UserProfile) target, (UserProfile) profile, message));
+        PacketHandler.send(new MessagePacket((UserProfile) target, (UserProfile) profile, message));
         LAST_MESSAGE.put(profile.getUuid(), target.getUuid());
     }
 
@@ -93,7 +94,7 @@ public class ConversationCommands {
 
         player.sendMessage(toSend);
 
-        Holiday.getInstance().getApi().getRedis().sendPacket(new MessagePacket((UserProfile) target, (UserProfile) profile, message));
+        PacketHandler.send(new MessagePacket((UserProfile) target, (UserProfile) profile, message));
         LAST_MESSAGE.put(profile.getUuid(), target.getUuid());
     }
 

@@ -6,6 +6,7 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.core.HolidayAPI;
 import lombok.Getter;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.RankUpdatePacket;
 import org.bson.Document;
 
@@ -51,7 +52,7 @@ public class RankManager {
         this.ranks.removeIf(rank1 -> rank1.getUuid().equals(rank.getUuid()));
         this.ranks.add(rank);
 
-        this.api.getRedis().sendPacket(new RankUpdatePacket((Rank) rank));
+        PacketHandler.send(new RankUpdatePacket((Rank) rank));
     }
 
     public void deleteRank(IRank rank) {
@@ -62,7 +63,7 @@ public class RankManager {
                 .forEach(grant -> api.getGrantManager().deleteGrant(grant));
 
         this.ranks.removeIf(rank1 -> rank1.getUuid().equals(rank.getUuid()));
-        this.api.getRedis().sendPacket(new RankUpdatePacket((Rank) rank, true));
+        PacketHandler.send(new RankUpdatePacket((Rank) rank, true));
     }
 
     public IRank getDefaultRank() {

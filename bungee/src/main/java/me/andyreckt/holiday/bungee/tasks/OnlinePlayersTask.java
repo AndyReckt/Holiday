@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bungee.tasks;
 
 import me.andyreckt.holiday.bungee.Bungee;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.OnlinePlayersPacket;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class OnlinePlayersTask {
                 }
             });
 
-            Bungee.getInstance().getApi().getRedis().sendPacket(new OnlinePlayersPacket(map));
+            PacketHandler.send(new OnlinePlayersPacket(map));
         }, 0, 2, TimeUnit.SECONDS);
     }
 

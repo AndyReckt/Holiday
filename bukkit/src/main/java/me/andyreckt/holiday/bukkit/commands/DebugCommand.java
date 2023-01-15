@@ -58,9 +58,15 @@ public class DebugCommand {
             return;
         }
 
-        HolidayAPI.getUnsafeAPI().getRedis().getClient().getMap("uuid-cache").clear();
-        HolidayAPI.getUnsafeAPI().getUserManager().getProfiles().forEach((uuid, profile) ->
-                HolidayAPI.getUnsafeAPI().getRedis().getClient().getMap("uuid-cache").put(uuid.toString(), profile.getName()));
+        HolidayAPI.getUnsafeAPI().runRedisCommand(redis -> {
+            HolidayAPI.getUnsafeAPI().getUserManager().getAllProfilesDb().whenComplete((profiles, throwable) -> {
+                profiles.forEach((uuid, profile) -> {
+                    redis.hdel("uuid-cache", uuid.toString());
+                    redis.hset("uuid-cache", uuid.toString(), profile.getName());
+                });
+            });
+            return null;
+        });
     }
 
     @SubCommand(names = "server", description = "Server debug", async = true)

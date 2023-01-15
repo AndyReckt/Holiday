@@ -13,10 +13,8 @@ import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.core.util.http.Skin;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
-import org.bukkit.Bukkit;
-import org.redisson.api.RMap;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,12 +30,13 @@ public class DisguiseManager {
         this.nms = nms;
         this.disguises = new HashMap<>();
 
-        RMap<String, String> cache = plugin.getApi().getRedis().getClient().getMap("disguise-cache");
-        for (Map.Entry<String, String> entry : cache.entrySet()) {
-            UUID uuid = UUID.fromString(entry.getKey());
-            Disguise disguise = GsonProvider.GSON.fromJson(entry.getValue(), Disguise.class);
-            disguises.put(uuid, disguise);
-        }
+        plugin.getApi().runRedisCommand(redis -> {
+            for (Map.Entry<String, String> entry : redis.hgetAll("disguise-cache").entrySet()) {
+                Disguise disguise = GsonProvider.GSON.fromJson(entry.getValue(), Disguise.class);
+                disguises.put(UUID.fromString(entry.getKey()), disguise);
+            }
+            return null;
+        });
         for (String skinName : Locale.DISGUISE_SKINS.getStringList()) {
             Skin.getSkinByName(skinName).whenCompleteAsync((skin, throwable) -> {});
         }
@@ -83,14 +82,19 @@ public class DisguiseManager {
             Profile profile = plugin.getApi().getProfile(disguise.getUuid());
             profile.setDisguise(disguise);
             plugin.getApi().saveProfile(profile);
-            plugin.getApi().getRedis().getClient().getMap("disguise-cache").put(disguise.getUuid().toString(), GsonProvider.GSON.toJson(disguise));
+
+            plugin.getApi().runRedisCommand(redis -> {
+                redis.hset("disguise-cache", disguise.getUuid().toString(), GsonProvider.GSON.toJson(disguise));
+                return null;
+            });
+
             String toSend = Locale.DISGUISE_MESSAGE_STAFF.getString()
                     .replace("%server%", plugin.getThisServer().getServerName())
                     .replace("%player%", UserConstants.getNameWithColor(profile))
                     .replace("%name%",UserConstants.getDisplayNameWithColor(profile))
                     .replace("%skin%", disguise.getSkinName());
-            plugin.getApi().getRedis().sendPacket(new DisguisePacket(disguise, false));
-            plugin.getApi().getRedis().sendPacket(new BroadcastPacket(
+            PacketHandler.send(new DisguisePacket(disguise, false));
+            PacketHandler.send(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.DISGUISES
             ));
         }
@@ -102,12 +106,17 @@ public class DisguiseManager {
         Profile profile = plugin.getApi().getProfile(disguise.getUuid());
         profile.setDisguise(null);
         plugin.getApi().saveProfile(profile);
-        plugin.getApi().getRedis().getClient().getMap("disguise-cache").remove(disguise.getUuid().toString());
-        plugin.getApi().getRedis().sendPacket(new DisguisePacket(disguise, true));
+
+        plugin.getApi().runRedisCommand(redis -> {
+            redis.hdel("disguise-cache", disguise.getUuid().toString());
+            return null;
+        });
+
+        PacketHandler.send(new DisguisePacket(disguise, true));
         String toSend = Locale.DISGUISE_MESSAGE_STAFF_OFF.getString()
                 .replace("%server%", plugin.getThisServer().getServerName())
                 .replace("%player%", UserConstants.getNameWithColor(profile));
-        plugin.getApi().getRedis().sendPacket(new BroadcastPacket(
+        PacketHandler.send(new BroadcastPacket(
                 toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.DISGUISES
         ));
         Tasks.runLater(() -> UserConstants.reloadPlayer(disguise.getUuid()), 5L);

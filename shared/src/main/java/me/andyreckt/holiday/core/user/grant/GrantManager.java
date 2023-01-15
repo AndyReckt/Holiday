@@ -6,6 +6,7 @@ import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.core.HolidayAPI;
 import lombok.Getter;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.GrantUpdatePacket;
 import org.bson.Document;
 
@@ -50,7 +51,7 @@ public class GrantManager { //TODO: at some point only load the active grants, a
             );
         });
 
-        this.api.getRedis().sendPacket(new GrantUpdatePacket((Grant) grant));
+        PacketHandler.send(new GrantUpdatePacket((Grant) grant));
     }
 
     public void deleteGrant(IGrant grant) {
@@ -58,7 +59,7 @@ public class GrantManager { //TODO: at some point only load the active grants, a
 
         api.getMongoManager().getGrants().deleteOne(Filters.eq("_id", grant.getGrantId()));
 
-        this.api.getRedis().sendPacket(new GrantUpdatePacket((Grant) grant, true));
+        PacketHandler.send(new GrantUpdatePacket((Grant) grant, true));
     }
 
     public void revokeGrant(IGrant grant, UUID revokedBy, String revokedOn, String revokedReason) {

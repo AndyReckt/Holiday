@@ -26,6 +26,7 @@ import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.enums.ChatChannel;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
@@ -77,7 +78,7 @@ public class EssentialCommands {
                 Holiday.getInstance().getThisServer().getServerName()
         );
 
-        Holiday.getInstance().getApi().getRedis().sendPacket(packet);
+        PacketHandler.send(packet);
     }
 
     @Command(names = {"request", "helpop", "helpme", "question", "ask",}, async = true)
@@ -96,7 +97,7 @@ public class EssentialCommands {
         helpopCooldownMap.put(sender.getUniqueId(), cd);
 
         sender.sendMessage(Locale.HELPOP_MESSAGE.getString());
-        Holiday.getInstance().getApi().getRedis().sendPacket(new HelpopPacket(
+        PacketHandler.send(new HelpopPacket(
                 UserConstants.getDisplayNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())),
                 reason,
                 Holiday.getInstance().getThisServer().getServerName()
@@ -179,14 +180,14 @@ public class EssentialCommands {
             String toSend = Locale.FLY_ENABLED_STAFF.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", executor);
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+            PacketHandler.send(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
             ));
         } else {
             String toSend = Locale.FLY_DISABLED_STAFF.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", sender.getName());
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+            PacketHandler.send(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
             ));
             sender.sendMessage(Locale.FLY_DISABLED.getString());
@@ -219,7 +220,7 @@ public class EssentialCommands {
                     .replace("%player%", target.getName())
                     .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+            PacketHandler.send(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
             ));
         } else {
@@ -252,7 +253,7 @@ public class EssentialCommands {
                     .replace("%executor%", executor)
                     .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+            PacketHandler.send(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
             ));
         } else {
@@ -278,7 +279,7 @@ public class EssentialCommands {
                     .replace("%executor%", executor)
                     .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+            PacketHandler.send(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
             ));
         } else {
@@ -307,7 +308,7 @@ public class EssentialCommands {
                         .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                         .replace("%executor%", executor)
                         .replace("%player%", target.getName());
-                Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                PacketHandler.send(new BroadcastPacket(
                         toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
                 ));
             }
@@ -330,7 +331,7 @@ public class EssentialCommands {
                         .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                         .replace("%executor%", executor)
                         .replace("%player%", "himself");
-                Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                PacketHandler.send(new BroadcastPacket(
                         toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
                 ));
             } else {
@@ -340,7 +341,7 @@ public class EssentialCommands {
                         .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                         .replace("%executor%", executor)
                         .replace("%player%", target.getName());
-                Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+                PacketHandler.send(new BroadcastPacket(
                         toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
                 ));
             }
@@ -491,7 +492,7 @@ public class EssentialCommands {
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%player%", target.getName())
                     .replace("%text%", msg);
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
+            PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
         }
     }
 
@@ -512,7 +513,7 @@ public class EssentialCommands {
                     .replace("%executor%", senderName)
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%text%", msg);
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
+            PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
         }
     }
 
@@ -570,7 +571,7 @@ public class EssentialCommands {
                 .replace("%player%", playerName)
                 .replace("%server%", server)
                 .replace("%message%", message);
-        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+        PacketHandler.send(new BroadcastPacket(
                 toSend,
                 Perms.STAFF_CHAT.get(),
                 AlertType.STAFF_CHAT
@@ -596,7 +597,7 @@ public class EssentialCommands {
                 .replace("%player%", playerName)
                 .replace("%server%", server)
                 .replace("%message%", message);
-        Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+        PacketHandler.send(new BroadcastPacket(
                 toSend,
                 Perms.ADMIN_CHAT.get(),
                 AlertType.ADMIN_CHAT
@@ -637,7 +638,7 @@ public class EssentialCommands {
         }
 
         sender.sendMessage(Locale.PULLING_PLAYER.getString().replace("%player%", UserConstants.getDisplayNameWithColor(player)));
-        Holiday.getInstance().getApi().getRedis().sendPacket(new CrossServerCommandPacket(
+        PacketHandler.send(new CrossServerCommandPacket(
                 "sendtoserver " + player.getDisplayName() + " " + Holiday.getInstance().getThisServer().getServerId(), player.getCurrentServer().getServerId()));
     }
 

@@ -3,6 +3,7 @@ package me.andyreckt.holiday.bungee.listener;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bungee.Bungee;
 import me.andyreckt.holiday.bungee.util.Locale;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -24,7 +25,7 @@ public class StaffSwitchListener implements Listener {
                 String toSend = Locale.STAFF_SWITCH_JOIN.getString()
                         .replace("%player%", playername)
                         .replace("%server%", server);
-                Bungee.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
+                PacketHandler.send(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
             } else {
                 String server = event.getPlayer().getServer().getInfo().getName();
                 String oldServer = event.getFrom().getName();
@@ -33,7 +34,7 @@ public class StaffSwitchListener implements Listener {
                         .replace("%player%", playername)
                         .replace("%server%", server)
                         .replace("%old%", oldServer);
-                Bungee.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
+                PacketHandler.send(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
             }
         }
     }
@@ -49,7 +50,7 @@ public class StaffSwitchListener implements Listener {
             String toSend = Locale.STAFF_SWITCH_LEAVE.getString()
                     .replace("%player%", playername)
                     .replace("%server%", server);
-            Bungee.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
+            PacketHandler.send(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
         }
     }
 

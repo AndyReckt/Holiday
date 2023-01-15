@@ -22,6 +22,7 @@ import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.TextComponentBuilder;
 import me.andyreckt.holiday.core.user.rank.Rank;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.command.CommandSender;
@@ -97,7 +98,7 @@ public class RankCommand {
         rank.addPermission(perm);
         api.saveRank(rank);
 
-        Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
+        PacketHandler.send(new PermissionUpdatePacket());
         sender.sendMessage(Locale.RANK_PERMISSION_ADDED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
                 .replace("%permission%", perm));
@@ -116,7 +117,7 @@ public class RankCommand {
         rank.removePermission(perm);
         api.saveRank(rank);
 
-        Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
+        PacketHandler.send(new PermissionUpdatePacket());
         sender.sendMessage(Locale.RANK_PERMISSION_REMOVED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
                 .replace("%perm%", perm));
@@ -135,7 +136,7 @@ public class RankCommand {
         rank.addChild(child.getUuid());
         api.saveRank(rank);
 
-        Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
+        PacketHandler.send(new PermissionUpdatePacket());
 
         sender.sendMessage(Locale.RANK_INHERITANCE_ADDED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))
@@ -155,7 +156,7 @@ public class RankCommand {
         rank.removeChild(child.getUuid());
         api.saveRank(rank);
 
-        Holiday.getInstance().getApi().getRedis().sendPacket(new PermissionUpdatePacket());
+        PacketHandler.send(new PermissionUpdatePacket());
 
         sender.sendMessage(Locale.RANK_INHERITANCE_REMOVED.getString()
                 .replace("%rank%", CC.translate(rank.getDisplayName()))

@@ -11,6 +11,7 @@ import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.enums.ChatChannel;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -75,7 +76,7 @@ public class ChatListener implements Listener {
                     .replace("%player%", playerName)
                     .replace("%server%", server)
                     .replace("%message%", message);
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+            PacketHandler.send(new BroadcastPacket(
                     toSend,
                     Perms.STAFF_CHAT.get(),
                     AlertType.STAFF_CHAT
@@ -98,7 +99,7 @@ public class ChatListener implements Listener {
                     .replace("%player%", playerName)
                     .replace("%server%", server)
                     .replace("%message%", message);
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+            PacketHandler.send(new BroadcastPacket(
                     toSend,
                     Perms.ADMIN_CHAT.get(),
                     AlertType.ADMIN_CHAT

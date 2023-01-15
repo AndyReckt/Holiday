@@ -14,6 +14,7 @@ import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.punishment.Punishment;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -148,7 +149,7 @@ public class PunishmentCommands {
         if (punishment.getType() == IPunishment.PunishmentType.MUTE) return;
         toSend = toSend.replace("%reason%", punishment.getAddedReason())
                 .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
-        Holiday.getInstance().getApi().getRedis().sendPacket(new KickPlayerPacket((Punishment) punishment, toSend));
+        PacketHandler.send(new KickPlayerPacket((Punishment) punishment, toSend));
     }
 
     private void sendPunishmentBroadcast(IPunishment punishment, boolean silent) {
@@ -183,9 +184,9 @@ public class PunishmentCommands {
                 .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
 
         if (!silent) {
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(toSend));
+            PacketHandler.send(new BroadcastPacket(toSend));
         } else {
-            Holiday.getInstance().getApi().getRedis().sendPacket(new BroadcastPacket(
+            PacketHandler.send(new BroadcastPacket(
                     toSend,
                     Perms.PUNISHMENTS_SILENT_VIEW.get(),
                     AlertType.SILENT_PUNISHMENT));

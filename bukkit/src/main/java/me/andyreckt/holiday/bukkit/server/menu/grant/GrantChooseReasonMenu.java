@@ -13,6 +13,7 @@ import me.andyreckt.holiday.bukkit.util.menu.pagination.ConfirmationMenu;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.grant.Grant;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -95,7 +96,7 @@ public class GrantChooseReasonMenu extends GlassMenu {
                         .replace("%duration%", TimeUtil.getDuration(duration))
                         .replace("%reason%", reason);
                 player.sendMessage(CC.translate(str2));
-                Holiday.getInstance().getApi().getRedis().sendPacket(new PlayerMessagePacket(profile.getUuid(), str));
+                PacketHandler.send(new PlayerMessagePacket(profile.getUuid(), str));
 
             },
                 new ItemBuilder(Material.ENCHANTED_BOOK)
