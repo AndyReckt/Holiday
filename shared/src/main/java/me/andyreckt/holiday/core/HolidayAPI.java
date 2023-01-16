@@ -243,7 +243,6 @@ public class HolidayAPI implements API {
         if (redisCredentials.isAuth()) {
             jedis.auth(redisCredentials.getPassword());
         }
-        jedis.connect();
 
         T result = null;
         try {
