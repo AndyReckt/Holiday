@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.bukkit.server.nms;
 
+import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import org.bukkit.entity.Player;
 
@@ -20,4 +21,6 @@ public interface INMS {
     void disguise(Disguise disguise);
 
     void unDisguise(Disguise disguise);
+
+    ItemBuilder insertSkinPropertyFromHash(String hash, ItemBuilder builder);
 }

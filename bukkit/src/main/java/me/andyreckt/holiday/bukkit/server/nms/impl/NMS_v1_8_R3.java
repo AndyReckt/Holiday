@@ -2,8 +2,10 @@ package me.andyreckt.holiday.bukkit.server.nms.impl;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.properties.PropertyMap;
 import lombok.SneakyThrows;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
+import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.core.util.http.Skin;
@@ -13,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -168,5 +171,23 @@ public class NMS_v1_8_R3 implements INMS {
         });
     }
 
-
+    @Override
+    public ItemBuilder insertSkinPropertyFromHash(String hash, ItemBuilder builder) {
+        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        PropertyMap propertyMap = profile.getProperties();
+        propertyMap.put("textures", new Property("textures", hash));
+        SkullMeta skullMeta = (SkullMeta) builder.item.getItemMeta();
+        Class<?> c_skullMeta = skullMeta.getClass();
+        try {
+            Field f_profile = c_skullMeta.getDeclaredField("profile");
+            f_profile.setAccessible(true);
+            f_profile.set(skullMeta, profile);
+            f_profile.setAccessible(false);
+            builder.item.setItemMeta(skullMeta);
+            return builder;
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return builder;
+    }
 }

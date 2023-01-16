@@ -15,9 +15,8 @@
 package me.andyreckt.holiday.bukkit.util.item;
 
 import com.google.gson.Gson;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.properties.PropertyMap;
+import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8_R3;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -44,7 +43,7 @@ import java.util.*;
  */
 public class ItemBuilder {
 
-	private ItemStack item;
+	public ItemStack item;
 	private ItemMeta meta;
 	private Material material = Material.STONE;
 	private int amount = 1;
@@ -107,7 +106,9 @@ public class ItemBuilder {
 		return new ItemBuilder(this.item);
 	}
 
-
+	private boolean is1_8() {
+		return Holiday.getInstance().getNms() instanceof NMS_v1_8_R3;
+	}
 
 	/** Initalizes the ItemBuilder with a {@link ItemStack} */
 	public ItemBuilder(ItemStack item) {
@@ -124,8 +125,7 @@ public class ItemBuilder {
 			this.displayname = item.getItemMeta().getDisplayName();
 		if(item.hasItemMeta())
 			this.lore = item.getItemMeta().getLore();
-		if(item.hasItemMeta())
-			flags.addAll(item.getItemMeta().getItemFlags());
+		if(item.hasItemMeta() && is1_8()) flags.addAll(item.getItemMeta().getItemFlags());
 	}
 
 	/** Initalizes the ItemBuilder with a {@link FileConfiguration} ItemStack in Path */
@@ -371,22 +371,7 @@ public class ItemBuilder {
 	 * @param hash the head hash
 	 */
 	public ItemBuilder texture(String hash) {
-		GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-		PropertyMap propertyMap = profile.getProperties();
-		propertyMap.put("textures", new Property("textures", hash));
-		SkullMeta skullMeta = (SkullMeta) this.item.getItemMeta();
-		Class<?> c_skullMeta = skullMeta.getClass();
-		try {
-			Field f_profile = c_skullMeta.getDeclaredField("profile");
-			f_profile.setAccessible(true);
-			f_profile.set(skullMeta, profile);
-			f_profile.setAccessible(false);
-			this.item.setItemMeta(skullMeta);
-			return this;
-		} catch (IllegalAccessException | NoSuchFieldException e) {
-			e.printStackTrace();
-		}
-		return this;
+		return Holiday.getInstance().getNms().insertSkinPropertyFromHash(hash, this);
 	}
 
 
