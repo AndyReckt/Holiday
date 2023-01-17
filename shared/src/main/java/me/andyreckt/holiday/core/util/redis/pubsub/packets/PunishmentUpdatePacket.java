@@ -15,7 +15,7 @@ public class PunishmentUpdatePacket implements Packet {
     @Override
     public void onReceive() {
         PunishmentManager punishmentManager = HolidayAPI.getUnsafeAPI().getPunishmentManager();
-        punishmentManager.getPunishments().removeIf(punishment -> punishment.getId().equals(punishment.getId()));
+        punishmentManager.getPunishments().removeIf(punishment -> punishment.getId().equals(this.punishment.getId()));
         punishmentManager.getPunishments().add(punishment);
     }
 }

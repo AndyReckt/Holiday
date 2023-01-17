@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.grant.Grant;
 import me.andyreckt.holiday.core.user.grant.GrantManager;
+import me.andyreckt.holiday.core.util.json.GsonProvider;
 import me.andyreckt.holiday.core.util.redis.messaging.Packet;
 
 @Getter
@@ -22,7 +23,7 @@ public class GrantUpdatePacket implements Packet {
     @Override
     public void onReceive() {
         GrantManager grantManager = HolidayAPI.getUnsafeAPI().getGrantManager();
-        grantManager.getGrants().removeIf(grant -> grant.getGrantId().equals(grant.getGrantId()));
+        grantManager.getGrants().removeIf(grant -> grant.getGrantId().equals(this.grant.getGrantId()));
         if (delete) return;
         grantManager.getGrants().add(grant);
     }

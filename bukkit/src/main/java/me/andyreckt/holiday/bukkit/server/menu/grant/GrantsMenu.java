@@ -47,11 +47,11 @@ public class GrantsMenu extends PaginatedMenu {
         Map<Integer, Button> toReturn = new HashMap<>();
         if (actives) {
             for (IGrant grant : target.getActiveGrants()) {
-                toReturn.put(toReturn.size(), new GrantButton(grant, target, actives));
+                toReturn.put(toReturn.size(), new GrantButton(grant, target, true));
             }
         } else {
             for (IGrant grant : target.getGrants()) {
-                toReturn.put(toReturn.size(), new GrantButton(grant, target, actives));
+                toReturn.put(toReturn.size(), new GrantButton(grant, target, false));
             }
         }
         return toReturn;

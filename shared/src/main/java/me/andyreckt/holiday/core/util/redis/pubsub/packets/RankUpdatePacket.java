@@ -22,7 +22,7 @@ public class RankUpdatePacket implements Packet {
     public void onReceive() {
         RankManager rankManager = HolidayAPI.getUnsafeAPI().getRankManager();
 
-        rankManager.getRanks().removeIf(rank -> rank.getName().equals(this.rank.getName()));
+        rankManager.getRanks().removeIf(rank -> rank.getUuid().equals(this.rank.getUuid()));
         if (delete) return;
 
         rankManager.getRanks().add(this.rank);

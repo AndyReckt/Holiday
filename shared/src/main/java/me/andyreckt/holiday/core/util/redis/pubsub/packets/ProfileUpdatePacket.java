@@ -16,6 +16,8 @@ public class ProfileUpdatePacket implements Packet {
     @Override
     public void onReceive() {
         UserManager userManager = HolidayAPI.getUnsafeAPI().getUserManager();
-        userManager.getProfiles().put(profile.getUuid(), profile);
+        if (userManager.getProfiles().containsKey(profile.getUuid())) {
+            userManager.getProfiles().put(profile.getUuid(), profile);
+        }
     }
 }
