@@ -6,6 +6,7 @@ import me.andyreckt.holiday.core.util.json.GsonProvider;
 import redis.clients.jedis.Jedis;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 
 @UtilityClass
 public final class PacketHandler {
@@ -33,7 +34,7 @@ public final class PacketHandler {
         CompletableFuture.runAsync(() -> api.runRedisCommand((jedis) -> {
             String encodedPacket = packet.getClass().getName() + "||" + GsonProvider.GSON.toJson(packet);
             return jedis.publish("Packet:All", encodedPacket);
-        }));
+        }), api.getExecutor());
     }
 
     public static void sendNoCheck(Packet packet) {

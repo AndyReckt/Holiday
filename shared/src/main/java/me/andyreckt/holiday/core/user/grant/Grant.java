@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.core.user.grant;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.user.IGrant;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Getter @Setter
 public class Grant implements IGrant {
 
+    @SerializedName("_id")
     private final UUID grantId;
     private final UUID user;
     private final UUID rankId;

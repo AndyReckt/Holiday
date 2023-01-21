@@ -1,11 +1,26 @@
 package me.andyreckt.holiday.core.util.text;
 
+import lombok.experimental.UtilityClass;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+@UtilityClass
 public class HashUtils {
-    public static String hash(String input) {
-        int hash = 7;
-        for (int i = 0; i < input.length(); i++) {
-            hash = hash * 31 + input.charAt(i);
+    public String hash(String input) {
+        MessageDigest digest;
+
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+            final byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+            return new String(hash);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
-        return String.valueOf(hash);
+
+        System.out.println("Hashing failed!");
+
+        return null;
     }
 }

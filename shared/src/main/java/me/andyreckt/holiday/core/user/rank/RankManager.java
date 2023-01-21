@@ -37,14 +37,14 @@ public class RankManager {
     }
 
     private Rank loadRank(Document document) {
-        return GsonProvider.GSON.fromJson(document.getString("data"), Rank.class);
+        return GsonProvider.GSON.fromJson(document.toJson(), Rank.class);
     }
 
     public void saveRank(IRank rank) {
         CompletableFuture.runAsync(() -> {
             api.getMongoManager().getRanks().replaceOne(
                     Filters.eq("_id", rank.getUuid()),
-                    new Document("data", GsonProvider.GSON.toJson(rank)).append("_id", rank.getUuid()),
+                    Document.parse(GsonProvider.GSON.toJson((Rank) rank)),
                     new ReplaceOptions().upsert(true)
             );
         });

@@ -36,7 +36,7 @@ public class GrantManager { //TODO: at some point only load the active grants, a
     }
 
     private IGrant loadGrant(Document document) {
-        return GsonProvider.GSON.fromJson(document.getString("data"), Grant.class);
+        return GsonProvider.GSON.fromJson(document.toJson(), Grant.class);
     }
 
     public void saveGrant(IGrant grant) {
@@ -46,7 +46,7 @@ public class GrantManager { //TODO: at some point only load the active grants, a
         CompletableFuture.runAsync(() -> {
             api.getMongoManager().getGrants().replaceOne(
                     Filters.eq("_id", grant.getGrantId()),
-                    new Document("data", GsonProvider.GSON.toJson(grant)).append("_id", grant.getGrantId()),
+                    Document.parse(GsonProvider.GSON.toJson((Grant) grant)),
                     new ReplaceOptions().upsert(true)
             );
         });

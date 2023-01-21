@@ -11,10 +11,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class Tasks {
 
-    public static ThreadFactory newThreadFactory(String name) {
-        return new ThreadFactoryBuilder().setNameFormat(name).build();
-    }
-
     public static void run(Callable callable) {
         Holiday.getInstance().getServer().getScheduler().runTask(Holiday.getInstance(), callable::call);
     }

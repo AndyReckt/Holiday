@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.core.user.rank;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.user.IRank;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Getter @Setter
 public class Rank implements IRank {
 
+    @SerializedName("_id")
     private final UUID uuid;
 
     private String name;

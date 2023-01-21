@@ -38,7 +38,7 @@ public class UserManager {
     }
 
     public Profile loadProfile(Document document) {
-        return GsonProvider.GSON.fromJson(document.getString("data"), UserProfile.class);
+        return GsonProvider.GSON.fromJson(document.toJson(), UserProfile.class);
     }
 
     public void saveProfile(Profile profile) {
@@ -46,7 +46,7 @@ public class UserManager {
         CompletableFuture.runAsync(() -> {
             api.getMongoManager().getProfiles().replaceOne(
                     Filters.eq("_id", profile.getUuid()),
-                    new Document("_id", profile.getUuid()).append("data", GsonProvider.GSON.toJson(profile)),
+                    Document.parse(GsonProvider.GSON.toJson((UserProfile) profile)),
                     new ReplaceOptions().upsert(true)
             );
             PacketHandler.send(new ProfileUpdatePacket((UserProfile) profile));

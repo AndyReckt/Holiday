@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.core.user;
 
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.server.IServer;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @Getter @Setter
 public class UserProfile implements Profile {
 
+    @SerializedName("_id")
     private final UUID uuid;
 
     private String name = "$undefined";

@@ -33,13 +33,14 @@
             <version>3.12.11</version>
             <scope>compile</scope>
         </dependency>
+        <!--Jedis API-->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>4.3.1</version>
             <scope>compile</scope>
         </dependency>
-        <!--Jedis API--><!--JetBrains Annotations in case of any errors-->
+        <!--JetBrains Annotations in case of any errors-->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>

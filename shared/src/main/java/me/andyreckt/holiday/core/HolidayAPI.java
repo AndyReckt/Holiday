@@ -26,6 +26,8 @@ import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -50,6 +52,7 @@ public class HolidayAPI implements API {
 
     @Setter
     private Consumer<BroadcastPacket> broadcastConsumer;
+    private final Executor executor;
 
 
 
@@ -63,6 +66,7 @@ public class HolidayAPI implements API {
                   new JedisPool(new JedisPoolConfig(), redisCredentials.getHostname(), redisCredentials.getPort(), 20_000, redisCredentials.getPassword())
                 : new JedisPool(new JedisPoolConfig(), redisCredentials.getHostname(), redisCredentials.getPort(), 20_000);
 
+        this.executor = Executors.newSingleThreadExecutor();
         PacketHandler.init();
 
         this.userManager = new UserManager(this);

@@ -47,11 +47,9 @@ public class ServerManager {
 
     public void keepAlive(Server server) {
         PacketHandler.send(new ServerKeepAlivePacket(server));
-        CompletableFuture.runAsync(() -> {
-            api.runRedisCommand(redis -> {
-                redis.hset("servers", server.getServerId(), GsonProvider.GSON.toJson(server));
-                return null;
-            });
-        });
+        CompletableFuture.runAsync(() -> api.runRedisCommand(redis -> {
+            redis.hset("servers", server.getServerId(), GsonProvider.GSON.toJson(server));
+            return null;
+        }));
     }
 }

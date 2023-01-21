@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.core.user.punishment;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.core.HolidayAPI;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Getter
 public class Punishment implements IPunishment {
 
+    @SerializedName("_id")
     private final String id;
 
     private final UUID punished;
@@ -34,7 +36,7 @@ public class Punishment implements IPunishment {
         this.addedBy = addedBy;
         this.addedReason = addedReason;
 
-        this.id = UUID.randomUUID().toString().substring(0, 8);
+        this.id = UUID.randomUUID().toString().substring(0, 16).replace("-", "");
         this.addedAt = System.currentTimeMillis();
         this.ip = HolidayAPI.getUnsafeAPI().getProfile(punished).getIp();
     }

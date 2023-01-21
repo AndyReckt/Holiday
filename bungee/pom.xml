@@ -76,7 +76,7 @@
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                    <!--Relocations so it doesnt interfere with any other plugins-->
+                    <!--Relocations so it doesn't interfere with any other plugins-->
                     <relocations>
                         <relocation>
                             <pattern>org.bson</pattern>
@@ -99,8 +99,8 @@
                             <shadedPattern>me.andyreckt.holiday.relocations.com.google.common</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>io.netty</pattern>
-                            <shadedPattern>me.andyreckt.holiday.relocations.io.netty</shadedPattern>
+                            <pattern>redis.clients</pattern>
+                            <shadedPattern>me.andyreckt.holiday.relocations.redis.clients</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

@@ -53,7 +53,7 @@ public class PunishmentManager {
     }
 
     private IPunishment loadPunishment(Document document) {
-        return GsonProvider.GSON.fromJson(document.getString("data"), Punishment.class);
+        return GsonProvider.GSON.fromJson(document.toJson(), Punishment.class);
     }
 
 
@@ -64,7 +64,7 @@ public class PunishmentManager {
         CompletableFuture.runAsync(() -> {
             api.getMongoManager().getPunishments().replaceOne(
                     Filters.eq("_id", punishment.getId()),
-                    new Document("data", GsonProvider.GSON.toJson(punishment)).append("_id", punishment.getId()),
+                    Document.parse(GsonProvider.GSON.toJson((Punishment) punishment)),
                     new ReplaceOptions().upsert(true)
             );
         });

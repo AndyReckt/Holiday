@@ -1,11 +1,13 @@
 package me.andyreckt.holiday.bukkit.server.listeners;
 
+import com.mongodb.client.model.Filters;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
+import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
@@ -20,6 +22,7 @@ import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import me.andyreckt.holiday.core.util.text.HashUtils;
+import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,7 +38,9 @@ import java.util.stream.Collectors;
 public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPreLoginUserProfile(AsyncPlayerPreLoginEvent event) {
-        Profile profile = Holiday.getInstance().getApi().getProfile(event.getUniqueId());
+        HolidayAPI api = (HolidayAPI) Holiday.getInstance().getApi();
+
+        Profile profile = api.getProfile(event.getUniqueId());
 
         if (!profile.getName().equalsIgnoreCase(event.getName())) {
             profile.setName(event.getName());
@@ -45,25 +50,11 @@ public class PlayerListener implements Listener {
             profile.addNewCurrentIP(event.getAddress().getHostAddress());
         }
 
+        for (Document document : api.getMongoManager().getProfiles().find(Filters.eq("ip", profile.getIp()))) {
+            profile.getAlts().add(UUID.fromString(document.getString("_id")));
+        }
 
-        Holiday.getInstance().getApi().getAllProfiles().whenCompleteAsync((map, ignored) -> {
-            for (Map.Entry<UUID, Profile> entry : map.entrySet()) {
-                Profile alt = entry.getValue();
-
-                if (alt.getUuid().equals(profile.getUuid())) {
-                    continue;
-                }
-
-                if (alt.getIp().equalsIgnoreCase(profile.getIp())) {
-                    alt.getAlts().add(profile.getUuid());
-                    profile.getAlts().add(alt.getUuid());
-                    Holiday.getInstance().getApi().saveProfile(alt);
-                }
-
-            }
-
-            Holiday.getInstance().getApi().saveProfile(profile);
-        });
+        api.saveProfile(profile);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

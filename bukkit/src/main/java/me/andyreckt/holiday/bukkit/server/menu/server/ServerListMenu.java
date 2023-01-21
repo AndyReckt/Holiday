@@ -92,7 +92,7 @@ public class ServerListMenu extends PaginatedMenu {
             switch (clickType) {
                 case LEFT:
                 case RIGHT:
-                    PlayerUtils.sendToServer(player, server.getServerName());
+                    PlayerUtils.sendToServer(player, server.getServerId());
                     break;
                 case DROP:
                 case CONTROL_DROP:
