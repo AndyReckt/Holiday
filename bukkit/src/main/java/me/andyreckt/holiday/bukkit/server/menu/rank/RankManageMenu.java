@@ -126,6 +126,19 @@ public class RankManageMenu extends GlassMenu {
                 }, (x) -> rank.isVisible())
         );
 
+        buttons.put(19, new BooleanButton<>(
+                new ItemBuilder(Material.EMPTY_MAP)
+                        .displayname(CC.SECONDARY + "Bold")
+                        .lore("", CC.I_GRAY + "Click to change the bold status of this rank.")
+                        .build(),
+                rank, "bold",
+                (x, bool) -> {
+                    rank.setBold(bool);
+                    api.saveRank(rank);
+                    new RankManageMenu(rank).openMenu(player);
+                }, (x) -> rank.isBold())
+        );
+
         buttons.put(20, new EasyButton(
                 new ItemBuilder(Material.BOOK)
                         .displayname(CC.SECONDARY + "Permissions")
@@ -180,6 +193,19 @@ public class RankManageMenu extends GlassMenu {
                         .lore("", CC.I_GRAY + "Click to change the inheritances of this rank.")
                         .build(),
                 (u) -> new RankInheritanceMenu(rank).openMenu(player))
+        );
+
+        buttons.put(25, new BooleanButton<>(
+                new ItemBuilder(Material.PAPER)
+                        .displayname(CC.SECONDARY + "Italic")
+                        .lore("", CC.I_GRAY + "Click to change the italic status of this rank.")
+                        .build(),
+                rank, "bold",
+                (x, bool) -> {
+                    rank.setItalic(bool);
+                    api.saveRank(rank);
+                    new RankManageMenu(rank).openMenu(player);
+                }, (x) -> rank.isItalic())
         );
 
         return buttons;
