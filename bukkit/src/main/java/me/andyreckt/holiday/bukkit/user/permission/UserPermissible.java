@@ -214,7 +214,6 @@ public class UserPermissible extends PermissibleBase {
     public void recalculatePermissions() {
         if (this.permissions == null) return;
 
-        this.permissions.clear();
         this.clearPermissions();
 
         Set<Permission> defaults = Bukkit.getServer().getPluginManager().getDefaultPermissions(this.isOp());
@@ -256,7 +255,7 @@ public class UserPermissible extends PermissibleBase {
         Bukkit.getServer().getPluginManager().unsubscribeFromDefaultPerms(false, this.player);
         Bukkit.getServer().getPluginManager().unsubscribeFromDefaultPerms(true, this.player);
 
-        permissions.clear();
+        this.permissions.clear();
     }
 
     @Override
