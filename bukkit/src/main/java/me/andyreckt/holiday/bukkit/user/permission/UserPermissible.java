@@ -224,7 +224,7 @@ public class UserPermissible extends PermissibleBase {
             Bukkit.getServer().getPluginManager().subscribeToPermission(name, this.player);
             this.calculateChildPermissions(perm.getChildren(), false, null);
         }
-        Logger.debug(GsonProvider.GSON.toJson(attachments));
+
         for (PermissionAttachment attachment : this.attachments) {
             for (Map.Entry<String, Boolean> entry : attachment.getPermissions().entrySet()) {
                 this.permissions.put(
