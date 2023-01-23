@@ -242,7 +242,6 @@ public class UserPermissible extends PermissibleBase {
             if (this.permissions.containsKey(permission.toLowerCase())) continue;
             this.permissions.put(permission.toLowerCase(), new PermissionAttachmentInfo(this.player, permission, null, true));
             plugin.getServer().getPluginManager().subscribeToPermission(permission.toLowerCase(), this.player);
-            this.calculateChildPermissions(Bukkit.getServer().getPluginManager().getPermission(permission).getChildren(), false, null);
         }
     }
 
