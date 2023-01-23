@@ -1,9 +1,11 @@
 package me.andyreckt.holiday.bukkit.user.permission;
 
 
+import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.core.user.UserProfile;
+import me.andyreckt.holiday.core.util.json.GsonProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.*;
@@ -11,7 +13,6 @@ import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class UserPermissible extends PermissibleBase {
 
@@ -30,8 +31,6 @@ public class UserPermissible extends PermissibleBase {
     private final Holiday plugin;
     private final List<PermissionAttachment> attachments;
     private final Map<String, PermissionAttachmentInfo> permissions;
-    private final UserProfile profile;
-
 
     public UserPermissible(Player opable) {
         super(opable);
@@ -39,8 +38,6 @@ public class UserPermissible extends PermissibleBase {
         this.permissions = new HashMap<>();
         this.plugin = Holiday.getInstance();
         this.attachments = new ArrayList<>();
-        this.profile = (UserProfile) plugin.getApi().getProfile(opable.getUniqueId());
-
         try {
             ATTACHMENTS_FIELD.set(this, this.attachments);
         } catch (IllegalAccessException e) {
@@ -68,7 +65,9 @@ public class UserPermissible extends PermissibleBase {
 
         String permission = name.toLowerCase();
 
-        if (this.profile.hasPermission(name)) {
+        Profile profile = plugin.getApi().getProfile(player.getUniqueId());
+
+        if (profile.hasPermission(name)) {
             return true;
         }
 
@@ -225,7 +224,7 @@ public class UserPermissible extends PermissibleBase {
             Bukkit.getServer().getPluginManager().subscribeToPermission(name, this.player);
             this.calculateChildPermissions(perm.getChildren(), false, null);
         }
-
+        Logger.debug(GsonProvider.GSON.toJson(attachments));
         for (PermissionAttachment attachment : this.attachments) {
             for (Map.Entry<String, Boolean> entry : attachment.getPermissions().entrySet()) {
                 this.permissions.put(
@@ -237,7 +236,9 @@ public class UserPermissible extends PermissibleBase {
             }
         }
 
-        for (String permission : this.profile.getPermissions()) {
+        Profile profile = plugin.getApi().getProfile(this.player.getUniqueId());
+
+        for (String permission : profile.getPermissions()) {
             if (this.permissions.containsKey(permission.toLowerCase())) continue;
             this.permissions.put(permission.toLowerCase(), new PermissionAttachmentInfo(this.player, permission, null, true));
             plugin.getServer().getPluginManager().subscribeToPermission(permission.toLowerCase(), this.player);
@@ -254,7 +255,7 @@ public class UserPermissible extends PermissibleBase {
 
         for (PermissionAttachment attachment : this.attachments) {
             for (String permission : attachment.getPermissions().keySet()) {
-                Bukkit.getServer().getPluginManager().unsubscribeFromPermission(permission, this.player);
+                Bukkit.getServer().getPluginManager().unsubscribeFromPermission(permission.toLowerCase(), this.player);
             }
         }
 
