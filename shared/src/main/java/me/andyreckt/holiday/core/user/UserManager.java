@@ -45,7 +45,7 @@ public class UserManager {
         this.profiles.put(profile.getUuid(), profile);
         CompletableFuture.runAsync(() -> {
             api.getMongoManager().getProfiles().replaceOne(
-                    Filters.eq("_id", profile.getUuid()),
+                    Filters.eq("_id", profile.getUuid().toString()),
                     Document.parse(GsonProvider.GSON.toJson((UserProfile) profile)),
                     new ReplaceOptions().upsert(true)
             );
@@ -59,7 +59,7 @@ public class UserManager {
             return profiles.get(uuid);
         }
 
-        Document document = api.getMongoManager().getProfiles().find(Filters.eq("_id", uuid)).first();
+        Document document = api.getMongoManager().getProfiles().find(Filters.eq("_id", uuid.toString())).first();
         Profile profile = document == null ? new UserProfile(uuid) : loadProfile(document);
         this.saveProfile(profile);
         return profile;

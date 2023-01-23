@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class UserProfile implements Profile {
 
     @SerializedName("_id")
+    @Setter(lombok.AccessLevel.NONE)
     private final UUID uuid;
 
     private String name = "$undefined";

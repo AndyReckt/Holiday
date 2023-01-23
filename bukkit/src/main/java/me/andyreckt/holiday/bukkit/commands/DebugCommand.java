@@ -13,6 +13,7 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.HolidayAPI;
+import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
@@ -96,13 +97,13 @@ public class DebugCommand {
         }
         long savestart = System.currentTimeMillis();
         HolidayAPI.getUnsafeAPI().getMongoManager().getProfiles().replaceOne(
-                Filters.eq("_id", profile.getUuid()),
-                new Document("_id", profile.getUuid()).append("data", GsonProvider.GSON.toJson(profile)),
+                Filters.eq("_id", profile.getUuid().toString()),
+                Document.parse(GsonProvider.GSON.toJson((UserProfile) profile)),
                 new ReplaceOptions().upsert(true)
         );
         long saveend = System.currentTimeMillis();
         long loadstart = System.currentTimeMillis();
-        Document doc = HolidayAPI.getUnsafeAPI().getMongoManager().getProfiles().find(Filters.eq("_id", profile.getUuid())).first();
+        Document doc = HolidayAPI.getUnsafeAPI().getMongoManager().getProfiles().find(Filters.eq("_id", profile.getUuid().toString())).first();
         Profile profile1 = HolidayAPI.getUnsafeAPI().getUserManager().loadProfile(doc);
         long loadend = System.currentTimeMillis();
         sender.sendMessage("Saving Profile: " + (saveend - savestart) + "ms");

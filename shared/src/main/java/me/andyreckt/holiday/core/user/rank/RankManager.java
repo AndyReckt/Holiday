@@ -43,7 +43,7 @@ public class RankManager {
     public void saveRank(IRank rank) {
         CompletableFuture.runAsync(() -> {
             api.getMongoManager().getRanks().replaceOne(
-                    Filters.eq("_id", rank.getUuid()),
+                    Filters.eq("_id", rank.getUuid().toString()),
                     Document.parse(GsonProvider.GSON.toJson((Rank) rank)),
                     new ReplaceOptions().upsert(true)
             );
@@ -56,7 +56,7 @@ public class RankManager {
     }
 
     public void deleteRank(IRank rank) {
-        api.getMongoManager().getRanks().deleteOne(Filters.eq("_id", rank.getUuid()));
+        api.getMongoManager().getRanks().deleteOne(Filters.eq("_id", rank.getUuid().toString()));
 
         api.getGrantManager().getGrants().stream()
                 .filter(grant -> grant.getRank().getUuid().equals(rank.getUuid()))

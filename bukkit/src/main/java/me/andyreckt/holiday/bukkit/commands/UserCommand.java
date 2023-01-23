@@ -2,11 +2,13 @@ package me.andyreckt.holiday.bukkit.commands;
 
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.server.redis.packet.PermissionUpdatePacket;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
+import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.command.CommandSender;
 
 @MainCommand(names = "user", permission = Perms.USER, description = "User command.")
@@ -21,6 +23,7 @@ public class UserCommand {
         profile.addPermission(permission);
         sender.sendMessage("Added permission " + permission + " to " + profile.getName() + ".");
         Holiday.getInstance().getApi().saveProfile(profile);
+        PacketHandler.send(new PermissionUpdatePacket(profile.getUuid()));
     }
 
     @SubCommand(names = {"removepermission", "removeperm", "remperm"}, description = "Remove permission from user.")
@@ -33,6 +36,7 @@ public class UserCommand {
         profile.removePermission(permission);
         sender.sendMessage("Removed permission " + permission + " from " + profile.getName() + ".");
         Holiday.getInstance().getApi().saveProfile(profile);
+        PacketHandler.send(new PermissionUpdatePacket(profile.getUuid()));
     }
 
 

@@ -45,7 +45,7 @@ public class GrantManager { //TODO: at some point only load the active grants, a
 
         CompletableFuture.runAsync(() -> {
             api.getMongoManager().getGrants().replaceOne(
-                    Filters.eq("_id", grant.getGrantId()),
+                    Filters.eq("_id", grant.getGrantId().toString()),
                     Document.parse(GsonProvider.GSON.toJson((Grant) grant)),
                     new ReplaceOptions().upsert(true)
             );
@@ -57,7 +57,7 @@ public class GrantManager { //TODO: at some point only load the active grants, a
     public void deleteGrant(IGrant grant) {
         this.grants.removeIf(grant1 -> grant1.getGrantId().equals(grant.getGrantId()));
 
-        api.getMongoManager().getGrants().deleteOne(Filters.eq("_id", grant.getGrantId()));
+        api.getMongoManager().getGrants().deleteOne(Filters.eq("_id", grant.getGrantId().toString()));
 
         PacketHandler.send(new GrantUpdatePacket((Grant) grant, true));
     }
