@@ -1,9 +1,12 @@
 package me.andyreckt.holiday.api.user;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.UUID;
 
 public interface IGrant {
 
+        @SerializedName("_id")
         UUID getGrantId();
 
         IRank getRank();

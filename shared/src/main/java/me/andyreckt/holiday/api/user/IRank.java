@@ -1,10 +1,13 @@
 package me.andyreckt.holiday.api.user;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 import java.util.UUID;
 
 public interface IRank {
 
+    @SerializedName("_id")
     UUID getUuid();
 
     String getName();

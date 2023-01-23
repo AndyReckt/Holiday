@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.api.user;
 
+import com.google.gson.annotations.SerializedName;
 import me.andyreckt.holiday.api.server.IServer;
 
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 public interface Profile {
 
+    @SerializedName("_id")
     UUID getUuid();
 
     String getName();

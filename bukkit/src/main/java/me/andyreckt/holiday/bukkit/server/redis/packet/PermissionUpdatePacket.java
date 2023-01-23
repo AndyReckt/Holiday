@@ -20,13 +20,11 @@ public class PermissionUpdatePacket implements Packet {
     @Override
     public void onReceive() {
         if (uuid == null) {
-            Bukkit.getOnlinePlayers().stream()
-                    .map(Player::getUniqueId)
-                    .forEach(PermissionUtils::updatePermissions);
+            Bukkit.getOnlinePlayers().forEach(Player::recalculatePermissions);
             return;
         }
         if (Bukkit.getPlayer(uuid) != null) {
-            PermissionUtils.updatePermissions(uuid);
+            Bukkit.getPlayer(uuid).recalculatePermissions();
         }
     }
 }

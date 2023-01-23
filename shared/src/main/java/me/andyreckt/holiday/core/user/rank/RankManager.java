@@ -49,7 +49,7 @@ public class RankManager {
             );
         });
 
-        this.ranks.removeIf(rank1 -> rank1.getUuid().equals(rank.getUuid()));
+        this.ranks.removeIf(rank1 -> rank1.getUuid().toString().equals(rank.getUuid().toString()));
         this.ranks.add(rank);
 
         PacketHandler.send(new RankUpdatePacket((Rank) rank));
@@ -62,7 +62,7 @@ public class RankManager {
                 .filter(grant -> grant.getRank().getUuid().equals(rank.getUuid()))
                 .forEach(grant -> api.getGrantManager().deleteGrant(grant));
 
-        this.ranks.removeIf(rank1 -> rank1.getUuid().equals(rank.getUuid()));
+        this.ranks.removeIf(rank1 -> rank1.getUuid().toString().equals(rank.getUuid().toString()));
         PacketHandler.send(new RankUpdatePacket((Rank) rank, true));
     }
 

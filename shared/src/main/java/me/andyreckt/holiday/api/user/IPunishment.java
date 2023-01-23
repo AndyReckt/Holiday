@@ -1,11 +1,13 @@
 package me.andyreckt.holiday.api.user;
 
+import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.UUID;
 
 public interface IPunishment {
 
+    @SerializedName("_id")
     String getId();
 
     UUID getPunished();

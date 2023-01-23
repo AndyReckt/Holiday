@@ -81,6 +81,25 @@ public class UserProfile implements Profile {
         getPermissions().remove(permission);
     }
 
+    public boolean hasPermissionExplicitly(String permission) {
+        if (permissions.contains(permission)) {
+            return !permission.startsWith("-");
+        }
+
+        for (IRank rank : getRanks()) {
+            if (rank.getPermissions().contains(permission)) {
+                return !permission.startsWith("-");
+            }
+            for (UUID child : rank.getChilds()) {
+                IRank childRank = HolidayAPI.getUnsafeAPI().getRank(child);
+                if (childRank.getPermissions().contains(permission)) {
+                    return !permission.startsWith("-");
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean hasPermission(String permission) {
         if (this.permissions.contains("*")) {
@@ -91,6 +110,16 @@ public class UserProfile implements Profile {
         }
         if (this.permissions.contains(permission)) {
             return true;
+        }
+
+        if (permission.contains(".")) {
+            for (int i = 0; i < permission.length(); i++) {
+                if (permission.charAt(i) == '.') {
+                    if (hasPermissionExplicitly(permission.substring(0, i) + ".*")) {
+                        return true;
+                    }
+                }
+            }
         }
         for (IRank rank : getRanks()) {
             if (rank.getPermissions().contains("*")) {
@@ -105,6 +134,16 @@ public class UserProfile implements Profile {
                 return true;
             }
 
+            if (permission.contains(".")) {
+                for (int i = 0; i < permission.length(); i++) {
+                    if (permission.charAt(i) == '.') {
+                        if (hasPermissionExplicitly(permission.substring(0, i) + ".*")) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
             for (UUID child : rank.getChilds()) {
                 IRank childRank = HolidayAPI.getUnsafeAPI().getRank(child);
                 if (childRank.getPermissions().contains("*")) {
@@ -117,6 +156,16 @@ public class UserProfile implements Profile {
 
                 if (childRank.getPermissions().contains(permission)) {
                     return true;
+                }
+
+                if (permission.contains(".")) {
+                    for (int i = 0; i < permission.length(); i++) {
+                        if (permission.charAt(i) == '.') {
+                            if (hasPermissionExplicitly(permission.substring(0, i) + ".*")) {
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
         }

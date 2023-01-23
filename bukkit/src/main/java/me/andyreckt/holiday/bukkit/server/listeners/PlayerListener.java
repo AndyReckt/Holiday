@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.server.listeners;
 
 import com.mongodb.client.model.Filters;
+import lombok.SneakyThrows;
 import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
@@ -64,7 +65,6 @@ public class PlayerListener implements Listener {
             event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
         }
     }
-
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onLoginPunishments(PlayerLoginEvent event) {
@@ -142,6 +142,7 @@ public class PlayerListener implements Listener {
         }
     }
 
+    @SneakyThrows
     @EventHandler(priority = EventPriority.HIGH)
     public void onJoinPermissions(PlayerJoinEvent event) {
         Player player = event.getPlayer();
@@ -151,7 +152,7 @@ public class PlayerListener implements Listener {
             player.setOp(true);
         }
 
-        PermissionUtils.updatePermissions(player.getUniqueId());
+        Holiday.getInstance().getPermissionManager().initPlayer(player);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
