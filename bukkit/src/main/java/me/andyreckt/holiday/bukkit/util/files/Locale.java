@@ -54,6 +54,7 @@ public enum Locale {
     //         "bukkit:save-off", "bukkit:save-on", "bukkit:say", "bukkit:tell", "bukkit:me",
     //         "bukkit:w", "bukkit:broadcast", "bukkit:bc", "bukkit:bcast"),
 
+
     /* COLORS */
     COLOR_PRIMARY(SETTINGS.get(), "color.primary", "AQUA"),
     COLOR_SECONDARY(SETTINGS.get(), "color.secondary", "DARK_AQUA"),
@@ -92,6 +93,11 @@ public enum Locale {
     ADMIN_CHAT(SETTINGS.get(), "admin-chat.format", "&c[AC] &3[%server%] %player%&e: %message%"),
     STAFF_CHAT_PREFIX(SETTINGS.get(), "staff-chat.prefix", "@"),
     ADMIN_CHAT_PREFIX(SETTINGS.get(), "admin-chat.prefix", "#"),
+
+    /* DISABLED COMMANDS */
+    DISABLED_COMMANDS_MESSAGE(SETTINGS.get(), "disabled-commands.message", "&cThis command is disabled."),
+    DISABLED_COMMANDS_MATCH(SETTINGS.get(), "disabled-commands.match", "pl", "plugins", "ver", "version", "about", "icanhasbukkit"),
+    DISABLED_COMMANDS_CONTAINS(SETTINGS.get(), "disabled-commands.contains", "bukkit", "minecraft", ":"),
 
     DISGUISE_MESSAGE(SETTINGS.get(), "disguise.messages", "&eYou are now disguised as %name% &7(%skin%)"),
     DISGUISE_MESSAGE_STAFF(SETTINGS.get(), "disguise.message-staff", "&b[S] &3[%server%] %player% &edisguised as %name% &7(%skin%)"),

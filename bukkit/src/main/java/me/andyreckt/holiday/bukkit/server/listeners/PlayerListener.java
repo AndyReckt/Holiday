@@ -24,13 +24,12 @@ import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import me.andyreckt.holiday.core.util.text.HashUtils;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -197,12 +196,28 @@ public class PlayerListener implements Listener {
                     "Liked on NameMC",
                     "$undefined",
                     TimeUtil.PERMANENT
-            ); //TODO: Add NameMC login message and toggle
+            );
 
             Holiday.getInstance().getApi().saveGrant(grant);
         });
         UserConstants.reloadPlayer(player);
     }
 
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        String command = event.getMessage().split(" ")[0].replace("/", "");
+
+        if (Locale.DISABLED_COMMANDS_MATCH.getStringList().contains(command)) {
+            event.setCancelled(true);
+            player.sendMessage(Locale.DISABLED_COMMANDS_MESSAGE.getString());
+            return;
+        }
+
+        if (Locale.DISABLED_COMMANDS_CONTAINS.getStringList().stream().anyMatch(command::contains)) {
+            event.setCancelled(true);
+            player.sendMessage(Locale.DISABLED_COMMANDS_MESSAGE.getString());
+        }
+    }
 
 }
