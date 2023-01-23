@@ -252,6 +252,12 @@ public class UserPermissible extends PermissibleBase {
             Bukkit.getServer().getPluginManager().unsubscribeFromPermission(permission, this.player);
         }
 
+        for (PermissionAttachment attachment : this.attachments) {
+            for (String permission : attachment.getPermissions().keySet()) {
+                Bukkit.getServer().getPluginManager().unsubscribeFromPermission(permission, this.player);
+            }
+        }
+
         Bukkit.getServer().getPluginManager().unsubscribeFromDefaultPerms(false, this.player);
         Bukkit.getServer().getPluginManager().unsubscribeFromDefaultPerms(true, this.player);
 
