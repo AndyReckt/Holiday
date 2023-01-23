@@ -9,6 +9,7 @@ import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.GlassMenu;
 import me.andyreckt.holiday.bukkit.util.menu.Menu;
+import me.andyreckt.holiday.bukkit.util.menu.buttons.ConversationButton;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.ConfirmationMenu;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.grant.Grant;
@@ -48,7 +49,44 @@ public class GrantChooseReasonMenu extends GlassMenu {
         toReturn.put(13, new ReasonButton("Addon", profile, rank, duration));
         toReturn.put(14, new ReasonButton("Famous", profile, rank, duration));
         toReturn.put(15, new ReasonButton("Issue", profile, rank, duration));
-        toReturn.put(16, new ReasonButton("Other", profile, rank, duration));
+        toReturn.put(16, new ConversationButton<>(
+                new ItemBuilder(Material.BOOK)
+                        .displayname(CC.SECONDARY + "Other")
+                        .build(),
+                null, Locale.GRANT_REASON.getString(),
+                (x, pair) -> new ConfirmationMenu(() -> {
+                    Grant grant = new Grant(profile.getUuid(),
+                            rank,
+                            player.getUniqueId(),
+                            pair.getB(),
+                            Holiday.getInstance().getThisServer().getServerName(),
+                            duration);
+                    Holiday.getInstance().getApi().saveGrant(grant);
+                    String str = Locale.GRANT_TARGET.getString()
+                            .replace("%rank%", rank.getDisplayName())
+                            .replace("%duration%", TimeUtil.getDuration(duration))
+                            .replace("%reason%", pair.getB());
+                    String str2 = Locale.GRANT_PLAYER.getString()
+                            .replace("%player%", profile.getName())
+                            .replace("%rank%", rank.getDisplayName())
+                            .replace("%duration%", TimeUtil.getDuration(duration))
+                            .replace("%reason%", pair.getB());
+                    player.sendMessage(CC.translate(str2));
+                    PacketHandler.send(new PlayerMessagePacket(profile.getUuid(), str));
+
+                },
+                        new ItemBuilder(Material.ENCHANTED_BOOK)
+                                .displayname(CC.SECONDARY + "Confirm Grant")
+                                .lore("",
+                                        CC.SECONDARY + "Rank: " + CC.PRIMARY + rank.getDisplayName(),
+                                        CC.SECONDARY + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(duration),
+                                        CC.SECONDARY + "Reason: " + CC.PRIMARY + pair.getB(),
+                                        "",
+                                        CC.SECONDARY + "Click to confirm.")
+                                .build(),
+                        new GrantChooseReasonMenu(profile, rank, duration)
+                ).openMenu(player)
+        ));
         return toReturn;
     }
 

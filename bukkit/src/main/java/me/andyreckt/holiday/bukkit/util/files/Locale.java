@@ -266,6 +266,7 @@ public enum Locale {
     GRANT_PLAYER(MESSAGES.get(), "grant.message", "&aYou have granted the rank %rank% &ato %player% &afor a duration of %duration%&a."),
     GRANT_TARGET(MESSAGES.get(), "grant.target", "&aYou have been granted the rank %rank% &afor a duration of %duration%&a."),
     GRANT_STAFF(MESSAGES.get(), "grant.staff", "&c[A] &3[%server%] %executor% &ehas granted the rank %rank% &eto %player% &efor a duration of %duration%&e."),
+    GRANT_REASON(MESSAGES.get(), "grant.give-reason", "&aPlease give a reason for granting the rank."),
 
     /* REBOOT */
     REBOOT_STARTED(MESSAGES.get(), "reboot.started", "&aSuccessfully started a reboot task of %time%."),
