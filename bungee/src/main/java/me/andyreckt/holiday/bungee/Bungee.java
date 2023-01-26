@@ -47,7 +47,7 @@ public class Bungee extends Plugin {
 
     public String getNameWithColor(Profile profile) {
         IRank rank = profile.getHighestVisibleRank();
-        return ChatColor.translateAlternateColorCodes('&', (rank.isBold() ? "&l" : "") + (rank.isItalic() ? "&o" : "") + getRankColor(rank) + profile.getName());
+        return ChatColor.translateAlternateColorCodes('&', getRankColor(rank) + (rank.isBold() ? "&l" : "") + (rank.isItalic() ? "&o" : "") + profile.getName());
     }
 
     public ChatColor getRankColor(IRank rank) {

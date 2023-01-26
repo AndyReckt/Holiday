@@ -45,6 +45,7 @@ public class StaffSwitchListener implements Listener {
         Profile profile = Bungee.getInstance().getApi().getProfile(player.getUniqueId());
 
         if (profile.hasPermission(Locale.STAFF_SWITCH_PERM.getString())) {
+            if (event.getPlayer().getServer() == null) return; // Player is not on a server (probably a proxy bug)
             String server = event.getPlayer().getServer().getInfo().getName();
             String playername = Bungee.getInstance().getNameWithColor(profile);
             String toSend = Locale.STAFF_SWITCH_LEAVE.getString()
