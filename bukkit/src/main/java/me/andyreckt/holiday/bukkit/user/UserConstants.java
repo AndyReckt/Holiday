@@ -21,7 +21,7 @@ public class UserConstants {
 
     public static String getDisplayNameWithColor(Profile profile) {
         IRank rank = profile.getDisplayRank();
-        return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getDisplayName();
+        return getRankColor(rank) + (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + profile.getDisplayName();
     }
 
     public static ChatColor getRankColor(IRank rank) {
@@ -30,7 +30,7 @@ public class UserConstants {
 
     public static String getNameWithColor(Profile profile) {
         IRank rank = profile.getHighestVisibleRank();
-        return (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + getRankColor(rank) + profile.getName();
+        return getRankColor(rank) + (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + profile.getName();
     }
 
     public static void reloadPlayer(Player player) {
