@@ -260,6 +260,7 @@ public final class Holiday extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (!joinable) return;
         String str = Locale.SERVER_SHUTDOWN.getString()
                 .replace("%server%", thisServer.getServerName());
         PacketHandler.send(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER));

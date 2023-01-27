@@ -49,24 +49,28 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             case "server_name": return plugin.getThisServer().getServerName();
             case "chat_status": {
                 ChatManager ch = plugin.getChatManager();
-                String status = ch.isChatMuted() ? "&cMuted" : ch.getChatDelay() > 0L ? CC.PRIMARY + "Delayed (" + TimeUtil.millisToSmallRoundedTime(ch.getChatDelay()) + ")" : "&aNormal";
+                String status = ch.isChatMuted() ? x("&cMuted") : ch.getChatDelay() > 0L ? CC.PRIMARY + "Delayed (" + TimeUtil.millisToSmallRoundedTime(ch.getChatDelay()) + ")" : x("&aEnabled");
                 return CC.translate(status);
             }
             case "player_displayname_color": return UserConstants.getDisplayNameWithColor(profile);
-            case "player_displayname": return profile.getDisplayName();
-            case "player_highest_visible_rank_name": return profile.getHighestVisibleRank().getName();
-            case "player_highest_visible_rank_displayname": return profile.getHighestVisibleRank().getDisplayName();
-            case "player_highest_rank_name": return profile.getHighestRank().getName();
-            case "player_highest_rank_displayname": return profile.getHighestRank().getDisplayName();
+            case "player_displayname": return x(profile.getDisplayName());
+            case "player_highest_visible_rank_name": return x(profile.getHighestVisibleRank().getName());
+            case "player_highest_visible_rank_displayname": return x(profile.getHighestVisibleRank().getDisplayName());
+            case "player_highest_rank_name": return x(profile.getHighestRank().getName());
+            case "player_highest_rank_displayname": return x(profile.getHighestRank().getDisplayName());
             case "player_highest_visible_grant_remaining_time": return TimeUtil.getDuration(profile.getHighestVisibleGrant().getRemainingTime());
             case "player_highest_visible_grant_remaining_time_rounded": return TimeUtil.millisToRoundedTime(profile.getHighestVisibleGrant().getRemainingTime());
             case "player_highest_visible_grant_remaining_time_shortened": return TimeUtil.millisToSmallRoundedTime(profile.getHighestVisibleGrant().getRemainingTime());
-            case "player_prefix": return profile.getHighestVisibleRank().getPrefix();
-            case "player_suffix": return profile.getHighestVisibleRank().getSuffix();
-            case "player_vanish": return profile.getStaffSettings().isVanished() ? "&aEnabled" : "&cDisabled";
-            case "player_staffmode": return profile.getStaffSettings().isStaffMode() ? "&aEnabled" : "&cDisabled";
-            case "player_chat_mode": return profile.getStaffSettings().isAdminChat() ? "&cAdmin" : profile.getStaffSettings().isStaffChat() ? "&aStaff" : "&cNormal";
+            case "player_prefix": return x(profile.getHighestVisibleRank().getPrefix());
+            case "player_suffix": return x(profile.getHighestVisibleRank().getSuffix());
+            case "player_vanish": return profile.getStaffSettings().isVanished() ? x("&aEnabled") : x("&cDisabled");
+            case "player_staffmode": return profile.getStaffSettings().isStaffMode() ? x("&aEnabled") :  x("&cDisabled");
+            case "player_chat_mode": return profile.getStaffSettings().isAdminChat() ? x("&cAdmin") : profile.getStaffSettings().isStaffChat() ? (CC.SECONDARY + "Staff") : (CC.CHAT + "Normal");
         }
         return null;
+    }
+
+    private String x(String s) {
+        return CC.translate(s);
     }
 }

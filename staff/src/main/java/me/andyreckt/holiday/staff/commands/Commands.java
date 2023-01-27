@@ -84,7 +84,7 @@ public class Commands {
         } else {
             target.setMetadata("frozen", new FixedMetadataValue(Staff.getInstance(), true));
             player.sendMessage(SLocale.FREEZE_FROZEN.getString().replace("%player%", target.getName()));
-            SLocale.FREEZE_RECURRENT_MESSAGE.getStringListNetwork().forEach(player::sendMessage);
+            SLocale.FREEZE_RECURRENT_MESSAGE.getStringListNetwork().forEach(target::sendMessage);
         }
 
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
