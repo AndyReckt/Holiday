@@ -3,6 +3,7 @@ package me.andyreckt.holiday.staff.server;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
+import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import me.andyreckt.holiday.staff.Staff;
@@ -96,8 +97,13 @@ public class FreezeListeners implements Listener {
         if (p == null) return;
         if (!p.hasMetadata("frozen")) return;
         p.removeMetadata("frozen", Staff.getInstance());
-        Profile profile = Holiday.getInstance().getApi().getProfile(p.getUniqueId());
-        PacketHandler.send(new BroadcastPacket(SLocale.ALERTS_FREEZE_LOGOUT.getString().replace("%player%", profile.getName()), Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+        Tasks.runAsyncLater(() -> {
+            Profile profile = Holiday.getInstance().getApi().getProfile(p.getUniqueId());
+            if (profile.isBanned() || profile.isIpBanned() || profile.isBlacklisted()) return;
+            PacketHandler.send(new BroadcastPacket(
+                    SLocale.ALERTS_FREEZE_LOGOUT.getString().replace("%player%", profile.getName()),
+                    Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+        }, 15L);
     }
 
 
