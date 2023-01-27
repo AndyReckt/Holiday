@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.staff.server;
 
+import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
@@ -95,7 +96,8 @@ public class FreezeListeners implements Listener {
         if (p == null) return;
         if (!p.hasMetadata("frozen")) return;
         p.removeMetadata("frozen", Staff.getInstance());
-        PacketHandler.send(new BroadcastPacket(SLocale.ALERTS_FREEZE_LOGOUT.getString(), Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+        Profile profile = Holiday.getInstance().getApi().getProfile(p.getUniqueId());
+        PacketHandler.send(new BroadcastPacket(SLocale.ALERTS_FREEZE_LOGOUT.getString().replace("%player%", profile.getName()), Perms.STAFF_VIEW_NOTIFICATIONS.get()));
     }
 
 
