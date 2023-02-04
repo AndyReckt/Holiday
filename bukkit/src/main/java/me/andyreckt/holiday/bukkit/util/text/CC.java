@@ -104,7 +104,13 @@ public final class CC {
 	public static final char NICE_CHAR = '●';
 	public static final char HEART = '❤';
 	public static final String LINE = "▏";
-
+	public static final String LINE_2 = "▎";
+	public static final String LINE_3 = "▍";
+	public static final String LINE_4 = "▌";
+	public static final String LINE_5 = "▋";
+	public static final String LINE_6 = "▊";
+	public static final String LINE_7 = "▉";
+	public static final String LINE_8 = "█";
 
 	public static String translate(String input) {
 		return ChatColor.translateAlternateColorCodes('&', input).replace("\n", "\n");

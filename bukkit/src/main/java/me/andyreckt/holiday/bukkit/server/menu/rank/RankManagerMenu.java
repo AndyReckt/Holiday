@@ -43,7 +43,7 @@ public class RankManagerMenu extends PaginatedMenu {
                 .durability(SkullType.PLAYER.ordinal())
                 .texture(Heads.LIME_PLUS.getBase())
                 .displayname(CC.SECONDARY + "Create Rank")
-                .lore("", CC.I_GRAY + "Click to create a new rank.")
+                .lore(CC.GRAY + "Click to create a new rank.")
                 .build(),
             null, Locale.RANK_ENTER_NAME.getString(),
             (x, pair) -> {

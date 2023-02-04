@@ -58,10 +58,16 @@ public class DisguiseMenu extends GlassMenu {
                         .text("Name")
                         .title("Change Name")
                         .onComplete((player1, text) -> {
-                            if (text.contains(" ")) {
-                                player1.sendMessage(Locale.CANNOT_CONTAIN_SPACES.getString());
+                            if (!UserConstants.DISGUISE_NAME_MATCHER.matches(text)) {
+                                player1.sendMessage(Locale.INVALID_NAME.getString());
                                 return AnvilGUI.Response.text(disguise.getDisplayName());
                             }
+
+                            if (!Holiday.getInstance().getDisguiseManager().isValidName(text)) {
+                                player1.sendMessage(Locale.DISGUISE_NAME_TAKEN.getString());
+                                return AnvilGUI.Response.text(disguise.getDisplayName());
+                            }
+
                             disguise.setDisplayName(text);
                             new DisguiseMenu(disguise).openMenu(player1);
                             return AnvilGUI.Response.close();

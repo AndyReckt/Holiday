@@ -50,10 +50,19 @@ public final class BooleanButton<T>
 
     @Override
     public ItemStack getButtonItem(Player p0) {
+        boolean current = this.readFunction.apply(this.target);
         return item == null ? new ItemBuilder(Material.WOOL)
                 .displayname((this.readFunction.apply(this.target) ? "&a" : "&c") + this.trait)
                 .damage(this.readFunction.apply(this.target) ? 5 : 14)
-                .build() : new ItemBuilder(item).lore("", CC.CHAT + "Enabled: " + yesNo(this.readFunction.apply(this.target))).build();
+                .build() :
+                new ItemBuilder(item)
+                        .lore("",
+                            current ? CC.UNICODE_VERTICAL_BAR + " " + CC.GREEN + "Enabled"
+                                    : CC.UNICODE_VERTICAL_BAR + " " + CC.WHITE + "Enabled",
+                            !current ? CC.UNICODE_VERTICAL_BAR + " " + CC.RED + "Disabled"
+                                     : CC.UNICODE_VERTICAL_BAR + " " + CC.WHITE + "Disabled"
+                        ).build();
+//                        CC.CHAT + "Enabled: " + yesNo(this.readFunction.apply(this.target))).build();
     }
 
     private String yesNo(boolean apply) {
@@ -65,6 +74,6 @@ public final class BooleanButton<T>
         boolean current = this.readFunction.apply(this.target);
         this.writeFunction.accept(this.target, !current);
         this.saveFunction.accept(this.target);
-        player.sendMessage(ChatColor.GREEN + "Changed " + this.trait + " to " + (current ? "disabled" : "enabled"));
+//        player.sendMessage(ChatColor.GREEN + "Changed " + this.trait + " to " + (current ? "disabled" : "enabled"));
     }
 }

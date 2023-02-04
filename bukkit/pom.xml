@@ -11,6 +11,7 @@
 
     <groupId>me.andyreckt.holiday</groupId>
     <artifactId>bukkit</artifactId>
+    <version>${revision}</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -39,7 +40,13 @@
         <dependency>
             <groupId>me.andyreckt.holiday</groupId>
             <artifactId>shared</artifactId>
-            <version>1.2.0</version>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <scope>provided</scope>
         </dependency>
         <!-- Paper 1.8.8 -->
         <dependency>
@@ -88,6 +95,27 @@
         </resources>
 
         <plugins>
+            <plugin>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>4.9.9</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    <includeOnlyProperties>
+                        <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+                    </includeOnlyProperties>
+                    <commitIdGenerationMode>full</commitIdGenerationMode>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>

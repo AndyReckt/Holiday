@@ -5,6 +5,7 @@ import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.disguise.DisguiseMenu;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
+import me.andyreckt.holiday.bukkit.util.menu.anvilgui.AnvilGUI;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
@@ -71,6 +72,21 @@ public class DisguiseCommands {
 
         if (profile.isDisguised()) {
             player.sendMessage(Locale.ALREADY_DISGUISED.getString());
+            return;
+        }
+
+        if (!UserConstants.DISGUISE_NAME_MATCHER.matches(name)) {
+            player.sendMessage(Locale.INVALID_NAME.getString());
+            return;
+        }
+
+        if (!UserConstants.DISGUISE_NAME_MATCHER.matches(skin)) {
+            player.sendMessage(Locale.INVALID_NAME.getString());
+            return;
+        }
+
+        if (!Holiday.getInstance().getDisguiseManager().isValidName(name)) {
+            player.sendMessage(Locale.DISGUISE_NAME_TAKEN.getString());
             return;
         }
 

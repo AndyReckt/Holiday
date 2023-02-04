@@ -387,14 +387,15 @@ public enum Locale {
     ALREADY_DISGUISED(MESSAGES.get(), "error.already-disguised", "&cYou are already disguised."),
     NOT_DISGUISED(MESSAGES.get(), "error.not-disguised", "&cYou are not disguised."),
     NOBODY_DISGUISED(MESSAGES.get(), "error.nobody-disguised", "&cThere is nobody disguised."),
-    CANNOT_CONTAIN_SPACES(MESSAGES.get(), "error.cannot-contain-spaces", "&cThis cannot contain spaces."),
+    INVALID_NAME(MESSAGES.get(), "error.invalid-name", "&cThat name is invalid."),
     PLAYER_ALREADY_HAS_PERMISSION(MESSAGES.get(), "error.player-already-has-permission", "&cThat player already has this permission."),
     PLAYER_DOES_NOT_HAVE_PERMISSION(MESSAGES.get(), "error.player-does-not-have-permission", "&cThat player does not have this permission."),
+    DISGUISE_NAME_TAKEN(MESSAGES.get(), "error.disguise-name-taken", "&cThat disguise name is already taken."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),
-    ;
 
+    ;
 
     private final String fileName;
     private final String path;

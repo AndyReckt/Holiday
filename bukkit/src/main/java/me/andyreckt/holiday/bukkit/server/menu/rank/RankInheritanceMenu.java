@@ -47,7 +47,7 @@ public class RankInheritanceMenu extends PaginatedMenu {
                         .durability(SkullType.PLAYER.ordinal())
                         .texture(Heads.LIME_PLUS.getBase())
                         .displayname(CC.SECONDARY + "Add Inheritance")
-                        .lore("", CC.I_GRAY + "Click to add a new inheritance.")
+                        .lore(CC.GRAY + "Click to add a new inheritance.")
                         .build(),
                 null, Locale.RANK_ENTER_PERMISSION.getString(),
                 (x, pair) -> {

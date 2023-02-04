@@ -47,14 +47,13 @@ public final class NumberButton<T> extends Button {
 
     public List<String> getDescription(Player player) {
         return ImmutableList.of(
+            CC.GRAY + this.description,
             "",
-            CC.I_GRAY + this.description,
+            CC.CHAT + "Current: " + CC.SECONDARY + getAmount(player),
             "",
-            CC.B_GREEN + "LEFT-CLICK " + ChatColor.GRAY + "to +1",
-            CC.B_GREEN + "SHIFT LEFT-CLICK " + ChatColor.GRAY + "to +10",
-            "",
-            CC.B_RED + "RIGHT-CLICK " + ChatColor.GRAY + "to -1",
-            CC.B_RED + "SHIFT RIGHT-CLICK " + ChatColor.GRAY + "to -10"
+            CC.I_GRAY + "Left click to increase.",
+            CC.I_GRAY + "Right click to decrease.",
+            CC.I_GRAY + "Shift click to change by 10."
         );
     }
 
@@ -78,7 +77,7 @@ public final class NumberButton<T> extends Button {
         writeFunction.accept(target, current + change);
         saveFunction.accept(target);
 
-        player.sendMessage(ChatColor.GREEN + "Changed " + trait + " to " + (current + change));
+//        player.sendMessage(ChatColor.GREEN + "Changed " + trait + " to " + (current + change));
     }
 
     @Override

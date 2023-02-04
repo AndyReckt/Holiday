@@ -26,6 +26,5 @@ public class Glass extends Button {
     }
 
     @Override
-    public void clicked(final Player player, final int i, final ClickType clickType, final int hb) {
-    }
+    public void clicked(final Player player, final int i, final ClickType clickType, final int hb) {}
 }

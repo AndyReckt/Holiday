@@ -15,6 +15,8 @@ import java.util.UUID;
 @UtilityClass
 public class UserConstants {
 
+    public static String DISGUISE_NAME_MATCHER = "[a-zA-Z0-9_]{2,16}";
+
     public static String getDisplayNameWithColorAndVanish(Profile profile) {
         return (profile.getStaffSettings().isVanished() ? CC.GRAY + "*" : "") + getDisplayNameWithColor(profile);
     }

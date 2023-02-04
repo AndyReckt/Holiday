@@ -39,7 +39,7 @@ public class RankColorMenu extends GlassMenu {
             toReturn.put(j, new EasyButton(new ItemBuilder(Material.WOOL)
                     .damage(i == 15 ? 14 : i)
                     .displayname(color + color.name())
-                    .lore("", CC.I_GRAY + "Click to change the color to " + color + color.name() + CC.I_GRAY + ".")
+                    .lore(CC.GRAY + "Click to change the color to " + color + color.name() + CC.GRAY + ".")
                     .build(),
                     u -> {
                         rank.setColor(color.name());

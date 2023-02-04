@@ -71,7 +71,7 @@ public class DisguiseSkinMenu extends PaginatedMenu {
                     .title("Enter skin")
                     .onComplete((player1, text) -> {
                         if (text.contains(" ")) {
-                            player1.sendMessage(Locale.CANNOT_CONTAIN_SPACES.getString());
+                            player1.sendMessage(Locale.INVALID_NAME.getString());
                             this.openMenu(player);
                             return AnvilGUI.Response.close();
                         }

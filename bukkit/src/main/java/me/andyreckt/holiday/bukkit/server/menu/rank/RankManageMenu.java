@@ -42,7 +42,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(10, new ConversationButton<>(
                 new ItemBuilder(Material.SIGN)
                         .displayname(CC.SECONDARY + "Rename Rank")
-                        .lore("", CC.I_GRAY + "Click to rename this rank.")
+                        .lore(CC.GRAY + "Click to rename this rank.")
                         .build(),
                 rank, Locale.RANK_ENTER_NAME.getString(),
                 (x, pair) -> {
@@ -56,7 +56,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(11, new ConversationButton<>(
                 new ItemBuilder(Material.NAME_TAG)
                         .displayname(CC.SECONDARY + "Set Display Name")
-                        .lore("", CC.I_GRAY + "Click to change the display name of this rank.")
+                        .lore(CC.GRAY + "Click to change the display name of this rank.")
                         .build(),
                 rank, Locale.RANK_ENTER_DISPLAY_NAME.getString(),
                 (x, pair) -> {
@@ -71,7 +71,7 @@ public class RankManageMenu extends GlassMenu {
                 new ItemBuilder(Material.WOOL)
                         .displayname(CC.SECONDARY + "Set Color")
                         .durability(StringUtil.convertChatColorToWoolData(UserConstants.getRankColor(rank)))
-                        .lore("", CC.I_GRAY + "Click to change the color of this rank.")
+                        .lore(CC.GRAY + "Click to change the color of this rank.")
                         .build(),
                 (u) -> new RankColorMenu(rank).openMenu(player))
         );
@@ -79,7 +79,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(13, new ConversationButton<>(
                 new ItemBuilder(Material.PAINTING)
                         .displayname(CC.SECONDARY + "Set Prefix")
-                        .lore("", CC.I_GRAY + "Click to change the prefix of this rank.")
+                        .lore(CC.GRAY + "Click to change the prefix of this rank.")
                         .build(),
                 rank, Locale.RANK_ENTER_PREFIX.getString(),
                 (x, pair) -> {
@@ -93,7 +93,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(14, new ConversationButton<>(
                 new ItemBuilder(Material.PAINTING)
                         .displayname(CC.SECONDARY + "Set Suffix")
-                        .lore("", CC.I_GRAY + "Click to change the suffix of this rank.")
+                        .lore(CC.GRAY + "Click to change the suffix of this rank.")
                         .build(),
                 rank, Locale.RANK_ENTER_SUFFIX.getString(),
                 (x, pair) -> {
@@ -116,7 +116,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(16, new BooleanButton<>(
                 new ItemBuilder(Material.SLIME_BALL)
                         .displayname(CC.SECONDARY + "Visible")
-                        .lore("", CC.I_GRAY + "Click to change the visibility of this rank.")
+                        .lore(CC.GRAY + "Click to change the visibility of this rank.")
                         .build(),
                 rank, "visibility",
                 (x, bool) -> {
@@ -129,7 +129,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(19, new BooleanButton<>(
                 new ItemBuilder(Material.EMPTY_MAP)
                         .displayname(CC.SECONDARY + "Bold")
-                        .lore("", CC.I_GRAY + "Click to change the bold status of this rank.")
+                        .lore(CC.GRAY + "Click to change the bold status of this rank.")
                         .build(),
                 rank, "bold",
                 (x, bool) -> {
@@ -142,7 +142,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(20, new EasyButton(
                 new ItemBuilder(Material.BOOK)
                         .displayname(CC.SECONDARY + "Permissions")
-                        .lore("", CC.I_GRAY + "Click to change the permissions of this rank.")
+                        .lore(CC.GRAY + "Click to change the permissions of this rank.")
                         .build(),
                 (u) -> new RankPermissionMenu(rank).openMenu(player))
         );
@@ -151,7 +151,7 @@ public class RankManageMenu extends GlassMenu {
                 new ItemBuilder(Material.RAW_FISH)
                         .durability(3)
                         .displayname(CC.SECONDARY + "Staff")
-                        .lore("", CC.I_GRAY + "Click to change the staff status of this rank.")
+                        .lore(CC.GRAY + "Click to change the staff status of this rank.")
                         .build(),
                 rank, "staff status",
                 (x, bool) -> {
@@ -164,7 +164,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(22, new BooleanButton<>(
                 new ItemBuilder(Material.REDSTONE)
                         .displayname(CC.SECONDARY + "Admin")
-                        .lore("", CC.I_GRAY + "Click to change the admin status of this rank.")
+                        .lore(CC.GRAY + "Click to change the admin status of this rank.")
                         .build(),
                 rank, "admin status",
                 (x, bool) -> {
@@ -177,7 +177,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(23, new BooleanButton<>(
                 new ItemBuilder(Material.BEDROCK)
                         .displayname(CC.SECONDARY + "OP")
-                        .lore("", CC.I_GRAY + "Click to change the operator status of this rank.")
+                        .lore(CC.GRAY + "Click to change the operator status of this rank.")
                         .build(),
                 rank, "operator status",
                 (x, bool) -> {
@@ -190,7 +190,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(24, new EasyButton(
                 new ItemBuilder(Material.BOOK_AND_QUILL)
                         .displayname(CC.SECONDARY + "Inheritances")
-                        .lore("", CC.I_GRAY + "Click to change the inheritances of this rank.")
+                        .lore(CC.GRAY + "Click to change the inheritances of this rank.")
                         .build(),
                 (u) -> new RankInheritanceMenu(rank).openMenu(player))
         );
@@ -198,7 +198,7 @@ public class RankManageMenu extends GlassMenu {
         buttons.put(25, new BooleanButton<>(
                 new ItemBuilder(Material.PAPER)
                         .displayname(CC.SECONDARY + "Italic")
-                        .lore("", CC.I_GRAY + "Click to change the italic status of this rank.")
+                        .lore(CC.GRAY + "Click to change the italic status of this rank.")
                         .build(),
                 rank, "bold",
                 (x, bool) -> {

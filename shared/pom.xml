@@ -11,6 +11,7 @@
 
     <groupId>me.andyreckt.holiday</groupId>
     <artifactId>shared</artifactId>
+    <version>${revision}</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -24,7 +25,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <!--MongoDB-->
         <dependency>

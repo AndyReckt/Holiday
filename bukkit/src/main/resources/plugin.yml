@@ -1,8 +1,8 @@
 name: "Holiday"
 main: "me.andyreckt.holiday.bukkit.Holiday"
-version: "1.2.0"
+version: "${git.commit.id.abbrev}"
 api-version: "1.8"
-authors: ["AndyReckt", "Scifi"]
+authors: ["AndyReckt"]
 description: "Holiday is an Open Source server core which manages ranks, punishments, and more."
 website: "https://github.com/AndyReckt/Holiday"
 softdepend:
