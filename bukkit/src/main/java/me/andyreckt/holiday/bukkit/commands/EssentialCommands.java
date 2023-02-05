@@ -186,7 +186,7 @@ public class EssentialCommands {
         } else {
             String toSend = Locale.FLY_DISABLED_STAFF.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
-                    .replace("%executor%", sender.getName());
+                    .replace("%executor%", executor);
             PacketHandler.send(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
             ));

@@ -13,8 +13,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public final class BooleanButton<T>
-        extends Button {
+public final class BooleanButton<T> extends Button {
     private ItemStack item;
     private final T target;
     private final String trait;

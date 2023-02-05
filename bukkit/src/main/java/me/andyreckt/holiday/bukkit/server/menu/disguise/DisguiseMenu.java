@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class DisguiseMenu extends GlassMenu {
 
@@ -58,7 +59,7 @@ public class DisguiseMenu extends GlassMenu {
                         .text("Name")
                         .title("Change Name")
                         .onComplete((player1, text) -> {
-                            if (!UserConstants.DISGUISE_NAME_MATCHER.matches(text)) {
+                            if (!Pattern.matches(UserConstants.DISGUISE_NAME_MATCHER, text)) {
                                 player1.sendMessage(Locale.INVALID_NAME.getString());
                                 return AnvilGUI.Response.text(disguise.getDisplayName());
                             }

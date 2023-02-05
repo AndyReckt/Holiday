@@ -37,7 +37,7 @@ public class ServerManagerCommand {
             }
             String toSend = Locale.STAFF_SERVER_MANAGER_RUN_SERVER.getString()
                     .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
-                    .replace("%serverid%", Holiday.getInstance().getThisServer().getServerId())
+                    .replace("%serverid%", server.getServerId())
                     .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%command%", command);
             PacketHandler.send(

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class OnlinePlayersTask {
+public class OnlinePlayersTask { //TODO: Rework this
 
     public OnlinePlayersTask() {
         Bungee.getInstance().getProxy().getScheduler().schedule(Bungee.getInstance(), () -> {

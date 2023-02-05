@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 public class DisguiseCommands {
 
@@ -75,12 +76,12 @@ public class DisguiseCommands {
             return;
         }
 
-        if (!UserConstants.DISGUISE_NAME_MATCHER.matches(name)) {
+        if (!Pattern.matches(UserConstants.DISGUISE_NAME_MATCHER, name)) {
             player.sendMessage(Locale.INVALID_NAME.getString());
             return;
         }
 
-        if (!UserConstants.DISGUISE_NAME_MATCHER.matches(skin)) {
+        if (!Pattern.matches(UserConstants.DISGUISE_NAME_MATCHER, name)) {
             player.sendMessage(Locale.INVALID_NAME.getString());
             return;
         }

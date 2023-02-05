@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8_R3;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -213,6 +214,14 @@ public class ItemBuilder {
 	public ItemBuilder material(Material material) {
 		Validate.notNull(material, "The Material is null.");
 		this.material = material;
+		return this;
+	}
+
+	/**
+	 * Clears all Flags of the ItemStack
+	 */
+	public ItemBuilder clearFlags() {
+		this.flag(ImmutableList.of(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_POTION_EFFECTS));
 		return this;
 	}
 
