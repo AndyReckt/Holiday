@@ -182,7 +182,7 @@ public class PlayerListener implements Listener {
 
         PlayerUtils.hasVotedOnNameMC(player.getUniqueId()).whenCompleteAsync((voted, ignored) -> {
             if (!voted) {
-                player.sendMessage(Locale.NAMEMC_NOT_LIKED.getString());
+                player.sendMessage(Locale.NAMEMC_NOT_LIKED.getStringNetwork());
                 return;
             }
 

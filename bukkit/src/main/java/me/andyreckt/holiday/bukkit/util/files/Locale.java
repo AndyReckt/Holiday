@@ -92,8 +92,8 @@ public enum Locale {
             " \\n &eIt seems like you haven't liked our namemc yet." +
             " \\n &eYou can do so here: &bhttps://namemc.com/server/example.com" +
             " \\n &eYou will get a rank and other perks for doing so!" +
-            " \\n &eYou can also join our discord for more information: &bhttps://discord.example.com" +
-            " \\n"),
+            " \\n &eYou can also join our discord for more information: &b%discord%" +
+            " \\n "),
 
     STAFF_CHAT(SETTINGS.get(), "staff-chat.format", "&b[SC] &3[%server%] %player%&e: %message%"),
     ADMIN_CHAT(SETTINGS.get(), "admin-chat.format", "&c[AC] &3[%server%] %player%&e: %message%"),

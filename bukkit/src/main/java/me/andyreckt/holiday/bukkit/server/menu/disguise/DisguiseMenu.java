@@ -44,8 +44,8 @@ public class DisguiseMenu extends GlassMenu {
                 new ItemBuilder(Material.SKULL_ITEM)
                         .displayname(CC.PRIMARY + disguise.getDisplayName())
                         .lore("",
-                                CC.CHAT + "Skin: " + CC.SECONDARY + disguise.getSkinName(),
-                                CC.CHAT + "Rank: " + CC.SECONDARY + disguise.getDisguiseRank().getDisplayName(),
+                                CC.UNICODE_VERTICAL_BAR + " Skin: " + CC.SECONDARY + disguise.getSkinName(),
+                                CC.UNICODE_VERTICAL_BAR + " Rank: " + CC.SECONDARY + disguise.getDisguiseRank().getDisplayName(),
                                 "")
                         .durability(SkullType.PLAYER.ordinal())
                         .texture(disguise.getSkin().getValue())

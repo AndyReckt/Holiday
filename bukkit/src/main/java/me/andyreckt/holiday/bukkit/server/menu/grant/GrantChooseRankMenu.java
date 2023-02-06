@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GrantChooseRankMenu extends PaginatedMenu {
+public class GrantChooseRankMenu extends PaginatedMenu { //TODO: Redo Menus
 
     private final Profile profile;
 
