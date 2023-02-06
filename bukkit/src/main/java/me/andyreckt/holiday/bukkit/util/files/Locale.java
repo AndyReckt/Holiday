@@ -88,6 +88,12 @@ public enum Locale {
     NAMEMC_MESSAGE(SETTINGS.get(), "namemc.liked-message", "&eThanks for liking our namemc!"),
     NAMEMC_RANK_ENABLED(SETTINGS.get(), "namemc.rank.enabled", false),
     NAMEMC_RANK_NAME(SETTINGS.get(), "namemc.rank.name", "Voter"),
+    NAMEMC_NOT_LIKED(SETTINGS.get(), "namemc.not-liked",
+            " \\n &eIt seems like you haven't liked our namemc yet." +
+            " \\n &eYou can do so here: &bhttps://namemc.com/server/example.com" +
+            " \\n &eYou will get a rank and other perks for doing so!" +
+            " \\n &eYou can also join our discord for more information: &bhttps://discord.example.com" +
+            " \\n"),
 
     STAFF_CHAT(SETTINGS.get(), "staff-chat.format", "&b[SC] &3[%server%] %player%&e: %message%"),
     ADMIN_CHAT(SETTINGS.get(), "admin-chat.format", "&c[AC] &3[%server%] %player%&e: %message%"),

@@ -175,7 +175,7 @@ public final class Holiday extends JavaPlugin {
     }
 
     private void setupExecutors() {
-        this.executor = ForkJoinPool.commonPool();
+        this.executor = Executors.newFixedThreadPool(2);
         this.scheduledExecutor = Executors.newScheduledThreadPool(2);
     }
 

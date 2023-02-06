@@ -42,10 +42,12 @@ public final class UUIDCache {
     }
 
     public void update(final UUID uuid, final String name) {
-        map.put(uuid, name);
-        plugin.getApi().runRedisCommand(redis -> {
-            redis.hset("uuid-cache", uuid.toString(), name);
-            return null;
+        plugin.getExecutor().execute(() -> {
+            map.put(uuid, name);
+            plugin.getApi().runRedisCommand(redis -> {
+                redis.hset("uuid-cache", uuid.toString(), name);
+                return null;
+            });
         });
         PacketHandler.send(new UpdateUUIDCachePacket(uuid, name));
     }

@@ -8,6 +8,7 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
+import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
@@ -176,11 +177,14 @@ public class PlayerListener implements Listener {
     public void onJoinOther(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
-
+        UserConstants.reloadPlayer(player);
         if (profile.isLiked()) return;
 
         PlayerUtils.hasVotedOnNameMC(player.getUniqueId()).whenCompleteAsync((voted, ignored) -> {
-            if (!voted) return;
+            if (!voted) {
+                player.sendMessage(Locale.NAMEMC_NOT_LIKED.getString());
+                return;
+            }
 
             player.sendMessage(Locale.NAMEMC_MESSAGE.getString());
             profile.setLiked(true);
@@ -199,8 +203,8 @@ public class PlayerListener implements Listener {
             );
 
             Holiday.getInstance().getApi().saveGrant(grant);
+            Tasks.run(() -> UserConstants.reloadPlayer(player));
         });
-        UserConstants.reloadPlayer(player);
     }
 
     @EventHandler
