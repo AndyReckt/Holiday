@@ -24,19 +24,22 @@ public class Punishment implements IPunishment {
     private final UUID addedBy;
     private final long addedAt;
     private final String addedReason;
+    private String addedOn;
 
-    UUID revokedBy = null;
-    long revokedAt = TimeUtil.PERMANENT;
-    String revokedReason = null;
+    private UUID revokedBy = null;
+    private long revokedAt = TimeUtil.PERMANENT;
+    private String revokedReason = null;
+    private String revokedOn = null;
 
-    public Punishment(UUID punished, PunishmentType type, long duration, UUID addedBy, String addedReason) {
+    public Punishment(UUID punished, PunishmentType type, long duration, UUID addedBy, String addedReason, String addedOn) {
         this.punished = punished;
         this.type = type;
         this.duration = duration;
         this.addedBy = addedBy;
         this.addedReason = addedReason;
+        this.addedOn = addedOn;
 
-        this.id = UUID.randomUUID().toString().substring(0, 16).replace("-", "");
+        this.id = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
         this.addedAt = System.currentTimeMillis();
         this.ip = HolidayAPI.getUnsafeAPI().getProfile(punished).getIp();
     }
@@ -68,5 +71,15 @@ public class Punishment implements IPunishment {
             return true;
         }
         return false;
+    }
+
+    public void postProcess() {
+        if (revokedOn == null) {
+            revokedOn = "$undefined";
+        }
+
+        if (addedOn == null) {
+            addedOn = "$undefined";
+        }
     }
 }

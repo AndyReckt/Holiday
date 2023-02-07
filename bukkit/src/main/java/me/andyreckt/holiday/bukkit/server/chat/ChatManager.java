@@ -96,7 +96,8 @@ public class ChatManager {
                         IPunishment.PunishmentType.MUTE,
                         TimeUtil.getDuration(Locale.FILTER_HIGH_MUTE_DURATION.getString()),
                         UserProfile.getConsoleProfile().getUuid(),
-                        Locale.FILTER_HIGH_MUTE_REASON.getString().replace("%word%", filtered)
+                        Locale.FILTER_HIGH_MUTE_REASON.getString().replace("%word%", filtered),
+                        Holiday.getInstance().getThisServer().getServerName()
                 );
                 plugin.getApi().savePunishment(punishment);
                 String toSend = Locale.PUNISHMENT_MUTE_MESSAGE.getString()

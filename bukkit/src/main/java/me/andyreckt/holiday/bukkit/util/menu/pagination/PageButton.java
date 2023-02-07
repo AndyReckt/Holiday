@@ -38,7 +38,7 @@ public class PageButton extends Button {
         }
     }
 
-    private boolean hasNext(final Player player) {
+    public boolean hasNext(final Player player) {
         final int pg = this.menu.getPage() + this.mod;
         return pg > 0 && this.menu.getPages(player) >= pg;
     }

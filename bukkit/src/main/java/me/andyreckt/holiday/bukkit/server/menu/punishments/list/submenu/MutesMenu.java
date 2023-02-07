@@ -2,8 +2,10 @@ package me.andyreckt.holiday.bukkit.server.menu.punishments.list.submenu;
 
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.bukkit.Holiday;
+import me.andyreckt.holiday.bukkit.server.menu.punishments.list.PunishmentListMenu;
 import me.andyreckt.holiday.bukkit.server.menu.punishments.list.button.PunishmentListButton;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
+import me.andyreckt.holiday.bukkit.util.menu.Menu;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.PaginatedMenu;
 
 import org.bukkit.entity.Player;
@@ -38,5 +40,10 @@ public class MutesMenu extends PaginatedMenu {
                 .filter(IPunishment::isActive)
                 .filter(punishment -> punishment.getType() == IPunishment.PunishmentType.MUTE)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Menu backButton() {
+        return new PunishmentListMenu();
     }
 }

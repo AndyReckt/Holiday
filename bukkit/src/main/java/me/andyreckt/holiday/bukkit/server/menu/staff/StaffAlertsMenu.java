@@ -64,10 +64,10 @@ public class StaffAlertsMenu extends PaginatedMenu {
             return new ItemBuilder(Material.NOTE_BLOCK)
                     .displayname(CC.SECONDARY + alert.getName())
                     .lore("",
-                    bool    ? CC.UNICODE_VERTICAL_BAR + " " + CC.GREEN + "Enabled"
-                            : CC.UNICODE_VERTICAL_BAR + " " + CC.WHITE + "Enabled",
-                    !bool   ? CC.UNICODE_VERTICAL_BAR + " " + CC.RED + "Disabled"
-                            : CC.UNICODE_VERTICAL_BAR + " " + CC.WHITE + "Disabled"
+                    bool    ? CC.B_PRIMARY + CC.LINE + " " + CC.GREEN + "Enabled"
+                            : CC.B_PRIMARY + CC.LINE + " " + CC.WHITE + "Enabled",
+                    !bool   ? CC.B_PRIMARY + CC.LINE + " " + CC.RED + "Disabled"
+                            : CC.B_PRIMARY + CC.LINE + " " + CC.WHITE + "Disabled"
             ).build();
         }
 

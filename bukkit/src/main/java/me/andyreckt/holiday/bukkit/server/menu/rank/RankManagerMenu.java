@@ -69,23 +69,22 @@ public class RankManagerMenu extends PaginatedMenu {
             return new ItemBuilder(Material.WOOL)
                     .durability(StringUtil.convertChatColorToWoolData(color))
                     .displayname(rank.getDisplayName())
-                    .lore(CC.MENU_BAR,
-                            CC.PRIMARY + "Name: " + CC.SECONDARY + rank.getName(),
-                            CC.PRIMARY + "DisplayName: " + CC.SECONDARY + rank.getDisplayName(),
+                    .lore(" ",
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Name: " + CC.SECONDARY + rank.getName(),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "DisplayName: " + CC.SECONDARY + rank.getDisplayName(),
                             "",
-                            CC.PRIMARY + "Weight: " + CC.SECONDARY + rank.getPriority(),
-                            CC.PRIMARY + "Prefix: " + CC.SECONDARY + rank.getPrefix(),
-                            CC.PRIMARY + "Suffix: " + CC.SECONDARY + rank.getSuffix(),
-                            CC.PRIMARY + "Color: " + color + color.name(),
-                            CC.PRIMARY + "Bold: " + yesNo(rank.isBold()),
-                            CC.PRIMARY + "Italic: " + yesNo(rank.isItalic()),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Weight: " + CC.SECONDARY + rank.getPriority(),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Prefix: " + CC.SECONDARY + rank.getPrefix(),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Suffix: " + CC.SECONDARY + rank.getSuffix(),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Color: " + color + color.name(),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Bold: " + yesNo(rank.isBold()),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Italic: " + yesNo(rank.isItalic()),
                             "",
-                            CC.PRIMARY + "Default: " + yesNo(rank.isDefault()),
-                            CC.PRIMARY + "Staff: " + yesNo(rank.isStaff()),
-                            CC.PRIMARY + "Admin: " + yesNo(rank.isAdmin()),
-                            CC.PRIMARY + "Op: " + yesNo(rank.isOp()),
-                            CC.PRIMARY + "Visible: " + yesNo(rank.isVisible()),
-                            CC.MENU_BAR)
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Default: " + yesNo(rank.isDefault()),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Staff: " + yesNo(rank.isStaff()),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Admin: " + yesNo(rank.isAdmin()),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Op: " + yesNo(rank.isOp()),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Visible: " + yesNo(rank.isVisible()))
                     .build();
         }
 

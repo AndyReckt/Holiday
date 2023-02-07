@@ -56,10 +56,10 @@ public final class BooleanButton<T> extends Button {
                 .build() :
                 new ItemBuilder(item)
                         .lore("",
-                            current  ? CC.UNICODE_VERTICAL_BAR + " " + CC.GREEN + "Enabled"
-                                     : CC.UNICODE_VERTICAL_BAR + " " + CC.WHITE + "Enabled",
-                            !current ? CC.UNICODE_VERTICAL_BAR + " " + CC.RED + "Disabled"
-                                     : CC.UNICODE_VERTICAL_BAR + " " + CC.WHITE + "Disabled"
+                            current  ? CC.B_PRIMARY + CC.LINE + " " + " " + CC.GREEN + "Enabled"
+                                     : CC.B_PRIMARY + CC.LINE + " " + CC.WHITE + "Enabled",
+                            !current ? CC.B_PRIMARY + CC.LINE + " " + CC.RED + "Disabled"
+                                     : CC.B_PRIMARY + CC.LINE + " " + CC.WHITE + "Disabled"
                         ).build();
 //                        CC.CHAT + "Enabled: " + yesNo(this.readFunction.apply(this.target))).build();
     }

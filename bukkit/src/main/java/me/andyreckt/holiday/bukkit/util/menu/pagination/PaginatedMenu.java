@@ -56,18 +56,44 @@ public abstract class PaginatedMenu extends Menu {
         for (int i : new int[]{0, 1, 7, 8, 9, 17, 27, 35, 36, 37, 43, 44}) {
             buttons.put(i, new Glass(getGlassColor()));
         }
-        buttons.put(39, new PageButton(-1, this));
-        buttons.put(41, new PageButton(1, this));
+        PageButton prevPage = new PageButton(-1, this);
+        PageButton nextPage = new PageButton(1, this);
+
+        if (prevPage.hasNext(player)) {
+            buttons.put(39, prevPage);
+        }
+
+        if (nextPage.hasNext(player)) {
+            buttons.put(41, nextPage);
+        }
+
         for (final Map.Entry<Integer, Button> entry : this.getAllPagesButtons(player).entrySet()) {
             int ind = entry.getKey();
             if (ind >= minIndex && ind < maxIndex) {
-                ind -= (int) (this.getMaxItemsPerPage(player) * (double) (this.page - 1)) - 11;
 
-                if (ind > 15 && ind <= 20) {
-                    ind += 4;
-                } else if (ind > 20 && ind <= 25) {
-                    ind += 8;
+                ind -= ((this.page - 1) * 21);
+
+                switch (ind / 7) {
+                    case 0:
+                        ind += 10;
+                        break;
+                    case 1:
+                        ind += 10 + 2;
+                        break;
+                    case 2:
+                        ind += 10 + 4;
+                        break;
                 }
+
+//                System.out.println(entry.getKey() + " " + ind);
+//                if (ind >= 17 && ind <= 24) {
+//                    ind += 2;
+//                } else if (ind >= 25 && ind <= 36) {
+//                    ind += 4;
+//                }
+//                ind -= (int) (this.getMaxItemsPerPage(player) * (double) (this.page - 1)) - 10;
+//                System.out.println(entry.getKey() + " " + ind);
+
                 buttons.put(ind, entry.getValue());
             }
         }
@@ -84,7 +110,7 @@ public abstract class PaginatedMenu extends Menu {
     }
 
     public int getMaxItemsPerPage(final Player player) {
-        return 15;
+        return 21;
     }
 
     public Map<Integer, Button> getGlobalButtons(final Player player) {

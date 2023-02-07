@@ -89,41 +89,36 @@ public class GrantsMenu extends PaginatedMenu {
             if (grant.isActive()) {
                 item.displayname("&a(Active) " + TimeUtil.formatDate(grant.getIssuedAt()));
                 item.lore(
-                        CC.MENU_BAR,
-                        CC.CHAT + "Rank: " + CC.PRIMARY + grant.getRank().getDisplayName(),
-                        CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),
-                        CC.MENU_BAR,
-                        CC.CHAT + "Issued By: " + CC.PRIMARY + UserConstants.getNameWithColor(issuer),
-                        CC.CHAT + "Issued On: " + CC.PRIMARY + grant.getIssuedOn(),
-                        CC.CHAT + "Issued Reason: " + CC.PRIMARY + grant.getReason(),
-                        CC.MENU_BAR
+                        " ",
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Rank: " + CC.SECONDARY + grant.getRank().getDisplayName(),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(grant.getDuration()),
+                        " ",
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: " + CC.SECONDARY + UserConstants.getNameWithColor(issuer),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued On: " + CC.SECONDARY + grant.getIssuedOn(),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued Reason: " + CC.SECONDARY + grant.getReason()
                 );
             } else {
                 Profile remover = api.getProfile(grant.getRevokedBy());
                 item.displayname("&c(Inactive) " + TimeUtil.formatDate(grant.getIssuedAt()));
-                item.lore("&c                  " + TimeUtil.formatDate(grant.getRevokedAt()),
-                        CC.MENU_BAR,
-                        CC.CHAT + "Rank: " + CC.PRIMARY + grant.getRank().getDisplayName(),
-                        CC.CHAT + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(grant.getDuration()),
-                        CC.MENU_BAR,
-                        CC.CHAT + "Issued By: " + CC.PRIMARY + UserConstants.getNameWithColor(issuer),
-                        CC.CHAT + "Issued On: " + CC.PRIMARY + grant.getIssuedOn(),
-                        CC.CHAT + "Issued Reason: " + CC.PRIMARY + grant.getReason(),
-                        CC.MENU_BAR,
-                        CC.CHAT + "Removed By: " + CC.PRIMARY + UserConstants.getNameWithColor(remover),
-                        CC.CHAT + "Removed On: " + CC.PRIMARY + grant.getRevokedOn(),
-                        CC.CHAT + "Removed Reason: " + CC.PRIMARY + grant.getRevokeReason(),
-                        CC.MENU_BAR
+                item.lore("&c                " + TimeUtil.formatDate(grant.getRevokedAt()),
+                        " ",
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Rank: " + CC.SECONDARY + grant.getRank().getDisplayName(),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(grant.getDuration()),
+                        " ",
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: " + CC.SECONDARY + UserConstants.getNameWithColor(issuer),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued On: " + CC.SECONDARY + grant.getIssuedOn(),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued Reason: " + CC.SECONDARY + grant.getReason(),
+                        " ",
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Removed By: " + CC.SECONDARY + UserConstants.getNameWithColor(remover),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Removed On: " + CC.SECONDARY + grant.getRevokedOn(),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Removed Reason: " + CC.SECONDARY + grant.getRevokeReason()
                 );
             }
 
             item.damage(grant.isActive() ? 5 : 14);
 
             if (grant.isActive() && p0.hasPermission(Perms.GRANTS_EDIT.get()) && !grant.getRank().isDefault()) {
-                item.lore(
-                        "&cClick to remove this grant.",
-                        CC.MENU_BAR
-                );
+                item.lore("&cClick to remove this grant.");
             }
             return item.build();
         }
@@ -131,7 +126,7 @@ public class GrantsMenu extends PaginatedMenu {
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
             if (!grant.isActive()) return;
-            if (!player.hasPermission("holiday.grants.edit")) return;
+            if (!player.hasPermission(Perms.GRANTS_EDIT.get())) return;
             if (grant.getRank().isDefault()) return;
             Grant g = (Grant) grant;
             g.setActive(false);

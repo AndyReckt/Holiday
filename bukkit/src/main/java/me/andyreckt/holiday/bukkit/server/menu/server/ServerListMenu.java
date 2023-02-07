@@ -71,19 +71,18 @@ public class ServerListMenu extends PaginatedMenu {
             return new ItemBuilder(Material.WOOL)
                     .durability(data)
                     .displayname(CC.SECONDARY + server.getServerName())
-                    .lore(CC.MENU_BAR,
-                            CC.CHAT + "ID: " + CC.SECONDARY + server.getServerId(),
-                            CC.CHAT + "Status: " + status,
-                            CC.CHAT + "Players: " + CC.SECONDARY + server.getPlayerCount() + "&7/" + CC.SECONDARY + server.getMaxPlayers(),
-                            CC.CHAT + "TPS: " + tps,
+                    .lore(" ",
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "ID: " + CC.SECONDARY + server.getServerId(),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Status: " + status,
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Players: " + CC.SECONDARY + server.getPlayerCount() + "&7/" + CC.SECONDARY + server.getMaxPlayers(),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "TPS: " + tps,
                             "",
-                            CC.CHAT + "Start Time: " + CC.SECONDARY + TimeUtil.formatDate(server.getStartupTime()),
-                            CC.CHAT + "Uptime: " + CC.SECONDARY + TimeUtil.niceTime(server.getUptime(), true),
-                            CC.CHAT + "Last Updated: " + CC.SECONDARY + TimeUtil.niceTime(System.currentTimeMillis() - server.getLastKeepAlive(), true),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Start Time: " + CC.SECONDARY + TimeUtil.formatDate(server.getStartupTime()),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Uptime: " + CC.SECONDARY + TimeUtil.niceTime(server.getUptime(), true),
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Last Updated: " + CC.SECONDARY + TimeUtil.niceTime(System.currentTimeMillis() - server.getLastKeepAlive(), true),
                             "",
-                            CC.I_GRAY + "Click to join this server.",
-                            CC.I_GRAY + "Drop to stop this server.",
-                            CC.MENU_BAR)
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Click to join this server.",
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Drop to stop this server.")
                     .build();
         }
 

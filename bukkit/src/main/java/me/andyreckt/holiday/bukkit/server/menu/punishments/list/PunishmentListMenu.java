@@ -26,16 +26,16 @@ public class PunishmentListMenu extends Menu {
         HashMap<Integer, Button> toReturn = new HashMap<>();
         int mutesAmount = actives(IPunishment.PunishmentType.MUTE).size();
         toReturn.put(10, new EasyButton(
-                new ItemBuilder(Material.WOOL).durability((short) 4).displayname("&6Mutes").lore(CC.CHAT + "There is a total of " + CC.PRIMARY + mutesAmount + " &7mutes").build(), event -> new MutesMenu().openMenu(player)));
+                new ItemBuilder(Material.WOOL).durability((short) 4).displayname("&6Mutes").lore(CC.CHAT + "There is a total of " + CC.PRIMARY + mutesAmount + CC.CHAT + " mutes").build(), event -> new MutesMenu().openMenu(player)));
         int bansAmount = actives(IPunishment.PunishmentType.BAN).size();
         toReturn.put(12, new EasyButton(
-                new ItemBuilder(Material.WOOL).durability((short) 14).displayname("&cBans").lore(CC.CHAT + "There is a total of " + CC.PRIMARY + bansAmount + " &7ban").build(), event -> new BanMenu().openMenu(player)));
+                new ItemBuilder(Material.WOOL).durability((short) 14).displayname("&cBans").lore(CC.CHAT + "There is a total of " + CC.PRIMARY + bansAmount + CC.CHAT + " bans").build(), event -> new BanMenu().openMenu(player)));
         int ipBansAmount = actives(IPunishment.PunishmentType.IP_BAN).size();
         toReturn.put(14, new EasyButton(
-                new ItemBuilder(Material.WOOL).durability((short) 10).displayname("&cIP-Bans").lore(CC.CHAT + "There is a total of " + CC.PRIMARY + ipBansAmount + " &7ip-ban").build(), event -> new IpBanMenu().openMenu(player)));
+                new ItemBuilder(Material.WOOL).durability((short) 10).displayname("&cIP-Bans").lore(CC.CHAT + "There is a total of " + CC.PRIMARY + ipBansAmount + CC.CHAT + " ip-bans").build(), event -> new IpBanMenu().openMenu(player)));
         int blacklistAmounts = actives(IPunishment.PunishmentType.BLACKLIST).size();
         toReturn.put(16, new EasyButton(
-                new ItemBuilder(Material.WOOL).durability((short) 15).displayname("&4Blacklists").lore(CC.CHAT + "There is a total of " + CC.PRIMARY + blacklistAmounts + " &7blacklist").build(), event -> new BlacklistMenu().openMenu(player)));
+                new ItemBuilder(Material.WOOL).durability((short) 15).displayname("&4Blacklists").lore(CC.CHAT + "There is a total of " + CC.PRIMARY + blacklistAmounts + CC.CHAT + " blacklists").build(), event -> new BlacklistMenu().openMenu(player)));
 
         for (int i = 0; i < 27; i++) {
             Button item = toReturn.get(i);

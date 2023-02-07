@@ -16,10 +16,12 @@ public interface IPunishment {
     UUID getAddedBy();
     long getAddedAt();
     String getAddedReason();
+    String getAddedOn();
 
     UUID getRevokedBy();
     long getRevokedAt();
     String getRevokedReason();
+    String getRevokedOn();
 
     long getDuration();
     long getRemainingTime();

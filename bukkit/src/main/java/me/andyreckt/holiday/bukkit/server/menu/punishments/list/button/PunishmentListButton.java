@@ -28,11 +28,13 @@ public class PunishmentListButton extends Button {
                 .durability(SkullType.PLAYER.ordinal())
                 .owner(Holiday.getInstance().getUuidCache().name(data.getPunished()))
                 .displayname(nameWithColor(data.getPunished()))
-                .lore(CC.SECONDARY + data.getType().getName(),
-                        CC.CHAT + " Duration: " + CC.PRIMARY + TimeUtil.getDuration(data.getDuration()),
-                        CC.CHAT + " Staff: " + nameWithColor(data.getAddedBy()),
-                        CC.CHAT + " Reason: " + CC.PRIMARY + data.getAddedReason(),
-                        CC.CHAT + " Date: " + CC.PRIMARY + TimeUtil.formatDate(data.getAddedAt()))
+                .lore(" ",
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Type: " + CC.SECONDARY + data.getType().getName() + " " + CC.GRAY + "[#" + data.getId() + "]",
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(data.getDuration()),
+                        " ",
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: " + CC.SECONDARY + nameWithColor(data.getAddedBy()),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued On: " + CC.SECONDARY + data.getAddedOn(),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued Reason: " + CC.SECONDARY + data.getAddedReason())
                 .build();
     }
 

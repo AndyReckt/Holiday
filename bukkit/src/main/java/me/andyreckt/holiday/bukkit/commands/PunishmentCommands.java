@@ -125,7 +125,8 @@ public class PunishmentCommands {
                 punishmentType,
                 duration,
                 issuer.getUuid(),
-                reason
+                reason,
+                Holiday.getInstance().getThisServer().getServerName()
         );
         Holiday.getInstance().getApi().savePunishment(punishment);
 

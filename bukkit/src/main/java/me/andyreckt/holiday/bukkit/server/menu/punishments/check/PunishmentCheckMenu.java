@@ -37,16 +37,16 @@ public class PunishmentCheckMenu extends Menu {
         toReturn.put(13, new DisplayButton(new ItemBuilder(Material.SKULL_ITEM).durability((short) SkullType.PLAYER.ordinal()).lore(lore).owner(playerName).displayname(CC.RED + "Alt(s) of " + playerName).build()));
         int mutesAmount = mutes(punished).size();
         toReturn.put(10, new EasyButton(
-                new ItemBuilder(Material.WOOL).durability((short) 4).displayname("&6Mutes").lore(Arrays.asList(CC.CHAT + "There is a total of " + CC.PRIMARY + mutesAmount + " &7mutes")).build(), event -> new MutesMenu(punished).openMenu(event)));
+                new ItemBuilder(Material.WOOL).durability((short) 4).displayname("&6Mutes").lore(Arrays.asList(CC.CHAT + "There is a total of " + CC.PRIMARY + mutesAmount + CC.CHAT + " mutes")).build(), event -> new MutesMenu(punished).openMenu(event)));
         int bansAmount = bans(punished).size();
         toReturn.put(12, new EasyButton(
-                new ItemBuilder(Material.WOOL).durability((short) 14).displayname("&cBans").lore(Arrays.asList(CC.CHAT + "There is a total of " + CC.PRIMARY + bansAmount + " &7ban")).build(), event -> new BanMenu(punished).openMenu(event)));
+                new ItemBuilder(Material.WOOL).durability((short) 14).displayname("&cBans").lore(Arrays.asList(CC.CHAT + "There is a total of " + CC.PRIMARY + bansAmount + CC.CHAT + " bans")).build(), event -> new BanMenu(punished).openMenu(event)));
         int ipBansAmount = ipbans(punished).size();
         toReturn.put(14, new EasyButton(
-                new ItemBuilder(Material.WOOL).durability((short) 10).displayname("&cIP-Ban").lore(Arrays.asList(CC.CHAT + "There is a total of " + CC.PRIMARY + ipBansAmount + " &7ip-ban")).build(), event -> new IpBanMenu(punished).openMenu(event)));
+                new ItemBuilder(Material.WOOL).durability((short) 10).displayname("&cIP-Ban").lore(Arrays.asList(CC.CHAT + "There is a total of " + CC.PRIMARY + ipBansAmount + CC.CHAT + " ip-bans")).build(), event -> new IpBanMenu(punished).openMenu(event)));
         int blacklistAmounts = blacklists(punished).size();
         toReturn.put(16, new EasyButton(
-                new ItemBuilder(Material.WOOL).durability((short) 15).displayname("&4Blacklists").lore(Arrays.asList(CC.CHAT + "There is a total of " + CC.PRIMARY + blacklistAmounts + " &7blacklist")).build(), event -> new BlacklistMenu(punished).openMenu(event)));
+                new ItemBuilder(Material.WOOL).durability((short) 15).displayname("&4Blacklists").lore(Arrays.asList(CC.CHAT + "There is a total of " + CC.PRIMARY + blacklistAmounts + CC.CHAT + " blacklists")).build(), event -> new BlacklistMenu(punished).openMenu(event)));
 
         for (int i = 0; i < 27; i++) {
             Button item = toReturn.get(i);
