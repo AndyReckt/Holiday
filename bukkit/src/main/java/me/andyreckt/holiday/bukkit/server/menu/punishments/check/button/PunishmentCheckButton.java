@@ -40,7 +40,7 @@ public class PunishmentCheckButton extends Button {
             return new ItemBuilder(Material.WOOL)
                     .durability((short) 14)
                     .displayname("&c(Inactive) " + TimeUtil.formatDate(data.getAddedAt()))
-                    .lore("&c                " + TimeUtil.formatDate(data.getRevokedAt()),
+                    .lore("&c                  " + TimeUtil.formatDate(data.getRevokedAt()),
                             " ",
                             CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Type: " + CC.SECONDARY + data.getType().getName() + " " + CC.GRAY + "[#" + data.getId() + "]",
                             CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(data.getDuration()),

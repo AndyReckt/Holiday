@@ -100,7 +100,7 @@ public class GrantsMenu extends PaginatedMenu {
             } else {
                 Profile remover = api.getProfile(grant.getRevokedBy());
                 item.displayname("&c(Inactive) " + TimeUtil.formatDate(grant.getIssuedAt()));
-                item.lore("&c                " + TimeUtil.formatDate(grant.getRevokedAt()),
+                item.lore("&c                  " + TimeUtil.formatDate(grant.getRevokedAt()),
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Rank: " + CC.SECONDARY + grant.getRank().getDisplayName(),
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(grant.getDuration()),
