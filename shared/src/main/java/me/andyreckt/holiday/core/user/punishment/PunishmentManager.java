@@ -78,8 +78,8 @@ public class PunishmentManager {
         }
     }
 
-    public void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason) {
-        punishment.revoke(revokedBy, revokedReason);
+    public void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason, String revokedOn) {
+        punishment.revoke(revokedBy, revokedReason, revokedOn);
         savePunishment(punishment);
     }
 }

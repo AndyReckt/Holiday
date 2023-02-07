@@ -72,8 +72,8 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason) {
-        getApi().revokePunishment(punishment, revokedBy, revokedReason);
+    public void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason, String revokedOn) {
+        getApi().revokePunishment(punishment, revokedBy, revokedReason, revokedOn);
     }
 
     @Override

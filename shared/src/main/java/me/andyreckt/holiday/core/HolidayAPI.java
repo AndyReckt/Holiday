@@ -170,8 +170,8 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason) {
-        this.punishmentManager.revokePunishment(punishment, revokedBy, revokedReason);
+    public void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason, String revokedOn) {
+        this.punishmentManager.revokePunishment(punishment, revokedBy, revokedReason, revokedOn);
     }
 
     @Override

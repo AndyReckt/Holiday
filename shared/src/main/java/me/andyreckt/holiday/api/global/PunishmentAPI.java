@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface PunishmentAPI {
 
-    void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason);
+    void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason, String revokedOn);
 
     List<IPunishment> getPunishments(UUID uniqueId);
 
