@@ -17,5 +17,7 @@ public interface PunishmentAPI {
 
     void refreshPunishments();
 
+    IPunishment getPunishment(String id);
+
 
 }

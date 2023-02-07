@@ -97,6 +97,11 @@ public class HolidayAPI implements API {
     }
 
     @Override
+    public IPunishment getPunishment(String id) {
+        return getApi().getPunishment(id);
+    }
+
+    @Override
     public IRank getDefaultRank() {
         return getApi().getDefaultRank();
     }

@@ -397,6 +397,7 @@ public enum Locale {
     PLAYER_ALREADY_HAS_PERMISSION(MESSAGES.get(), "error.player-already-has-permission", "&cThat player already has this permission."),
     PLAYER_DOES_NOT_HAVE_PERMISSION(MESSAGES.get(), "error.player-does-not-have-permission", "&cThat player does not have this permission."),
     DISGUISE_NAME_TAKEN(MESSAGES.get(), "error.disguise-name-taken", "&cThat disguise name is already taken."),
+    PUNISHMENT_NOT_FOUND(MESSAGES.get(), "error.punishment-not-found", "&cA punishment with that id could not be found."),
 
     /* OTHER */
     DEV_MODE(SETTINGS.get(), "dev-mode", false),

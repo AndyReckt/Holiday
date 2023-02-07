@@ -222,6 +222,11 @@ public class HolidayAPI implements API {
     }
 
     @Override
+    public IPunishment getPunishment(String id) {
+        return this.punishmentManager.getPunishments().stream().filter(punishment -> punishment.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    @Override
     public boolean isOnline(UUID playerId) {
         return this.onlinePlayers.containsKey(playerId);
     }
