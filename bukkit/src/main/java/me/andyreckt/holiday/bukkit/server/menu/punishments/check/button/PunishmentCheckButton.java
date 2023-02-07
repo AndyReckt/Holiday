@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.server.menu.punishments.check.button;
 
 import me.andyreckt.holiday.api.user.IPunishment;
+import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
@@ -24,12 +25,14 @@ public class PunishmentCheckButton extends Button {
 
     @Override
     public ItemStack getButtonItem(@NonNull Player player) {
+        Profile target = Holiday.getInstance().getApi().getProfile(data.getPunished());
         if (data.isActive()) {
             return new ItemBuilder(Material.WOOL)
                     .durability((short) 5)
                     .displayname("&a(Active) " + TimeUtil.formatDate(data.getAddedAt()))
                     .lore(" ",
                             CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Type: " + CC.SECONDARY + data.getType().getName() + " " + CC.GRAY + "[#" + data.getId() + "]",
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Target: " + CC.SECONDARY + UserConstants.getNameWithColor(target),
                             CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(data.getDuration()),
                             " ",
                             CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: " + CC.SECONDARY + nameWithColor(data.getAddedBy()),
@@ -43,6 +46,7 @@ public class PunishmentCheckButton extends Button {
                     .lore("&c                  " + TimeUtil.formatDate(data.getRevokedAt()),
                             " ",
                             CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Type: " + CC.SECONDARY + data.getType().getName() + " " + CC.GRAY + "[#" + data.getId() + "]",
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Target: " + CC.SECONDARY + UserConstants.getNameWithColor(target),
                             CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(data.getDuration()),
                             " ",
                             CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: "     + CC.SECONDARY + nameWithColor(data.getAddedBy()),

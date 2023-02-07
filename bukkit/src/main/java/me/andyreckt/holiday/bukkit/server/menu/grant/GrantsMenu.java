@@ -84,6 +84,7 @@ public class GrantsMenu extends PaginatedMenu {
         public ItemStack getButtonItem(Player p0) {
             API api = Holiday.getInstance().getApi();
             Profile issuer = api.getProfile(grant.getIssuedBy());
+            Profile target = api.getProfile(grant.getUser());
 
             ItemBuilder item = new ItemBuilder(Material.WOOL);
             if (grant.isActive()) {
@@ -91,6 +92,7 @@ public class GrantsMenu extends PaginatedMenu {
                 item.lore(
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Rank: " + CC.SECONDARY + grant.getRank().getDisplayName(),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Target: " + CC.SECONDARY + UserConstants.getNameWithColor(target),
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(grant.getDuration()),
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: " + CC.SECONDARY + UserConstants.getNameWithColor(issuer),
@@ -103,6 +105,7 @@ public class GrantsMenu extends PaginatedMenu {
                 item.lore("&c                  " + TimeUtil.formatDate(grant.getRevokedAt()),
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Rank: " + CC.SECONDARY + grant.getRank().getDisplayName(),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Target: " + CC.SECONDARY + UserConstants.getNameWithColor(target),
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(grant.getDuration()),
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: " + CC.SECONDARY + UserConstants.getNameWithColor(issuer),

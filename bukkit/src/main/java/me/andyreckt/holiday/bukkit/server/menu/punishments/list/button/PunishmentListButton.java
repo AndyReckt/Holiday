@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.server.menu.punishments.list.button;
 
 import me.andyreckt.holiday.api.user.IPunishment;
+import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
@@ -24,12 +25,14 @@ public class PunishmentListButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player p0) {
+        Profile target = Holiday.getInstance().getApi().getProfile(data.getPunished());
         return new ItemBuilder(Material.SKULL_ITEM)
                 .durability(SkullType.PLAYER.ordinal())
                 .owner(Holiday.getInstance().getUuidCache().name(data.getPunished()))
                 .displayname(nameWithColor(data.getPunished()))
                 .lore(" ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Type: " + CC.SECONDARY + data.getType().getName() + " " + CC.GRAY + "[#" + data.getId() + "]",
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Target: " + CC.SECONDARY + UserConstants.getNameWithColor(target),
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(data.getDuration()),
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: " + CC.SECONDARY + nameWithColor(data.getAddedBy()),
