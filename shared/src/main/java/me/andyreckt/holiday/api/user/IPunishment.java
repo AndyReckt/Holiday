@@ -28,7 +28,7 @@ public interface IPunishment {
 
     String getIp();
 
-    void revoke(UUID removedBy, String removedReason);
+    void revoke(UUID removedBy, String removedReason, String removedOn);
 
     boolean isActive();
     boolean check();

@@ -75,7 +75,7 @@ public class PunishmentRemoveCommands {
             return;
         }
 
-        data.revoke(profile.getUuid(), reason);
+        data.revoke(profile.getUuid(), reason, Holiday.getInstance().getThisServer().getServerName());
         Holiday.getInstance().getApi().savePunishment(data);
 
         String toSend = "";

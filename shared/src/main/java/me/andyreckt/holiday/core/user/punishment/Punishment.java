@@ -51,10 +51,11 @@ public class Punishment implements IPunishment {
     }
 
     @Override
-    public void revoke(UUID removedBy, String removedReason) {
+    public void revoke(UUID removedBy, String removedReason, String removedOn) {
         this.revokedBy = removedBy;
         this.revokedAt = System.currentTimeMillis();
         this.revokedReason = removedReason;
+        this.revokedOn = removedOn;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class Punishment implements IPunishment {
         if (!isActive()) return false;
         if (duration == TimeUtil.PERMANENT) return false;
         if (getRemainingTime() <= 0) {
-            this.revoke(UserProfile.getConsoleProfile().getUuid(), "Automatic");
+            this.revoke(UserProfile.getConsoleProfile().getUuid(), "Automatic", "Automatic");
             return true;
         }
         return false;

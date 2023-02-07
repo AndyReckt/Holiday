@@ -223,7 +223,7 @@ public class HolidayAPI implements API {
 
     @Override
     public IPunishment getPunishment(String id) {
-        return this.punishmentManager.getPunishments().stream().filter(punishment -> punishment.getId().equals(id)).findFirst().orElse(null);
+        return this.punishmentManager.getPunishments().stream().filter(punishment -> punishment.getId().equalsIgnoreCase(id)).findFirst().orElse(null);
     }
 
     @Override
