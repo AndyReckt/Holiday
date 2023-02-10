@@ -35,8 +35,8 @@ public class StaffManager {
     }
 
     public void toggleStaffMode(Player player, boolean bool, boolean save) {
-        this.clearPlayer(player);
         if (!bool) {
+            this.clearPlayer(player);
             PlayerData data = playerDataMap.remove(player.getUniqueId());
             if (SLocale.AUTOMATIC_VANISH.getBoolean()) {
                 this.vanish(player, false, false);
