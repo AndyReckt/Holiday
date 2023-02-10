@@ -94,7 +94,7 @@ public class PunishmentRemoveCommands {
 
         if (toSend.equals("")) return;
 
-        String issuerName = profile == UserProfile.getConsoleProfile() ? "&4Console" : UserConstants.getNameWithColor(profile);
+        String issuerName = UserConstants.getNameWithColor(profile);
         String targetName = UserConstants.getDisplayNameWithColor(target);
 
         toSend = toSend.replace("%executor%", issuerName)

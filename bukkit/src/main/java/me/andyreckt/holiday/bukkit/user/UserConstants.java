@@ -6,6 +6,7 @@ import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.core.user.UserProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -33,6 +34,8 @@ public class UserConstants {
     }
 
     public static String getNameWithColor(Profile profile) {
+        if (profile == UserProfile.getConsoleProfile()) return CC.RED + "Console";
+
         IRank rank = profile.getHighestVisibleRank();
         return getRankColor(rank) + (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + profile.getName();
     }

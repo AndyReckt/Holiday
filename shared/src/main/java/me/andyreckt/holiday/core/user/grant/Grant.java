@@ -78,7 +78,7 @@ public class Grant implements IGrant {
     public boolean check() {
         if (!hasExpired()) return false;
         if (!active) return false;
-        revoke(UserProfile.getConsoleProfile().getUuid(), "$undefined", "Expired");
+        revoke(UserProfile.getConsoleProfile().getUuid(), "Automatic", "Expired");
         return true;
     }
 
