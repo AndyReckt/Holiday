@@ -181,6 +181,8 @@ public enum Locale {
     PUNISHMENT_BLACKLIST_REVOKED(MESSAGES.get(), "punishment.revoked.blacklist", "%silent%&a%player% &ahas been unblacklisted by %executor% &afor %reason%."),
     PUNISHMENT_BANNED_LOGIN_ALERT(MESSAGES.get(), "punishment.alert.banned", "&c[A] &c%player% tried to join but is banned!"),
     PUNISHMENT_ALT_LOGIN_ALERT(MESSAGES.get(), "punishment.alert.alt", "&c[A] &c%player% might be alting while banned! &7(%alts%)"),
+    PUNISHMENT_KICK_MESSAGE(MESSAGES.get(), "punishment.kick.message", "%silent%&c%player% &chas been kicked by %executor% &cfor %reason%."),
+    PUNISHMENT_KICK_KICK_MESSAGE(MESSAGES.get(), "punishment.kick.kick-message", "&cYou have been kicked from %network_name% for %reason%."),
 
     /* RANKS */
     RANK_SUCCESSFULLY_CREATED(MESSAGES.get(), "rank.successfully-created", "&aSuccessfully created rank %rank%."),

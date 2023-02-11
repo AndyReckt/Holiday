@@ -13,12 +13,11 @@ import java.util.UUID;
 @Getter
 @RequiredArgsConstructor
 public class KickPlayerPacket implements Packet {
-    private final Punishment punishment;
+    private final UUID uuid;
     private final String string;
 
     @Override
     public void onReceive() {
-        UUID uuid = punishment.getPunished();
         Tasks.run(() -> {
             if (Bukkit.getPlayer(uuid) != null) {
                 Bukkit.getPlayer(uuid).kickPlayer(CC.translate(string));

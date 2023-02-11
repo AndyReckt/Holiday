@@ -63,6 +63,7 @@ public enum Perms {
     TEMPBAN("command.tempban", "core.command.tempban"),
     MUTE("command.mute", "core.command.mute"),
     TEMPMUTE("command.tempmute", "core.command.tempmute"),
+    KICK("command.kick", "core.command.kick"),
     BLACKLIST("command.blacklist", "core.command.blacklist"),
     UNBAN("command.unban", "core.command.unban"),
     UNIPBAN("command.unipban", "core.command.unipban"),

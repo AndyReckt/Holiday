@@ -108,6 +108,39 @@ public class PunishmentCommands {
         punish(profile, target, IPunishment.PunishmentType.MUTE, TimeUtil.getDuration(duration), fReason, silent, sender);
     }
 
+    @Command(names = {"kick"}, async = true, permission = Perms.KICK)
+    public void kick(CommandSender sender, @Param(name = "name") Profile target, @Param(name = "reason", wildcard = true, baseValue = "Misconduct") String reason) {
+        API api = Holiday.getInstance().getApi();
+        Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        String fReason = reason.replace("-s", "");
+        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
+
+        String issuerName = UserConstants.getNameWithColor(profile);
+        String targetName = UserConstants.getDisplayNameWithColor(target);
+
+        String kickBroadcast = Locale.PUNISHMENT_KICK_MESSAGE.getString();
+
+
+        kickBroadcast = kickBroadcast.replace("%executor%", issuerName)
+                .replace("%player%", targetName)
+                .replace("%silent%", silent ? Locale.PUNISHMENT_SILENT_PREFIX.getString() : "")
+                .replace("%reason%", reason);
+
+        if (!silent) {
+            PacketHandler.send(new BroadcastPacket(kickBroadcast));
+        } else {
+            PacketHandler.send(new BroadcastPacket(
+                    kickBroadcast,
+                    Perms.PUNISHMENTS_SILENT_VIEW.get(),
+                    AlertType.SILENT_PUNISHMENT));
+        }
+
+        String toSend = Locale.PUNISHMENT_KICK_KICK_MESSAGE.getStringNetwork().replace("%reason%", reason);
+        PacketHandler.send(new KickPlayerPacket(target.getUuid(), toSend));
+    }
+
 
     private void punish(Profile issuer, Profile target, IPunishment.PunishmentType punishmentType, long duration, String reason, boolean silent, CommandSender sender) {
         if (!issuer.getHighestRank().isAboveOrEqual(target.getHighestRank())
@@ -150,7 +183,7 @@ public class PunishmentCommands {
         if (punishment.getType() == IPunishment.PunishmentType.MUTE) return;
         toSend = toSend.replace("%reason%", punishment.getAddedReason())
                 .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
-        PacketHandler.send(new KickPlayerPacket((Punishment) punishment, toSend));
+        PacketHandler.send(new KickPlayerPacket(punishment.getPunished(), toSend));
     }
 
     private void sendPunishmentBroadcast(IPunishment punishment, boolean silent) {
