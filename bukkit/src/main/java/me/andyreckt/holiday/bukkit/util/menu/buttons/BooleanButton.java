@@ -56,7 +56,7 @@ public final class BooleanButton<T> extends Button {
                 .build() :
                 new ItemBuilder(item)
                         .lore("",
-                            current  ? CC.B_PRIMARY + CC.LINE + " " + " " + CC.GREEN + "Enabled"
+                            current  ? CC.B_PRIMARY + CC.LINE + " " + CC.GREEN + "Enabled"
                                      : CC.B_PRIMARY + CC.LINE + " " + CC.WHITE + "Enabled",
                             !current ? CC.B_PRIMARY + CC.LINE + " " + CC.RED + "Disabled"
                                      : CC.B_PRIMARY + CC.LINE + " " + CC.WHITE + "Disabled"
