@@ -42,7 +42,9 @@ public class StaffManager {
                 this.vanish(player, false, false);
             }
 
-            if (SLocale.TELEPORT_BACK.getBoolean()) player.teleport(data.getLocation());
+            try {
+                if (SLocale.TELEPORT_BACK.getBoolean()) player.teleport(data.getLocation());
+            } catch (Exception ignored) {}
             player.getInventory().setContents(data.getInvContents());
             player.getInventory().setArmorContents(data.getArmorContents());
             player.setGameMode(data.getGameMode());
@@ -50,7 +52,9 @@ public class StaffManager {
             player.setExp(data.getXp());
             player.setLevel(data.getLevel());
             player.setFlying(data.isFlying());
-            player.setAllowFlight(data.isAllowFlight());
+            try {
+                player.setAllowFlight(data.isAllowFlight());
+            } catch (Exception ignored) {}
             for (PotionEffect effect : data.getEffects()) {
                 player.addPotionEffect(effect);
             }
