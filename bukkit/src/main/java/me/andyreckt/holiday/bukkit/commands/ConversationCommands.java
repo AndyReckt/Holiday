@@ -1,5 +1,6 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.redis.packet.MessagePacket;
@@ -9,6 +10,7 @@ import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.core.user.UserProfile;
+import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.entity.Player;
 
@@ -24,6 +26,23 @@ public class ConversationCommands {
 
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
         boolean bypass = profile.isStaff();
+
+        if (profile.isMuted()) {
+            IPunishment punishment = profile.getActivePunishments().stream()
+                    .filter(punishment1 -> punishment1.getType() == IPunishment.PunishmentType.MUTE)
+                    .findFirst().orElse(null);
+
+            String toSend = "";
+            if (punishment.getDuration() == TimeUtil.PERMANENT) {
+                toSend = Locale.PUNISHMENT_MUTE_PLAYER.getString();
+            } else {
+                toSend = Locale.PUNISHMENT_TEMP_MUTE_PLAYER.getString();
+            }
+
+            toSend = toSend.replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+            player.sendMessage(toSend);
+            return;
+        }
 
         if (target.getUuid().equals(player.getUniqueId())) {
             player.sendMessage(Locale.CANNOT_MESSAGE_YOURSELF.getString());
@@ -60,6 +79,22 @@ public class ConversationCommands {
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
         boolean bypass = profile.isStaff();
 
+        if (profile.isMuted()) {
+            IPunishment punishment = profile.getActivePunishments().stream()
+                    .filter(punishment1 -> punishment1.getType() == IPunishment.PunishmentType.MUTE)
+                    .findFirst().orElse(null);
+
+            String toSend = "";
+            if (punishment.getDuration() == TimeUtil.PERMANENT) {
+                toSend = Locale.PUNISHMENT_MUTE_PLAYER.getString();
+            } else {
+                toSend = Locale.PUNISHMENT_TEMP_MUTE_PLAYER.getString();
+            }
+
+            toSend = toSend.replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+            player.sendMessage(toSend);
+            return;
+        }
 
         if (!profile.getSettings().isPrivateMessages()) {
             player.sendMessage(Locale.OWN_MESSAGES_DISABLED.getString());
