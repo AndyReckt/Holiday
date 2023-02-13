@@ -43,13 +43,13 @@ public class Skin {
                 URL urlChecker = new URL(idChecker);
 
                 InputStreamReader reader = new InputStreamReader(urlChecker.openStream());
-                JsonObject object = new JsonParser().parse(reader).getAsJsonObject();
+                JsonObject object = JsonParser.parseReader(reader).getAsJsonObject();
                 String id = object.get("id").getAsString();
 
                 String link = WEB_API + id + "?unsigned=false";
                 urlChecker = new URL(link);
                 reader = new InputStreamReader(urlChecker.openStream());
-                JsonObject properties = new JsonParser().parse(reader).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
+                JsonObject properties = JsonParser.parseReader(reader).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
 
                 texture = properties.get("value").getAsString();
                 signature = properties.get("signature").getAsString();
