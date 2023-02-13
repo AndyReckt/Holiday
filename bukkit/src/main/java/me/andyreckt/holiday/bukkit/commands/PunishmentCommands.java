@@ -126,7 +126,7 @@ public class PunishmentCommands {
         kickBroadcast = kickBroadcast.replace("%executor%", issuerName)
                 .replace("%player%", targetName)
                 .replace("%silent%", silent ? Locale.PUNISHMENT_SILENT_PREFIX.getString() : "")
-                .replace("%reason%", reason);
+                .replace("%reason%", fReason);
 
         if (!silent) {
             PacketHandler.send(new BroadcastPacket(kickBroadcast));
@@ -137,7 +137,7 @@ public class PunishmentCommands {
                     AlertType.SILENT_PUNISHMENT));
         }
 
-        String toSend = Locale.PUNISHMENT_KICK_KICK_MESSAGE.getStringNetwork().replace("%reason%", reason);
+        String toSend = Locale.PUNISHMENT_KICK_KICK_MESSAGE.getStringNetwork().replace("%reason%", fReason);
         PacketHandler.send(new KickPlayerPacket(target.getUuid(), toSend));
     }
 
