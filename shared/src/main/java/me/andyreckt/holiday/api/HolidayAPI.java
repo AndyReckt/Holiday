@@ -71,6 +71,10 @@ public class HolidayAPI implements API {
         getApi().saveProfile(profile);
     }
 
+    public void deleteProfile(Profile profile) {
+        getApi().deleteProfile(profile);
+    }
+
     @Override
     public void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason, String revokedOn) {
         getApi().revokePunishment(punishment, revokedBy, revokedReason, revokedOn);

@@ -98,6 +98,11 @@ public class HolidayAPI implements API {
     }
 
     @Override
+    public void deleteProfile(Profile profile) {
+        this.userManager.deleteProfile(profile);
+    }
+
+    @Override
     public IRank getDefaultRank() {
         return this.rankManager.getDefaultRank();
     }

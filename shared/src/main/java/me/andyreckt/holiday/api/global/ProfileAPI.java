@@ -13,5 +13,7 @@ public interface ProfileAPI {
     CompletableFuture<HashMap<UUID, Profile>> getAllProfiles();
 
     void saveProfile(Profile profile);
+
+    void deleteProfile(Profile profile);
 }
 

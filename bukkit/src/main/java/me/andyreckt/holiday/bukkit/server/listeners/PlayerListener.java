@@ -109,8 +109,7 @@ public class PlayerListener implements Listener {
         event.setKickMessage(CC.translate(kickMessage));
         String toSend = Locale.PUNISHMENT_BANNED_LOGIN_ALERT.getString()
                 .replace("%player%", player.getName());
-        PacketHandler.send(
-                new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.BANNED_LOGIN));
+        PacketHandler.send(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.BANNED_LOGIN));
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -168,8 +167,7 @@ public class PlayerListener implements Listener {
                             .filter(Profile::isBanned)
                             .map(Profile::getName)
                             .collect(Collectors.joining(", ")));
-            PacketHandler.send(
-                    new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.ALT_LOGIN));
+            PacketHandler.send(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.ALT_LOGIN));
         }
     }
 

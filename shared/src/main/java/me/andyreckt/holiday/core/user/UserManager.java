@@ -7,6 +7,7 @@ import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.ProfileDeletePacket;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.ProfileUpdatePacket;
 import org.bson.Document;
 
@@ -73,5 +74,13 @@ public class UserManager {
             }
             return profiles;
         });
+    }
+
+    public void deleteProfile(Profile profile) {
+        this.profiles.remove(profile.getUuid());
+        CompletableFuture.runAsync(() -> {
+            api.getMongoManager().getProfiles().deleteOne(Filters.eq("_id", profile.getUuid().toString()));
+        });
+        PacketHandler.send(new ProfileDeletePacket(profile.getUuid()));
     }
 }

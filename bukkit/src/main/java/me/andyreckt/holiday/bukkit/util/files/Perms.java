@@ -84,6 +84,7 @@ public enum Perms {
     DISGUISE_CUSTOM_NAME("command.disguise.custom-name", "core.command.disguise.custom"),
     DISGUISE_RANK("command.disguise.rank", "core.command.disguise.rank"),
     USER("command.user", "core.command.user"),
+    USER_WIPE("command.user-wipe", "core.command.user.wipe"),
     JOIN("command.join", "core.command.join"),
     PULL("command.pull", "core.command.pull"),
     SEND_TO_SERVER("command.sendtoserver", "core.command.sendtoserver"),
