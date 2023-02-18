@@ -18,9 +18,8 @@ public final class PacketPubSub extends JedisPubSub {
         }
         Packet packet = (Packet) GsonProvider.GSON.fromJson(messageJson, packetClass);
         try {
-            CompletableFuture.runAsync(packet::onReceive);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            packet.onReceive();
+        } catch (Exception ignored) {}
+
     }
 }
