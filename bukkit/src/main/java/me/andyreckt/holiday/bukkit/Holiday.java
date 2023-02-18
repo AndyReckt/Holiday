@@ -33,6 +33,7 @@ import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
+import me.andyreckt.holiday.core.util.json.GsonProvider;
 import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;

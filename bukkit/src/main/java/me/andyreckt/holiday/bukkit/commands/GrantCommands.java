@@ -29,7 +29,7 @@ public class GrantCommands {
     }
 
     @Command(names = {"ogrant"}, async = true)
-    public void execute(ConsoleCommandSender sender, @Param(name = "player") Profile target, @Param(name = "rank") IRank rank, @Param(name = "reason") String reason, @Param(name = "time") String time) {
+    public void execute(ConsoleCommandSender sender, @Param(name = "player") Profile target, @Param(name = "rank") IRank rank, @Param(name = "time") String time, @Param(name = "reason", wildcard = true) String reason) {
         long tim = TimeUtil.getDuration(time);
         String ti = TimeUtil.getDuration(tim);
 
