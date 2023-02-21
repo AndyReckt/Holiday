@@ -4,7 +4,7 @@ package me.andyreckt.holiday.bukkit.util.menu.anvilgui.version;
 import org.bukkit.Bukkit;
 
 /**
- * Matches the server's NMS version to its {@link VersionWrapper}
+ * Matches the me.andyreckt.holiday.server's NMS version to its {@link VersionWrapper}
  *
  * @author Wesley Smith
  * @since 1.2.1
@@ -12,9 +12,9 @@ import org.bukkit.Bukkit;
 public class VersionMatcher {
 
     /**
-     * Matches the server version to it's {@link VersionWrapper}
+     * Matches the me.andyreckt.holiday.server version to it's {@link VersionWrapper}
      *
-     * @return The {@link VersionWrapper} for this server
+     * @return The {@link VersionWrapper} for this me.andyreckt.holiday.server
      * @throws IllegalStateException If the version wrapper failed to be instantiated or is unable to be found
      */
     public VersionWrapper match() {
@@ -32,7 +32,7 @@ public class VersionMatcher {
                     "Failed to instantiate version wrapper for version " + serverVersion, exception);
         } catch (ClassNotFoundException exception) {
             throw new IllegalStateException(
-                    "AnvilGUI does not support server version \"" + serverVersion + "\"", exception);
+                    "AnvilGUI does not support me.andyreckt.holiday.server version \"" + serverVersion + "\"", exception);
         }
     }
 }

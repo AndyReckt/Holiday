@@ -286,9 +286,9 @@ public class Sunset {
     }
 
     /**
-     * Get the CommandMap for the server.
+     * Get the CommandMap for the me.andyreckt.holiday.server.
      *
-     * @return The CommandMap for the server.
+     * @return The CommandMap for the me.andyreckt.holiday.server.
      */
     private SimpleCommandMap getCommandMap() {
         try {

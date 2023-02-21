@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
  * <p>
  * <a href="https://wiki.vg/Protocol">Clientbound Packets</a> are considered fake
  * updates to the client without changing the actual data. Since all the data is handled
- * by the server.
+ * by the me.andyreckt.holiday.server.
  * <p>
  * A useful resource used to compare mappings is <a href="https://minidigger.github.io/MiniMappingViewer/#/spigot">Mini's Mapping Viewer</a>
  *
@@ -34,8 +34,8 @@ public final class ReflectionUtils {
      * We use reflection mainly to avoid writing a new class for version barrier.
      * The version barrier is for NMS that uses the Minecraft version as the main package name.
      * <p>
-     * E.g. EntityPlayer in 1.15 is in the class {@code net.minecraft.server.v1_15_R1}
-     * but in 1.14 it's in {@code net.minecraft.server.v1_14_R1}
+     * E.g. EntityPlayer in 1.15 is in the class {@code net.minecraft.me.andyreckt.holiday.server.v1_15_R1}
+     * but in 1.14 it's in {@code net.minecraft.me.andyreckt.holiday.server.v1_14_R1}
      * In order to maintain cross-version compatibility we cannot import these classes.
      * <p>
      * Performance is not a concern for these specific statically initialized values.
@@ -65,7 +65,7 @@ public final class ReflectionUtils {
                 }
             }
         }
-        if (found == null) throw new IllegalArgumentException("Failed to parse server version. Could not find any package starting with name: 'org.bukkit.craftbukkit.v'");
+        if (found == null) throw new IllegalArgumentException("Failed to parse me.andyreckt.holiday.server version. Could not find any package starting with name: 'org.bukkit.craftbukkit.v'");
         VERSION = found;
     }
 
@@ -81,7 +81,7 @@ public final class ReflectionUtils {
      */
     public static final String
             CRAFTBUKKIT = "org.bukkit.craftbukkit." + VERSION + '.',
-            NMS = v(17, "net.minecraft.").orElse("net.minecraft.server." + VERSION + '.');
+            NMS = v(17, "net.minecraft.").orElse("net.minecraft.me.andyreckt.holiday.server." + VERSION + '.');
     /**
      * A nullable public accessible field only available in {@code EntityPlayer}.
      * This can be null if the player is offline.
@@ -102,9 +102,9 @@ public final class ReflectionUtils {
     private static final MethodHandle SEND_PACKET;
 
     static {
-        Class<?> entityPlayer = getNMSClass("server.level", "EntityPlayer");
+        Class<?> entityPlayer = getNMSClass("me.andyreckt.holiday.server.level", "EntityPlayer");
         Class<?> craftPlayer = getCraftClass("entity.CraftPlayer");
-        Class<?> playerConnection = getNMSClass("server.network", "PlayerConnection");
+        Class<?> playerConnection = getNMSClass("me.andyreckt.holiday.server.network", "PlayerConnection");
 
         MethodHandles.Lookup lookup = MethodHandles.lookup();
         MethodHandle sendPacket = null, getHandle = null, connection = null;
@@ -142,9 +142,9 @@ public final class ReflectionUtils {
     }
 
     /**
-     * Checks whether the server version is equal or greater than the given version.
+     * Checks whether the me.andyreckt.holiday.server version is equal or greater than the given version.
      *
-     * @param version the version to compare the server version with.
+     * @param version the version to compare the me.andyreckt.holiday.server version with.
      *
      * @return true if the version is equal or newer, otherwise false.
      * @since 4.0.0
@@ -152,7 +152,7 @@ public final class ReflectionUtils {
     public static boolean supports(int version) {return VER >= version;}
 
     /**
-     * Get a NMS (net.minecraft.server) class which accepts a package for 1.17 compatibility.
+     * Get a NMS (net.minecraft.me.andyreckt.holiday.server) class which accepts a package for 1.17 compatibility.
      *
      * @param newPackage the 1.17 package name.
      * @param name       the name of the class.
@@ -167,7 +167,7 @@ public final class ReflectionUtils {
     }
 
     /**
-     * Get a NMS (net.minecraft.server) class.
+     * Get a NMS (net.minecraft.me.andyreckt.holiday.server) class.
      *
      * @param name the name of the class.
      *

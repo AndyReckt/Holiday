@@ -2,8 +2,8 @@ package me.andyreckt.holiday.api.server;
 
 import me.andyreckt.holiday.api.user.IRank;
 
-import java.util.UUID;
 import java.util.List;
+import java.util.UUID;
 
 public interface IServer {
 

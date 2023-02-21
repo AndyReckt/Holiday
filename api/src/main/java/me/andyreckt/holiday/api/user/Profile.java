@@ -3,7 +3,6 @@ package me.andyreckt.holiday.api.user;
 import com.google.gson.annotations.SerializedName;
 import me.andyreckt.holiday.api.server.IServer;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;

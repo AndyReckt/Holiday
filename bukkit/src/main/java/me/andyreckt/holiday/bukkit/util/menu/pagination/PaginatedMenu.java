@@ -53,9 +53,11 @@ public abstract class PaginatedMenu extends Menu {
         final int minIndex = (int) ((this.page - 1) * (double) this.getMaxItemsPerPage(player));
         final int maxIndex = (int) (this.page * (double) this.getMaxItemsPerPage(player));
         final HashMap<Integer, Button> buttons = new HashMap<>();
+
         for (int i : new int[]{0, 1, 7, 8, 9, 17, 27, 35, 36, 37, 43, 44}) {
             buttons.put(i, new Glass(getGlassColor()));
         }
+
         PageButton prevPage = new PageButton(-1, this);
         PageButton nextPage = new PageButton(1, this);
 
@@ -103,7 +105,7 @@ public abstract class PaginatedMenu extends Menu {
         }
 
         if (backButton() != null) {
-            buttons.put(40, new BackButton(this.backButton()));
+            buttons.put(getSize() - 5, new BackButton(this.backButton()));
         }
 
         return buttons;

@@ -111,7 +111,7 @@ public class ChatManager {
 
             if (Locale.FILTER_SEND.getBoolean()) {
                 String toSend = Locale.FILTER_MESSAGE.getString()
-                        .replace("%server%", Locale.SERVER_NAME.getString())
+                        .replace("%me.andyreckt.holiday.server%", Locale.SERVER_NAME.getString())
                         .replace("%player%", UserConstants.getDisplayNameWithColor(profile))
                         .replace("%message%", message);
                 PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));
@@ -123,7 +123,7 @@ public class ChatManager {
         if (lowFilter) {
             if (Locale.FILTER_SEND.getBoolean()) {
                 String toSend = Locale.FILTER_MESSAGE.getString()
-                        .replace("%server%", Locale.SERVER_NAME.getString())
+                        .replace("%me.andyreckt.holiday.server%", Locale.SERVER_NAME.getString())
                         .replace("%player%", UserConstants.getNameWithColor(profile))
                         .replace("%message%", message);
                 PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_FILTERED_MESSAGES.get()));

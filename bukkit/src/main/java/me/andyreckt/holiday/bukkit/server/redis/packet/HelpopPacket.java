@@ -21,7 +21,7 @@ public class HelpopPacket implements Packet {
     @Override
     public void onReceive() {
         String[] message = Locale.HELPOP_FORMAT.getString()
-                .replace("%server%", server)
+                .replace("%me.andyreckt.holiday.server%", server)
                 .replace("%player%", sender)
                 .replace("%message%", request)
                 .split("%newline%");

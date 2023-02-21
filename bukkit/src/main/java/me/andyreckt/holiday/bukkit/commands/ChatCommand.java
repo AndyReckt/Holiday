@@ -39,7 +39,7 @@ public class ChatCommand {
         Bukkit.broadcastMessage(Locale.GLOBAL_CHAT_CLEAR.getString());
         String toSend = Locale.STAFF_CHAT_CLEAR.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
+                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName());
         PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
@@ -51,10 +51,10 @@ public class ChatCommand {
         Bukkit.broadcastMessage(Holiday.getInstance().getChatManager().isChatMuted() ? Locale.GLOBAL_CHAT_MUTED.getString() : Locale.GLOBAL_CHAT_UNMUTED.getString());
         String toSendMuted = Locale.STAFF_CHAT_MUTED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
+                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName());
         String toSendUnmuted = Locale.STAFF_CHAT_UNMUTED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
+                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName());
         PacketHandler.send(
                 new BroadcastPacket(Holiday.getInstance().getChatManager().isChatMuted() ? toSendMuted : toSendUnmuted,
                         Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
@@ -73,7 +73,7 @@ public class ChatCommand {
         Bukkit.broadcastMessage(Locale.GLOBAL_CHAT_SLOWED.getString().replace("%delay%", TimeUtil.getDuration(time)));
         String toSend = Locale.STAFF_CHAT_SLOWED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
+                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%delay%", TimeUtil.getDuration(time));
         PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
@@ -87,7 +87,7 @@ public class ChatCommand {
         Bukkit.broadcastMessage(Locale.GLOBAL_CHAT_UNSLOWED.getString());
         String toSend = Locale.STAFF_CHAT_UNSLOWED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
+                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName());
         PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }

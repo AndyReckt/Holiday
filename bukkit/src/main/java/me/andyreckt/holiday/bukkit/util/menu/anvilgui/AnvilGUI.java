@@ -23,7 +23,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 /**
- * An anvil gui, used for gathering a user's input
+ * An anvil gui, used for gathering a me.andyreckt.holiday.user's input
  *
  * @author Wesley Smith
  * @since 1.0
@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 public class AnvilGUI {
 
     /**
-     * The local {@link VersionWrapper} object for the server's version
+     * The local {@link VersionWrapper} object for the me.andyreckt.holiday.server's version
      */
     private static VersionWrapper WRAPPER = new VersionMatcher().match();
 
@@ -56,7 +56,7 @@ public class AnvilGUI {
      */
     private ItemStack inputRight;
     /**
-     * A state that decides where the anvil GUI is able to be closed by the user
+     * A state that decides where the anvil GUI is able to be closed by the me.andyreckt.holiday.user
      */
     private final boolean preventClose;
     /**
@@ -102,7 +102,7 @@ public class AnvilGUI {
      * @param holder     The {@link Player} to open the inventory for
      * @param insert  What to have the text already set to
      * @param biFunction A {@link BiFunction} that is called when the player clicks the {@link Slot#OUTPUT} slot
-     * @throws NullPointerException If the server version isn't supported
+     * @throws NullPointerException If the me.andyreckt.holiday.server version isn't supported
      * @deprecated As of version 1.2.3, use {@link Builder}
      */
     @Deprecated
@@ -303,7 +303,7 @@ public class AnvilGUI {
          */
         private Consumer<Player> closeListener;
         /**
-         * A state that decides where the anvil GUI is able to be closed by the user
+         * A state that decides where the anvil GUI is able to be closed by the me.andyreckt.holiday.user
          */
         private boolean preventClose = false;
         /**
@@ -323,7 +323,7 @@ public class AnvilGUI {
          */
         private Plugin plugin;
         /**
-         * The text that will be displayed to the user
+         * The text that will be displayed to the me.andyreckt.holiday.user
          */
         private String title = "Repair & Name";
         /**
@@ -340,7 +340,7 @@ public class AnvilGUI {
         private ItemStack itemRight;
 
         /**
-         * Prevents the closing of the anvil GUI by the user
+         * Prevents the closing of the anvil GUI by the me.andyreckt.holiday.user
          *
          * @return The {@link Builder} instance
          */
@@ -387,7 +387,7 @@ public class AnvilGUI {
         /**
          * Handles the inventory output slot when it is clicked
          *
-         * @param completeFunction An {@link BiFunction} that is called when the user clicks the output slot
+         * @param completeFunction An {@link BiFunction} that is called when the me.andyreckt.holiday.user clicks the output slot
          * @return The {@link Builder} instance
          * @throws IllegalArgumentException when the completeFunction is null
          */
@@ -411,7 +411,7 @@ public class AnvilGUI {
         }
 
         /**
-         * Sets the inital item-text that is displayed to the user
+         * Sets the inital item-text that is displayed to the me.andyreckt.holiday.user
          *
          * @param text The initial name of the item in the anvil
          * @return The {@link Builder} instance
@@ -424,9 +424,9 @@ public class AnvilGUI {
         }
 
         /**
-         * Sets the AnvilGUI title that is to be displayed to the user
+         * Sets the AnvilGUI title that is to be displayed to the me.andyreckt.holiday.user
          *
-         * @param title The title that is to be displayed to the user
+         * @param title The title that is to be displayed to the me.andyreckt.holiday.user
          * @return The {@link Builder} instance
          * @throws IllegalArgumentException if the title is null
          */
@@ -505,16 +505,16 @@ public class AnvilGUI {
     public static class Response {
 
         /**
-         * The text that is to be displayed to the user
+         * The text that is to be displayed to the me.andyreckt.holiday.user
          */
         private final String text;
 
         private final Inventory openInventory;
 
         /**
-         * Creates a response to the user's input
+         * Creates a response to the me.andyreckt.holiday.user's input
          *
-         * @param text The text that is to be displayed to the user, which can be null to close the inventory
+         * @param text The text that is to be displayed to the me.andyreckt.holiday.user, which can be null to close the inventory
          */
         private Response(String text, Inventory openInventory) {
             this.text = text;
@@ -522,9 +522,9 @@ public class AnvilGUI {
         }
 
         /**
-         * Gets the text that is to be displayed to the user
+         * Gets the text that is to be displayed to the me.andyreckt.holiday.user
          *
-         * @return The text that is to be displayed to the user
+         * @return The text that is to be displayed to the me.andyreckt.holiday.user
          */
         public String getText() {
             return text;
@@ -549,10 +549,10 @@ public class AnvilGUI {
         }
 
         /**
-         * Returns an {@link Response} object for when the anvil GUI is to display text to the user
+         * Returns an {@link Response} object for when the anvil GUI is to display text to the me.andyreckt.holiday.user
          *
-         * @param text The text that is to be displayed to the user
-         * @return An {@link Response} object for when the anvil GUI is to display text to the user
+         * @param text The text that is to be displayed to the me.andyreckt.holiday.user
+         * @return An {@link Response} object for when the anvil GUI is to display text to the me.andyreckt.holiday.user
          */
         public static Response text(String text) {
             return new Response(text, null);

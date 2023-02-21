@@ -31,7 +31,7 @@ public class WhitelistCommand {
         Bukkit.broadcastMessage(Locale.GLOBAL_WHITELIST_ENABLED.getString());
         String toSend = Locale.STAFF_WHITELIST_ENABLED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
+                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName());
         PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
@@ -42,19 +42,19 @@ public class WhitelistCommand {
         Bukkit.broadcastMessage(Locale.GLOBAL_WHITELIST_DISABLED.getString());
         String toSend = Locale.STAFF_WHITELIST_DISABLED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
+                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName());
         PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
 
-    @SubCommand(names = {"setrank", "rank"}, async = true, description = "Set the rank required to join the server.")
+    @SubCommand(names = {"setrank", "rank"}, async = true, description = "Set the rank required to join the me.andyreckt.holiday.server.")
     public void onRank(CommandSender sender, @Param(name = "rank") IRank rank) {
         Holiday.getInstance().getThisServer().setWhitelistRank(rank);
         sender.sendMessage(CC.translate(Locale.PLAYER_WHITELIST_RANK.getString().replace("%rank%", rank.getDisplayName())));
         String toSend = Locale.STAFF_WHITELIST_RANK.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
-                .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
+                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%rank%", rank.getDisplayName());
         PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));

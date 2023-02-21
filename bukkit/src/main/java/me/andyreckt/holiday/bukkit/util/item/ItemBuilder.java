@@ -821,7 +821,7 @@ public class ItemBuilder {
 			public Object getNewNBTTagCompound() {
 				String ver = Bukkit.getServer().getClass().getPackage().getName().split(".")[3];
 				try {
-					return Class.forName("net.minecraft.server." + ver + ".NBTTagCompound").newInstance();
+					return Class.forName("net.minecraft.me.andyreckt.holiday.server." + ver + ".NBTTagCompound").newInstance();
 				} catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
 					ex.printStackTrace();
 				}

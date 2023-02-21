@@ -13,10 +13,10 @@ import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@MainCommand(names = "user", permission = Perms.USER, description = "User command.")
+@MainCommand(names = "me.andyreckt.holiday.user", permission = Perms.USER, description = "User command.")
 public class UserCommand {
 
-    @SubCommand(names = {"addpermission", "addperm"}, description = "Add permission to user.")
+    @SubCommand(names = {"addpermission", "addperm"}, description = "Add permission to me.andyreckt.holiday.user.")
     public void addPermission(CommandSender sender, @Param(name = "player") Profile profile, @Param(name = "permission") String permission) {
         if (profile.getPermissions().contains(permission)) {
             sender.sendMessage(Locale.PLAYER_ALREADY_HAS_PERMISSION.getString());
@@ -28,7 +28,7 @@ public class UserCommand {
         PacketHandler.send(new PermissionUpdatePacket(profile.getUuid()));
     }
 
-    @SubCommand(names = {"removepermission", "removeperm", "remperm"}, description = "Remove permission from user.")
+    @SubCommand(names = {"removepermission", "removeperm", "remperm"}, description = "Remove permission from me.andyreckt.holiday.user.")
     public void removePermission(CommandSender sender, @Param(name = "player") Profile profile, @Param(name = "permission") String permission) {
         if (!profile.getPermissions().contains(permission)) {
             sender.sendMessage(Locale.PLAYER_DOES_NOT_HAVE_PERMISSION.getString());

@@ -37,7 +37,7 @@ public enum Locale {
     /* SERVER INFO */
     SERVER_ID(SETTINGS.get(),"proxy.id", "Proxy-1"),
     SERVER_NAME(SETTINGS.get(),"proxy.name", "Proxy #1"),
-    SERVER_AUTO_ADD(SETTINGS.get(),"proxy.auto-server-add", false),
+    SERVER_AUTO_ADD(SETTINGS.get(),"proxy.auto-me.andyreckt.holiday.server-add", false),
 
     /* COLORS */
     COLOR_PRIMARY(SETTINGS.get(),"color.primary", "AQUA"),
@@ -46,9 +46,9 @@ public enum Locale {
 
     /* STAFF */
     STAFF_SWITCH_PERM(MESSAGES.get(),"staff.switch.perm", "core.staff.switch"),
-    STAFF_SWITCH_JOIN(MESSAGES.get(),"staff.switch.join", "&b[S] %player% &econnected to %server%."),
-    STAFF_SWITCH_LEAVE(MESSAGES.get(),"staff.switch.leave", "&b[S] %player% &edisconnected from %server%."),
-    STAFF_SWITCH_SERVER(MESSAGES.get(),"staff.switch.server", "&b[S] %player% &ejoined %server% from %old%."),
+    STAFF_SWITCH_JOIN(MESSAGES.get(),"staff.switch.join", "&b[S] %player% &econnected to %me.andyreckt.holiday.server%."),
+    STAFF_SWITCH_LEAVE(MESSAGES.get(),"staff.switch.leave", "&b[S] %player% &edisconnected from %me.andyreckt.holiday.server%."),
+    STAFF_SWITCH_SERVER(MESSAGES.get(),"staff.switch.me.andyreckt.holiday.server", "&b[S] %player% &ejoined %me.andyreckt.holiday.server% from %old%."),
     ;
 
     private final String path;

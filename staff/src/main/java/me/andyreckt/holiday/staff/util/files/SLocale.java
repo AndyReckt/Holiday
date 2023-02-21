@@ -40,12 +40,12 @@ public enum SLocale {
             "&4Do not log out! &7&oDoing so will result in a ban.", " "),
 
     /* ALERTS */
-    ALERTS_VANISH_ON(MESSAGES.get(), "alerts.vanish-on", "&b[S] &3[%server%] %player% &evanished."),
-    ALERTS_VANISH_OFF(MESSAGES.get(), "alerts.vanish-off", "&b[S] &3[%server%] %player% &eunvanished."),
-    ALERTS_MODMODE_ON(MESSAGES.get(), "alerts.modmode-on", "&b[S] &3[%server%] %player% &eentered staff mode."),
-    ALERTS_MODMODE_OFF(MESSAGES.get(), "alerts.modmode-off", "&b[S] &3[%server%] %player% &eexited staff mode."),
-    ALERTS_FREEZE_ON(MESSAGES.get(), "alerts.freeze-on", "&b[S] &3[%server%] %player% &efroze %target%&e."),
-    ALERTS_FREEZE_OFF(MESSAGES.get(), "alerts.freeze-off", "&b[S] &3[%server%] %player% &eunfroze %target%&e."),
+    ALERTS_VANISH_ON(MESSAGES.get(), "alerts.vanish-on", "&b[S] &3[%me.andyreckt.holiday.server%] %player% &evanished."),
+    ALERTS_VANISH_OFF(MESSAGES.get(), "alerts.vanish-off", "&b[S] &3[%me.andyreckt.holiday.server%] %player% &eunvanished."),
+    ALERTS_MODMODE_ON(MESSAGES.get(), "alerts.modmode-on", "&b[S] &3[%me.andyreckt.holiday.server%] %player% &eentered staff mode."),
+    ALERTS_MODMODE_OFF(MESSAGES.get(), "alerts.modmode-off", "&b[S] &3[%me.andyreckt.holiday.server%] %player% &eexited staff mode."),
+    ALERTS_FREEZE_ON(MESSAGES.get(), "alerts.freeze-on", "&b[S] &3[%me.andyreckt.holiday.server%] %player% &efroze %target%&e."),
+    ALERTS_FREEZE_OFF(MESSAGES.get(), "alerts.freeze-off", "&b[S] &3[%me.andyreckt.holiday.server%] %player% &eunfroze %target%&e."),
     ALERTS_FREEZE_LOGOUT(MESSAGES.get(), "alerts.freeze-logout", " \\n &c%player% &4has logged out while frozen. \\n "),
 
     ;

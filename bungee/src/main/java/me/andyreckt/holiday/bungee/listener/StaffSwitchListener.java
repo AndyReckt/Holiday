@@ -24,7 +24,7 @@ public class StaffSwitchListener implements Listener {
                 String playername = Bungee.getInstance().getNameWithColor(profile);
                 String toSend = Locale.STAFF_SWITCH_JOIN.getString()
                         .replace("%player%", playername)
-                        .replace("%server%", server);
+                        .replace("%me.andyreckt.holiday.server%", server);
                 PacketHandler.send(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
             } else {
                 String server = event.getPlayer().getServer().getInfo().getName();
@@ -32,7 +32,7 @@ public class StaffSwitchListener implements Listener {
                 String playername = Bungee.getInstance().getNameWithColor(profile);
                 String toSend = Locale.STAFF_SWITCH_SERVER.getString()
                         .replace("%player%", playername)
-                        .replace("%server%", server)
+                        .replace("%me.andyreckt.holiday.server%", server)
                         .replace("%old%", oldServer);
                 PacketHandler.send(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
             }
@@ -45,12 +45,12 @@ public class StaffSwitchListener implements Listener {
         Profile profile = Bungee.getInstance().getApi().getProfile(player.getUniqueId());
 
         if (profile.hasPermission(Locale.STAFF_SWITCH_PERM.getString())) {
-            if (event.getPlayer().getServer() == null) return; // Player is not on a server (probably a proxy bug)
+            if (event.getPlayer().getServer() == null) return; // Player is not on a me.andyreckt.holiday.server (probably a proxy bug)
             String server = event.getPlayer().getServer().getInfo().getName();
             String playername = Bungee.getInstance().getNameWithColor(profile);
             String toSend = Locale.STAFF_SWITCH_LEAVE.getString()
                     .replace("%player%", playername)
-                    .replace("%server%", server);
+                    .replace("%me.andyreckt.holiday.server%", server);
             PacketHandler.send(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
         }
     }

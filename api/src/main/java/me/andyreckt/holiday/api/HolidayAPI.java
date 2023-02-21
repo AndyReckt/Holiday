@@ -8,7 +8,6 @@ import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 
-
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,156 +20,154 @@ public class HolidayAPI implements API {
         instance = this;
     }
 
-    private me.andyreckt.holiday.core.HolidayAPI getApi() {
-        return me.andyreckt.holiday.core.HolidayAPI.getUnsafeAPI();
-    }
 
     @Override
     public List<IGrant> getGrants() {
-        return getApi().getGrants();
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public List<IGrant> getGrants(UUID uuid) {
-        return getApi().getGrants(uuid);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public IGrant getGrantFromId(UUID grantId) {
-        return getApi().getGrantFromId(grantId);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public void refreshGrants() {
-        getApi().refreshGrants();
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public void saveGrant(IGrant grant) {
-        getApi().saveGrant(grant);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public void revokeGrant(IGrant grant, UUID revokedBy, String revokedOn, String revokedReason) {
-        getApi().revokeGrant(grant, revokedBy, revokedOn, revokedReason);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public Profile getProfile(UUID uuid) {
-        return getApi().getProfile(uuid);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public CompletableFuture<HashMap<UUID, Profile>> getAllProfiles() {
-        return getApi().getAllProfiles();
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public void saveProfile(Profile profile) {
-        getApi().saveProfile(profile);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     public void deleteProfile(Profile profile) {
-        getApi().deleteProfile(profile);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public void revokePunishment(IPunishment punishment, UUID revokedBy, String revokedReason, String revokedOn) {
-        getApi().revokePunishment(punishment, revokedBy, revokedReason, revokedOn);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public List<IPunishment> getPunishments(UUID uniqueId) {
-        return getApi().getPunishments(uniqueId);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public List<IPunishment> getPunishments() {
-        return getApi().getPunishments();
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public void savePunishment(IPunishment punishment) {
-        getApi().savePunishment(punishment);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public void refreshPunishments() {
-        getApi().refreshPunishments();
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public IPunishment getPunishment(String id) {
-        return getApi().getPunishment(id);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public IRank getDefaultRank() {
-        return getApi().getDefaultRank();
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public Queue<IRank> getRanks() {
-        return getApi().getRanks();
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public List<IRank> getRanksSorted() {
-        return getApi().getRanksSorted();
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public IRank createRank(String name) {
-        return getApi().createRank(name);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public void saveRank(IRank rank) {
-        getApi().saveRank(rank);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public void deleteRank(IRank rank) {
-        getApi().deleteRank(rank);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public IRank getRank(String name) {
-        return getApi().getRank(name);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public IRank getRank(UUID uuid) {
-        return getApi().getRank(uuid);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public boolean isOnline(UUID playerId) {
-        return getApi().isOnline(playerId);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public Map<UUID, String> getOnlinePlayers() {
-        return getApi().getOnlinePlayers();
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public Map<String, IServer> getServers() {
-        return getApi().getServers();
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public IServer getServer(String serverId) {
-        return getApi().getServer(serverId);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public IServer getServer(UUID playerId) {
-        return getApi().getServer(playerId);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
+
 
     @Override
     public <T> T runRedisCommand(RedisCommand<T> command) {
-        return getApi().runRedisCommand(command);
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 }

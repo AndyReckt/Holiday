@@ -60,7 +60,7 @@ public class BukkitReflection
         try {
             final String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
             CRAFT_BUKKIT_PACKAGE = "org.bukkit.craftbukkit." + version + ".";
-            NET_MINECRAFT_SERVER_PACKAGE = "net.minecraft.server." + version + ".";
+            NET_MINECRAFT_SERVER_PACKAGE = "net.minecraft.me.andyreckt.holiday.server." + version + ".";
             CRAFT_SERVER_CLASS = Class.forName(BukkitReflection.CRAFT_BUKKIT_PACKAGE + "CraftServer");
             (CRAFT_SERVER_GET_HANDLE_METHOD = BukkitReflection.CRAFT_SERVER_CLASS.getDeclaredMethod("getHandle")).setAccessible(true);
             PLAYER_LIST_CLASS = Class.forName(BukkitReflection.NET_MINECRAFT_SERVER_PACKAGE + "PlayerList");

@@ -70,7 +70,7 @@ public class DebugCommand {
         });
     }
 
-    @SubCommand(names = "server", description = "Server debug", async = true)
+    @SubCommand(names = "me.andyreckt.holiday.server", description = "Server debug", async = true)
     public void serverDebugging(CommandSender sender) {
         if (!Logger.DEV) {
             sender.sendMessage(CC.translate("&cThis command is not available in production"));
