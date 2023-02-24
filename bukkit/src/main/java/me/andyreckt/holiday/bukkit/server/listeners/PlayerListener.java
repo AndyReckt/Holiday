@@ -198,7 +198,7 @@ public class PlayerListener implements Listener {
                     rank,
                     UserProfile.getConsoleProfile().getUuid(),
                     "Liked on NameMC",
-                    "$undefined",
+                    Holiday.getInstance().getThisServer().getServerName(),
                     TimeUtil.PERMANENT
             );
 
