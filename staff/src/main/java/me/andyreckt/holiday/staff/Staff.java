@@ -40,7 +40,7 @@ public class Staff extends JavaPlugin {
         } catch (Exception ex) {
             Logger.error("An error occurred while enabling the staff addon. Showing stacktrace:");
             ex.printStackTrace();
-            Logger.error("Stopping the me.andyreckt.holiday.server...");
+            Logger.error("Stopping the server...");
         }
 
     }

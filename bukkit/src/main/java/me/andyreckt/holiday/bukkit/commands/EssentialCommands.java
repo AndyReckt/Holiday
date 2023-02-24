@@ -178,14 +178,14 @@ public class EssentialCommands {
         if (sender.getAllowFlight()) {
             sender.sendMessage(Locale.FLY_ENABLED.getString());
             String toSend = Locale.FLY_ENABLED_STAFF.getString()
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", executor);
             PacketHandler.send(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
             ));
         } else {
             String toSend = Locale.FLY_DISABLED_STAFF.getString()
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", executor);
             PacketHandler.send(new BroadcastPacket(
                     toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE
@@ -215,7 +215,7 @@ public class EssentialCommands {
             target.sendMessage(CC.translate(y));
 
             String toSend = Locale.GIVE_STAFF.getString()
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", executor)
                     .replace("%player%", target.getName())
                     .replace("%item%", mat.name())
@@ -249,7 +249,7 @@ public class EssentialCommands {
                 player.sendMessage(y);
             }
             String toSend = Locale.GIVE_ALL_STAFF.getString()
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", executor)
                     .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
@@ -275,7 +275,7 @@ public class EssentialCommands {
                     .replace("%amount%", String.valueOf(amount));
             sender.sendMessage(x);
             String toSend = Locale.GIVE_SELF_STAFF.getString()
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", executor)
                     .replace("%item%", mat.name())
                     .replace("%amount%", String.valueOf(amount));
@@ -305,7 +305,7 @@ public class EssentialCommands {
                 target.sendMessage(Locale.CLEAR_TARGET.getString().replace("%player%", sender.getName()));
                 player.sendMessage(Locale.CLEAR_SENDER.getString().replace("%player%", target.getName()));
                 String toSend = Locale.CLEAR_PLAYER_STAFF.getString()
-                        .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                        .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                         .replace("%executor%", executor)
                         .replace("%player%", target.getName());
                 PacketHandler.send(new BroadcastPacket(
@@ -328,7 +328,7 @@ public class EssentialCommands {
             if (target == player) {
                 player.sendMessage(Locale.HEAL_SELF.getString());
                 String toSend = Locale.HEAL_STAFF.getString()
-                        .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                        .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                         .replace("%executor%", executor)
                         .replace("%player%", "himself");
                 PacketHandler.send(new BroadcastPacket(
@@ -338,7 +338,7 @@ public class EssentialCommands {
                 target.sendMessage(Locale.HEAL_TARGET.getString().replace("%player%", sender.getName()));
                 player.sendMessage(Locale.HEAL_SENDER.getString().replace("%player%", target.getName()));
                 String toSend = Locale.HEAL_STAFF.getString()
-                        .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                        .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                         .replace("%executor%", executor)
                         .replace("%player%", target.getName());
                 PacketHandler.send(new BroadcastPacket(
@@ -489,7 +489,7 @@ public class EssentialCommands {
             String senderName = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
             String toSend = Locale.SUDO_STAFF.getString()
                     .replace("%executor%", senderName)
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%player%", target.getName())
                     .replace("%text%", msg);
             PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
@@ -511,7 +511,7 @@ public class EssentialCommands {
             String senderName = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(player.getUniqueId()));
             String toSend = Locale.SUDO_ALL_STAFF.getString()
                     .replace("%executor%", senderName)
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%text%", msg);
             PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
         }
@@ -569,7 +569,7 @@ public class EssentialCommands {
         String server = Holiday.getInstance().getThisServer().getServerName();
         String toSend = Locale.STAFF_CHAT.getString()
                 .replace("%player%", playerName)
-                .replace("%me.andyreckt.holiday.server%", server)
+                .replace("%server%", server)
                 .replace("%message%", message);
         PacketHandler.send(new BroadcastPacket(
                 toSend,
@@ -595,7 +595,7 @@ public class EssentialCommands {
         String server = Holiday.getInstance().getThisServer().getServerName();
         String toSend = Locale.ADMIN_CHAT.getString()
                 .replace("%player%", playerName)
-                .replace("%me.andyreckt.holiday.server%", server)
+                .replace("%server%", server)
                 .replace("%message%", message);
         PacketHandler.send(new BroadcastPacket(
                 toSend,
@@ -605,7 +605,7 @@ public class EssentialCommands {
     }
 
     @Command(names = "join", permission = Perms.JOIN)
-    public void join(Player sender, @Param(name = "me.andyreckt.holiday.server") String server) {
+    public void join(Player sender, @Param(name = "server") String server) {
         IServer data = Holiday.getInstance().getApi().getServer(server);
 
         if (data == null || !data.isOnline()) {
@@ -619,7 +619,7 @@ public class EssentialCommands {
             sender.sendMessage(CC.translate(sb.substring(0, sb.length() - 3)));
             return;
         }
-        sender.sendMessage(Locale.JOINING_SERVER.getString().replace("%me.andyreckt.holiday.server%", data.getServerName()));
+        sender.sendMessage(Locale.JOINING_SERVER.getString().replace("%server%", data.getServerName()));
         PlayerUtils.sendToServer(sender, server);
     }
 
@@ -643,7 +643,7 @@ public class EssentialCommands {
     }
 
     @Command(names = "sendtoserver", permission = Perms.SEND_TO_SERVER)
-    public void send(CommandSender sender, @Param(name = "player") Player player, @Param(name = "me.andyreckt.holiday.server") String server) {
+    public void send(CommandSender sender, @Param(name = "player") Player player, @Param(name = "server") String server) {
         IServer data = Holiday.getInstance().getApi().getServer(server);
 
         if (data == null || !data.isOnline()) {
@@ -660,7 +660,7 @@ public class EssentialCommands {
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
         sender.sendMessage(Locale.SENDING_PLAYER.getString()
                 .replace("%player%", UserConstants.getDisplayNameWithColor(profile))
-                .replace("%me.andyreckt.holiday.server%", data.getServerName()));
+                .replace("%server%", data.getServerName()));
         PlayerUtils.sendToServer(player, server);
     }
 
@@ -669,7 +669,7 @@ public class EssentialCommands {
         if (player.isOnline()) {
             sender.sendMessage(Locale.PLAYER_CONNECTED_TO.getString()
                     .replace("%player%", UserConstants.getDisplayNameWithColor(player))
-                    .replace("%me.andyreckt.holiday.server%", player.getCurrentServer().getServerName()));
+                    .replace("%server%", player.getCurrentServer().getServerName()));
         } else {
             sender.sendMessage(Locale.PLAYER_NOT_ONLINE.getString());
         }

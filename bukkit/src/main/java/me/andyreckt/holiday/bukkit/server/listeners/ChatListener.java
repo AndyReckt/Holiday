@@ -74,7 +74,7 @@ public class ChatListener implements Listener {
 
             String toSend = Locale.STAFF_CHAT.getString()
                     .replace("%player%", playerName)
-                    .replace("%me.andyreckt.holiday.server%", server)
+                    .replace("%server%", server)
                     .replace("%message%", message);
             PacketHandler.send(new BroadcastPacket(
                     toSend,
@@ -97,7 +97,7 @@ public class ChatListener implements Listener {
 
             String toSend = Locale.ADMIN_CHAT.getString()
                     .replace("%player%", playerName)
-                    .replace("%me.andyreckt.holiday.server%", server)
+                    .replace("%server%", server)
                     .replace("%message%", message);
             PacketHandler.send(new BroadcastPacket(
                     toSend,

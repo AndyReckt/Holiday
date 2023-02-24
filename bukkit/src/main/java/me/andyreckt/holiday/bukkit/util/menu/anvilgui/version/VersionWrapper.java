@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 /**
- * Wraps versions to be able to easily use different NMS me.andyreckt.holiday.server versions
+ * Wraps versions to be able to easily use different NMS server versions
  *
  * @author Wesley Smith
  * @since 1.0

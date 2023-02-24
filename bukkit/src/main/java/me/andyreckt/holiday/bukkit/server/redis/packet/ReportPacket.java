@@ -20,7 +20,7 @@ public class ReportPacket implements Packet {
     @Override
     public void onReceive() {
         String[] message = Locale.REPORT_FORMAT.getString()
-                .replace("%me.andyreckt.holiday.server%", server)
+                .replace("%server%", server)
                 .replace("%player%", reporter)
                 .replace("%target%", reported)
                 .replace("%reason%", reason)
@@ -29,7 +29,7 @@ public class ReportPacket implements Packet {
         for (String s : message) {
             Clickable clickable = new Clickable(s,
                     Locale.REPORT_CLICK_MESSAGE.getString()
-                            .replace("%me.andyreckt.holiday.server%", server),
+                            .replace("%server%", server),
                     "/join " + server
             );
 

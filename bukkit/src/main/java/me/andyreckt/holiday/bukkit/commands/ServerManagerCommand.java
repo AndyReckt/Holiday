@@ -27,8 +27,8 @@ import org.bukkit.entity.Player;
 public class ServerManagerCommand {
 
     @SneakyThrows
-    @SubCommand(names = {"command", "runcommand", "cmd"}, description = "Run a command on a me.andyreckt.holiday.server, or all the servers.", async = true)
-    public void runCmd(CommandSender sender, @Param(name = "me.andyreckt.holiday.server") String serverid, @Param(name = "command", wildcard = true) String command) {
+    @SubCommand(names = {"command", "runcommand", "cmd"}, description = "Run a command on a server, or all the servers.", async = true)
+    public void runCmd(CommandSender sender, @Param(name = "server") String serverid, @Param(name = "command", wildcard = true) String command) {
         if (!serverid.equalsIgnoreCase("ALL")) {
             IServer server = Holiday.getInstance().getApi().getServer(serverid);
             if (server == null) {
@@ -36,19 +36,19 @@ public class ServerManagerCommand {
                 return;
             }
             String toSend = Locale.STAFF_SERVER_MANAGER_RUN_SERVER.getString()
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%serverid%", server.getServerId())
                     .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%command%", command);
             PacketHandler.send(
                     new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER_MANAGER));
             sender.sendMessage(Locale.PLAYER_SERVER_MANAGER_RUN_SERVER.getString()
-                    .replace("%me.andyreckt.holiday.server%", server.getServerName())
+                    .replace("%server%", server.getServerName())
                     .replace("%command%", command));
             PacketHandler.send(new CrossServerCommandPacket(command, server.getServerId()));
         } else {
             String toSend = Locale.STAFF_SERVER_MANAGER_RUN_ALL.getString()
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%command%", command);
             PacketHandler.send(
@@ -60,8 +60,8 @@ public class ServerManagerCommand {
         }
     }
 
-    @SubCommand(names = {"info", "status"}, description = "Get information about a me.andyreckt.holiday.server.", async = true)
-    public void info(CommandSender sender, @Param(name = "me.andyreckt.holiday.server") String serverid) {
+    @SubCommand(names = {"info", "status"}, description = "Get information about a server.", async = true)
+    public void info(CommandSender sender, @Param(name = "server") String serverid) {
         IServer server = Holiday.getInstance().getApi().getServer(serverid);
         if (server == null || !server.isOnline()) {
             sender.sendMessage(Locale.SERVER_NOT_FOUND.getString());
@@ -88,7 +88,7 @@ public class ServerManagerCommand {
         });
     }
 
-    @Command(names = {"serverlist", "serverlistgui", "slgui", "servers"}, description = "Open the me.andyreckt.holiday.server list gui.", permission = Perms.SERVERMANAGER)
+    @Command(names = {"serverlist", "serverlistgui", "slgui", "servers"}, description = "Open the server list gui.", permission = Perms.SERVERMANAGER)
     @SubCommand(names = {"list", "servers"}, description = "Get a list of all the servers.")
     public void list(Player sender) {
         new ServerListMenu(Holiday.getInstance().getApi().getServers().values()).openMenu(sender);

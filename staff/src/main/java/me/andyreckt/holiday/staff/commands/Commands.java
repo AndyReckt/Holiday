@@ -38,7 +38,7 @@ public class Commands {
 
         String toSend = locale.getString()
                 .replace("%player%", UserConstants.getNameWithColor(profile))
-                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName());
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
 
         PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
         Staff.getInstance().getStaffManager().toggleStaffMode(player);
@@ -56,7 +56,7 @@ public class Commands {
 
         String toSend = locale.getString()
                             .replace("%player%", UserConstants.getNameWithColor(profile))
-                            .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName());
+                            .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
 
         PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
         Staff.getInstance().getStaffManager().vanish(player, profile.getStaffSettings().isStaffMode());
@@ -94,7 +94,7 @@ public class Commands {
         String toSend = locale.getString()
                 .replace("%player%", UserConstants.getNameWithColor(profile))
                 .replace("%target%", UserConstants.getNameWithColor(targetProfile))
-                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName());
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName());
 
         PacketHandler.send(new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
 

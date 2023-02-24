@@ -315,7 +315,7 @@ public class StringUtils {
     }
 
     public static void changeProperties(int slots) {
-        Path resolve = Paths.get(Holiday.getInstance().getDataFolder().getParentFile().getAbsolutePath()).getParent().resolve("me.andyreckt.holiday.server.properties");
+        Path resolve = Paths.get(Holiday.getInstance().getDataFolder().getParentFile().getAbsolutePath()).getParent().resolve("server.properties");
 
         try {
             List<String> allLines = Files.readAllLines(resolve);

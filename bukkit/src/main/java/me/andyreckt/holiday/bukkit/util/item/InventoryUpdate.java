@@ -52,7 +52,7 @@ public final class InventoryUpdate {
         I_CHAT_BASE_COMPONENT_CLASS = ReflectionUtils.getNMSClass("network.chat", "IChatBaseComponent");
         // Check if we use containers, otherwise, can throw errors on older versions.
         CONTAINERS_CLASS = useContainers() ? ReflectionUtils.getNMSClass("world.inventory", "Containers") : null;
-        ENTITY_PLAYER_CLASS = ReflectionUtils.getNMSClass("me.andyreckt.holiday.server.level", "EntityPlayer");
+        ENTITY_PLAYER_CLASS = ReflectionUtils.getNMSClass("server.level", "EntityPlayer");
         CONTAINER_CLASS = ReflectionUtils.getNMSClass("world.inventory", "Container");
 
         MethodHandle handle = null, bukkitView = null;

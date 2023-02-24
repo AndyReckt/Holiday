@@ -107,7 +107,7 @@ public final class Holiday extends JavaPlugin {
         } catch (Exception ex) {
             Logger.error("An error occurred while enabling the plugin. Showing stacktrace:");
             ex.printStackTrace();
-            Logger.error("Stopping the me.andyreckt.holiday.server...");
+            Logger.error("Stopping the server...");
             Bukkit.getServer().shutdown();
         }
     }
@@ -237,7 +237,7 @@ public final class Holiday extends JavaPlugin {
         Tasks.runAsyncLater(() -> {
             joinable = true;
             String str = Locale.SERVER_STARTUP.getString()
-                    .replace("%me.andyreckt.holiday.server%", thisServer.getServerName());
+                    .replace("%server%", thisServer.getServerName());
             PacketHandler.send(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER));
         }, 5 * 20L);
     }
@@ -263,7 +263,7 @@ public final class Holiday extends JavaPlugin {
     public void onDisable() {
         if (!joinable) return;
         String str = Locale.SERVER_SHUTDOWN.getString()
-                .replace("%me.andyreckt.holiday.server%", thisServer.getServerName());
+                .replace("%server%", thisServer.getServerName());
         PacketHandler.send(new BroadcastPacket(str, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.SERVER));
         this.serverTask.cancel();
         this.scheduledExecutor.shutdownNow();

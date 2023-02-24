@@ -97,7 +97,7 @@ public class DisguiseManager {
             });
 
             String toSend = Locale.DISGUISE_MESSAGE_STAFF.getString()
-                    .replace("%me.andyreckt.holiday.server%", plugin.getThisServer().getServerName())
+                    .replace("%server%", plugin.getThisServer().getServerName())
                     .replace("%player%", UserConstants.getNameWithColor(profile))
                     .replace("%name%",UserConstants.getDisplayNameWithColor(profile))
                     .replace("%skin%", disguise.getSkinName());
@@ -122,7 +122,7 @@ public class DisguiseManager {
 
         PacketHandler.send(new DisguisePacket(disguise, true));
         String toSend = Locale.DISGUISE_MESSAGE_STAFF_OFF.getString()
-                .replace("%me.andyreckt.holiday.server%", plugin.getThisServer().getServerName())
+                .replace("%server%", plugin.getThisServer().getServerName())
                 .replace("%player%", UserConstants.getNameWithColor(profile));
         PacketHandler.send(new BroadcastPacket(
                 toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.DISGUISES

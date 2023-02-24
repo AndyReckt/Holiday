@@ -58,7 +58,7 @@ public class GamemodeCommands {
         if (sender instanceof Player && sender == target) {
             sender.sendMessage(Locale.GAMEMODE_UPDATED_SELF.getString().replace("%gamemode%", target.getGameMode().name()));
             String string = Locale.STAFF_GAMEMODE_UPDATED_SELF.getString()
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                     .replace("%gamemode%", target.getGameMode().name());
             PacketHandler.send(
@@ -67,7 +67,7 @@ public class GamemodeCommands {
             target.sendMessage(Locale.GAMEMODE_UPDATED_TARGET.getString().replace("%gamemode%", target.getGameMode().name()));
             sender.sendMessage(Locale.GAMEMODE_UPDATED_OTHER.getString().replace("%gamemode%", target.getGameMode().name()).replace("%player%", target.getName()));
             String string = Locale.STAFF_GAMEMODE_UPDATED.getString()
-                    .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                    .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                     .replace("%executor%", sender instanceof Player ? UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())) : "Console")
                     .replace("%gamemode%", target.getGameMode().name())
                     .replace("%player%", target.getName());

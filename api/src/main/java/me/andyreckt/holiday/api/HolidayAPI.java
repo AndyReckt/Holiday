@@ -20,7 +20,6 @@ public class HolidayAPI implements API {
         instance = this;
     }
 
-
     @Override
     public List<IGrant> getGrants() {
         throw new UnsupportedOperationException("Not implemented yet.");

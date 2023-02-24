@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 public class AnvilGUI {
 
     /**
-     * The local {@link VersionWrapper} object for the me.andyreckt.holiday.server's version
+     * The local {@link VersionWrapper} object for the server's version
      */
     private static VersionWrapper WRAPPER = new VersionMatcher().match();
 
@@ -102,7 +102,7 @@ public class AnvilGUI {
      * @param holder     The {@link Player} to open the inventory for
      * @param insert  What to have the text already set to
      * @param biFunction A {@link BiFunction} that is called when the player clicks the {@link Slot#OUTPUT} slot
-     * @throws NullPointerException If the me.andyreckt.holiday.server version isn't supported
+     * @throws NullPointerException If the server version isn't supported
      * @deprecated As of version 1.2.3, use {@link Builder}
      */
     @Deprecated

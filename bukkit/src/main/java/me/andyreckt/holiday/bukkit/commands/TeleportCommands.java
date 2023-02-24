@@ -20,7 +20,7 @@ public class TeleportCommands {
         Bukkit.getOnlinePlayers().forEach(player -> player.teleport(sender));
         sender.sendMessage(Locale.TELEPORT_PLAYER_ALL.getString());
         String message = Locale.TELEPORT_STAFF_PLAYER_ALL.getString()
-                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())));
         PacketHandler.send(
                 new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
@@ -30,7 +30,7 @@ public class TeleportCommands {
     public void tp(Player sender, @Param(name = "player") Player target) {
         sender.teleport(target.getLocation());
         String message = Locale.TELEPORT_STAFF_PLAYER.getString()
-                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
                 .replace("%player%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
         PacketHandler.send(
@@ -41,7 +41,7 @@ public class TeleportCommands {
     public void tphere(Player sender, @Param(name = "player") Player target) {
         target.teleport(sender.getLocation());
         String message = Locale.TELEPORT_STAFF_PLAYER_HERE.getString()
-                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
                 .replace("%player%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
         PacketHandler.send(new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
@@ -56,7 +56,7 @@ public class TeleportCommands {
         Location location = new Location(sender.getWorld(), x, y, z, sender.getLocation().getYaw(), sender.getLocation().getPitch());
         sender.teleport(location);
         String message = Locale.TELEPORT_STAFF_PLAYER_POSITION.getString()
-                .replace("%me.andyreckt.holiday.server%", Holiday.getInstance().getThisServer().getServerName())
+                .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
                 .replace("%x%", String.valueOf(x))
                 .replace("%y%", String.valueOf(y))

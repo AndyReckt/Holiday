@@ -51,5 +51,9 @@ public class UserConstants {
         if (player != null) reloadPlayer(player);
     }
 
+    public static boolean isCommandDisabled(String command) {
+        if (Locale.DISABLED_COMMANDS_MATCH.getStringList().contains(command)) return true;
+        return Locale.DISABLED_COMMANDS_CONTAINS.getStringList().stream().anyMatch(command::contains);
+    }
 
 }

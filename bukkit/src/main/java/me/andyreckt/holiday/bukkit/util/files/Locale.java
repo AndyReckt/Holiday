@@ -35,20 +35,20 @@ public enum Locale {
     REDIS_PASSWORD(SETTINGS.get(), "redis.password", "bar"),
 
     /* SERVER */
-    SERVER_ID(SETTINGS.get(), "me.andyreckt.holiday.server.bungee-name", "$undefined"),
-    SERVER_NAME(SETTINGS.get(), "me.andyreckt.holiday.server.name", "Unknown"),
-    USE_CUSTOM_IP(SETTINGS.get(), "me.andyreckt.holiday.server.use-custom-ip", false),
-    CUSTOM_IP(SETTINGS.get(), "me.andyreckt.holiday.server.custom-ip", "172.18.0.1"),
-    BANNED_JOIN(SETTINGS.get(), "me.andyreckt.holiday.server.banned-join", false),
-    FALLBACK_SERVER(SETTINGS.get(), "me.andyreckt.holiday.server.fallback-me.andyreckt.holiday.server-id", "lobby"),
-    CHAT_ENABLED(SETTINGS.get(), "me.andyreckt.holiday.server.chat.enabled", true),
-    CHAT_FORMAT(SETTINGS.get(), "me.andyreckt.holiday.server.chat.format", "%prefix%%player%%suffix%&7: %message%"),
-    LOGIN_WHITELIST(SETTINGS.get(), "me.andyreckt.holiday.server.whitelist-login", "&eThe me.andyreckt.holiday.server is currently &cWhitelisted&e. \\n &eYou need %rank% &eor above to be able to log into the me.andyreckt.holiday.server."),
-    SERVER_PLAYER_DISPLAYNAME(SETTINGS.get(), "me.andyreckt.holiday.server.change-player-displayname", true),
-    SERVER_PLAYER_LISTNAME(SETTINGS.get(), "me.andyreckt.holiday.server.change-player-listname", false),
-    SERVER_CREATE_PROFILE_IF_NOT_EXISTS(SETTINGS.get(), "me.andyreckt.holiday.server.create-profile-if-not-exists", false),
+    SERVER_ID(SETTINGS.get(), "server.bungee-name", "$undefined"),
+    SERVER_NAME(SETTINGS.get(), "server.name", "Unknown"),
+    USE_CUSTOM_IP(SETTINGS.get(), "server.use-custom-ip", false),
+    CUSTOM_IP(SETTINGS.get(), "server.custom-ip", "172.18.0.1"),
+    BANNED_JOIN(SETTINGS.get(), "server.banned-join", false),
+    FALLBACK_SERVER(SETTINGS.get(), "server.fallback-server-id", "lobby"),
+    CHAT_ENABLED(SETTINGS.get(), "server.chat.enabled", true),
+    CHAT_FORMAT(SETTINGS.get(), "server.chat.format", "%prefix%%player%%suffix%&7: %message%"),
+    LOGIN_WHITELIST(SETTINGS.get(), "server.whitelist-login", "&eThe server is currently &cWhitelisted&e. \\n &eYou need %rank% &eor above to be able to log into the server."),
+    SERVER_PLAYER_DISPLAYNAME(SETTINGS.get(), "server.change-player-displayname", true),
+    SERVER_PLAYER_LISTNAME(SETTINGS.get(), "server.change-player-listname", false),
+    SERVER_CREATE_PROFILE_IF_NOT_EXISTS(SETTINGS.get(), "server.create-profile-if-not-exists", false),
 
-    // DISABLED_COMMANDS(SETTINGS.get(), "me.andyreckt.holiday.server.disabled-commands", "save-all", "save-off", "save-on", "w",
+    // DISABLED_COMMANDS(SETTINGS.get(), "server.disabled-commands", "save-all", "save-off", "save-on", "w",
     //         "bukkit:op", "bukkit:deop", "bukkit:ban", "bukkit:kick", "bukkit:mute", "bukkit:tempmute", "bukkit:unmute",
     //         "bukkit:tempban", "bukkit:unban", "bukkit:banip", "bukkit:unbanip", "bukkit:tempbanip", "bukkit:banlist",
     //         "bukkit:pardon", "bukkit:pardonip", "bukkit:whitelist", "bukkit:reload", "bukkit:stop", "bukkit:save-all",
@@ -63,7 +63,7 @@ public enum Locale {
 
     /* FILTERS */
     FILTER_SEND(SETTINGS.get(), "filter.send-to-staff", true),
-    FILTER_MESSAGE(SETTINGS.get(), "filter.message", "&d[Filtered] &5[%me.andyreckt.holiday.server%] %player%&e: %message%"),
+    FILTER_MESSAGE(SETTINGS.get(), "filter.message", "&d[Filtered] &5[%server%] %player%&e: %message%"),
     FILTER_LOW_ALLOW(SETTINGS.get(), "filter.low.allow-message", true),
     FILTER_LOW_LIST(SETTINGS.get(), "filter.low.list", "cunt", "anal", "beaner", "nazi", "paki"),
     FILTER_HIGH_ALLOW(SETTINGS.get(), "filter.high.allow-message", false),
@@ -91,13 +91,13 @@ public enum Locale {
     NAMEMC_RANK_NAME(SETTINGS.get(), "namemc.rank.name", "Voter"),
     NAMEMC_NOT_LIKED(SETTINGS.get(), "namemc.not-liked",
             " \\n &eIt seems like you haven't liked our namemc yet." +
-            " \\n &eYou can do so here: &bhttps://namemc.com/me.andyreckt.holiday.server/example.com" +
+            " \\n &eYou can do so here: &bhttps://namemc.com/server/example.com" +
             " \\n &eYou will get a rank and other perks for doing so!" +
             " \\n &eYou can also join our discord for more information: &b%discord%" +
             " \\n "),
 
-    STAFF_CHAT(SETTINGS.get(), "staff-chat.format", "&b[SC] &3[%me.andyreckt.holiday.server%] %player%&e: %message%"),
-    ADMIN_CHAT(SETTINGS.get(), "admin-chat.format", "&c[AC] &3[%me.andyreckt.holiday.server%] %player%&e: %message%"),
+    STAFF_CHAT(SETTINGS.get(), "staff-chat.format", "&b[SC] &3[%server%] %player%&e: %message%"),
+    ADMIN_CHAT(SETTINGS.get(), "admin-chat.format", "&c[AC] &3[%server%] %player%&e: %message%"),
     STAFF_CHAT_PREFIX(SETTINGS.get(), "staff-chat.prefix", "@"),
     ADMIN_CHAT_PREFIX(SETTINGS.get(), "admin-chat.prefix", "#"),
 
@@ -107,8 +107,8 @@ public enum Locale {
     DISABLED_COMMANDS_CONTAINS(SETTINGS.get(), "disabled-commands.contains", "bukkit", "minecraft", ":"),
 
     DISGUISE_MESSAGE(SETTINGS.get(), "disguise.messages", "&eYou are now disguised as %name% &7(%skin%)"),
-    DISGUISE_MESSAGE_STAFF(SETTINGS.get(), "disguise.message-staff", "&b[S] &3[%me.andyreckt.holiday.server%] %player% &edisguised as %name% &7(%skin%)"),
-    DISGUISE_MESSAGE_STAFF_OFF(SETTINGS.get(), "disguise.message-staff-off", "&b[S] &3[%me.andyreckt.holiday.server%] %player% &eundisguised"),
+    DISGUISE_MESSAGE_STAFF(SETTINGS.get(), "disguise.message-staff", "&b[S] &3[%server%] %player% &edisguised as %name% &7(%skin%)"),
+    DISGUISE_MESSAGE_STAFF_OFF(SETTINGS.get(), "disguise.message-staff-off", "&b[S] &3[%server%] %player% &eundisguised"),
     DISGUISE_MESSAGE_OFF(SETTINGS.get(), "disguise.message-off", "&eYou are no longer disguised"),
     DISGUISE_LIST(SETTINGS.get(), "disguise.list-format", "  &7- &e%name% &7(%skin%) » &b%originalName%"),
     DISGUISE_NAMES(SETTINGS.get(), "disguise.names", "Stompaay",
@@ -160,8 +160,8 @@ public enum Locale {
 
 
     /* SERVER STARTUP */
-    SERVER_STARTUP(MESSAGES.get(), "me.andyreckt.holiday.server.startup-alert", "&c[A] &a%me.andyreckt.holiday.server% has just started and is now joinable!"),
-    SERVER_SHUTDOWN(MESSAGES.get(), "me.andyreckt.holiday.server.shutdown-alert", "&c[A] %me.andyreckt.holiday.server% just went offline and is no longer joinable!"),
+    SERVER_STARTUP(MESSAGES.get(), "server.startup-alert", "&c[A] &a%server% has just started and is now joinable!"),
+    SERVER_SHUTDOWN(MESSAGES.get(), "server.shutdown-alert", "&c[A] %server% just went offline and is no longer joinable!"),
 
     /* PUNISHMENTS */
     PUNISHMENT_SILENT_PREFIX(MESSAGES.get(), "punishment.silent-prefix", "&7(Silent) "),
@@ -206,32 +206,32 @@ public enum Locale {
 
     /* CHAT */
     GLOBAL_CHAT_CLEAR(MESSAGES.get(), "chat.me.andyreckt.holiday.global.chat-clear", "&cThe me.andyreckt.holiday.global chat has been cleared."),
-    STAFF_CHAT_CLEAR(MESSAGES.get(), "chat.staff.chat-clear", "&b[S] &3[%me.andyreckt.holiday.server%] &eThe chat has been cleared by %executor%"),
+    STAFF_CHAT_CLEAR(MESSAGES.get(), "chat.staff.chat-clear", "&b[S] &3[%server%] &eThe chat has been cleared by %executor%"),
     GLOBAL_CHAT_MUTED(MESSAGES.get(), "chat.me.andyreckt.holiday.global.chat-muted", "&cThe me.andyreckt.holiday.global chat has been muted."),
-    STAFF_CHAT_MUTED(MESSAGES.get(), "chat.staff.chat-muted", "&b[S] &3[%me.andyreckt.holiday.server%] &eThe chat has been muted by %executor%"),
+    STAFF_CHAT_MUTED(MESSAGES.get(), "chat.staff.chat-muted", "&b[S] &3[%server%] &eThe chat has been muted by %executor%"),
     GLOBAL_CHAT_UNMUTED(MESSAGES.get(), "chat.me.andyreckt.holiday.global.chat-unmuted", "&aThe me.andyreckt.holiday.global chat has been unmuted."),
-    STAFF_CHAT_UNMUTED(MESSAGES.get(), "chat.staff.chat-unmuted", "&b[S] &3[%me.andyreckt.holiday.server%] &eThe chat has been unmuted by %executor%"),
+    STAFF_CHAT_UNMUTED(MESSAGES.get(), "chat.staff.chat-unmuted", "&b[S] &3[%server%] &eThe chat has been unmuted by %executor%"),
     GLOBAL_CHAT_SLOWED(MESSAGES.get(), "chat.me.andyreckt.holiday.global.chat-slowed", "&cThe me.andyreckt.holiday.global chat has been slowed to %delay% seconds."),
-    STAFF_CHAT_SLOWED(MESSAGES.get(), "chat.staff.chat-slowed", "&b[S] &3[%me.andyreckt.holiday.server%] &eThe chat has been slowed down to %delay% seconds by %executor%"),
+    STAFF_CHAT_SLOWED(MESSAGES.get(), "chat.staff.chat-slowed", "&b[S] &3[%server%] &eThe chat has been slowed down to %delay% seconds by %executor%"),
     GLOBAL_CHAT_UNSLOWED(MESSAGES.get(), "chat.me.andyreckt.holiday.global.chat-unslowed", "&aThe me.andyreckt.holiday.global chat has been unslowed."),
-    STAFF_CHAT_UNSLOWED(MESSAGES.get(), "chat.staff.chat-unslowed", "&b[S] &3[%me.andyreckt.holiday.server%] &eThe chat has been unslowed by %executor%"),
+    STAFF_CHAT_UNSLOWED(MESSAGES.get(), "chat.staff.chat-unslowed", "&b[S] &3[%server%] &eThe chat has been unslowed by %executor%"),
 
     /* WHITELIST */
     GLOBAL_WHITELIST_ENABLED(MESSAGES.get(), "whitelist.me.andyreckt.holiday.global.whitelist-enabled", "&cThe whitelist has been enabled."),
-    STAFF_WHITELIST_ENABLED(MESSAGES.get(), "whitelist.staff.whitelist-enabled", "&b[S] &3[%me.andyreckt.holiday.server%] &eThe whitelist has been enabled by %executor%"),
+    STAFF_WHITELIST_ENABLED(MESSAGES.get(), "whitelist.staff.whitelist-enabled", "&b[S] &3[%server%] &eThe whitelist has been enabled by %executor%"),
     GLOBAL_WHITELIST_DISABLED(MESSAGES.get(), "whitelist.me.andyreckt.holiday.global.whitelist-disabled", "&aThe whitelist has been disabled."),
-    STAFF_WHITELIST_DISABLED(MESSAGES.get(), "whitelist.staff.whitelist-disabled", "&b[S] &3[%me.andyreckt.holiday.server%] &eThe whitelist has been disabled by %executor%"),
+    STAFF_WHITELIST_DISABLED(MESSAGES.get(), "whitelist.staff.whitelist-disabled", "&b[S] &3[%server%] &eThe whitelist has been disabled by %executor%"),
     PLAYER_WHITELIST_RANK(MESSAGES.get(), "whitelist.player.whitelist-rank", "&aYou have successfully updated the whitelist rank to %rank%."),
-    STAFF_WHITELIST_RANK(MESSAGES.get(), "whitelist.staff.whitelist-rank", "&b[S] &3[%me.andyreckt.holiday.server%] &eThe whitelist rank has been set to %rank% &eby %executor%"),
+    STAFF_WHITELIST_RANK(MESSAGES.get(), "whitelist.staff.whitelist-rank", "&b[S] &3[%server%] &eThe whitelist rank has been set to %rank% &eby %executor%"),
     PLAYER_WHITELIST_ADDED(MESSAGES.get(), "whitelist.player.whitelist-added", "&aYou have successfully added %player% &ato the whitelist."),
     PLAYER_WHITELIST_REMOVED(MESSAGES.get(), "whitelist.player.whitelist-removed", "&aYou have successfully removed %player% &afrom the whitelist."),
 
     /* SERVER MANAGER */
-    PLAYER_SERVER_MANAGER_RUN_ALL(MESSAGES.get(), "me.andyreckt.holiday.server-manager.player.run-all", "&aSuccessfully ran command '%command%' on all servers."),
-    PLAYER_SERVER_MANAGER_RUN_SERVER(MESSAGES.get(), "me.andyreckt.holiday.server-manager.player.run-me.andyreckt.holiday.server", "&aSuccessfully ran command '%command%' on me.andyreckt.holiday.server %me.andyreckt.holiday.server%."),
-    STAFF_SERVER_MANAGER_RUN_ALL(MESSAGES.get(), "me.andyreckt.holiday.server-manager.staff.run-all", "&c[A] &3[%me.andyreckt.holiday.server%] &e%executor% &ehas run command '%command%' on all servers."),
-    STAFF_SERVER_MANAGER_RUN_SERVER(MESSAGES.get(), "me.andyreckt.holiday.server-manager.staff.run-me.andyreckt.holiday.server", "&c[A] &3[%me.andyreckt.holiday.server%] &e%executor% &ehas run command '%command%' on me.andyreckt.holiday.server %serverid%."),
-    PLAYER_SERVER_MANAGER_INFO(MESSAGES.get(), "me.andyreckt.holiday.server-manager.player.info",
+    PLAYER_SERVER_MANAGER_RUN_ALL(MESSAGES.get(), "server-manager.player.run-all", "&aSuccessfully ran command '%command%' on all servers."),
+    PLAYER_SERVER_MANAGER_RUN_SERVER(MESSAGES.get(), "server-manager.player.run-server", "&aSuccessfully ran command '%command%' on server %server%."),
+    STAFF_SERVER_MANAGER_RUN_ALL(MESSAGES.get(), "server-manager.staff.run-all", "&c[A] &3[%server%] &e%executor% &ehas run command '%command%' on all servers."),
+    STAFF_SERVER_MANAGER_RUN_SERVER(MESSAGES.get(), "server-manager.staff.run-server", "&c[A] &3[%server%] &e%executor% &ehas run command '%command%' on server %serverid%."),
+    PLAYER_SERVER_MANAGER_INFO(MESSAGES.get(), "server-manager.player.info",
             CC.CHAT_BAR,
             "&bServer Manager",
             "&eServer ID: &3%id%",
@@ -245,18 +245,18 @@ public enum Locale {
     GAMEMODE_UPDATED_SELF(MESSAGES.get(), "gamemode.player.updated-self", "&aSuccessfully updated your gamemode to %gamemode%."),
     GAMEMODE_UPDATED_OTHER(MESSAGES.get(), "gamemode.player.updated-other", "&aSuccessfully updated %player%'s gamemode to %gamemode%."),
     GAMEMODE_UPDATED_TARGET(MESSAGES.get(), "gamemode.player.target-updated", "&aYour gamemode has been updated to %gamemode%."),
-    STAFF_GAMEMODE_UPDATED(MESSAGES.get(), "gamemode.staff.updated-other", "&b[S] &3[%me.andyreckt.holiday.server%] &e%executor% &ehas updated %player%'s gamemode to %gamemode%."),
-    STAFF_GAMEMODE_UPDATED_SELF(MESSAGES.get(), "gamemode.staff.updated-self", "&b[S] &3[%me.andyreckt.holiday.server%] &e%executor% &ehas updated their gamemode to %gamemode%."),
+    STAFF_GAMEMODE_UPDATED(MESSAGES.get(), "gamemode.staff.updated-other", "&b[S] &3[%server%] &e%executor% &ehas updated %player%'s gamemode to %gamemode%."),
+    STAFF_GAMEMODE_UPDATED_SELF(MESSAGES.get(), "gamemode.staff.updated-self", "&b[S] &3[%server%] &e%executor% &ehas updated their gamemode to %gamemode%."),
 
     /* TELEPORT */
     TELEPORT_PLAYER(MESSAGES.get(), "teleport.player.teleport", "&aSuccessfully teleported to %player%."),
     TELEPORT_PLAYER_HERE(MESSAGES.get(), "teleport.player.teleport-here", "&aSuccessfully teleported %player% to you."),
     TELEPORT_PLAYER_ALL(MESSAGES.get(), "teleport.player.teleport-all", "&aSuccessfully teleported all players to you."),
     TELEPORT_PLAYER_POSITION(MESSAGES.get(), "teleport.player.teleport-position", "&aSuccessfully teleported to %x%, %y%, %z%."),
-    TELEPORT_STAFF_PLAYER(MESSAGES.get(), "teleport.staff.teleport", "&b[S] &3[%me.andyreckt.holiday.server%] &e%executor% &ehas teleported to %player%."),
-    TELEPORT_STAFF_PLAYER_HERE(MESSAGES.get(), "teleport.staff.teleport-here", "&b[S] &3[%me.andyreckt.holiday.server%] &e%executor% &ehas teleported %player% to them."),
-    TELEPORT_STAFF_PLAYER_ALL(MESSAGES.get(), "teleport.staff.teleport-all", "&b[S] &3[%me.andyreckt.holiday.server%] &e%executor% &ehas teleported all players to them."),
-    TELEPORT_STAFF_PLAYER_POSITION(MESSAGES.get(), "teleport.staff.teleport-position", "&b[S] &3[%me.andyreckt.holiday.server%] &e%executor% &ehas teleported to %x%, %y%, %z%."),
+    TELEPORT_STAFF_PLAYER(MESSAGES.get(), "teleport.staff.teleport", "&b[S] &3[%server%] &e%executor% &ehas teleported to %player%."),
+    TELEPORT_STAFF_PLAYER_HERE(MESSAGES.get(), "teleport.staff.teleport-here", "&b[S] &3[%server%] &e%executor% &ehas teleported %player% to them."),
+    TELEPORT_STAFF_PLAYER_ALL(MESSAGES.get(), "teleport.staff.teleport-all", "&b[S] &3[%server%] &e%executor% &ehas teleported all players to them."),
+    TELEPORT_STAFF_PLAYER_POSITION(MESSAGES.get(), "teleport.staff.teleport-position", "&b[S] &3[%server%] &e%executor% &ehas teleported to %x%, %y%, %z%."),
 
     /* SOCIAL */
     SOCIAL_DISCORD(MESSAGES.get(), "social.discord", "&aJoin our discord at &3%discord%&a!"),
@@ -280,21 +280,21 @@ public enum Locale {
     /* GRANT */
     GRANT_PLAYER(MESSAGES.get(), "grant.message", "&aYou have granted the rank %rank% &ato %player% &afor a duration of %duration%&a."),
     GRANT_TARGET(MESSAGES.get(), "grant.target", "&aYou have been granted the rank %rank% &afor a duration of %duration%&a."),
-    GRANT_STAFF(MESSAGES.get(), "grant.staff", "&c[A] &3[%me.andyreckt.holiday.server%] %executor% &ehas granted the rank %rank% &eto %player% &efor a duration of %duration%&e."),
+    GRANT_STAFF(MESSAGES.get(), "grant.staff", "&c[A] &3[%server%] %executor% &ehas granted the rank %rank% &eto %player% &efor a duration of %duration%&e."),
     GRANT_REASON(MESSAGES.get(), "grant.give-reason", "&aPlease give a reason for granting the rank."),
 
     /* REBOOT */
     REBOOT_STARTED(MESSAGES.get(), "reboot.started", "&aSuccessfully started a reboot task of %time%."),
-    REBOOT_MESSAGE(MESSAGES.get(), "reboot.message", "&cThe me.andyreckt.holiday.server is rebooting in %time%."),
-    REBOOT_NOW(MESSAGES.get(), "reboot.now", "&cThe me.andyreckt.holiday.server is rebooting now."),
+    REBOOT_MESSAGE(MESSAGES.get(), "reboot.message", "&cThe server is rebooting in %time%."),
+    REBOOT_NOW(MESSAGES.get(), "reboot.now", "&cThe server is rebooting now."),
     REBOOT_CANCELLED(MESSAGES.get(), "reboot.cancelled", "&aThe reboot has been cancelled."),
 
     /* REPORT & HELPOP */
     REPORT_MESSAGE(MESSAGES.get(), "report.message", "&aYour report has been sent to the staff team."),
     HELPOP_MESSAGE(MESSAGES.get(), "helpop.message", "&aYou have successfully sent a request, a staff member will answer you shortly."),
-    REPORT_FORMAT(MESSAGES.get(), "report.format", "&9[REPORT] &3[%me.andyreckt.holiday.server%] %player% &9reported %target% %newline%  &7» &9Reason: &3%reason%"),
-    REPORT_CLICK_MESSAGE(MESSAGES.get(), "report.click-message", "&eClick to join %me.andyreckt.holiday.server%"),
-    HELPOP_FORMAT(MESSAGES.get(), "helpop.format", "&2[HELPOP] &3[%me.andyreckt.holiday.server%] %player% &2needs help %newline%  &7» &aRequest: &a%message%"),
+    REPORT_FORMAT(MESSAGES.get(), "report.format", "&9[REPORT] &3[%server%] %player% &9reported %target% %newline%  &7» &9Reason: &3%reason%"),
+    REPORT_CLICK_MESSAGE(MESSAGES.get(), "report.click-message", "&eClick to join %server%"),
+    HELPOP_FORMAT(MESSAGES.get(), "helpop.format", "&2[HELPOP] &3[%server%] %player% &2needs help %newline%  &7» &aRequest: &a%message%"),
     HELPOP_CLICK_MESSAGE(MESSAGES.get(), "helpop.click-message", "&eClick to answer %player%"),
 
     /* ESSENTIALS COMMANDS */
@@ -327,10 +327,10 @@ public enum Locale {
     SUDO_ALL_PLAYER(MESSAGES.get(), "sudo.all.player", "&aYou have successfully forced all players to say %text%"),
     CHAT_CHANNEL_JOIN(MESSAGES.get(), "chat-channel.join", "&aYou have joined the %channel% chat."),
     CHAT_CHANNEL_LEAVE(MESSAGES.get(), "chat-channel.leave", "&aYou have left the %channel% chat."),
-    JOINING_SERVER(MESSAGES.get(), "join-me.andyreckt.holiday.server", "&aJoining %me.andyreckt.holiday.server%..."),
-    PULLING_PLAYER(MESSAGES.get(), "pull-player", "&aPulling %player% &ato your me.andyreckt.holiday.server..."),
-    SENDING_PLAYER(MESSAGES.get(), "send-player", "&aSending %player% &ato %me.andyreckt.holiday.server%..."),
-    PLAYER_CONNECTED_TO(MESSAGES.get(), "player-connected-to", "%player% &ais currently connected to %me.andyreckt.holiday.server%."),
+    JOINING_SERVER(MESSAGES.get(), "join-server", "&aJoining %server%..."),
+    PULLING_PLAYER(MESSAGES.get(), "pull-player", "&aPulling %player% &ato your server..."),
+    SENDING_PLAYER(MESSAGES.get(), "send-player", "&aSending %player% &ato %server%..."),
+    PLAYER_CONNECTED_TO(MESSAGES.get(), "player-connected-to", "%player% &ais currently connected to %server%."),
     LAG_MESSAGE(MESSAGES.get(), "lag.message",
             "%bar%",
             "&3&lServer Info&7:",
@@ -348,15 +348,15 @@ public enum Locale {
 
 
     /* GENERAL COMMANDS STAFF ALERTS */
-    FLY_ENABLED_STAFF(MESSAGES.get(), "fly.enabled-staff", "&b[S] &3[%me.andyreckt.holiday.server%] %executor% &ehas enabled fly mode."),
-    FLY_DISABLED_STAFF(MESSAGES.get(), "fly.disabled-staff", "&b[S] &3[%me.andyreckt.holiday.server%] %executor% &ehas disabled fly mode."),
-    GIVE_STAFF(MESSAGES.get(), "give.sender-staff", "&b[S] &3[%me.andyreckt.holiday.server%] %executor% &ehas given %amount% %item% to %player%."),
-    GIVE_ALL_STAFF(MESSAGES.get(), "give.all-staff", "&b[S] &3[%me.andyreckt.holiday.server%] %executor% &ehas given %amount% %item% to all players."),
-    GIVE_SELF_STAFF(MESSAGES.get(), "give.yourself-staff", "&b[S] &3[%me.andyreckt.holiday.server%] %executor% &ehas given himself %amount% %item%."),
-    CLEAR_PLAYER_STAFF(MESSAGES.get(), "clear.player-staff", "&b[S] &3[%me.andyreckt.holiday.server%] %executor% &ehas cleared the inventory of %player%."),
-    HEAL_STAFF(MESSAGES.get(), "heal.staff", "&b[S] &3[%me.andyreckt.holiday.server%] %executor% &ehas healed %player%."),
-    SUDO_STAFF(MESSAGES.get(), "sudo.staff", "&b[S] &3[%me.andyreckt.holiday.server%] %executor% &ehas forced %player% to say %text%"),
-    SUDO_ALL_STAFF(MESSAGES.get(), "sudo.all.staff", "&b[S] &3[%me.andyreckt.holiday.server%] %executor% &ehas forced all players to say %text%"),
+    FLY_ENABLED_STAFF(MESSAGES.get(), "fly.enabled-staff", "&b[S] &3[%server%] %executor% &ehas enabled fly mode."),
+    FLY_DISABLED_STAFF(MESSAGES.get(), "fly.disabled-staff", "&b[S] &3[%server%] %executor% &ehas disabled fly mode."),
+    GIVE_STAFF(MESSAGES.get(), "give.sender-staff", "&b[S] &3[%server%] %executor% &ehas given %amount% %item% to %player%."),
+    GIVE_ALL_STAFF(MESSAGES.get(), "give.all-staff", "&b[S] &3[%server%] %executor% &ehas given %amount% %item% to all players."),
+    GIVE_SELF_STAFF(MESSAGES.get(), "give.yourself-staff", "&b[S] &3[%server%] %executor% &ehas given himself %amount% %item%."),
+    CLEAR_PLAYER_STAFF(MESSAGES.get(), "clear.player-staff", "&b[S] &3[%server%] %executor% &ehas cleared the inventory of %player%."),
+    HEAL_STAFF(MESSAGES.get(), "heal.staff", "&b[S] &3[%server%] %executor% &ehas healed %player%."),
+    SUDO_STAFF(MESSAGES.get(), "sudo.staff", "&b[S] &3[%server%] %executor% &ehas forced %player% to say %text%"),
+    SUDO_ALL_STAFF(MESSAGES.get(), "sudo.all.staff", "&b[S] &3[%server%] %executor% &ehas forced all players to say %text%"),
 
     /* ERROR */
     NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
@@ -375,14 +375,14 @@ public enum Locale {
     PACKET_ERROR(MESSAGES.get(), "error.packet", "&cAn error occurred while sending the packet."),
     PLAYER_ALREADY_WHITELISTED(MESSAGES.get(), "error.player-already-whitelisted", "&cThat player is already whitelisted."),
     PLAYER_NOT_WHITELISTED(MESSAGES.get(), "error.player-not-whitelisted", "&cThat player is not whitelisted."),
-    SERVER_NOT_FOUND(MESSAGES.get(), "error.me.andyreckt.holiday.server-not-found", "&cThe me.andyreckt.holiday.server is currently offline or does not exist."),
+    SERVER_NOT_FOUND(MESSAGES.get(), "error.server-not-found", "&cThe server is currently offline or does not exist."),
     NOT_SUPPORTED(MESSAGES.get(), "error.not-supported", "&cThis feature is not supported on 1.7."),
     MAXIMUM_COORDINATE(MESSAGES.get(), "error.maximum-coordinate", "&cMaximal coordinates are +/- x: 3000000 y: 260/-10 z: 3000000"),
     CANNOT_MESSAGE_YOURSELF(MESSAGES.get(), "error.cannot-message-yourself", "&cYou cannot message yourself."),
     PLAYER_MESSAGES_DISABLED(MESSAGES.get(), "error.player-messages-disabled", "&cThat player has private messages disabled."),
     OWN_MESSAGES_DISABLED(MESSAGES.get(), "error.own-messages-disabled", "&cYou have private messages disabled."),
     NOBODY_TO_REPLY_TO(MESSAGES.get(), "error.nobody-to-reply-to", "&cYou have nobody to reply to."),
-    SERVER_ALREADY_REBOOTING(MESSAGES.get(), "error.me.andyreckt.holiday.server-already-rebooting", "&cThe me.andyreckt.holiday.server is already rebooting."),
+    SERVER_ALREADY_REBOOTING(MESSAGES.get(), "error.server-already-rebooting", "&cThe server is already rebooting."),
     CANNOT_REPORT_YOURSELF(MESSAGES.get(), "error.cannot-report-yourself", "&cYou cannot report yourself."),
     COOLDOWN(MESSAGES.get(), "error.cooldown", "&cYou cannot do that for another %time%."),
     INVALID_MATERIAL(MESSAGES.get(), "error.invalid-material", "&cInvalid material."),

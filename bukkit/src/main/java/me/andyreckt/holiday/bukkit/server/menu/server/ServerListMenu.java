@@ -56,7 +56,7 @@ public class ServerListMenu extends PaginatedMenu {
                 return new ItemBuilder(Material.WOOL)
                         .durability(data)
                         .displayname(CC.SECONDARY + server.getServerName())
-                        .lore("", CC.I_RED + "This me.andyreckt.holiday.server is currently offline.")
+                        .lore("", CC.I_RED + "This server is currently offline.")
                         .build();
             }
 
@@ -81,8 +81,8 @@ public class ServerListMenu extends PaginatedMenu {
                             CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Uptime: " + CC.SECONDARY + TimeUtil.niceTime(server.getUptime(), true),
                             CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Last Updated: " + CC.SECONDARY + TimeUtil.niceTime(System.currentTimeMillis() - server.getLastKeepAlive(), true),
                             "",
-                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Click to join this me.andyreckt.holiday.server.",
-                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Drop to stop this me.andyreckt.holiday.server.")
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Click to join this server.",
+                            CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Drop to stop this server.")
                     .build();
         }
 

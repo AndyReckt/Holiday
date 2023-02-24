@@ -3,7 +3,7 @@ main: "me.andyreckt.holiday.bukkit.Holiday"
 version: "${git.commit.id.abbrev}"
 api-version: "1.8"
 authors: ["AndyReckt"]
-description: "Holiday is an Open Source me.andyreckt.holiday.server core which manages ranks, punishments, and more."
+description: "Holiday is an Open Source server core which manages ranks, punishments, and more."
 website: "https://github.com/AndyReckt/Holiday"
 softdepend:
   - "ProtocolLib"
