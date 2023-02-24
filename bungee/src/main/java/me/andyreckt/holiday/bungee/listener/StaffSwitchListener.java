@@ -20,15 +20,15 @@ public class StaffSwitchListener implements Listener {
 
         if (profile.hasPermission(Locale.STAFF_SWITCH_PERM.getString())) {
             if (event.getFrom() == null) {
-                String server = event.getPlayer().getServer().getInfo().getName();
+                String server = Bungee.getInstance().getServerName(event.getPlayer().getServer().getInfo().getName());
                 String playername = Bungee.getInstance().getNameWithColor(profile);
                 String toSend = Locale.STAFF_SWITCH_JOIN.getString()
                         .replace("%player%", playername)
                         .replace("%server%", server);
                 PacketHandler.send(new BroadcastPacket(toSend, Locale.STAFF_SWITCH_PERM.getString()));
             } else {
-                String server = event.getPlayer().getServer().getInfo().getName();
-                String oldServer = event.getFrom().getName();
+                String server = Bungee.getInstance().getServerName(event.getPlayer().getServer().getInfo().getName());
+                String oldServer = Bungee.getInstance().getServerName(event.getFrom().getName());
                 String playername = Bungee.getInstance().getNameWithColor(profile);
                 String toSend = Locale.STAFF_SWITCH_SERVER.getString()
                         .replace("%player%", playername)
@@ -46,7 +46,7 @@ public class StaffSwitchListener implements Listener {
 
         if (profile.hasPermission(Locale.STAFF_SWITCH_PERM.getString())) {
             if (event.getPlayer().getServer() == null) return; // Player is not on a server (probably a proxy bug)
-            String server = event.getPlayer().getServer().getInfo().getName();
+            String server = Bungee.getInstance().getServerName(event.getPlayer().getServer().getInfo().getName());
             String playername = Bungee.getInstance().getNameWithColor(profile);
             String toSend = Locale.STAFF_SWITCH_LEAVE.getString()
                     .replace("%player%", playername)

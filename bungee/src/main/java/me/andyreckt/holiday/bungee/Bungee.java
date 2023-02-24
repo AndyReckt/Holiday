@@ -54,5 +54,8 @@ public class Bungee extends Plugin {
         return ChatColor.valueOf(rank.getColor().toUpperCase());
     }
 
+    public String getServerName(String id) {
+        return api.getServer(id).getServerName();
+    }
 }
 
