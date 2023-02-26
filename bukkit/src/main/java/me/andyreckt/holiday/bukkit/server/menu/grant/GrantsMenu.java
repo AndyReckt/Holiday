@@ -121,7 +121,7 @@ public class GrantsMenu extends PaginatedMenu {
             item.damage(grant.isActive() ? 5 : 14);
 
             if (grant.isActive() && p0.hasPermission(Perms.GRANTS_EDIT.get()) && !grant.getRank().isDefault()) {
-                item.lore("&cClick to remove this grant.");
+                item.lore("", "&cClick to remove this grant.");
             }
             return item.build();
         }

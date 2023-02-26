@@ -32,10 +32,11 @@ public class GrantCommands {
     public void execute(ConsoleCommandSender sender, @Param(name = "player") Profile target, @Param(name = "rank") IRank rank, @Param(name = "time") String time, @Param(name = "reason", wildcard = true) String reason) {
         long tim = TimeUtil.getDuration(time);
         String ti = TimeUtil.getDuration(tim);
+        Holiday plugin = Holiday.getInstance();
 
-        Profile issuer = sender instanceof Player ? Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
-        Grant grant = new Grant(target.getUuid(), rank, issuer.getUuid(), reason,"$undefined", tim);
-        Holiday.getInstance().getApi().saveGrant(grant);
+        Profile issuer = sender instanceof Player ? plugin.getApi().getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+        Grant grant = new Grant(target.getUuid(), rank, issuer.getUuid(), reason,plugin.getThisServer().getServerName(), tim);
+        plugin.getApi().saveGrant(grant);
 
         String str = Locale.GRANT_PLAYER.getString()
                 .replace("%player%", UserConstants.getNameWithColor(target))
