@@ -8,15 +8,19 @@ import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.*;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
+import me.andyreckt.holiday.core.user.metadata.*;
 import me.andyreckt.holiday.core.user.settings.StaffSettings;
 import me.andyreckt.holiday.core.user.settings.UserSettings;
 import me.andyreckt.holiday.core.util.enums.ChatChannel;
 import me.andyreckt.holiday.core.util.text.HashUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Getter @Setter
+@SuppressWarnings("all")
 public class UserProfile implements Profile {
 
     @SerializedName("_id")
@@ -45,6 +49,8 @@ public class UserProfile implements Profile {
     private ChatChannel chatChannel = ChatChannel.GLOBAL;
 
     private Disguise disguise = null;
+
+    private Map<String, IMetadata> metadatas = new ConcurrentHashMap<>();
 
     public UserProfile(UUID uuid) {
         this.uuid = uuid;
@@ -315,6 +321,61 @@ public class UserProfile implements Profile {
     @Override
     public boolean isDisguised() {
         return disguise != null;
+    }
+
+    @Override
+    public List<IMetadata> getMetadatas() {
+        return new ArrayList<>(this.metadatas.values());
+    }
+
+    @Override
+    public IMetadata getMetadata(String id, IMetadata defaultValue) {
+        return this.metadatas.getOrDefault(id, defaultValue);
+    }
+
+    @Override
+    public synchronized void setMetadata(IMetadata metadata) {
+        this.metadatas.put(metadata.getId(), metadata);
+    }
+
+    @Override
+    public <T> void setMetadata(String id, T value) {
+        IMetadata metadata = createMetadata(id, value);
+        this.metadatas.put(id, metadata);
+    }
+
+    public static <T> IMetadata createMetadata(String id, T value) {
+        String name = StringUtils.capitalize(id.replace("_", " ").replace("-", " "));
+        if (value.getClass().isAssignableFrom(Boolean.class)) {
+            return new BooleanMetadata(id, (Boolean) value, name);
+        } else if (value.getClass().isAssignableFrom(String.class)) {
+            return new StringMetadata(id, (String) value, name);
+        } else if (value.getClass().isAssignableFrom(Integer.class)) {
+            return new IntegerMetadata(id, (Integer) value, name);
+        } else if (value.getClass().isAssignableFrom(Long.class)) {
+            return new LongMetadata(id, (Long) value, name);
+        } else if (value.getClass().isAssignableFrom(Double.class)) {
+            return new DoubleMetadata(id, (Double) value, name);
+        } else if (value.getClass().isAssignableFrom(UUID.class)) {
+            return new UUIDMetadata(id, (UUID) value, name);
+        } else if (value.getClass().isAssignableFrom(List.class)) {
+            return new ListMetadata(id, (List) value, name);
+        } else if (value.getClass().isAssignableFrom(Map.class)) {
+            return new MapMetadata(id, (Map) value, name);
+        } else if (value.getClass().isAssignableFrom(Float.class)) {
+            return new FloatMetadata(id, (Float) value, name);
+        } else if (value.getClass().isAssignableFrom(Short.class)) {
+            return new ShortMetadata(id, (Short) value, name);
+        } else if (value.getClass().isAssignableFrom(Byte.class)) {
+            return new ByteMetadata(id, (Byte) value, name);
+        }
+        return new TMetadata<>(id, value, name); //TODO: try and if it doesnt work, throw an exception
+    }
+
+    public void postProcess() {
+        if (this.metadatas == null) {
+            this.metadatas = new ConcurrentHashMap<>();
+        }
     }
 
     public static UserProfile getConsoleProfile() {

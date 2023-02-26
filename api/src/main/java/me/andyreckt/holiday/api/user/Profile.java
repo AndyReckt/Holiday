@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@SuppressWarnings("rawtypes")
 public interface Profile {
 
     @SerializedName("_id")
@@ -75,4 +76,9 @@ public interface Profile {
     IDisguise getDisguise();
     void setDisguise(IDisguise disguise);
     boolean isDisguised();
+
+    List<IMetadata> getMetadatas();
+    IMetadata getMetadata(String id, IMetadata defaultValue);
+    void setMetadata(IMetadata metadata);
+    <T> void setMetadata(String id, T value);
 }
