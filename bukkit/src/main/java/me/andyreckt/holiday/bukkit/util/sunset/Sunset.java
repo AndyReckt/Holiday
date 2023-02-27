@@ -5,12 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import me.andyreckt.holiday.bukkit.util.Logger;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
+import me.andyreckt.holiday.bukkit.util.sunset.annotations.*;
 import me.andyreckt.holiday.bukkit.util.sunset.executor.SunsetCommand;
 import me.andyreckt.holiday.bukkit.util.sunset.executor.SunsetSubCommand;
+import me.andyreckt.holiday.bukkit.util.sunset.parameter.FData;
+import me.andyreckt.holiday.bukkit.util.sunset.parameter.IData;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.PData;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.PType;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.defaults.*;
@@ -92,34 +91,43 @@ public class Sunset {
             if (!method.isAnnotationPresent(SubCommand.class)) continue;
             SubCommand commandAnnotation = method.getAnnotation(SubCommand.class);
 
-            List<PData> parameterData = new ArrayList<>();
+            List<IData> parameterData = new ArrayList<>();
 
             for (int parameterIndex = 1; parameterIndex < method.getParameterTypes().length; parameterIndex++) {
-                Param paramAnnotation = null;
+                Annotation ann = null;
 
                 for (Annotation annotation : method.getParameterAnnotations()[parameterIndex]) {
                     if (annotation instanceof Param) {
-                        paramAnnotation = (Param) annotation;
+                        ann = (Param) annotation;
+                        break;
+                    }
+                    if (annotation instanceof Flag) {
+                        ann = (Flag) annotation;
                         break;
                     }
                 }
 
-                if (paramAnnotation != null) {
+                if (ann != null) {
                     Class<?> paramClass = method.getParameterTypes()[parameterIndex];
                     if (!this.typesMap.containsKey(paramClass)) {
                         plugin.getLogger().severe("[Sunset] Class '" + paramClass.getSimpleName() + ".class' does not have an assigned type adapter (did you register it?)");
                         return;
                     }
-                    parameterData.add(new PData(paramAnnotation, paramClass));
+                    if (ann instanceof Param) parameterData.add(new PData((Param) ann, paramClass));
+                    else parameterData.add(new FData((Flag) ann, paramClass));
                 } else {
-                    plugin.getLogger().warning("[Sunset] Method '" + method.getName() + "' has a parameter without a @Param annotation.");
+                    plugin.getLogger().warning("[Sunset] Method '" + method.getName() + "' has a parameter without a @Param or @Flag annotation.");
                     return;
                 }
             }
 
             StringBuilder usage = new StringBuilder("/").append(mainCommandAnnotation.names()[0]).append(" ").append(commandAnnotation.names()[0]);
-            for (PData param : parameterData) {
+            for (PData param : parameterData.stream().filter(data -> data instanceof PData).map(data -> (PData) data).toArray(PData[]::new)) {
                 usage.append(" ").append(param.isRequired() ? "<" : "[").append(param.getName()).append(param.isRequired() ? ">" : "]");
+            }
+
+            for (FData data : parameterData.stream().filter(data -> data instanceof FData).map(data -> (FData) data).toArray(FData[]::new)) {
+                usage.append(" ").append("[").append(data.getFlag()).append("]");
             }
 
             if (!commandAnnotation.usage().equalsIgnoreCase("none")) usage = new StringBuilder(commandAnnotation.usage());
@@ -220,27 +228,32 @@ public class Sunset {
     private void registerMethod(Method method, Object instance) {
 
         Command commandAnnotation = method.getAnnotation(Command.class);
-        List<PData> parameterData = new ArrayList<>();
+        List<IData> parameterData = new ArrayList<>();
 
         for (int parameterIndex = 1; parameterIndex < method.getParameterTypes().length; parameterIndex++) {
-            Param paramAnnotation = null;
+            Annotation ann = null;
 
             for (Annotation annotation : method.getParameterAnnotations()[parameterIndex]) {
                 if (annotation instanceof Param) {
-                    paramAnnotation = (Param) annotation;
+                    ann = (Param) annotation;
+                    break;
+                }
+                if (annotation instanceof Flag) {
+                    ann = (Flag) annotation;
                     break;
                 }
             }
 
-            if (paramAnnotation != null) {
+            if (ann != null) {
                 Class<?> paramClass = method.getParameterTypes()[parameterIndex];
                 if (!this.typesMap.containsKey(paramClass)) {
                     plugin.getLogger().severe("[Sunset] Class '" + paramClass.getSimpleName() + ".class' does not have an assigned type adapter (did you register it?)");
                     return;
                 }
-                parameterData.add(new PData(paramAnnotation, paramClass));
+                if (ann instanceof Param) parameterData.add(new PData((Param) ann, paramClass));
+                else parameterData.add(new FData((Flag) ann, paramClass));
             } else {
-                plugin.getLogger().warning("[Sunset] Method '" + method.getName() + "' has a parameter without a @Param annotation.");
+                plugin.getLogger().warning("[Sunset] Method '" + method.getName() + "' has a parameter without a @Param or @Flag annotation.");
                 return;
             }
         }
@@ -252,8 +265,12 @@ public class Sunset {
             aliases.add(alias);
         }
         StringBuilder usage = new StringBuilder("/").append(name);
-        for (PData param : parameterData) {
+        for (PData param : parameterData.stream().filter(data -> data instanceof PData).map(data -> (PData) data).toArray(PData[]::new)) {
             usage.append(" ").append(param.isRequired() ? "<" : "[").append(param.getName()).append(param.isRequired() ? ">" : "]");
+        }
+
+        for (FData data : parameterData.stream().filter(data -> data instanceof FData).map(data -> (FData) data).toArray(FData[]::new)) {
+            usage.append(" ").append("[").append(data.getFlag()).append("]");
         }
 
         if (!commandAnnotation.usage().equalsIgnoreCase("none")) usage = new StringBuilder(commandAnnotation.usage());

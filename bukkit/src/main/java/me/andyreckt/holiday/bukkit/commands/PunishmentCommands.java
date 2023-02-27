@@ -9,6 +9,7 @@ import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
+import me.andyreckt.holiday.bukkit.util.sunset.annotations.Flag;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.punishment.Punishment;

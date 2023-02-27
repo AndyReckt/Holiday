@@ -8,9 +8,7 @@ import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
+import me.andyreckt.holiday.bukkit.util.sunset.annotations.*;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.UserProfile;
@@ -109,5 +107,13 @@ public class DebugCommand {
         sender.sendMessage("Saving Profile: " + (saveend - savestart) + "ms");
         sender.sendMessage("Loading Profile: " + (loadend - loadstart) + "ms");
     }
+
+    @SubCommand(names = "flag", description = "Flag debug", async = true)
+    public void flagged(CommandSender sender, @Flag(identifier = 'f') boolean flag, @Param(name = "text", wildcard = true) String text) {
+        sender.sendMessage("Flag: " + flag);
+        sender.sendMessage("Text: " + text);
+    }
+
+
 }
 

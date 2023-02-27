@@ -4,7 +4,7 @@ import lombok.Getter;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 
 @Getter
-public class PData {
+public class PData implements IData {
 
     private final String name;
     private final boolean wildcard;
