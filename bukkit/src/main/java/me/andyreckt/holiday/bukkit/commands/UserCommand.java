@@ -13,7 +13,7 @@ import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@MainCommand(names = "me.andyreckt.holiday.user", permission = Perms.USER, description = "User command.")
+@MainCommand(names = "user", permission = Perms.USER, description = "User command.")
 public class UserCommand {
 
     @SubCommand(names = {"addpermission", "addperm"}, description = "Add permission to me.andyreckt.holiday.user.")

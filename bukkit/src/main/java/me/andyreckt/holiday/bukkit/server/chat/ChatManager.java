@@ -61,7 +61,23 @@ public class ChatManager {
         } else return true;
     }
 
+    public long getChatDelay(UUID uuid) {
+        if (!cooldownMap.containsKey(uuid)) return 0L;
+        Cooldown cd = cooldownMap.get(uuid);
+        if (cd.hasExpired()) {
+            cooldownMap.remove(uuid);
+            return 0L;
+        } else return cd.getRemaining();
+    }
+
     public boolean isFine(String message, Player player) {
+
+        if (isOnDelay(player.getUniqueId())) {
+            player.sendMessage(Locale.CHAT_DELAY_MESSAGE.getString()
+                    .replace("%delay%", TimeUtil.getDuration(getChatDelay(player.getUniqueId()))));
+            return false;
+        }
+
         boolean hardFilter = false, lowFilter = false;
         Profile profile = plugin.getApi().getProfile(player.getUniqueId());
 
@@ -72,7 +88,9 @@ public class ChatManager {
                 .replace("0", "o")
                 .replace("4", "a")
                 .replace("1", "i")
+                .replace("!", "i")
                 .replace("5", "s")
+                .replace("8", "b")
                 .replaceAll("[^a-z0-9 ]", "");
 
         for (String s : hardFilters) {
