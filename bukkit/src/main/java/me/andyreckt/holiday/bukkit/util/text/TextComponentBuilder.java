@@ -11,7 +11,7 @@ public class TextComponentBuilder
         this.textComponent = new TextComponent(text);
     }
     
-    public TextComponentBuilder setHoverEvent(final HoverEvent.Action action, final String str) {
+    public TextComponentBuilder setHoverEvent(final String str) {
         final ComponentBuilder componentBuilder = new ComponentBuilder(CC.translate(str));
         this.textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, componentBuilder.create()));
         return this;

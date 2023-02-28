@@ -66,8 +66,8 @@ public class RankCommand {
         sender.sendMessage(CC.CHAT_BAR);
         for (IRank rank : api.getRanksSorted()) {
             TextComponentBuilder builder = new TextComponentBuilder(CC.translate(" " + rank.getDisplayName()));
-            builder.setHoverEvent(HoverEvent.Action.SHOW_TEXT,
-                    CC.CHAT + "Display Name: " + rank.getDisplayName() + "\n" +
+            builder.setHoverEvent(
+                            CC.CHAT + "Display Name: " + rank.getDisplayName() + "\n" +
                             CC.CHAT + "Prefix: " + rank.getPrefix() + "\n" +
                             CC.CHAT + "Suffix: " + rank.getSuffix() + "\n" +
                             CC.CHAT + "Color: " + UserConstants.getRankColor(rank) + rank.getColor() + "\n" +
