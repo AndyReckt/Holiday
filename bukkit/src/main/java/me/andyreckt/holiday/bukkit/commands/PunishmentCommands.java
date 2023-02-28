@@ -25,98 +25,79 @@ public class PunishmentCommands {
 
     @Command(names = {"ban", "b"}, async = true, permission = Perms.BAN)
     public void ban(CommandSender sender,
+                           @Flag(name = "silent", identifier = 's') boolean silent,
                            @Param(name = "name") Profile target,
                            @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        boolean silent = reason.contains("-s") || reason.endsWith("-s");
-        String fReason = reason.replace("-s", "");
-        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
-
-        punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.PERMANENT, fReason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.PERMANENT, reason, silent, sender);
     }
 
     @Command(names = {"blacklist", "bl"}, async = true, permission = Perms.BLACKLIST)
     public void blacklist(CommandSender sender,
+                                 @Flag(name = "silent", identifier = 's') boolean silent,
                                  @Param(name = "name") Profile target,
                                  @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        boolean silent = reason.contains("-s") || reason.endsWith("-s");
-        String fReason = reason.replace("-s", "");
-        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
-
-        punish(profile, target, IPunishment.PunishmentType.BLACKLIST, TimeUtil.PERMANENT, fReason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.BLACKLIST, TimeUtil.PERMANENT, reason, silent, sender);
     }
 
     @Command(names = {"ipban", "ipb", "banip", "ban-ip"}, async = true, permission = Perms.IPBAN)
     public void ipban(CommandSender sender,
+                             @Flag(name = "silent", identifier = 's') boolean silent,
                              @Param(name = "name") Profile target,
                              @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        boolean silent = reason.contains("-s") || reason.endsWith("-s");
-        String fReason = reason.replace("-s", "");
-        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
-
-        punish(profile, target, IPunishment.PunishmentType.IP_BAN, TimeUtil.PERMANENT, fReason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.IP_BAN, TimeUtil.PERMANENT, reason, silent, sender);
     }
 
     @Command(names = {"tempban", "tban", "tb"}, async = true, permission = Perms.TEMPBAN)
     public void tempban(CommandSender sender,
+                               @Flag(name = "silent", identifier = 's') boolean silent,
                                @Param(name = "name") Profile target,
                                @Param(name = "time") String duration,
                                @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        boolean silent = reason.contains("-s") || reason.endsWith("-s");
-        String fReason = reason.replace("-s", "");
-        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
-
-        punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.getDuration(duration), fReason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.getDuration(duration), reason, silent, sender);
     }
 
     @Command(names = {"mute"}, async = true, permission = Perms.MUTE)
     public void mute(CommandSender sender,
+                            @Flag(name = "silent", identifier = 's') boolean silent,
                             @Param(name = "name") Profile target,
                             @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        boolean silent = reason.contains("-s") || reason.endsWith("-s");
-        String fReason = reason.replace("-s", "");
-        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
-
-        punish(profile, target, IPunishment.PunishmentType.MUTE, TimeUtil.PERMANENT, fReason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.MUTE, TimeUtil.PERMANENT, reason, silent, sender);
     }
 
     @Command(names = {"tempmute", "tmute"}, async = true, permission = Perms.TEMPMUTE)
     public void tempmute(CommandSender sender,
+                                @Flag(name = "silent", identifier = 's') boolean silent,
                                 @Param(name = "name") Profile target,
                                 @Param(name = "time") String duration,
                                 @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        boolean silent = reason.contains("-s") || reason.endsWith("-s");
-        String fReason = reason.replace("-s", "");
-        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
-
-        punish(profile, target, IPunishment.PunishmentType.MUTE, TimeUtil.getDuration(duration), fReason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.MUTE, TimeUtil.getDuration(duration), reason, silent, sender);
     }
 
     @Command(names = {"kick"}, async = true, permission = Perms.KICK)
-    public void kick(CommandSender sender, @Param(name = "name") Profile target, @Param(name = "reason", wildcard = true, baseValue = "Misconduct") String reason) {
+    public void kick(CommandSender sender,
+                     @Flag(name = "silent", identifier = 's') boolean silent,
+                     @Param(name = "name") Profile target,
+                     @Param(name = "reason", wildcard = true, baseValue = "Misconduct") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
-
-        boolean silent = reason.contains("-s") || reason.endsWith("-s");
-        String fReason = reason.replace("-s", "");
-        if (fReason.equals("") || fReason.equals(" ")) fReason = "Cheating";
 
         String issuerName = UserConstants.getNameWithColor(profile);
         String targetName = UserConstants.getDisplayNameWithColor(target);
@@ -127,7 +108,7 @@ public class PunishmentCommands {
         kickBroadcast = kickBroadcast.replace("%executor%", issuerName)
                 .replace("%player%", targetName)
                 .replace("%silent%", silent ? Locale.PUNISHMENT_SILENT_PREFIX.getString() : "")
-                .replace("%reason%", fReason);
+                .replace("%reason%", reason);
 
         if (!silent) {
             PacketHandler.send(new BroadcastPacket(kickBroadcast));
@@ -138,7 +119,7 @@ public class PunishmentCommands {
                     AlertType.SILENT_PUNISHMENT));
         }
 
-        String toSend = Locale.PUNISHMENT_KICK_KICK_MESSAGE.getStringNetwork().replace("%reason%", fReason);
+        String toSend = Locale.PUNISHMENT_KICK_KICK_MESSAGE.getStringNetwork().replace("%reason%", reason);
         PacketHandler.send(new KickPlayerPacket(target.getUuid(), toSend));
     }
 
