@@ -26,6 +26,7 @@ import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.bukkit.util.sunset.Sunset;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.ProfileParameterType;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.RankParameterType;
+import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.UUIDParameterType;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.StringUtils;
 import me.andyreckt.holiday.bukkit.util.uuid.UUIDCache;
@@ -48,6 +49,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
@@ -147,6 +149,7 @@ public final class Holiday extends JavaPlugin {
         this.commandManager.setPermissionMessage(Locale.NO_PERMISSION.getString());
         this.commandManager.registerType(new RankParameterType(), IRank.class);
         this.commandManager.registerType(new ProfileParameterType(), Profile.class);
+        this.commandManager.registerType(new UUIDParameterType(), UUID.class);
         Arrays.asList(
                 new DebugCommand(), new RankCommand(), new ChatCommand(),
                 new WhitelistCommand(), new ServerManagerCommand(),

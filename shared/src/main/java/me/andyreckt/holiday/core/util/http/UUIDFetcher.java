@@ -13,6 +13,7 @@ public class UUIDFetcher {
 	private static final int PROFILES_PER_REQUEST = 50;
 
 	private static final String PROFILE_URL = "https://api.mojang.com/users/profiles/minecraft/";
+	private static final String NAME_URL = "https://sessionserver.mojang.com/session/minecraft/profile/";
 
 
 	private static UUID getUUID(String id) {
@@ -48,6 +49,32 @@ public class UUIDFetcher {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public static String getNameSync(UUID uuid) {
+		return getNameSync(uuid.toString());
+	}
+
+	public static String getNameSync(String uuid) {
+		try {
+			String urlString = NAME_URL + uuid.replace("-", "");
+			URL url = new URL(urlString);
+
+			InputStreamReader reader = new InputStreamReader(url.openStream());
+			JsonObject object = JsonParser.parseReader(reader).getAsJsonObject();
+
+			return object.get("name").getAsString();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static CompletableFuture<String> getName(UUID uuid) {
+		return getName(uuid.toString());
+	}
+
+	public static CompletableFuture<String> getName(String uuid) {
+		return CompletableFuture.supplyAsync(() -> getNameSync(uuid));
 	}
 
 

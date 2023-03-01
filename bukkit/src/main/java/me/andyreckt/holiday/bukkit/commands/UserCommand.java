@@ -10,8 +10,11 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.core.util.http.UUIDFetcher;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.command.CommandSender;
+
+import java.util.UUID;
 
 @MainCommand(names = "user", permission = Perms.USER, description = "User command.")
 public class UserCommand {
@@ -48,6 +51,39 @@ public class UserCommand {
         sender.sendMessage(CC.translate("&cWiped " + profile.getName() + "'s profile."));
     }
 
+    @SubCommand(names = {"uuid"}, description = "Get a player's UUID.", permission = Perms.USER_RESOLVE, async = true)
+    public void uuid(CommandSender sender, @Param(name = "player") String playerName) {
+        sender.sendMessage(CC.CHAT + "Resolving UUID for " + playerName + "...");
+        UUID cached = Holiday.getInstance().getUuidCache().uuid(playerName);
+        if (cached != null) {
+            sender.sendMessage(CC.CHAT + playerName + "'s UUID is " + cached);
+            return;
+        }
+        UUIDFetcher.get(playerName).whenCompleteAsync((uuid, ignored) -> {
+            if (uuid == null) {
+                sender.sendMessage(CC.CHAT + "Could not resolve UUID for " + playerName + ".");
+                return;
+            }
+            sender.sendMessage(CC.CHAT + playerName + "'s UUID is " + uuid);
+        });
+    }
+
+    @SubCommand(names = {"name"}, description = "Get a player's name.", permission = Perms.USER_RESOLVE, async = true)
+    public void name(CommandSender sender, @Param(name = "uuid") UUID uuid) {
+        sender.sendMessage(CC.CHAT + "Resolving name for " + uuid + "...");
+        String cached = Holiday.getInstance().getUuidCache().name(uuid);
+        if (cached != null) {
+            sender.sendMessage(CC.CHAT + uuid + "'s name is " + cached);
+            return;
+        }
+        UUIDFetcher.getName(uuid).whenCompleteAsync((name, ignored) -> {
+            if (name == null) {
+                sender.sendMessage(CC.CHAT + "Could not resolve name for " + uuid + ".");
+                return;
+            }
+            sender.sendMessage(CC.CHAT + uuid + "'s name is " + name);
+        });
+    }
 
 
 }
