@@ -4,6 +4,7 @@ import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.PType;
+import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.util.http.UUIDFetcher;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -17,6 +18,9 @@ import java.util.concurrent.ExecutionException;
 
 public class ProfileParameterType implements PType<Profile> {
 
+    private static final String UUID_REGEX = "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
+    private static final String UUID_REGEX_NO_HYPHENS = "[0-9a-fA-F]{32}";
+
     @Override
     public Profile transform(CommandSender sender, String source) {
 
@@ -25,6 +29,11 @@ public class ProfileParameterType implements PType<Profile> {
         }
 
         Holiday plugin = Holiday.getInstance();
+
+        if (source.matches(UUID_REGEX) || source.matches(UUID_REGEX_NO_HYPHENS)) {
+            UUID uuid = UUID.fromString(source);
+            return ((HolidayAPI) plugin.getApi()).getUserManager().getProfileNoCreate(uuid);
+        }
 
         if (sender instanceof Player && (source.equalsIgnoreCase("self"))) {
             return plugin.getApi().getProfile(((Player) sender).getUniqueId());
@@ -40,7 +49,7 @@ public class ProfileParameterType implements PType<Profile> {
             cachedUUID = plugin.getDisguiseManager().getDisguise(source).getUuid();
         }
 
-        if (plugin.getUuidCache().uuid(source.toLowerCase()) == null && cachedUUID == null) {
+        if (cachedUUID == null && plugin.getUuidCache().uuid(source.toLowerCase()) == null) {
             if (!Locale.SERVER_CREATE_PROFILE_IF_NOT_EXISTS.getBoolean()) {
                 sender.sendMessage(Locale.PLAYER_NOT_FOUND.getString());
                 return (null);

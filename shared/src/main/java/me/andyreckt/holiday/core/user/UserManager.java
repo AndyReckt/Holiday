@@ -54,6 +54,14 @@ public class UserManager {
         });
     }
 
+    public Profile getProfileNoCreate(UUID uuid) {
+        if (profiles.containsKey(uuid)) {
+            return profiles.get(uuid);
+        }
+
+        Document document = api.getMongoManager().getProfiles().find(Filters.eq("_id", uuid.toString())).first();
+        return document == null ? null : loadProfile(document);
+    }
 
     public Profile getProfile(UUID uuid) {
         if (profiles.containsKey(uuid)) {
