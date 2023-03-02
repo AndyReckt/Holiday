@@ -13,7 +13,6 @@ import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.player.PermissionUtils;
 import me.andyreckt.holiday.bukkit.util.player.PlayerUtils;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.server.Server;
@@ -32,9 +31,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -178,31 +174,39 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
         UserConstants.reloadPlayer(player);
-        if (profile.isLiked()) return;
 
         PlayerUtils.hasVotedOnNameMC(player.getUniqueId()).whenCompleteAsync((voted, ignored) -> {
             if (!voted) {
+
+                if (profile.isLiked()) {
+                    profile.setLiked(false);
+                    Locale.NAMEMC_UNLIKED_MESSAGE.getStringList().forEach(message -> {
+                        player.sendMessage(CC.translate(message));
+                    });
+                    Locale.NAMEMC_UNLIKED_COMMANDS.getStringList().forEach(command -> {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
+                    });
+                    Holiday.getInstance().getApi().saveProfile(profile);
+                    return;
+                }
+
                 player.sendMessage(Locale.NAMEMC_NOT_LIKED.getStringNetwork());
                 return;
             }
+            if (profile.isLiked()) return;
 
             player.sendMessage(Locale.NAMEMC_MESSAGE.getString());
             profile.setLiked(true);
             Holiday.getInstance().getApi().saveProfile(profile);
 
-            if (!Locale.NAMEMC_RANK_ENABLED.getBoolean()) return;
+            if (!Locale.NAMEMC_REWARD_ENABLED.getBoolean()) return;
 
-            IRank rank = Holiday.getInstance().getApi().getRank(Locale.NAMEMC_RANK_NAME.getString());
-            IGrant grant = new Grant(
-                    profile.getUuid(),
-                    rank,
-                    UserProfile.getConsoleProfile().getUuid(),
-                    "Liked on NameMC",
-                    Holiday.getInstance().getThisServer().getServerName(),
-                    TimeUtil.PERMANENT
-            );
-
-            Holiday.getInstance().getApi().saveGrant(grant);
+            Locale.NAMEMC_REWARD_COMMANDS.getStringList().forEach(command -> {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
+            });
+            Locale.NAMEMC_THANKS_LIKED.getStringList().forEach(message -> {
+                player.sendMessage(CC.translate(message));
+            });
             Tasks.run(() -> UserConstants.reloadPlayer(player));
         });
     }

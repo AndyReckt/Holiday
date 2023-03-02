@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static me.andyreckt.holiday.bukkit.util.files.Locale.FileName.MESSAGES;
@@ -87,8 +88,19 @@ public enum Locale {
 
     /* NAMEMC */
     NAMEMC_MESSAGE(SETTINGS.get(), "namemc.liked-message", "&eThanks for liking our namemc!"),
-    NAMEMC_RANK_ENABLED(SETTINGS.get(), "namemc.rank.enabled", false),
-    NAMEMC_RANK_NAME(SETTINGS.get(), "namemc.rank.name", "Voter"),
+    NAMEMC_REWARD_ENABLED(SETTINGS.get(), "namemc.reward.enabled", false),
+    NAMEMC_REWARD_COMMANDS(SETTINGS.get(), "namemc.reward.commands", Collections.singletonList("ogrant %player% Voter permanent Liked our namemc!")),
+    NAMEMC_UNLIKED_COMMANDS(SETTINGS.get(), "namemc.unliked.commands", Collections.singletonList("rgrant %player% Voter Unliked our namemc!")),
+    NAMEMC_THANKS_LIKED(SETTINGS.get(), "namemc.thanks-liked",
+            " \\n &eThanks for liking our namemc!" +
+            " \\n &eYou can join our discord for more information: &b%discord%" +
+            " \\n "),
+    NAMEMC_UNLIKED_MESSAGE(SETTINGS.get(), "namemc.not-liked-anymore",
+            " \\n &eIt seems like you unliked our namemc." +
+            " \\n &eYou can like it again here: &bhttps://namemc.com/server/example.com" +
+            " \\n &eYou will get a rank and other perks for doing so!" +
+            " \\n &eYou can also join our discord for more information: &b%discord%" +
+            " \\n "),
     NAMEMC_NOT_LIKED(SETTINGS.get(), "namemc.not-liked",
             " \\n &eIt seems like you haven't liked our namemc yet." +
             " \\n &eYou can do so here: &bhttps://namemc.com/server/example.com" +
@@ -441,6 +453,12 @@ public enum Locale {
         this.fileName = fileName;
         this.path = path;
         this.def = Arrays.asList(def);
+    }
+
+    Locale(String fileName, String path, List<String> def){
+        this.fileName = fileName;
+        this.path = path;
+        this.def = def;
     }
 
     @SneakyThrows

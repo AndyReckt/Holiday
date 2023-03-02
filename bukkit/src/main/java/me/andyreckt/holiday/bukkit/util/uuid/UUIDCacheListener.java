@@ -24,12 +24,12 @@ public class UUIDCacheListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
-        Holiday.getInstance().getExecutor().execute(() -> {
+        plugin.getExecutor().execute(() -> {
             String foundName = this.plugin.getUuidCache().name(player.getUniqueId());
 
             if (foundName == null) {
                 this.plugin.getUuidCache().update(player.getUniqueId(), player.getName());
-                Logger.log(CC.translate("&9[UUID Cache] &b" + player.getName() + "'s &bname and uuid have been updated to the UUID Cache."));
+                Logger.log(CC.translate("&9[UUID Cache] &b" + player.getName() + "'s name and uuid have been updated to the UUID Cache."));
                 return;
             }
 
@@ -38,7 +38,7 @@ public class UUIDCacheListener implements Listener {
             }
 
             this.plugin.getUuidCache().update(player.getUniqueId(), player.getName());
-            Logger.log(CC.translate("&9[UUID Cache] &b" + player.getName() + " 's &bname and uuid have been updated to the UUID Cache."));
+            Logger.log(CC.translate("&9[UUID Cache] &b" + player.getName() + " 's name and uuid have been updated to the UUID Cache."));
         });
     }
 
