@@ -40,6 +40,7 @@ public interface IServer {
 
     long getLastKeepAlive();
     void keepAlive();
+    void sendUpdate();
 
     long getStartupTime();
     long getUptime();

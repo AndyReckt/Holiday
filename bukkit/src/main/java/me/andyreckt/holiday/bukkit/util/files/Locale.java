@@ -49,13 +49,6 @@ public enum Locale {
     SERVER_PLAYER_LISTNAME(SETTINGS.get(), "server.change-player-listname", false),
     SERVER_CREATE_PROFILE_IF_NOT_EXISTS(SETTINGS.get(), "server.create-profile-if-not-exists", false),
 
-    // DISABLED_COMMANDS(SETTINGS.get(), "server.disabled-commands", "save-all", "save-off", "save-on", "w",
-    //         "bukkit:op", "bukkit:deop", "bukkit:ban", "bukkit:kick", "bukkit:mute", "bukkit:tempmute", "bukkit:unmute",
-    //         "bukkit:tempban", "bukkit:unban", "bukkit:banip", "bukkit:unbanip", "bukkit:tempbanip", "bukkit:banlist",
-    //         "bukkit:pardon", "bukkit:pardonip", "bukkit:whitelist", "bukkit:reload", "bukkit:stop", "bukkit:save-all",
-    //         "bukkit:save-off", "bukkit:save-on", "bukkit:say", "bukkit:tell", "bukkit:me",
-    //         "bukkit:w", "bukkit:broadcast", "bukkit:bc", "bukkit:bcast"),
-
 
     /* COLORS */
     COLOR_PRIMARY(SETTINGS.get(), "color.primary", "AQUA"),

@@ -6,6 +6,7 @@ import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.ServerKeepAlivePacket;
+import me.andyreckt.holiday.core.util.redis.pubsub.packets.ServerUpdatePacket;
 
 import java.util.Map;
 import java.util.UUID;
@@ -47,6 +48,15 @@ public class ServerManager {
 
     public void keepAlive(Server server) {
         PacketHandler.send(new ServerKeepAlivePacket(server));
+        CompletableFuture.runAsync(() -> api.runRedisCommand(redis -> {
+            redis.hset("servers", server.getServerId(), GsonProvider.GSON.toJson(server));
+            return null;
+        }));
+    }
+
+    public void sendUpdate(Server server) {
+        server.setLastKeepAlive(System.currentTimeMillis());
+        PacketHandler.send(new ServerUpdatePacket(server));
         CompletableFuture.runAsync(() -> api.runRedisCommand(redis -> {
             redis.hset("servers", server.getServerId(), GsonProvider.GSON.toJson(server));
             return null;

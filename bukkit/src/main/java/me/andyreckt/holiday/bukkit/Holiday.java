@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -75,13 +76,14 @@ public final class Holiday extends JavaPlugin {
     private Executor executor;
     private ScheduledExecutorService scheduledExecutor;
 
-    @Setter
+    @Setter private boolean joinable = false;
     private boolean joinable = false;
 
     private Server thisServer;
 
     private ServerTask serverTask;
     @Setter private RebootTask rebootTask;
+    private Random random;
 
     private boolean protocolEnabled = false;
 
@@ -191,6 +193,7 @@ public final class Holiday extends JavaPlugin {
     }
 
     private void setupManagers() {
+        this.random = new Random();
         this.uuidCache = new UUIDCache(this);
         this.menuAPI = new MenuAPI(this);
         this.chatManager = new ChatManager(this);
@@ -220,6 +223,13 @@ public final class Holiday extends JavaPlugin {
                 Logger.log(CC.translate(packet.getMessage()));
             } else {
                 Bukkit.broadcastMessage(CC.translate(packet.getMessage()));
+            }
+        });
+
+        _api.setServerUpdateConsumer(server -> {
+            if (server.getServerId().equals(thisServer.getServerId())) {
+                this.thisServer = server;
+                StringUtils.setSlots(this.thisServer.getMaxPlayers());
             }
         });
 

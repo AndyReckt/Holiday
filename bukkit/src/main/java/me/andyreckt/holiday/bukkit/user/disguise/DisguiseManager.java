@@ -136,7 +136,7 @@ public class DisguiseManager {
 
     public String getRandomName() {
         List<String> names = getUnusedNames();
-        return names.get(new Random().nextInt(names.size() - 1));
+        return names.get(plugin.getRandom().nextInt(names.size() - 1));
     }
 
 
@@ -146,7 +146,7 @@ public class DisguiseManager {
 
     public Skin getRandomSkin() {
         List<String> skins = new ArrayList<>(Skin.SKINS.keySet());
-        return getSkin(skins.get(new Random().nextInt(skins.size() - 1)));
+        return getSkin(skins.get(plugin.getRandom().nextInt(skins.size() - 1)));
     }
 
 }

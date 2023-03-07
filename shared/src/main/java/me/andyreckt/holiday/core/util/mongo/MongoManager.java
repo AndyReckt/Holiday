@@ -19,7 +19,6 @@ public class MongoManager {
     private final MongoCollection<Document> ranks;
     private final MongoCollection<Document> grants;
     private final MongoCollection<Document> punishments;
-    private final MongoCollection<Document> servers;
 
     public MongoManager(HolidayAPI api, MongoCredentials credentials) {
         this.api = api;
@@ -31,6 +30,5 @@ public class MongoManager {
         this.ranks = database.getCollection("ranks");
         this.grants = database.getCollection("grants");
         this.punishments = database.getCollection("punishments");
-        this.servers = database.getCollection("servers");
     }
 }

@@ -9,6 +9,7 @@ import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
+import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.server.ServerManager;
 import me.andyreckt.holiday.core.user.UserManager;
 import me.andyreckt.holiday.core.user.grant.GrantManager;
@@ -44,14 +45,13 @@ public class HolidayAPI implements API {
     private final PunishmentManager punishmentManager;
 
     private final JedisPool jedis;
-    @Setter
-    private HashMap<UUID, String> onlinePlayers;
 
-    @Getter
-    private final RedisCredentials redisCredentials;
+    @Setter private HashMap<UUID, String> onlinePlayers;
 
-    @Setter
-    private Consumer<BroadcastPacket> broadcastConsumer;
+    @Getter private final RedisCredentials redisCredentials;
+
+    @Setter private Consumer<BroadcastPacket> broadcastConsumer;
+    @Setter private Consumer<Server> serverUpdateConsumer;
     private final Executor executor;
 
 

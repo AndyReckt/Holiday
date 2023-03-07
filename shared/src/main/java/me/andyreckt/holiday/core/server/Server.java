@@ -68,6 +68,11 @@ public class Server implements IServer {
     }
 
     @Override
+    public void sendUpdate() {
+        HolidayAPI.getUnsafeAPI().getServerManager().sendUpdate(this);
+    }
+
+    @Override
     public long getUptime() {
         return System.currentTimeMillis() - startupTime;
     }
