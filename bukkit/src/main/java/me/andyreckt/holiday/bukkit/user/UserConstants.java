@@ -25,6 +25,8 @@ public class UserConstants {
     }
 
     public static String getDisplayNameWithColor(Profile profile) {
+        if (profile == UserProfile.getConsoleProfile()) return CC.RED + "Console";
+
         IRank rank = profile.getDisplayRank();
         return getRankColor(rank) + (rank.isBold() ? CC.BOLD : "") + (rank.isItalic() ? CC.ITALIC : "") + profile.getDisplayName();
     }

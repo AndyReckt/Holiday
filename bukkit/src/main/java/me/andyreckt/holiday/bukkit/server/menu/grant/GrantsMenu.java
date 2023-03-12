@@ -70,12 +70,12 @@ public class GrantsMenu extends PaginatedMenu {
 
     static class GrantButton extends Button {
 
-        final IGrant grant;
+        final Grant grant;
         final Profile profile;
         final boolean actives;
 
         public GrantButton(IGrant grant, Profile profile, boolean actives) {
-            this.grant = grant;
+            this.grant = (Grant) grant;
             this.profile = profile;
             this.actives = actives;
         }
@@ -93,7 +93,7 @@ public class GrantsMenu extends PaginatedMenu {
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Rank: " + CC.SECONDARY + grant.getRank().getDisplayName(),
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Target: " + CC.SECONDARY + UserConstants.getNameWithColor(target),
-                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(grant.getDuration()),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + grant.getDurationObject().getFormatted(),
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: " + CC.SECONDARY + UserConstants.getNameWithColor(issuer),
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued On: " + CC.SECONDARY + grant.getIssuedOn(),
@@ -106,7 +106,7 @@ public class GrantsMenu extends PaginatedMenu {
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Rank: " + CC.SECONDARY + grant.getRank().getDisplayName(),
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Target: " + CC.SECONDARY + UserConstants.getNameWithColor(target),
-                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(grant.getDuration()),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + grant.getDurationObject().getFormatted(),
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: " + CC.SECONDARY + UserConstants.getNameWithColor(issuer),
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued On: " + CC.SECONDARY + grant.getIssuedOn(),

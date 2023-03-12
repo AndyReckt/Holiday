@@ -23,6 +23,7 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.UserProfile;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.enums.ChatChannel;
@@ -59,7 +60,7 @@ public class EssentialCommands {
             Cooldown oldCd = reportCooldownMap.get(sender.getUniqueId());
             if (oldCd.hasExpired()) reportCooldownMap.remove(sender.getUniqueId());
             else {
-                sender.sendMessage(Locale.COOLDOWN.getString().replace("%time%", TimeUtil.getDuration(oldCd.getRemaining())));
+                sender.sendMessage(Locale.COOLDOWN.getString().replace("%time%", Duration.of(oldCd.getRemaining()).toSmallRoundedTime()));
                 return;
             }
         }
@@ -88,7 +89,7 @@ public class EssentialCommands {
             Cooldown oldCd = helpopCooldownMap.get(sender.getUniqueId());
             if (oldCd.hasExpired()) helpopCooldownMap.remove(sender.getUniqueId());
             else {
-                sender.sendMessage(Locale.COOLDOWN.getString().replace("%time%", TimeUtil.getDuration(oldCd.getRemaining())));
+                sender.sendMessage(Locale.COOLDOWN.getString().replace("%time%", Duration.of(oldCd.getRemaining()).toSmallRoundedTime()));
                 return;
             }
         }

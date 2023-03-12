@@ -13,6 +13,7 @@ import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.bukkit.server.menu.grant.*;
 import me.andyreckt.holiday.core.user.grant.Grant;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.command.ConsoleCommandSender;
@@ -34,24 +35,22 @@ public class GrantCommands {
     public void ogrant(ConsoleCommandSender sender,
                         @Param(name = "player") Profile target,
                         @Param(name = "rank") IRank rank,
-                        @Param(name = "time") String time,
+                        @Param(name = "time") Duration duration,
                         @Param(name = "reason", wildcard = true) String reason) {
-        long tim = TimeUtil.getDuration(time);
-        String ti = TimeUtil.getDuration(tim);
         Holiday plugin = Holiday.getInstance();
 
         Profile issuer = UserProfile.getConsoleProfile();
-        Grant grant = new Grant(target.getUuid(), rank, issuer.getUuid(), reason,plugin.getThisServer().getServerName(), tim);
+        Grant grant = new Grant(target.getUuid(), rank, issuer.getUuid(), reason,plugin.getThisServer().getServerName(), duration);
         plugin.getApi().saveGrant(grant);
 
         String str = Locale.GRANT_PLAYER.getString()
                 .replace("%player%", UserConstants.getNameWithColor(target))
                 .replace("%rank%", rank.getDisplayName())
-                .replace("%duration%", ti);
+                .replace("%duration%", duration.toRoundedTime());
         sender.sendMessage(CC.translate(str));
         String str2 = Locale.GRANT_TARGET.getString()
                 .replace("%rank%", rank.getDisplayName())
-                .replace("%duration%", String.valueOf(TimeUtil.getDuration(ti)))
+                .replace("%duration%", duration.toRoundedTime())
                 .replace("%reason%", reason);
         PacketHandler.send(new PlayerMessagePacket(target.getUuid(), str2));
     }

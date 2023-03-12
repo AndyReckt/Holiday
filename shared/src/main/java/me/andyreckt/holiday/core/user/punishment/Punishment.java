@@ -5,6 +5,7 @@ import lombok.Getter;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.UserProfile;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 
 import java.util.UUID;
@@ -18,7 +19,7 @@ public class Punishment implements IPunishment {
     private final UUID punished;
     private final PunishmentType type;
 
-    private final long duration;
+    private final Duration duration;
     private final String ip;
 
     private final UUID addedBy;
@@ -31,7 +32,7 @@ public class Punishment implements IPunishment {
     private String revokedReason = null;
     private String revokedOn = null;
 
-    public Punishment(UUID punished, PunishmentType type, long duration, UUID addedBy, String addedReason, String addedOn) {
+    public Punishment(UUID punished, PunishmentType type, Duration duration, UUID addedBy, String addedReason, String addedOn) {
         this.punished = punished;
         this.type = type;
         this.duration = duration;
@@ -44,10 +45,22 @@ public class Punishment implements IPunishment {
         this.ip = HolidayAPI.getUnsafeAPI().getProfile(punished).getIp();
     }
 
+    @Override
+    public long getDuration() {
+        return duration.get();
+    }
+
+    public Duration getDurationObject() {
+        return duration;
+    }
+
+    public Duration getRemainingDuration() {
+        return new Duration(getRemainingTime());
+    }
 
     @Override
     public long getRemainingTime() {
-        return duration == TimeUtil.PERMANENT ? TimeUtil.PERMANENT : addedAt + duration - System.currentTimeMillis();
+        return duration.isPermanent() ? TimeUtil.PERMANENT : addedAt + duration.get() - System.currentTimeMillis();
     }
 
     @Override
@@ -66,12 +79,17 @@ public class Punishment implements IPunishment {
     @Override
     public boolean check() {
         if (!isActive()) return false;
-        if (duration == TimeUtil.PERMANENT) return false;
+        if (duration.isPermanent()) return false;
         if (getRemainingTime() <= 0) {
             this.revoke(UserProfile.getConsoleProfile().getUuid(), "Expired", "Automatic");
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isPermanent() {
+        return duration.isPermanent();
     }
 
     public void postProcess() {

@@ -105,7 +105,7 @@ public class HolidayAPI implements API {
     }
 
     @Override
-    public Queue<IRank> getRanks() {
+    public Set<IRank> getRanks() {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 

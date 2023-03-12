@@ -10,6 +10,7 @@ import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.punishment.Punishment;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
@@ -74,7 +75,7 @@ public class ChatManager {
 
         if (isOnDelay(player.getUniqueId())) {
             player.sendMessage(Locale.CHAT_DELAY_MESSAGE.getString()
-                    .replace("%delay%", TimeUtil.getDuration(getChatDelay(player.getUniqueId()))));
+                    .replace("%delay%", Duration.of(getChatDelay(player.getUniqueId())).toRoundedTime()));
             return false;
         }
 
@@ -112,7 +113,7 @@ public class ChatManager {
             if (Locale.FILTER_HIGH_MUTE.getBoolean()) {
                 Punishment punishment = new Punishment(player.getUniqueId(),
                         IPunishment.PunishmentType.MUTE,
-                        TimeUtil.getDuration(Locale.FILTER_HIGH_MUTE_DURATION.getString()),
+                        Duration.of(Locale.FILTER_HIGH_MUTE_DURATION.getString()),
                         UserProfile.getConsoleProfile().getUuid(),
                         Locale.FILTER_HIGH_MUTE_REASON.getString().replace("%word%", filtered),
                         Holiday.getInstance().getThisServer().getServerName()
@@ -121,9 +122,9 @@ public class ChatManager {
                 String toSend = Locale.PUNISHMENT_MUTE_MESSAGE.getString()
                         .replace("%silent%", Locale.PUNISHMENT_SILENT_PREFIX.getString())
                         .replace("%player%", UserConstants.getDisplayNameWithColor(profile))
-                        .replace("%executor%", "&4CONSOLE")
+                        .replace("%executor%", UserConstants.getNameWithColor(UserProfile.getConsoleProfile()))
                         .replace("%reason%", punishment.getAddedReason())
-                        .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+                        .replace("%duration%", punishment.getDurationObject().getFormatted());
                 PacketHandler.send(new BroadcastPacket(toSend, Perms.PUNISHMENTS_SILENT_VIEW.get()));
             }
 

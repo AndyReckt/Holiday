@@ -29,10 +29,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.HashSet;
+import java.util.Set;
 
 @MainCommand(names = {"rank", "ranks"}, description = "Manage ranks.", permission = Perms.RANKS)
 public class RankCommand {
@@ -191,7 +189,7 @@ public class RankCommand {
         if (!file.exists()) {
             Holiday.getInstance().saveResource("ranks.json", false);
         }
-        Queue<Rank> ranks = new ConcurrentLinkedQueue<>();
+        Set<Rank> ranks = new HashSet<>();
         Holiday.getInstance().getApi().getRanks().forEach(r -> ranks.add((Rank) r));
         Files.write(GsonProvider.GSON.toJson(ranks), file, Charsets.UTF_8);
         sender.sendMessage(CC.translate("&aSuccessfully exported ranks to &f" + file.getName()));
@@ -206,7 +204,7 @@ public class RankCommand {
             return;
         }
 
-        Queue<Rank> ranks = GsonProvider.GSON.fromJson(Files.toString(file, Charsets.UTF_8), new TypeToken<ConcurrentLinkedQueue<Rank>>() {
+        Set<Rank> ranks = GsonProvider.GSON.fromJson(Files.toString(file, Charsets.UTF_8), new TypeToken<HashSet<Rank>>() {
         }.getType());
         Holiday.getInstance().getApi().getRanks().forEach(r -> Holiday.getInstance().getApi().deleteRank(r));
         ranks.forEach(r -> Holiday.getInstance().getApi().saveRank(r));

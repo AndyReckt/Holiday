@@ -13,6 +13,7 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.Flag;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.punishment.Punishment;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
@@ -31,7 +32,7 @@ public class PunishmentCommands {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.PERMANENT, reason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.BAN, Duration.PERMANENT, reason, silent, sender);
     }
 
     @Command(names = {"blacklist", "bl"}, async = true, permission = Perms.BLACKLIST)
@@ -42,7 +43,7 @@ public class PunishmentCommands {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        punish(profile, target, IPunishment.PunishmentType.BLACKLIST, TimeUtil.PERMANENT, reason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.BLACKLIST, Duration.PERMANENT, reason, silent, sender);
     }
 
     @Command(names = {"ipban", "ipb", "banip", "ban-ip"}, async = true, permission = Perms.IPBAN)
@@ -53,19 +54,19 @@ public class PunishmentCommands {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        punish(profile, target, IPunishment.PunishmentType.IP_BAN, TimeUtil.PERMANENT, reason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.IP_BAN, Duration.PERMANENT, reason, silent, sender);
     }
 
     @Command(names = {"tempban", "tban", "tb"}, async = true, permission = Perms.TEMPBAN)
     public void tempban(CommandSender sender,
                                @Flag(name = "silent", identifier = 's') boolean silent,
                                @Param(name = "name") Profile target,
-                               @Param(name = "time") String duration,
+                               @Param(name = "time") Duration duration,
                                @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        punish(profile, target, IPunishment.PunishmentType.BAN, TimeUtil.getDuration(duration), reason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.BAN, duration, reason, silent, sender);
     }
 
     @Command(names = {"mute"}, async = true, permission = Perms.MUTE)
@@ -76,19 +77,19 @@ public class PunishmentCommands {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        punish(profile, target, IPunishment.PunishmentType.MUTE, TimeUtil.PERMANENT, reason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.MUTE, Duration.PERMANENT, reason, silent, sender);
     }
 
     @Command(names = {"tempmute", "tmute"}, async = true, permission = Perms.TEMPMUTE)
     public void tempmute(CommandSender sender,
                                 @Flag(name = "silent", identifier = 's') boolean silent,
                                 @Param(name = "name") Profile target,
-                                @Param(name = "time") String duration,
+                                @Param(name = "time") Duration duration,
                                 @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
-        punish(profile, target, IPunishment.PunishmentType.MUTE, TimeUtil.getDuration(duration), reason, silent, sender);
+        punish(profile, target, IPunishment.PunishmentType.MUTE, duration, reason, silent, sender);
     }
 
     @Command(names = {"kick"}, async = true, permission = Perms.KICK)
@@ -124,7 +125,7 @@ public class PunishmentCommands {
     }
 
 
-    private void punish(Profile issuer, Profile target, IPunishment.PunishmentType punishmentType, long duration, String reason, boolean silent, CommandSender sender) {
+    private void punish(Profile issuer, Profile target, IPunishment.PunishmentType punishmentType, Duration duration, String reason, boolean silent, CommandSender sender) {
         if (!issuer.getHighestRank().isAboveOrEqual(target.getHighestRank())
                 && !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(Locale.CANNOT_PUNISH_PLAYER.getString());
@@ -149,7 +150,8 @@ public class PunishmentCommands {
         kickPlayer(punishment);
     }
 
-    private void kickPlayer(IPunishment punishment) {
+    private void kickPlayer(Punishment punishment) {
+        if (punishment.getType() == IPunishment.PunishmentType.MUTE) return;
         String toSend = "";
         switch (punishment.getType()) {
             case BAN:
@@ -162,20 +164,20 @@ public class PunishmentCommands {
                 toSend = Locale.PUNISHMENT_BLACKLIST_KICK.getStringNetwork();
                 break;
         }
-        if (punishment.getType() == IPunishment.PunishmentType.MUTE) return;
         toSend = toSend.replace("%reason%", punishment.getAddedReason())
-                .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+                .replace("%duration%", punishment.getDurationObject().toRoundedTime());
         PacketHandler.send(new KickPlayerPacket(punishment.getPunished(), toSend));
+
     }
 
-    private void sendPunishmentBroadcast(IPunishment punishment, boolean silent) {
+    private void sendPunishmentBroadcast(Punishment punishment, boolean silent) {
         String toSend = "";
         switch (punishment.getType()) {
             case BAN:
-                toSend = punishment.getDuration() == TimeUtil.PERMANENT ? Locale.PUNISHMENT_BAN_MESSAGE.getString() : Locale.PUNISHMENT_TEMP_BAN_MESSAGE.getString();
+                toSend = punishment.getDurationObject().isPermanent() ? Locale.PUNISHMENT_BAN_MESSAGE.getString() : Locale.PUNISHMENT_TEMP_BAN_MESSAGE.getString();
                 break;
             case MUTE:
-                toSend = punishment.getDuration() == TimeUtil.PERMANENT ? Locale.PUNISHMENT_MUTE_MESSAGE.getString() : Locale.PUNISHMENT_TEMP_MUTE_MESSAGE.getString();
+                toSend = punishment.getDurationObject().isPermanent() ? Locale.PUNISHMENT_MUTE_MESSAGE.getString() : Locale.PUNISHMENT_TEMP_MUTE_MESSAGE.getString();
                 break;
             case BLACKLIST:
                 toSend = Locale.PUNISHMENT_BLACKLIST_MESSAGE.getString();
@@ -197,7 +199,7 @@ public class PunishmentCommands {
                 .replace("%player%", targetName)
                 .replace("%silent%", silent ? Locale.PUNISHMENT_SILENT_PREFIX.getString() : "")
                 .replace("%reason%", punishment.getAddedReason())
-                .replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+                .replace("%duration%", punishment.getDurationObject().getFormatted());
 
         if (!silent) {
             PacketHandler.send(new BroadcastPacket(toSend));

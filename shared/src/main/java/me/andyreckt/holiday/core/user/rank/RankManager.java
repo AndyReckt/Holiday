@@ -10,19 +10,19 @@ import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.RankUpdatePacket;
 import org.bson.Document;
 
-import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @Getter
 public class RankManager {
     private final HolidayAPI api;
 
-    private final Queue<IRank> ranks;
+    private final Set<IRank> ranks;
 
     public RankManager(HolidayAPI api) {
         this.api = api;
-        this.ranks = new ConcurrentLinkedQueue<>();
+        this.ranks = new ConcurrentSkipListSet<>();
         this.loadRanks();
         if (this.ranks.stream().noneMatch(IRank::isDefault)) {
             IRank rank = newDefaultRank();

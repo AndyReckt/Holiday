@@ -24,6 +24,7 @@ import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.menu.MenuAPI;
 import me.andyreckt.holiday.bukkit.util.other.Tasks;
 import me.andyreckt.holiday.bukkit.util.sunset.Sunset;
+import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.DurationParameterType;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.ProfileParameterType;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.RankParameterType;
 import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.UUIDParameterType;
@@ -32,6 +33,7 @@ import me.andyreckt.holiday.bukkit.util.text.StringUtils;
 import me.andyreckt.holiday.bukkit.util.uuid.UUIDCache;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.server.Server;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
@@ -77,7 +79,6 @@ public final class Holiday extends JavaPlugin {
     private ScheduledExecutorService scheduledExecutor;
 
     @Setter private boolean joinable = false;
-    private boolean joinable = false;
 
     private Server thisServer;
 
@@ -152,6 +153,7 @@ public final class Holiday extends JavaPlugin {
         this.commandManager.registerType(new RankParameterType(), IRank.class);
         this.commandManager.registerType(new ProfileParameterType(), Profile.class);
         this.commandManager.registerType(new UUIDParameterType(), UUID.class);
+        this.commandManager.registerType(new DurationParameterType(), Duration.class);
         Arrays.asList(
                 new DebugCommand(), new RankCommand(), new ChatCommand(),
                 new WhitelistCommand(), new ServerManagerCommand(),
@@ -261,13 +263,13 @@ public final class Holiday extends JavaPlugin {
 
 
     private void logInformation(final long milli) {
-        long duration = System.currentTimeMillis() - milli;
+        Duration duration = Duration.of(System.currentTimeMillis() - milli);
         Logger.log(" ");
         Logger.log(CC.CHAT + "-----------------------------------------------");
         Logger.log(CC.PRIMARY + "Plugin: " + CC.SECONDARY + "Holiday");
         Logger.log(CC.PRIMARY + "Version: " + CC.SECONDARY + getDescription().getVersion());
         Logger.log(CC.PRIMARY + "Author: " + CC.SECONDARY + getDescription().getAuthors().get(0));
-        Logger.log(CC.PRIMARY + "Startup time: " + CC.SECONDARY + duration + "ms " + CC.PRIMARY + "(" + TimeUtil.getDuration(duration) + ")");
+        Logger.log(CC.PRIMARY + "Startup time: " + CC.SECONDARY + duration.get() + "ms " + CC.PRIMARY + "(" + duration.toSmallRoundedTime() + ")");
         Logger.log(CC.CHAT + "-----------------------------------------------");
         Logger.log(" ");
     }

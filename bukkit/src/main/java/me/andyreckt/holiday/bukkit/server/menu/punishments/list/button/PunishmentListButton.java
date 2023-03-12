@@ -7,6 +7,7 @@ import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.item.ItemBuilder;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.core.user.punishment.Punishment;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
@@ -17,10 +18,10 @@ import java.util.UUID;
 
 public class PunishmentListButton extends Button {
 
-    IPunishment data;
+    Punishment data;
 
     public PunishmentListButton(IPunishment punishData) {
-        this.data = punishData;
+        this.data = (Punishment) punishData;
     }
 
     @Override
@@ -33,7 +34,7 @@ public class PunishmentListButton extends Button {
                 .lore(" ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Type: " + CC.SECONDARY + data.getType().getName() + " " + CC.GRAY + "[#" + data.getId() + "]",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Target: " + CC.SECONDARY + UserConstants.getNameWithColor(target),
-                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + TimeUtil.getDuration(data.getDuration()),
+                        CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Duration: " + CC.SECONDARY + data.getDurationObject().getFormatted(),
                         " ",
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued By: " + CC.SECONDARY + nameWithColor(data.getAddedBy()),
                         CC.B_PRIMARY + CC.LINE + " " + CC.CHAT + "Issued On: " + CC.SECONDARY + data.getAddedOn(),

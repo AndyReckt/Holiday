@@ -8,6 +8,7 @@ import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.UserProfile;
+import me.andyreckt.holiday.core.user.punishment.Punishment;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.enums.ChatChannel;
@@ -25,7 +26,7 @@ public class ChatListener implements Listener {
     public void onChatMute(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
-        IPunishment punishment = profile.getActivePunishments().stream()
+        Punishment punishment = (Punishment) profile.getActivePunishments().stream()
                 .filter(punishment1 -> punishment1.getType() == IPunishment.PunishmentType.MUTE)
                 .findFirst().orElse(null);
         if (punishment != null) {
@@ -33,13 +34,13 @@ public class ChatListener implements Listener {
 
             String toSend = "";
 
-            if (punishment.getDuration() == TimeUtil.PERMANENT) {
+            if (punishment.getDurationObject().isPermanent()) {
                 toSend = Locale.PUNISHMENT_MUTE_PLAYER.getString();
             } else {
                 toSend = Locale.PUNISHMENT_TEMP_MUTE_PLAYER.getString();
             }
 
-            toSend = toSend.replace("%duration%", TimeUtil.getDuration(punishment.getDuration()));
+            toSend = toSend.replace("%duration%", punishment.getRemainingDuration().toRoundedTime());
 
             player.sendMessage(toSend);
         }
@@ -134,14 +135,14 @@ public class ChatListener implements Listener {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
-        IPunishment punishment = profile.getActivePunishments().stream().filter(o -> o.getType().equals(IPunishment.PunishmentType.MUTE)).findFirst().orElse(null);
+        Punishment punishment = (Punishment) profile.getActivePunishments().stream().filter(o -> o.getType().equals(IPunishment.PunishmentType.MUTE)).findFirst().orElse(null);
         if (punishment != null) {
             event.setCancelled(true);
 
-            boolean temp = punishment.getDuration() != TimeUtil.PERMANENT;
+            boolean temp = punishment.getDurationObject().isPermanent();
 
             player.sendMessage(temp ? Locale.PUNISHMENT_TEMP_MUTE_PLAYER.getString()
-                     .replace("%duration%", TimeUtil.getDuration(punishment.getRemainingTime()))
+                     .replace("%duration%", punishment.getRemainingDuration().toRoundedTime())
                     : Locale.PUNISHMENT_MUTE_PLAYER.getString());
         }
 

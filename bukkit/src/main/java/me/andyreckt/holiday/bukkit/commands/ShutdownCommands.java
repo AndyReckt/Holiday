@@ -7,6 +7,7 @@ import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -42,14 +43,14 @@ public class ShutdownCommands {
             return;
         }
 
-        long millis = TimeUtil.getDuration(time);
-        if (millis == -1L) {
+        Duration duration = Duration.of(time);
+        if (duration.isPermanent()) {
             sender.sendMessage(Locale.TIME_FORMAT.getString());
             return;
         }
 
-        new RebootTask(millis);
-        sender.sendMessage(Locale.REBOOT_STARTED.getString().replace("%time%", time));
+        new RebootTask(duration.get());
+        sender.sendMessage(Locale.REBOOT_STARTED.getString().replace("%time%", duration.toRoundedTime()));
     }
 
 }

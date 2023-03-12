@@ -7,6 +7,7 @@ import me.andyreckt.holiday.bukkit.util.menu.Button;
 import me.andyreckt.holiday.bukkit.util.menu.GlassMenu;
 import me.andyreckt.holiday.bukkit.util.menu.Menu;
 import me.andyreckt.holiday.bukkit.util.text.StringUtil;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -65,14 +66,14 @@ public class GrantChooseTimeMenu extends Menu {
         @Override
         public ItemStack getButtonItem(Player p0) {
             return new ItemBuilder(Material.WOOL)
-                    .displayname(color + TimeUtil.getDuration(TimeUtil.getDuration(time)))
+                    .displayname(color + Duration.of(time).getFormatted())
                     .damage(StringUtil.convertChatColorToWoolData(color))
                     .build();
         }
 
         @Override
         public void clicked(Player player, int slot, ClickType clickType, int hotbarButton) {
-            new GrantChooseReasonMenu(profile, rank, TimeUtil.getDuration(time)).openMenu(player);
+            new GrantChooseReasonMenu(profile, rank, Duration.of(time)).openMenu(player);
         }
     }
 }

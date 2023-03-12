@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import java.util.UUID;
 
-public interface IRank {
+public interface IRank extends Comparable<IRank> {
 
     @SerializedName("_id")
     UUID getUuid();

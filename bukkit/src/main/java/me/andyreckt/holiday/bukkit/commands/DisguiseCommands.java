@@ -13,6 +13,7 @@ import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.bukkit.entity.Player;
 
@@ -38,7 +39,7 @@ public class DisguiseCommands {
             Cooldown oldCd = cooldownMap.get(player.getUniqueId());
             if (oldCd.hasExpired()) cooldownMap.remove(player.getUniqueId());
             else {
-                player.sendMessage(Locale.COOLDOWN.getString().replace("%time%", TimeUtil.getDuration(oldCd.getRemaining())));
+                player.sendMessage(Locale.COOLDOWN.getString().replace("%time%", Duration.of(oldCd.getRemaining()).toRoundedTime()));
                 return;
             }
         }

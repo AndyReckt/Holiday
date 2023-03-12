@@ -9,6 +9,7 @@ import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
@@ -62,19 +63,18 @@ public class ChatCommand {
 
     @SubCommand(names = "slow", permission = Perms.CHAT_SLOW, async = true, usage = "/chat slow (duration)", description = "Slows the chat")
     @Command(names = {"slowchat"}, permission = Perms.CHAT_SLOW, async = true, usage = "/slowchat (duration)", description = "Slows the chat")
-    public void slowchat(CommandSender sender, @Param(name = "time") String duration){
+    public void slowchat(CommandSender sender, @Param(name = "time") Duration duration){
 
-        long time = TimeUtil.getDuration(duration);
-        if(time == 0L || time == -1L) {
+        if(duration.get() == 0L || duration.isPermanent()) {
             sender.sendMessage(Locale.TIME_FORMAT.getString());
             return;
         }
-        Holiday.getInstance().getChatManager().setChatDelay(time);
-        Bukkit.broadcastMessage(Locale.GLOBAL_CHAT_SLOWED.getString().replace("%delay%", TimeUtil.getDuration(time)));
+        Holiday.getInstance().getChatManager().setChatDelay(duration.get());
+        Bukkit.broadcastMessage(Locale.GLOBAL_CHAT_SLOWED.getString().replace("%delay%", duration.toRoundedTime()));
         String toSend = Locale.STAFF_CHAT_SLOWED.getString()
                 .replace("%executor%", sender instanceof ConsoleCommandSender ? "Console" : UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(((Player) sender).getUniqueId())))
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
-                .replace("%delay%", TimeUtil.getDuration(time));
+                .replace("%delay%", duration.toSmallRoundedTime());
         PacketHandler.send(
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }

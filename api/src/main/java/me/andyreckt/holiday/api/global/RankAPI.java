@@ -3,13 +3,13 @@ package me.andyreckt.holiday.api.global;
 import me.andyreckt.holiday.api.user.IRank;
 
 import java.util.List;
-import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
 
 public interface RankAPI {
     IRank getDefaultRank();
 
-    Queue<IRank> getRanks();
+    Set<IRank> getRanks();
     List<IRank> getRanksSorted();
 
     IRank createRank(String name);

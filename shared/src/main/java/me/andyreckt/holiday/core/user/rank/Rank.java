@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.user.IRank;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,5 +65,15 @@ public class Rank implements IRank {
     @Override
     public void removeChild(UUID uuid) {
         getChilds().remove(uuid);
+    }
+
+    @Override
+    public boolean isAboveOrEqual(IRank rank) {
+        return getPriority() >= rank.getPriority();
+    }
+
+    @Override
+    public int compareTo(@NotNull IRank o) {
+        return Integer.compare(getPriority(), o.getPriority());
     }
 }

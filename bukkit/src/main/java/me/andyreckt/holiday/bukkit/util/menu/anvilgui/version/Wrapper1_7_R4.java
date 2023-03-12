@@ -11,7 +11,7 @@ import org.bukkit.inventory.Inventory;
  * {@link VersionWrapper} implemented for NMS version 1_7_R4
  *
  * @author Hasan Demirtaş
- * @since 1.3.0
+ * @since 1.3.1
  */
 public class Wrapper1_7_R4 implements VersionWrapper {
 

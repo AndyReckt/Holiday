@@ -18,6 +18,7 @@ import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.grant.Grant;
+import me.andyreckt.holiday.core.user.punishment.Punishment;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
@@ -56,7 +57,7 @@ public class PlayerListener implements Listener {
         api.saveProfile(profile);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onLoinStartupCheck(PlayerLoginEvent event) {
         if (!Holiday.getInstance().isJoinable()) {
             event.setKickMessage(CC.translate("&cServer is still starting up."));
@@ -69,7 +70,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
-        IPunishment punishment = profile.getActivePunishments().stream()
+        Punishment punishment = (Punishment) profile.getActivePunishments().stream()
                 .filter(pun -> pun.getType() == IPunishment.PunishmentType.BAN ||
                         pun.getType() == IPunishment.PunishmentType.IP_BAN ||
                         pun.getType() == IPunishment.PunishmentType.BLACKLIST)
@@ -81,7 +82,7 @@ public class PlayerListener implements Listener {
         Locale locale;
         switch (punishment.getType()) {
             case BAN:
-                locale = punishment.getDuration() == TimeUtil.PERMANENT ? Locale.PUNISHMENT_BAN_KICK : Locale.PUNISHMENT_TEMP_BAN_KICK;
+                locale = punishment.getDurationObject().isPermanent() ? Locale.PUNISHMENT_BAN_KICK : Locale.PUNISHMENT_TEMP_BAN_KICK;
                 break;
             case IP_BAN:
                 locale = Locale.PUNISHMENT_IP_BAN_KICK;
@@ -102,13 +103,15 @@ public class PlayerListener implements Listener {
 
         String kickMessage = locale.getStringNetwork()
                 .replace("%reason%", punishment.getAddedReason())
-                .replace("%duration%", TimeUtil.getDuration(punishment.getRemainingTime()));
+                .replace("%duration%", punishment.getRemainingDuration().toRoundedTime());
         event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
         event.setKickMessage(CC.translate(kickMessage));
         String toSend = Locale.PUNISHMENT_BANNED_LOGIN_ALERT.getString()
                 .replace("%player%", player.getName());
         PacketHandler.send(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.BANNED_LOGIN));
     }
+
+
 
     @EventHandler(priority = EventPriority.LOW)
     public void onLoginWhitelist(PlayerLoginEvent event) {

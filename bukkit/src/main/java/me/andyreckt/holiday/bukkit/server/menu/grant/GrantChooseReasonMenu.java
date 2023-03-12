@@ -13,6 +13,7 @@ import me.andyreckt.holiday.bukkit.util.menu.buttons.ConversationButton;
 import me.andyreckt.holiday.bukkit.util.menu.pagination.ConfirmationMenu;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.grant.Grant;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.Material;
@@ -27,9 +28,9 @@ public class GrantChooseReasonMenu extends GlassMenu {
 
     private final Profile profile;
     private final IRank rank;
-    private final long duration;
+    private final Duration duration;
 
-    public GrantChooseReasonMenu(Profile profile, IRank rank, long duration) {
+    public GrantChooseReasonMenu(Profile profile, IRank rank, Duration duration) {
         this.profile = profile;
         this.rank = rank;
         this.duration = duration;
@@ -64,12 +65,12 @@ public class GrantChooseReasonMenu extends GlassMenu {
                     Holiday.getInstance().getApi().saveGrant(grant);
                     String str = Locale.GRANT_TARGET.getString()
                             .replace("%rank%", rank.getDisplayName())
-                            .replace("%duration%", TimeUtil.getDuration(duration))
+                            .replace("%duration%", duration.getFormatted())
                             .replace("%reason%", pair.getB());
                     String str2 = Locale.GRANT_PLAYER.getString()
                             .replace("%player%", profile.getName())
                             .replace("%rank%", rank.getDisplayName())
-                            .replace("%duration%", TimeUtil.getDuration(duration))
+                            .replace("%duration%", duration.getFormatted())
                             .replace("%reason%", pair.getB());
                     player.sendMessage(CC.translate(str2));
                     PacketHandler.send(new PlayerMessagePacket(profile.getUuid(), str));
@@ -79,7 +80,7 @@ public class GrantChooseReasonMenu extends GlassMenu {
                                 .displayname(CC.SECONDARY + "Confirm Grant")
                                 .lore("",
                                         CC.SECONDARY + "Rank: " + CC.PRIMARY + rank.getDisplayName(),
-                                        CC.SECONDARY + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(duration),
+                                        CC.SECONDARY + "Duration: " + CC.PRIMARY + duration.toRoundedTime(),
                                         CC.SECONDARY + "Reason: " + CC.PRIMARY + pair.getB(),
                                         "",
                                         CC.SECONDARY + "Click to confirm.")
@@ -105,9 +106,9 @@ public class GrantChooseReasonMenu extends GlassMenu {
         private final String reason;
         private final Profile profile;
         private final IRank rank;
-        private final long duration;
+        private final Duration duration;
 
-        public ReasonButton(String reason, Profile profile, IRank rank, long duration) {
+        public ReasonButton(String reason, Profile profile, IRank rank, Duration duration) {
             this.reason = reason;
             this.profile = profile;
             this.rank = rank;
@@ -126,13 +127,13 @@ public class GrantChooseReasonMenu extends GlassMenu {
                 Holiday.getInstance().getApi().saveGrant(grant);
                 String str = Locale.GRANT_TARGET.getString()
                         .replace("%rank%", rank.getDisplayName())
-                        .replace("%duration%", TimeUtil.getDuration(duration))
+                        .replace("%duration%", duration.getFormatted())
                         .replace("%reason%", reason);
                 String str2 = Locale.GRANT_PLAYER.getString()
                         .replace("%player%", profile.getName())
                         .replace("%rank%", rank.getDisplayName())
-                        .replace("%duration%", TimeUtil.getDuration(duration))
-                        .replace("%reason%", reason);
+                        .replace("%duration%", duration.getFormatted()
+                        .replace("%reason%", reason));
                 player.sendMessage(CC.translate(str2));
                 PacketHandler.send(new PlayerMessagePacket(profile.getUuid(), str));
 
@@ -141,7 +142,7 @@ public class GrantChooseReasonMenu extends GlassMenu {
                         .displayname(CC.SECONDARY + "Confirm Grant")
                         .lore("",
                                 CC.SECONDARY + "Rank: " + CC.PRIMARY + rank.getDisplayName(),
-                                CC.SECONDARY + "Duration: " + CC.PRIMARY + TimeUtil.getDuration(duration),
+                                CC.SECONDARY + "Duration: " + CC.PRIMARY + duration.toRoundedTime(),
                                 CC.SECONDARY + "Reason: " + CC.PRIMARY + reason,
                                 "",
                                 CC.SECONDARY + "Click to confirm.")

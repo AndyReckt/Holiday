@@ -7,6 +7,7 @@ import me.andyreckt.holiday.api.user.IGrant;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.UserProfile;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 
 import java.util.UUID;
@@ -28,13 +29,13 @@ public class Grant implements IGrant {
     private final String issuedOn;
     private String revokedOn;
 
-    private final long duration;
+    private final Duration duration;
     private final long issuedAt;
     private long revokedAt;
 
     private boolean active = true;
 
-    public Grant(UUID user, IRank rank, UUID issuedBy, String reason, String issuedOn, long duration) {
+    public Grant(UUID user, IRank rank, UUID issuedBy, String reason, String issuedOn, Duration duration) {
         this.grantId = UUID.randomUUID();
         this.user = user;
         this.rankId = rank.getUuid();
@@ -46,8 +47,17 @@ public class Grant implements IGrant {
     }
 
     private boolean hasExpired() {
-        if (duration == TimeUtil.PERMANENT) return false;
-        return (issuedAt + duration) <= System.currentTimeMillis();
+        if (duration.isPermanent()) return false;
+        return (issuedAt + duration.get()) <= System.currentTimeMillis();
+    }
+
+    @Override
+    public long getDuration() {
+        return duration.get();
+    }
+
+    public Duration getDurationObject() {
+        return duration;
     }
 
     @Override
@@ -57,7 +67,7 @@ public class Grant implements IGrant {
 
     @Override
     public long getRemainingTime() {
-        return duration == TimeUtil.PERMANENT ? TimeUtil.PERMANENT : issuedAt + duration - System.currentTimeMillis();
+        return duration.isPermanent() ? duration.get() : issuedAt + duration.get() - System.currentTimeMillis();
     }
 
     @Override

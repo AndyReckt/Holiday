@@ -32,6 +32,7 @@ public interface IPunishment {
 
     boolean isActive();
     boolean check();
+    boolean isPermanent();
 
 
 

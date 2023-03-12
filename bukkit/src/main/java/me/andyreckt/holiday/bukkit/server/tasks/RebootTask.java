@@ -5,6 +5,7 @@ import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.player.PlayerUtils;
 import me.andyreckt.holiday.bukkit.util.text.CC;
+import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.bukkit.Bukkit;
 
@@ -30,17 +31,17 @@ public class RebootTask {
     public RebootTask(long millis) {
         time = millis;
         active = true;
-        executor = Executors.newSingleThreadScheduledExecutor();
+        executor = Holiday.getInstance().getScheduledExecutor();
         runnable = runnable();
 
-        Bukkit.broadcastMessage(Locale.REBOOT_MESSAGE.getString().replace("%time%", TimeUtil.getDuration(time)));
+        Bukkit.broadcastMessage(Locale.REBOOT_MESSAGE.getString().replace("%time%", Duration.of(time).toRoundedTime()));
 
         executor.scheduleAtFixedRate(runnable, 0, 250, TimeUnit.MILLISECONDS);
         Holiday.getInstance().setRebootTask(this);
     }
 
 
-    public Runnable runnable() {
+    private Runnable runnable() {
         return () -> {
         time -= 250;
 
@@ -61,7 +62,8 @@ public class RebootTask {
         }
 
         if (rebootTimes.contains(time))
-            Bukkit.broadcastMessage(CC.translate(serverRebootIn.replace("%time%", TimeUtil.getDuration(time))));
+            Bukkit.broadcastMessage(CC.translate(serverRebootIn.replace("%time%", Duration.of(time).toRoundedTime())));
+
         };
     }
 

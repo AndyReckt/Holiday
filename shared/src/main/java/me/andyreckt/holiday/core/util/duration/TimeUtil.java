@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TimeUtil {
 
-     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+     private static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); //TODO: make this configurable
      public static final long PERMANENT = -1;
      private static final ThreadLocal<DecimalFormat> SECONDS = ThreadLocal.withInitial(() -> new DecimalFormat("0.#"));
      private static final ThreadLocal<DecimalFormat> TRAILING = ThreadLocal.withInitial(() -> new DecimalFormat("0"));
@@ -24,14 +24,15 @@ public class TimeUtil {
         return FORMAT.format(new Date(value));
     }
 
+    //TODO: replace most occurences to Duration#of(long).getFomatted()
     public static String getDuration(long input) {
         return input == PERMANENT ? "Permanent" : formatDuration(input);
     }
 
-    public static long getDuration(String input) {
+    public static long getDuration(String input) { //TODO: replace most occurences to Duration#of(String)
         input = input.toLowerCase();
 
-        if(Character.isLetter(input.charAt(0))) {
+        if (Character.isLetter(input.charAt(0))) {
             return PERMANENT;
         }
 
