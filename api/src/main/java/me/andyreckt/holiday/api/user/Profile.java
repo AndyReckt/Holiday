@@ -51,6 +51,9 @@ public interface Profile {
     IRank getHighestRank();
     IRank getHighestVisibleRank();
     IRank getDisplayRank();
+    boolean hasRank(IRank rank);
+    boolean hasRank(String rankName);
+    boolean hasRank(UUID rankId);
 
     boolean isStaff();
     boolean isAdmin();

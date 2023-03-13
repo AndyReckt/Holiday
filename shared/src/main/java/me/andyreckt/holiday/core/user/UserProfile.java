@@ -229,6 +229,21 @@ public class UserProfile implements Profile {
     }
 
     @Override
+    public boolean hasRank(IRank rank) {
+        return getActiveGrants().stream().filter(grant -> grant.getRank().equals(rank)).findAny().isPresent();
+    }
+
+    @Override
+    public boolean hasRank(String rankName) {
+        return getActiveGrants().stream().filter(grant -> grant.getRank().getName().equalsIgnoreCase(rankName)).findAny().isPresent();
+    }
+
+    @Override
+    public boolean hasRank(UUID rankId) {
+        return getActiveGrants().stream().filter(grant -> grant.getRank().getUuid().equals(rankId)).findAny().isPresent();
+    }
+
+    @Override
     public boolean isStaff() {
         return getActiveGrants().stream().anyMatch(grant -> grant.getRank().isStaff());
     }

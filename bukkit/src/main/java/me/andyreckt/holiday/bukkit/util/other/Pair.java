@@ -41,11 +41,6 @@ public class Pair<A, B> {
         return this.a.equals(p.getA()) && this.b.equals(p.getB());
     }
 
-    public static Pair fromString(String s) {
-        String[] nums = s.split(",");
-        return new Pair<>(Integer.parseInt(nums[0]), Integer.parseInt(nums[1]));
-    }
-
     @Override
     public String toString() {
         return this.a + "," + this.b;
