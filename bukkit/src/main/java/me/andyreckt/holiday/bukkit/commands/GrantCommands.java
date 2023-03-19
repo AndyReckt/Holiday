@@ -38,7 +38,7 @@ public class GrantCommands extends BaseCommand {
         new GrantChooseRankMenu(target).openMenu(sender);
     }
 
-    @CommandPermission("console")
+    @Conditions("console")
     @CommandAlias("ogrant")
     public void ogrant(CommandSender sender,
                        @Name("target") @Single Profile target,
@@ -63,7 +63,7 @@ public class GrantCommands extends BaseCommand {
         PacketHandler.send(new PlayerMessagePacket(target.getUuid(), str2));
     }
 
-    @CommandPermission("console")
+    @Conditions("console")
     @CommandAlias("rgrant")
     public void rgrant(CommandSender sender,
                         @Name("target") @Single Profile target,

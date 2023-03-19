@@ -55,17 +55,22 @@ public class RankCommand extends BaseCommand {
 
     @Subcommand("edit|manage")
     @CommandCompletion("@ranks")
-    public void manage(Player sender, @Single @Name("rank") IRank rank) {
+    public void manage(CommandSender sen, @Single @Name("rank") IRank rank) {
+        Player sender = (Player) sen;
         new RankManageMenu(rank).openMenu(sender);
     }
 
     @Subcommand("editor|manager")
-    public void editor(Player sender) {
+    @Conditions("player")
+    public void editor(CommandSender sen) {
+        Player sender = (Player) sen;
         new RankManagerMenu().openMenu(sender);
     }
 
     @Subcommand("list|all")
-    public void list(Player sender) {
+    @Conditions("player")
+    public void list(CommandSender sen) {
+        Player sender = (Player) sen;
         API api = Holiday.getInstance().getApi();
         sender.sendMessage(CC.translate("&aRank list: "));
         sender.sendMessage(CC.CHAT_BAR);

@@ -13,13 +13,16 @@ import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class TeleportCommands extends BaseCommand {
 
     @CommandPermission("core.command.teleportall")
     @CommandAlias("teleportall|tpall")
-    public void tpall(Player sender) {
+    @Conditions("player")
+    public void tpall(CommandSender sen) {
+        Player sender = (Player) sen;
         Bukkit.getOnlinePlayers().forEach(player -> player.teleport(sender));
         sender.sendMessage(Locale.TELEPORT_PLAYER_ALL.getString());
         String message = Locale.TELEPORT_STAFF_PLAYER_ALL.getString()
@@ -32,7 +35,9 @@ public class TeleportCommands extends BaseCommand {
     @CommandPermission("core.command.teleport")
     @CommandAlias("teleport|tp")
     @CommandCompletion("@players")
-    public void tp(Player sender, @Single @Name("player") Player target) {
+    @Conditions("player")
+    public void tp(CommandSender sen, @Single @Name("player") Player target) {
+        Player sender = (Player) sen;
         sender.teleport(target.getLocation());
         String message = Locale.TELEPORT_STAFF_PLAYER.getString()
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
@@ -45,7 +50,9 @@ public class TeleportCommands extends BaseCommand {
     @CommandCompletion("@players")
     @CommandAlias("teleporthere|tphere|tph|s")
     @CommandPermission("core.command.teleporthere")
-    public void tphere(Player sender, @Single @Name("player") Player target) {
+    @Conditions("player")
+    public void tphere(CommandSender sen, @Single @Name("player") Player target) {
+        Player sender = (Player) sen;
         target.teleport(sender.getLocation());
         String message = Locale.TELEPORT_STAFF_PLAYER_HERE.getString()
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
@@ -56,7 +63,9 @@ public class TeleportCommands extends BaseCommand {
 
     @CommandAlias("teleportposition|tpposition|teleportpos|tppos")
     @CommandPermission("core.command.teleportposition")
-    public void tpPos(Player sender, @Single @Name("x") double x, @Single @Name("y") double y, @Single @Name("z") double z) {
+    @Conditions("player")
+    public void tpPos(CommandSender sen, @Single @Name("x") double x, @Single @Name("y") double y, @Single @Name("z") double z) {
+        Player sender = (Player) sen;
         if (x > 3000000 || y > 260 || z > 3000000 || x < -3000000 || y < -10 || z < -3000000) {
             sender.sendMessage(Locale.MAXIMUM_COORDINATE.getString());
             return;

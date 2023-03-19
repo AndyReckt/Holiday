@@ -32,6 +32,7 @@ public class GamemodeCommands extends BaseCommand {
     @Subcommand("creative|c|crea|1")
     @CommandPermission("core.command.gamemode")
     @CommandCompletion("@players")
+    @Conditions("player")
     public void creative(CommandSender sender, @Name("target") @Default("self") @Single Player target) {
         target.setGameMode(GameMode.CREATIVE);
         sendMessage(sender, target);
@@ -41,6 +42,7 @@ public class GamemodeCommands extends BaseCommand {
     @Subcommand("adventure|a|adv|2")
     @CommandCompletion("@players")
     @CommandAlias("gma|gm2")
+    @Conditions("player")
     public void adventure(CommandSender sender, @Name("target") @Default("self") @Single Player target) {
         target.setGameMode(GameMode.ADVENTURE);
         sendMessage(sender, target);
@@ -50,6 +52,7 @@ public class GamemodeCommands extends BaseCommand {
     @CommandAlias("gms|gm0")
     @Subcommand("survival|s|surv|0")
     @CommandPermission("core.command.gamemode")
+    @Conditions("player")
     public void survival(CommandSender sender, @Name("target") @Default("self") @Single Player target) {
         target.setGameMode(GameMode.SURVIVAL);
         sendMessage(sender, target);
@@ -59,6 +62,7 @@ public class GamemodeCommands extends BaseCommand {
     @Subcommand("spectator|sp|spec|3")
     @CommandPermission("core.command.gamemode")
     @CommandAlias("gmsp|gm3")
+    @Conditions("player")
     public void spectator(CommandSender sender, @Name("target") @Default("self") @Single Player target) {
         if (Holiday.getInstance().getNms() instanceof NMS_v1_7_R4) {
             sender.sendMessage(CC.RED + "Spectator mode is not supported on 1.7.");

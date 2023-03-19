@@ -12,6 +12,7 @@ import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.punishment.Punishment;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -24,8 +25,9 @@ public class ConversationCommands extends BaseCommand { //TODO: filter those
     @CommandAlias("message|msg|pm|tell")
     @Description("Send a private message to a player.")
     @CommandCompletion("@players")
-    public void sendMessage(Player player, @Single @Name("target") Profile target, @Name("message") String message) {
-
+    @Conditions("player")
+    public void sendMessage(CommandSender sender, @Single @Name("target") Profile target, @Name("message") String message) {
+        Player player = (Player) sender;
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
         boolean bypass = profile.isStaff();
 
@@ -78,7 +80,9 @@ public class ConversationCommands extends BaseCommand { //TODO: filter those
 
     @CommandAlias("reply|r")
     @Description("Reply to the last player you messaged.")
-    public void reply(Player player, @Name("message") String message) {
+    @Conditions("player")
+    public void reply(CommandSender sender, @Name("message") String message) {
+        Player player = (Player) sender;
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
         boolean bypass = profile.isStaff();
 

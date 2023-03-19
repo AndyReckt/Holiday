@@ -17,6 +17,7 @@ import me.andyreckt.holiday.bukkit.util.other.Cooldown;
  
 import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -31,7 +32,9 @@ public class DisguiseCommands extends BaseCommand {
     @CommandAlias("disguise|dis|nick")
     @CommandPermission("core.command.disguise")
     @Description("Disguise yourself as another player.")
-    public void disguise(Player player) {
+    @Conditions("player")
+    public void disguise(CommandSender sender) {
+        Player player = (Player) sender;
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
         if (profile.isDisguised()) {
@@ -62,7 +65,9 @@ public class DisguiseCommands extends BaseCommand {
     @CommandAlias("undisguise|undis|unnick")
     @CommandPermission("core.command.disguise")
     @Description("Undisguise yourself.")
-    public void undisguise(Player player) {
+    @Conditions("player")
+    public void undisguise(CommandSender sender) {
+        Player player = (Player) sender;
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
         if (!profile.isDisguised()) {
@@ -78,10 +83,12 @@ public class DisguiseCommands extends BaseCommand {
     @CommandPermission("core.command.disguise.manual")
     @Description("Disguise yourself as another player.")
     @CommandCompletion("@dnames @dskins @ranks")
-    public void manualDisguise(Player player,
+    @Conditions("player")
+    public void manualDisguise(CommandSender sender,
                                @Single @Name("name") String name,
-                               @Single @Name("name") String skin,
-                               @Optional @Single @Name("name") @Default("default") IRank rank) {
+                               @Single @Name("skin") String skin,
+                               @Optional @Single @Name("rank") @Default("default") IRank rank) {
+        Player player = (Player) sender;
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
         if (profile.isDisguised()) {

@@ -52,7 +52,9 @@ public class EssentialCommands extends BaseCommand {
 
     @CommandAlias("report")
     @CommandCompletion("@players @nothing")
-    public void report(Player sender, @Name("target") Player target, @Name("target") String reason) {
+    @Conditions("player")
+    public void report(CommandSender sen, @Name("target") Player target, @Name("target") String reason) {
+        Player sender = (Player) sen;
 
         if (sender == target) {
             sender.sendMessage(Locale.CANNOT_REPORT_YOURSELF.getString());
@@ -86,8 +88,9 @@ public class EssentialCommands extends BaseCommand {
     }
 
     @CommandAlias("request|helpop|helpme|question|ask")
-    public void request(Player sender, @Name("request") String reason) {
-
+    @Conditions("player")
+    public void request(CommandSender sen, @Name("request") String reason) {
+        Player sender = (Player) sen;
         if (helpopCooldownMap.containsKey(sender.getUniqueId())) {
             Cooldown oldCd = helpopCooldownMap.get(sender.getUniqueId());
             if (oldCd.hasExpired()) helpopCooldownMap.remove(sender.getUniqueId());
@@ -110,7 +113,9 @@ public class EssentialCommands extends BaseCommand {
 
     @CommandAlias("ping|ms|latency")
     @CommandCompletion("@players")
-    public void ping(Player sender, @Name("target") @Default("self") Player target) {
+    @Conditions("player")
+    public void ping(CommandSender sen, @Name("target") @Default("self") Player target) {
+        Player sender = (Player) sen;
         if (target != sender) {
             String diff = String.valueOf(Math.max(PlayerUtils.getPing(sender), PlayerUtils.getPing(target)) - Math.min(PlayerUtils.getPing(sender), PlayerUtils.getPing(target)));
             String str = Locale.PING_OTHER.getString()
@@ -152,7 +157,9 @@ public class EssentialCommands extends BaseCommand {
 
     @CommandAlias("rename")
     @CommandPermission("core.command.rename")
-    public void rename(Player sender, @Name("name") String name) {
+    @Conditions("player")
+    public void rename(CommandSender sen, @Name("name") String name) {
+        Player sender = (Player) sen;
         ItemStack is = sender.getItemInHand();
         if (is == null || is.getType().equals(Material.AIR)) {
             sender.sendMessage(CC.translate("&cYou must hold an item in order to rename it."));
@@ -182,7 +189,9 @@ public class EssentialCommands extends BaseCommand {
 
     @CommandAlias("fly|flight")
     @CommandPermission("core.command.fly")
-    public void fly(Player sender) {
+    @Conditions("player")
+    public void fly(CommandSender sen) {
+        Player sender = (Player) sen;
         sender.setAllowFlight(!sender.getAllowFlight());
         String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
         if (sender.getAllowFlight()) {
@@ -207,7 +216,9 @@ public class EssentialCommands extends BaseCommand {
     @CommandAlias("give")
     @CommandPermission("core.command.give")
     @CommandCompletion("@players @materials")
-    public void give(Player sender, @Name("target") Player target, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
+    @Conditions("player")
+    public void give(CommandSender sen, @Name("target") Player target, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
+        Player sender = (Player) sen;
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         if (mat != null) {
             String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
@@ -243,7 +254,9 @@ public class EssentialCommands extends BaseCommand {
     @CommandCompletion("@materials")
     @CommandAlias("giveall")
     @CommandPermission("core.command.giveall")
-    public void giveall(Player sender, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
+    @Conditions("player")
+    public void giveall(CommandSender sen, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
+        Player sender = (Player) sen;
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
         if (mat != null) {
@@ -279,7 +292,9 @@ public class EssentialCommands extends BaseCommand {
     @CommandAlias("giveme|gimme|i")
     @CommandPermission("core.command.give")
     @CommandCompletion("@materials")
-    public void giveme(Player sender, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
+    @Conditions("player")
+    public void giveme(CommandSender sen, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
+        Player sender = (Player) sen;
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         if (mat != null) {
             String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
@@ -307,7 +322,9 @@ public class EssentialCommands extends BaseCommand {
 
     @CommandAlias("craft|workbench")
     @CommandPermission("core.command.craft")
-    public void craft(Player sender) {
+    @Conditions("player")
+    public void craft(CommandSender sen) {
+        Player sender = (Player) sen;
         sender.openWorkbench(sender.getLocation(), true);
     }
 
@@ -343,6 +360,7 @@ public class EssentialCommands extends BaseCommand {
     @CommandCompletion("@players")
     @CommandAlias("heal")
     @CommandPermission("core.command.heal")
+    @Conditions("player")
     public void heal(CommandSender sender, @Name("target") @Default("self") Player target) {
         target.setHealth(target.getMaxHealth());
         if (sender instanceof Player) {
@@ -395,7 +413,9 @@ public class EssentialCommands extends BaseCommand {
     @CommandAlias("enchant")
     @CommandPermission("core.command.enchant")
     @CommandCompletion("@enchantments")
-    public void enchant(Player sender, @Name("enchantement") String enchant, @Single @Name("level") @Default("1") int level) {
+    @Conditions("player")
+    public void enchant(CommandSender sen, @Name("enchantement") String enchant, @Single @Name("level") @Default("1") int level) {
+        Player sender = (Player) sen;
         ItemStack item = sender.getItemInHand();
 
         if (item == null || item.getType() == Material.AIR) {
@@ -496,7 +516,9 @@ public class EssentialCommands extends BaseCommand {
 
     @CommandPermission("core.command.more")
     @CommandAlias("more")
-    public void more(Player sender) {
+    @Conditions("player")
+    public void more(CommandSender sen) {
+        Player sender = (Player) sen;
         ItemStack item = sender.getItemInHand();
         if (item == null || item.getType() == Material.AIR) {
             sender.sendMessage(Locale.NEED_ITEM_IN_HAND.getString());
@@ -557,6 +579,7 @@ public class EssentialCommands extends BaseCommand {
 
     @CommandAlias("invsee|inv")
     @CommandPermission("core.command.invsee")
+    @Conditions("player")
     public void invsee(Player player, @Name("target") Player target) {
         new InvSeeMenu(target).openMenu(player);
     }
@@ -564,12 +587,14 @@ public class EssentialCommands extends BaseCommand {
     @CommandPermission("core.command.checkpunishments")
     @CommandCompletion("@players")
     @CommandAlias("checkpunishments|checkpun|checkban|checkmute|checkp|checkb|checkm|punishmentcheck|punishcheck|puncheck|puncheck|pcheck|bcheck|mcheck|bancheck|mutecheck|punishments|c")
+    @Conditions("player")
     public void check(Player player, @Name("player") Profile target) {
         new PunishmentCheckMenu(target).openMenu(player);
     }
 
     @CommandAlias("punishmentlist|plist|banlist|mutelist|blacklistlist")
     @CommandPermission("core.command.punishmentlist")
+    @Conditions("player")
     public void punishmentsList(Player player) {
         new PunishmentListMenu().openMenu(player);
     }
@@ -598,6 +623,7 @@ public class EssentialCommands extends BaseCommand {
 
     @CommandAlias("staffchat|sc|staffc")
     @CommandPermission("core.staff.chat")
+    @Conditions("player")
     public void staffchat(Player player, @Name("message") @Default("$toggle$") String message) {
         UserProfile profile = (UserProfile) Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
@@ -625,6 +651,7 @@ public class EssentialCommands extends BaseCommand {
 
     @CommandAlias("adminchat|achat|ac")
     @CommandPermission("core.admin.chat")
+    @Conditions("player")
     public void adminchat(Player player, @Name("message") @Default("$toggle$") String message) {
         UserProfile profile = (UserProfile) Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
@@ -653,7 +680,8 @@ public class EssentialCommands extends BaseCommand {
     @CommandAlias("join|j")
     @CommandCompletion("@servers")
     @CommandPermission("core.command.join")
-    public void join(Player sender, @Name("server") String server) {
+    @Conditions("player")
+    public void join(CommandSender sender, @Name("server") String server) {
         IServer data = Holiday.getInstance().getApi().getServer(server);
 
         if (data == null || !data.isOnline()) {
@@ -668,13 +696,14 @@ public class EssentialCommands extends BaseCommand {
             return;
         }
         sender.sendMessage(Locale.JOINING_SERVER.getString().replace("%server%", data.getServerName()));
-        PlayerUtils.sendToServer(sender, server);
+        PlayerUtils.sendToServer((Player) sender, server);
     }
 
 
     @CommandAlias("pull|p")
     @CommandPermission("core.command.pull")
-    public void pull(Player sender, @Name("player") Profile player) {
+    @Conditions("player")
+    public void pull(CommandSender sender, @Name("player") Profile player) {
 
         if (!player.isOnline()) {
             sender.sendMessage(Locale.PLAYER_NOT_ONLINE.getString());

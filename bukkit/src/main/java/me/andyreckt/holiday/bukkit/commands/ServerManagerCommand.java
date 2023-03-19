@@ -93,8 +93,9 @@ public class ServerManagerCommand extends BaseCommand {
     @Subcommand("list|servers")
     @CommandPermission("core.command.servermanager")
     @CommandAlias("serverlist|serverlistgui|slgui|servers")
-    public void list(Player sender) {
-        new ServerListMenu(Holiday.getInstance().getApi().getServers().values()).openMenu(sender);
+    @Conditions("player")
+    public void list(CommandSender sender) {
+        new ServerListMenu(Holiday.getInstance().getApi().getServers().values()).openMenu((Player) sender);
     }
 
 

@@ -306,6 +306,16 @@ public final class Holiday extends JavaPlugin {
                 throw new ConditionFailedException("&cThis command is not available in production");
             }
         });
+        this.commandManager.getCommandConditions().addCondition("player", c -> {
+            if (!c.getIssuer().isPlayer()) {
+                throw new ConditionFailedException("&cThis command is only available for players");
+            }
+        });
+        this.commandManager.getCommandConditions().addCondition("console", c -> {
+            if (c.getIssuer().isPlayer()) {
+                throw new ConditionFailedException("&cThis command is only available for console");
+            }
+        });
 
         try {
             ConfigFile lang = new ConfigFile(this, "plugins/Holiday/", "cmdlang_en.yml");
