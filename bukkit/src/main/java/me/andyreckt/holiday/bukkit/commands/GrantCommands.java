@@ -18,6 +18,7 @@ import me.andyreckt.holiday.core.user.grant.Grant;
 import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,11 +40,11 @@ public class GrantCommands extends BaseCommand {
 
     @CommandPermission("console")
     @CommandAlias("ogrant")
-    public void ogrant(ConsoleCommandSender sender,
-                        @Name("target") @Single Profile target,
-                        @Single @Name("rank") IRank rank,
-                        @Single @Name("duration") Duration duration,
-                        @Name("reason") String reason) {
+    public void ogrant(CommandSender sender,
+                       @Name("target") @Single Profile target,
+                       @Single @Name("rank") IRank rank,
+                       @Single @Name("duration") Duration duration,
+                       @Name("reason") String reason) {
         Holiday plugin = Holiday.getInstance();
 
         Profile issuer = UserProfile.getConsoleProfile();
@@ -64,7 +65,7 @@ public class GrantCommands extends BaseCommand {
 
     @CommandPermission("console")
     @CommandAlias("rgrant")
-    public void rgrant(ConsoleCommandSender sender,
+    public void rgrant(CommandSender sender,
                         @Name("target") @Single Profile target,
                         @Single @Name("rank") IRank rank,
                         @Name("reason") String reason) {

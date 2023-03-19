@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
@@ -14,12 +15,19 @@ import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.util.http.UUIDFetcher;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 @CommandAlias("user|u")
 @CommandPermission("core.command.user")
 public class UserCommand extends BaseCommand {
+
+    @HelpCommand
+    @Syntax("[page]")
+    public void doHelp(Player player, CommandHelp help) {
+        help.showHelp();
+    }
 
     @Subcommand("addpermission|addperm")
     public void addPermission(CommandSender sender, @Single @Name("player") Profile profile, @Single @Name("permission") String permission) {

@@ -24,7 +24,6 @@ public class GamemodeCommands extends BaseCommand {
 
     @HelpCommand
     @Syntax("[page]")
-    @Conditions("dev")
     public void doHelp(Player player, CommandHelp help) {
         help.showHelp();
     }

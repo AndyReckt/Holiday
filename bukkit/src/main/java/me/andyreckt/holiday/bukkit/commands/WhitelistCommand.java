@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
@@ -26,6 +27,11 @@ import java.util.UUID;
 @CommandPermission("core.command.whitelist")
 public class WhitelistCommand extends BaseCommand {
 
+    @HelpCommand
+    @Syntax("[page]")
+    public void doHelp(Player player, CommandHelp help) {
+        help.showHelp();
+    }
 
     @Subcommand("on|enable")
     public void onToggleOn(CommandSender sender) {

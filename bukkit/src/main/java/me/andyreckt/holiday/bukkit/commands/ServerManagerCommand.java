@@ -1,6 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.bukkit.Holiday;
@@ -21,6 +22,11 @@ import org.bukkit.entity.Player;
 @CommandPermission("core.command.servermanager")
 public class ServerManagerCommand extends BaseCommand {
 
+    @HelpCommand
+    @Syntax("[page]")
+    public void doHelp(Player player, CommandHelp help) {
+        help.showHelp();
+    }
 
     @Subcommand("command|runcommand|cmd")
     @CommandCompletion("@servers @nothing")
