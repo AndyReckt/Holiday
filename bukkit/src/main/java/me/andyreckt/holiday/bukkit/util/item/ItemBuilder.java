@@ -19,7 +19,7 @@ import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8_R3;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

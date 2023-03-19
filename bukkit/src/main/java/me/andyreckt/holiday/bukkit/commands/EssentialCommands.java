@@ -1,5 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
@@ -19,8 +21,8 @@ import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
 import me.andyreckt.holiday.bukkit.util.player.PlayerList;
 import me.andyreckt.holiday.bukkit.util.player.PlayerUtils;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+ 
+  
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.duration.Duration;
@@ -43,13 +45,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public class EssentialCommands {
+public class EssentialCommands extends BaseCommand {
 
     private final Map<UUID, Cooldown> reportCooldownMap = new HashMap<>();
     private final Map<UUID, Cooldown> helpopCooldownMap = new HashMap<>();
 
-    @Command(names = {"report"}, async = true)
-    public void report(Player sender, @Param(name = "target") Player target, @Param(name = "reason", wildcard = true) String reason) {
+    @CommandAlias("report")
+    @CommandCompletion("@players @nothing")
+    public void report(Player sender, @Name("target") Player target, @Name("target") String reason) {
 
         if (sender == target) {
             sender.sendMessage(Locale.CANNOT_REPORT_YOURSELF.getString());
@@ -82,8 +85,8 @@ public class EssentialCommands {
         PacketHandler.send(packet);
     }
 
-    @Command(names = {"request", "helpop", "helpme", "question", "ask",}, async = true)
-    public void request(Player sender, @Param(name = "reason", wildcard = true) String reason) {
+    @CommandAlias("request|helpop|helpme|question|ask")
+    public void request(Player sender, @Name("request") String reason) {
 
         if (helpopCooldownMap.containsKey(sender.getUniqueId())) {
             Cooldown oldCd = helpopCooldownMap.get(sender.getUniqueId());
@@ -105,8 +108,9 @@ public class EssentialCommands {
         ));
     }
 
-    @Command(names = {"ping", "ms", "latency"})
-    public void ping(Player sender, @Param(name = "target", baseValue = "self") Player target) {
+    @CommandAlias("ping|ms|latency")
+    @CommandCompletion("@players")
+    public void ping(Player sender, @Name("target") @Default("self") Player target) {
         if (target != sender) {
             String diff = String.valueOf(Math.max(PlayerUtils.getPing(sender), PlayerUtils.getPing(target)) - Math.min(PlayerUtils.getPing(sender), PlayerUtils.getPing(target)));
             String str = Locale.PING_OTHER.getString()
@@ -120,7 +124,8 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = {"who", "list"}, async = true)
+
+    @CommandAlias("who|list")
     public void list(CommandSender sender) {
         StringBuilder builder = new StringBuilder();
 
@@ -145,8 +150,9 @@ public class EssentialCommands {
         sender.sendMessage(CC.translate(builder.toString()));
     }
 
-    @Command(names = "rename", permission = Perms.RENAME)
-    public void rename(Player sender, @Param(name = "name", wildcard = true) String name) {
+    @CommandAlias("rename")
+    @CommandPermission("core.command.rename")
+    public void rename(Player sender, @Name("name") String name) {
         ItemStack is = sender.getItemInHand();
         if (is == null || is.getType().equals(Material.AIR)) {
             sender.sendMessage(CC.translate("&cYou must hold an item in order to rename it."));
@@ -166,13 +172,16 @@ public class EssentialCommands {
         ));
     }
 
-    @Command(names = {"garbage"}, permission = Perms.GARBAGE, async = true)
+
+    @CommandAlias("garbage|gc")
+    @CommandPermission("core.command.garbage")
     public void gc(CommandSender sender) {
         System.gc();
         sender.sendMessage(CC.translate("&aSuccessfully ran the garbage collector."));
     }
 
-    @Command(names = "fly", permission = Perms.FLY)
+    @CommandAlias("fly|flight")
+    @CommandPermission("core.command.fly")
     public void fly(Player sender) {
         sender.setAllowFlight(!sender.getAllowFlight());
         String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
@@ -195,8 +204,10 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = {"give"}, permission = Perms.GIVE)
-    public void give(Player sender, @Param(name = "player") Player target, @Param(name = "material") String material, @Param(name = "amount") int amount) {
+    @CommandAlias("give")
+    @CommandPermission("core.command.give")
+    @CommandCompletion("@players @materials")
+    public void give(Player sender, @Name("target") Player target, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         if (mat != null) {
             String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
@@ -229,8 +240,10 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = {"giveall"}, permission = Perms.GIVEALL)
-    public void giveall(Player sender, @Param(name = "material") String material, @Param(name = "amount") int amount) {
+    @CommandCompletion("@materials")
+    @CommandAlias("giveall")
+    @CommandPermission("core.command.giveall")
+    public void giveall(Player sender, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
         if (mat != null) {
@@ -262,8 +275,11 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = {"giveme", "i", "gimme"}, permission = Perms.GIVE)
-    public void giveme(Player sender, @Param(name = "material") String material, @Param(name = "amount") int amount) {
+
+    @CommandAlias("giveme|gimme|i")
+    @CommandPermission("core.command.give")
+    @CommandCompletion("@materials")
+    public void giveme(Player sender, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         if (mat != null) {
             String executor = UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId()));
@@ -288,13 +304,17 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = {"craft", "workbench"}, permission = Perms.CRAFT)
+
+    @CommandAlias("craft|workbench")
+    @CommandPermission("core.command.craft")
     public void craft(Player sender) {
         sender.openWorkbench(sender.getLocation(), true);
     }
 
-    @Command(names = "clear", permission = Perms.CLEAR)
-    public void clear(CommandSender sender, @Param(name = "player", baseValue = "self") Player target) {
+    @CommandCompletion("@players")
+    @CommandAlias("clear|clearinventory|ci")
+    @CommandPermission("core.command.clear")
+    public void clear(CommandSender sender, @Name("target") @Default("self") Player target) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (target == player) {
@@ -320,8 +340,10 @@ public class EssentialCommands {
 
     }
 
-    @Command(names = "heal", permission = Perms.HEAL)
-    public void heal(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
+    @CommandCompletion("@players")
+    @CommandAlias("heal")
+    @CommandPermission("core.command.heal")
+    public void heal(CommandSender sender, @Name("target") @Default("self") Player target) {
         target.setHealth(target.getMaxHealth());
         if (sender instanceof Player) {
             Player player = (Player) sender;
@@ -351,8 +373,10 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = "feed", permission = Perms.FEED)
-    public void feed(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
+    @CommandCompletion("@players")
+    @CommandAlias("feed")
+    @CommandPermission("core.command.feed")
+    public void feed(CommandSender sender, @Name("target") @Default("self") Player target) {
         target.setSaturation(20);
         target.setFoodLevel(20);
         if (sender instanceof Player) {
@@ -368,8 +392,10 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = {"enchant"}, permission = Perms.ENCHANT)
-    public void enchant(Player sender, @Param(name = "enchantment") String enchant, @Param(name = "level") int level) {
+    @CommandAlias("enchant")
+    @CommandPermission("core.command.enchant")
+    @CommandCompletion("@enchantments")
+    public void enchant(Player sender, @Name("enchantement") String enchant, @Single @Name("level") @Default("1") int level) {
         ItemStack item = sender.getItemInHand();
 
         if (item == null || item.getType() == Material.AIR) {
@@ -407,8 +433,10 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = {"demomode", "demo"}, permission = Perms.DEMOMODE)
-    public void demo(CommandSender sender, @Param(name = "player", baseValue = "self") Player target) {
+    @CommandAlias("demomode|demo")
+    @CommandCompletion("@players")
+    @CommandPermission("core.command.demomode")
+    public void demo(CommandSender sender, @Name("target") @Default("self") Player target) {
         if (!Holiday.getInstance().isProtocolEnabled()) {
             sender.sendMessage(CC.translate("&cYou need ProtocolLib in order to run this command"));
             return;
@@ -425,8 +453,10 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = "killall", permission = Perms.KILLALL)
-    public void killall(CommandSender sender, @Param(name = "<all|mobs|animals|items>", baseValue = "all", tabCompleteFlags = {"all", "mobs", "animals", "items"}) String arg) {
+    @CommandAlias("killall")
+    @CommandCompletion("all|mobs|animals|items")
+    @CommandPermission("core.command.killall")
+    public void killall(CommandSender sender, @Single @Name("all|mobs|animals|items") String arg) {
         int total = 0;
         switch (arg) {
             case "mob":
@@ -455,14 +485,17 @@ public class EssentialCommands {
         sender.sendMessage(Locale.KILL_ALL.getString().replace("%total%", String.valueOf(total)));
     }
 
-    @Command(names = {"setmaxplayer", "setslots", "slots"}, permission = Perms.SET_MAX_PLAYERS)
-    public void slots(CommandSender sender, @Param(name = "player") int players) {
+
+    @CommandAlias("setmaxplayer|setslots|slots")
+    @CommandPermission("core.command.slots")
+    public void slots(CommandSender sender, @Single @Name("slots") int players) {
         me.andyreckt.holiday.bukkit.util.text.StringUtils.setSlots(players);
         Holiday.getInstance().getThisServer().setMaxPlayers(players);
         sender.sendMessage(Locale.MAX_PLAYERS.getString().replace("%amount%", String.valueOf(players)));
     }
 
-    @Command(names = {"more"}, permission = Perms.MORE)
+    @CommandPermission("core.command.more")
+    @CommandAlias("more")
     public void more(Player sender) {
         ItemStack item = sender.getItemInHand();
         if (item == null || item.getType() == Material.AIR) {
@@ -478,8 +511,10 @@ public class EssentialCommands {
         sender.sendMessage(Locale.ITEM_STACKED.getString());
     }
 
-    @Command(names = "sudo", permission = Perms.SUDO)
-    public void sudo(CommandSender sender, @Param(name = "target") Player target, @Param(name = "message", wildcard = true) String msg) {
+    @CommandCompletion("@players")
+    @CommandAlias("sudo")
+    @CommandPermission("core.command.sudo")
+    public void sudo(CommandSender sender, @Name("target") Player target, @Name("message") String msg) {
         String string = Locale.SUDO_PLAYER.getString()
                 .replace("%player%", target.getName())
                 .replace("%text%", msg);
@@ -497,8 +532,10 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = {"sudoall", "massay"}, permission = Perms.SUDOALL)
-    public void suadoall(CommandSender sender, @Param(name = "message", wildcard = true) String msg) {
+
+    @CommandPermission("core.command.sudoall")
+    @CommandAlias("sudoall|massay")
+    public void suadoall(CommandSender sender, @Name("message") String msg) {
         Bukkit.getOnlinePlayers().stream()
                 .map(Player::getUniqueId)
                 .map(Holiday.getInstance().getApi()::getProfile)
@@ -518,23 +555,29 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = {"invsee", "inv"}, permission = Perms.INVSEE)
-    public void invsee(Player player, @Param(name = "player") Player target) {
+    @CommandAlias("invsee|inv")
+    @CommandPermission("core.command.invsee")
+    public void invsee(Player player, @Name("target") Player target) {
         new InvSeeMenu(target).openMenu(player);
     }
 
-    @Command(names = {"check", "c", "checkban", "checkpun", "checkpunishments", "punishments", "bancheck", "mutecheck", "punishmentcheck", "punishcheck", "pcheck"}, permission = Perms.CHECK_PUNISHMENTS)
-    public void check(Player player, @Param(name = "player") Profile target) {
+    @CommandPermission("core.command.checkpunishments")
+    @CommandCompletion("@players")
+    @CommandAlias("checkpunishments|checkpun|checkban|checkmute|checkp|checkb|checkm|punishmentcheck|punishcheck|puncheck|puncheck|pcheck|bcheck|mcheck|bancheck|mutecheck|punishments|c")
+    public void check(Player player, @Name("player") Profile target) {
         new PunishmentCheckMenu(target).openMenu(player);
     }
 
-    @Command(names = {"punishmentlist", "plist", "banlist", "mutelist", "blacklistlist"}, permission = Perms.PUNISHMENT_LIST)
+    @CommandAlias("punishmentlist|plist|banlist|mutelist|blacklistlist")
+    @CommandPermission("core.command.punishmentlist")
     public void punishmentsList(Player player) {
         new PunishmentListMenu().openMenu(player);
     }
 
-    @Command(names = {"alts", "alt", "accounts", "associatedaccounts", "listallaccounts"}, permission = Perms.ALTS, async = true)
-    public void alts(CommandSender sender, @Param(name = "player") Profile target) {
+    @CommandAlias("alts|alt|accounts|associatedaccounts|listallaccounts")
+    @CommandPermission("core.command.alts")
+    @CommandCompletion("@players")
+    public void alts(CommandSender sender, @Name("player") Profile target) {
         StringBuilder alts = new StringBuilder();
         alts.append("&7[");
         int i = 0;
@@ -553,8 +596,9 @@ public class EssentialCommands {
         sender.sendMessage(CC.translate(alts.toString()));
     }
 
-    @Command(names = {"sc", "staffchat", "staffc"}, permission = Perms.STAFF_CHAT, async = true)
-    public void staffchat(Player player, @Param(name = "message", wildcard = true, baseValue = "$toggle$") String message) {
+    @CommandAlias("staffchat|sc|staffc")
+    @CommandPermission("core.staff.chat")
+    public void staffchat(Player player, @Name("message") @Default("$toggle$") String message) {
         UserProfile profile = (UserProfile) Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
         if (message.equalsIgnoreCase("$toggle$")) {
@@ -579,8 +623,9 @@ public class EssentialCommands {
         ));
     }
 
-    @Command(names = {"adminchat", "achat", "ac"}, permission = Perms.ADMIN_CHAT, async = true)
-    public void adminchat(Player player, @Param(name = "message", wildcard = true, baseValue = "$toggle$") String message) {
+    @CommandAlias("adminchat|achat|ac")
+    @CommandPermission("core.admin.chat")
+    public void adminchat(Player player, @Name("message") @Default("$toggle$") String message) {
         UserProfile profile = (UserProfile) Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
         if (message.equalsIgnoreCase("$toggle$")) {
@@ -605,8 +650,10 @@ public class EssentialCommands {
         ));
     }
 
-    @Command(names = "join", permission = Perms.JOIN)
-    public void join(Player sender, @Param(name = "server") String server) {
+    @CommandAlias("join|j")
+    @CommandCompletion("@servers")
+    @CommandPermission("core.command.join")
+    public void join(Player sender, @Name("server") String server) {
         IServer data = Holiday.getInstance().getApi().getServer(server);
 
         if (data == null || !data.isOnline()) {
@@ -625,8 +672,9 @@ public class EssentialCommands {
     }
 
 
-    @Command(names = "pull", permission = Perms.PULL)
-    public void pull(Player sender, @Param(name = "player") Profile player) {
+    @CommandAlias("pull|p")
+    @CommandPermission("core.command.pull")
+    public void pull(Player sender, @Name("player") Profile player) {
 
         if (!player.isOnline()) {
             sender.sendMessage(Locale.PLAYER_NOT_ONLINE.getString());
@@ -643,8 +691,10 @@ public class EssentialCommands {
                 "sendtoserver " + player.getDisplayName() + " " + Holiday.getInstance().getThisServer().getServerId(), player.getCurrentServer().getServerId()));
     }
 
-    @Command(names = "sendtoserver", permission = Perms.SEND_TO_SERVER)
-    public void send(CommandSender sender, @Param(name = "player") Player player, @Param(name = "server") String server) {
+    @CommandAlias("sendtoserver")
+    @CommandPermission("core.command.sendtoserver")
+    @CommandCompletion("@players @servers")
+    public void send(CommandSender sender, @Name("player") Player player, @Single @Name("server") String server) {
         IServer data = Holiday.getInstance().getApi().getServer(server);
 
         if (data == null || !data.isOnline()) {
@@ -665,8 +715,10 @@ public class EssentialCommands {
         PlayerUtils.sendToServer(player, server);
     }
 
-    @Command(names = {"find", "search"}, permission = Perms.FIND)
-    public void find(CommandSender sender, @Param(name = "player") Profile player) {
+    @CommandCompletion("@players")
+    @CommandAlias("find|search")
+    @CommandPermission("core.command.find")
+    public void find(CommandSender sender, @Name("player") Profile player) {
         if (player.isOnline()) {
             sender.sendMessage(Locale.PLAYER_CONNECTED_TO.getString()
                     .replace("%player%", UserConstants.getDisplayNameWithColor(player))
@@ -676,7 +728,8 @@ public class EssentialCommands {
         }
     }
 
-    @Command(names = {"lag", "serverlag"}, permission = Perms.LAG)
+    @CommandAlias("lag|serverlag")
+    @CommandPermission("core.command.lag")
     public void lag(CommandSender sender) {
         StringBuilder sb = new StringBuilder(" ");
         for (double tps : Holiday.getInstance().getNms().recentTps()) {
@@ -711,7 +764,8 @@ public class EssentialCommands {
         });
     }
 
-    @Command(names = "reloadconfig", permission = Perms.RELOAD)
+    @CommandPermission("core.command.reload")
+    @CommandAlias("reloadconfig|rlconfig")
     public void reloadConfig(CommandSender sender) {
         Holiday.getInstance().setupConfigFiles();
         sender.sendMessage(Locale.RELOAD_CONFIG.getString());

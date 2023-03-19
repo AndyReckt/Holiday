@@ -1,20 +1,26 @@
 package me.andyreckt.holiday.bukkit.commands;
 
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Name;
+import co.aikar.commands.annotation.Single;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.tasks.RebootTask;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+ 
+  
 import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-public class ShutdownCommands {
+public class ShutdownCommands extends BaseCommand {
 
-    @Command(names = {"stop"}, permission = Perms.REBOOT, async = true)
+    @CommandAlias("stop")
+    @CommandPermission("core.command.reboot")
     public void stop(CommandSender sender) {
         RebootTask task = Holiday.getInstance().getRebootTask();
 
@@ -26,8 +32,9 @@ public class ShutdownCommands {
     }
 
 
-    @Command(names = {"reboot", "restart"}, permission = Perms.REBOOT, async = true)
-    public void reboot(CommandSender sender, @Param(name = "cancel/time") String time) {
+    @CommandPermission("core.command.reboot")
+    @CommandAlias("reboot|restart")
+    public void reboot(CommandSender sender, @Single @Name("cancel/time") String time) {
         RebootTask task = Holiday.getInstance().getRebootTask();
 
         if (time.equalsIgnoreCase("stop") || time.equalsIgnoreCase("cancel")) {

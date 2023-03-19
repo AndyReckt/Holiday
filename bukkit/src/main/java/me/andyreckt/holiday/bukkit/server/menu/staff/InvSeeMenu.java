@@ -7,7 +7,7 @@ import me.andyreckt.holiday.bukkit.util.menu.buttons.DisplayButton;
 import me.andyreckt.holiday.bukkit.util.menu.buttons.Glass;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
-import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -93,7 +93,7 @@ public class InvSeeMenu extends Menu {
         if (!getTarget().getActivePotionEffects().isEmpty()) {
             lore.add(CC.translate(CC.MENU_BAR));
             for (PotionEffect effect : getTarget().getActivePotionEffects()) {
-                String name = WordUtils.capitalize(effect.getType().getName().replace("_", " ").toLowerCase());
+                String name = StringUtils.capitalize(effect.getType().getName().replace("_", " ").toLowerCase());
                 lore.add(CC.translate(CC.CHAT + name + " " + (effect.getAmplifier() + 1) + "&c for " + CC.CHAT + TimeUtil.niceTime(effect.getDuration() / 20) + "m"));
             }
             lore.add(CC.translate(CC.MENU_BAR));

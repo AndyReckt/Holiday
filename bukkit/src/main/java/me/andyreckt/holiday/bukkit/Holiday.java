@@ -1,5 +1,9 @@
 package me.andyreckt.holiday.bukkit;
 
+import co.aikar.commands.ConditionFailedException;
+import co.aikar.commands.InvalidCommandArgument;
+import co.aikar.commands.MessageType;
+import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import lombok.Setter;
 import me.andyreckt.holiday.api.API;
@@ -19,30 +23,30 @@ import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.user.disguise.DisguiseManager;
 import me.andyreckt.holiday.bukkit.user.permission.PermissionManager;
 import me.andyreckt.holiday.bukkit.util.Logger;
+import me.andyreckt.holiday.bukkit.util.files.ConfigFile;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.menu.MenuAPI;
 import me.andyreckt.holiday.bukkit.util.other.Tasks;
-import me.andyreckt.holiday.bukkit.util.sunset.Sunset;
-import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.DurationParameterType;
-import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.ProfileParameterType;
-import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.RankParameterType;
-import me.andyreckt.holiday.bukkit.util.sunset.parameter.custom.UUIDParameterType;
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.StringUtils;
 import me.andyreckt.holiday.bukkit.util.uuid.UUIDCache;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.server.Server;
 import me.andyreckt.holiday.core.util.duration.Duration;
-import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
-import me.andyreckt.holiday.core.util.json.GsonProvider;
+import me.andyreckt.holiday.core.util.http.Skin;
+import me.andyreckt.holiday.core.util.http.UUIDFetcher;
 import me.andyreckt.holiday.core.util.mongo.MongoCredentials;
 import me.andyreckt.holiday.core.util.redis.RedisCredentials;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -50,13 +54,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.stream.Collectors;
+
+import static me.andyreckt.holiday.bukkit.util.Logger.error;
+import static me.andyreckt.holiday.bukkit.util.Logger.log;
 
 @Getter
 public final class Holiday extends JavaPlugin {
@@ -67,7 +72,7 @@ public final class Holiday extends JavaPlugin {
     private API api;
 
     private INMS nms;
-    private Sunset commandManager;
+    private PaperCommandManager commandManager;
     private MenuAPI menuAPI;
     private ChatManager chatManager;
     private DisguiseManager disguiseManager;
@@ -148,34 +153,185 @@ public final class Holiday extends JavaPlugin {
     }
 
     private void setupCommands() {
-        this.commandManager = new Sunset(this);
-        this.commandManager.setPermissionMessage(Locale.NO_PERMISSION.getString());
-        this.commandManager.registerType(new RankParameterType(), IRank.class);
-        this.commandManager.registerType(new ProfileParameterType(), Profile.class);
-        this.commandManager.registerType(new UUIDParameterType(), UUID.class);
-        this.commandManager.registerType(new DurationParameterType(), Duration.class);
+        this.commandManager = new PaperCommandManager(this);
+
+        this.commandManager.enableUnstableAPI("help");
+
+        this.commandManager.setFormat(MessageType.HELP, CC.CHAT_CC, CC.PRIMARY_CC, CC.PRIMARY_CC);
+        this.commandManager.setFormat(MessageType.SYNTAX, CC.CHAT_CC, CC.PRIMARY_CC, ChatColor.WHITE);
+        this.commandManager.setFormat(MessageType.ERROR, ChatColor.RED, ChatColor.YELLOW, ChatColor.RED);
+        this.commandManager.setFormat(MessageType.INFO, CC.CHAT_CC, CC.PRIMARY_CC, CC.PRIMARY_CC);
+
+        this.commandManager.getCommandContexts().registerContext(Duration.class, c -> Duration.of(c.popFirstArg()));
+        this.commandManager.getCommandContexts().registerContext(UUID.class, c -> {
+            String source = c.popFirstArg();
+            if (c.getIssuer().isPlayer() && (source.equalsIgnoreCase("self") || source.equals(""))) {
+                return c.getPlayer().getUniqueId();
+            }
+            Holiday plugin = Holiday.getInstance();
+            try {
+                return UUID.fromString(source);
+            } catch (Exception ignored) {
+                if (plugin.getDisguiseManager().isDisguised(source)) {
+                    return plugin.getDisguiseManager().getDisguise(source).getUuid();
+                }
+
+                UUID uuid = plugin.getUuidCache().uuid(source);
+
+                if (uuid != null) {
+                    return uuid;
+                }
+
+                if (!Locale.SERVER_CREATE_PROFILE_IF_NOT_EXISTS.getBoolean()) {
+                    throw new InvalidCommandArgument(Locale.PLAYER_NOT_FOUND.getString());
+                }
+
+                UUID fetchedUUID = UUIDFetcher.getSync(source);
+
+                if (fetchedUUID == null) {
+                    throw new InvalidCommandArgument(Locale.PLAYER_NOT_FOUND.getString());
+                }
+
+                return fetchedUUID;
+            }
+        });
+        this.commandManager.getCommandContexts().registerContext(IRank.class, c -> {
+            String source = c.popFirstArg();
+
+            if (source == null) {
+                return Holiday.getInstance().getApi().getDefaultRank();
+            }
+
+            if (c.getIssuer().isPlayer() && source.equals("")) {
+                return Holiday.getInstance().getApi().getProfile(c.getPlayer().getUniqueId()).getHighestRank();
+            }
+            if (source.equalsIgnoreCase("default")) return Holiday.getInstance().getApi().getDefaultRank();
+
+            IRank rank = Holiday.getInstance().getApi().getRank(source);
+
+            if (rank == null) {
+                throw new InvalidCommandArgument(Locale.RANK_NOT_FOUND.getString());
+            }
+
+            return (rank);
+        });
+        this.commandManager.getCommandContexts().registerContext(Profile.class, c -> {
+            final String UUID_REGEX = "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
+            final String UUID_REGEX_NO_HYPHENS = "[0-9a-fA-F]{32}";
+
+            String source = c.popFirstArg();
+
+            if (source.equals("")) {
+                throw new InvalidCommandArgument(Locale.NEED_NAME.getString());
+            }
+
+            Holiday plugin = Holiday.getInstance();
+
+            if (source.matches(UUID_REGEX) || source.matches(UUID_REGEX_NO_HYPHENS)) {
+                UUID uuid = UUID.fromString(source);
+                return ((HolidayAPI) plugin.getApi()).getUserManager().getProfileNoCreate(uuid);
+            }
+
+            if (c.getIssuer().isPlayer() && (source.equalsIgnoreCase("self"))) {
+                return plugin.getApi().getProfile(c.getPlayer().getUniqueId());
+            }
+
+            if (Bukkit.getPlayer(source) != null) {
+                return plugin.getApi().getProfile(Bukkit.getPlayer(source).getUniqueId());
+            }
+
+            UUID cachedUUID = null;
+
+            if (plugin.getDisguiseManager().isDisguised(source)) {
+                cachedUUID = plugin.getDisguiseManager().getDisguise(source).getUuid();
+            }
+
+            if (cachedUUID == null && plugin.getUuidCache().uuid(source.toLowerCase()) == null) {
+                if (!Locale.SERVER_CREATE_PROFILE_IF_NOT_EXISTS.getBoolean()) {
+                    throw new InvalidCommandArgument(Locale.PLAYER_NOT_FOUND.getString());
+                }
+
+                UUID fetchedUUID = UUIDFetcher.getSync(source);
+
+                if (fetchedUUID == null) {
+                    throw new InvalidCommandArgument(Locale.PLAYER_NOT_FOUND.getString());
+                }
+
+                Profile profile = plugin.getApi().getProfile(fetchedUUID);
+                profile.setName(source.toLowerCase());
+                plugin.getApi().saveProfile(profile);
+                return plugin.getApi().getProfile(fetchedUUID);
+            }
+
+            cachedUUID = plugin.getUuidCache().uuid(source.toLowerCase());
+
+            return plugin.getApi().getProfile(cachedUUID);
+        });
+
+        this.commandManager.getCommandCompletions().registerCompletion("ranks", c -> api.getRanks().stream().map(IRank::getName).collect(Collectors.toList()));
+        this.commandManager.getCommandCompletions().registerCompletion("servers", c -> api.getServers().keySet());
+        this.commandManager.getCommandCompletions().registerCompletion("dnames", c -> disguiseManager.getUnusedNames());
+        this.commandManager.getCommandCompletions().registerCompletion("dskins", c -> Skin.SKINS.keySet());
+        this.commandManager.getCommandCompletions().registerCompletion("nothing", c -> Collections.emptyList());
+        this.commandManager.getCommandCompletions().registerCompletion("materials", c -> Arrays.stream(Material.values()).map(Material::name).collect(Collectors.toList()));
+        this.commandManager.getCommandCompletions().registerCompletion("enchantements", c -> Arrays.stream(Enchantment.values()).map(Enchantment::getName).collect(Collectors.toList()));
+
+        this.commandManager.getCommandConditions().addCondition("dev", c -> {
+            if (!c.getIssuer().isPlayer()) {
+                return;
+            }
+
+            if (!Logger.DEV) {
+                throw new ConditionFailedException("&cThis command is not available in production");
+            }
+        });
+
+        try {
+            ConfigFile lang = new ConfigFile(this, "plugins/Holiday/", "cmdlang_en.yml");
+            this.commandManager.getLocales().loadYamlLanguageFile(lang.getFile(), java.util.Locale.ENGLISH);
+        } catch (IOException | InvalidConfigurationException exception) {
+            exception.printStackTrace();
+            error("&cCould not load cmdlang_en.yml");
+        }
+
         Arrays.asList(
-                new DebugCommand(), new RankCommand(), new ChatCommand(),
-                new WhitelistCommand(), new ServerManagerCommand(),
-                new GamemodeCommands(), new UserCommand()
-        ).forEach(commandManager::registerCommandWithSubCommands);
-        Arrays.asList(
-                new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
-                new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
-                new ConversationCommands(), new GrantCommands(), new ShutdownCommands(),
-                new EssentialCommands(), new StaffCommands(), new DisguiseCommands(),
-                new PunishmentCommands(), new PunishmentRemoveCommands()
-        ).forEach(commandManager::registerCommands);
+                new ChatCommand(), new ConversationCommands(), new DebugCommand(),
+                new DisguiseCommands(), new EssentialCommands(), new GamemodeCommands(),
+                new GrantCommands(), new PunishmentCommands(), new PunishmentRemoveCommands(),
+                new RankCommand(), new ServerManagerCommand(), new SettingsCommands(),
+                new ShutdownCommands(), new SocialCommands(), new StaffCommands(),
+                new TeleportCommands(), new UserCommand(), new WhitelistCommand()
+        ).forEach(commandManager::registerCommand);
+
+
+//        this.commandManager.registerCommand(new DebugCommand());
+//        this.commandManager.registerCommand(new SocialCommands());
+
+//        this.commandManager.registerPackage(this, "me.andyreckt.holiday.bukkit.commands");
+
+
+//        Arrays.asList(
+//                new DebugCommand(), new RankCommand(), new ChatCommand(),
+//                new WhitelistCommand(), new ServerManagerCommand(),
+//                new GamemodeCommands(), new UserCommand()
+//        ).forEach(commandManager::registerCommandWithSubCommands);
+//        Arrays.asList(
+//                new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
+//                new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
+//                new ConversationCommands(), new GrantCommands(), new ShutdownCommands(),
+//                new EssentialCommands(), new StaffCommands(), new DisguiseCommands(),
+//                new PunishmentCommands(), new PunishmentRemoveCommands()
+//        ).forEach(commandManager::registerCommands);
     }
 
     private void setupNms() {
         if (this.getServer().getVersion().contains("1.7")) {
             this.nms = new NMS_v1_7_R4();
-            Logger.log(ChatColor.GREEN + "FOUND COMPATIBLE SPIGOT VERSION, IT IS RECOMMENDED TO CHANGE TO 1.8.8, LOADING PLUGIN");
+            log(ChatColor.GREEN + "FOUND COMPATIBLE SPIGOT VERSION, IT IS RECOMMENDED TO CHANGE TO 1.8.8, LOADING PLUGIN");
         }
         else if (this.getServer().getVersion().contains("1.8")) {
             this.nms = new NMS_v1_8_R3();
-            Logger.log(ChatColor.GREEN + "FOUND FULLY COMPATIBLE SPIGOT VERSION, LOADING PLUGIN");
+            log(ChatColor.GREEN + "FOUND FULLY COMPATIBLE SPIGOT VERSION, LOADING PLUGIN");
         } else {
             Logger.error(ChatColor.RED + "FOUND INCOMPATIBLE/UNKNOWN VERSION, DISABLING");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -222,7 +378,7 @@ public final class Holiday extends JavaPlugin {
                             .filter(player -> player.hasPermission(packet.getPermission()))
                             .forEach(player -> player.sendMessage(CC.translate(packet.getMessage())));
                 }
-                Logger.log(CC.translate(packet.getMessage()));
+                log(CC.translate(packet.getMessage()));
             } else {
                 Bukkit.broadcastMessage(CC.translate(packet.getMessage()));
             }
@@ -264,14 +420,14 @@ public final class Holiday extends JavaPlugin {
 
     private void logInformation(final long milli) {
         Duration duration = Duration.of(System.currentTimeMillis() - milli);
-        Logger.log(" ");
-        Logger.log(CC.CHAT + "-----------------------------------------------");
-        Logger.log(CC.PRIMARY + "Plugin: " + CC.SECONDARY + "Holiday");
-        Logger.log(CC.PRIMARY + "Version: " + CC.SECONDARY + getDescription().getVersion());
-        Logger.log(CC.PRIMARY + "Author: " + CC.SECONDARY + getDescription().getAuthors().get(0));
-        Logger.log(CC.PRIMARY + "Startup time: " + CC.SECONDARY + duration.get() + "ms " + CC.PRIMARY + "(" + duration.toSmallRoundedTime() + ")");
-        Logger.log(CC.CHAT + "-----------------------------------------------");
-        Logger.log(" ");
+        log(" ");
+        log(CC.CHAT + "-----------------------------------------------");
+        log(CC.PRIMARY + "Plugin: " + CC.SECONDARY + "Holiday");
+        log(CC.PRIMARY + "Version: " + CC.SECONDARY + getDescription().getVersion());
+        log(CC.PRIMARY + "Author: " + CC.SECONDARY + getDescription().getAuthors().get(0));
+        log(CC.PRIMARY + "Startup time: " + CC.SECONDARY + duration.get() + "ms " + CC.PRIMARY + "(" + duration.toSmallRoundedTime() + ")");
+        log(CC.CHAT + "-----------------------------------------------");
+        log(" ");
     }
 
     @Override

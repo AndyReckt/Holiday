@@ -1,5 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
@@ -8,9 +10,7 @@ import me.andyreckt.holiday.bukkit.server.redis.packet.KickPlayerPacket;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Flag;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+  
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.punishment.Punishment;
 import me.andyreckt.holiday.core.util.duration.Duration;
@@ -22,83 +22,111 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-public class PunishmentCommands {
+public class PunishmentCommands extends BaseCommand {
 
-    @Command(names = {"ban", "b"}, async = true, permission = Perms.BAN)
+    @CommandAlias("ban|b")
+    @CommandCompletion("@players @nothing")
+    @CommandPermission("core.command.ban")
     public void ban(CommandSender sender,
-                           @Flag(name = "silent", identifier = 's') boolean silent,
-                           @Param(name = "name") Profile target,
-                           @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
+                                @Name("name") @Single Profile target,
+                                @Name("reason") @Default("Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BAN, Duration.PERMANENT, reason, silent, sender);
     }
 
-    @Command(names = {"blacklist", "bl"}, async = true, permission = Perms.BLACKLIST)
+    @CommandCompletion("@players @nothing")
+    @CommandPermission("core.command.blacklist")
+    @CommandAlias("blacklist|bl")
     public void blacklist(CommandSender sender,
-                                 @Flag(name = "silent", identifier = 's') boolean silent,
-                                 @Param(name = "name") Profile target,
-                                 @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
+                                 @Name("name") @Single Profile target,
+                                 @Name("reason") @Default("Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BLACKLIST, Duration.PERMANENT, reason, silent, sender);
     }
 
-    @Command(names = {"ipban", "ipb", "banip", "ban-ip"}, async = true, permission = Perms.IPBAN)
+    @CommandAlias("ipban|ipb|banip|ban-ip")
+    @CommandCompletion("@players @nothing")
+    @CommandPermission("core.command.ipban")
     public void ipban(CommandSender sender,
-                             @Flag(name = "silent", identifier = 's') boolean silent,
-                             @Param(name = "name") Profile target,
-                             @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
+                             @Name("name") @Single Profile target,
+                             @Name("reason") @Default("Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.IP_BAN, Duration.PERMANENT, reason, silent, sender);
     }
 
-    @Command(names = {"tempban", "tban", "tb"}, async = true, permission = Perms.TEMPBAN)
+    @CommandAlias("tempban|tban|tb")
+    @CommandCompletion("@players @nothing @nothing")
+    @CommandPermission("core.command.tempban")
     public void tempban(CommandSender sender,
-                               @Flag(name = "silent", identifier = 's') boolean silent,
-                               @Param(name = "name") Profile target,
-                               @Param(name = "time") Duration duration,
-                               @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
+                               @Name("name") @Single Profile target,
+                               @Name("time") @Single Duration duration,
+                               @Name("reason") @Default("Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BAN, duration, reason, silent, sender);
     }
 
-    @Command(names = {"mute"}, async = true, permission = Perms.MUTE)
+    @CommandAlias("mute")
+    @CommandCompletion("@players @nothing")
+    @CommandPermission("core.command.mute")
     public void mute(CommandSender sender,
-                            @Flag(name = "silent", identifier = 's') boolean silent,
-                            @Param(name = "name") Profile target,
-                            @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
+                                @Name("name") @Single Profile target,
+                                @Name("reason") @Default("Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.MUTE, Duration.PERMANENT, reason, silent, sender);
     }
 
-    @Command(names = {"tempmute", "tmute"}, async = true, permission = Perms.TEMPMUTE)
+    @CommandAlias("tempmute|tmute")
+    @CommandCompletion("@players @nothing @nothing")
+    @CommandPermission("core.command.tempmute")
     public void tempmute(CommandSender sender,
-                                @Flag(name = "silent", identifier = 's') boolean silent,
-                                @Param(name = "name") Profile target,
-                                @Param(name = "time") Duration duration,
-                                @Param(name = "reason", wildcard = true, baseValue = "Cheating") String reason) {
+                                @Name("name") @Single Profile target,
+                                @Name("time") @Single Duration duration,
+                                @Name("reason") @Default("Cheating") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.MUTE, duration, reason, silent, sender);
     }
 
-    @Command(names = {"kick"}, async = true, permission = Perms.KICK)
+    @CommandCompletion("@players @nothing")
+    @CommandPermission("core.command.kick")
+    @CommandAlias("kick")
     public void kick(CommandSender sender,
-                     @Flag(name = "silent", identifier = 's') boolean silent,
-                     @Param(name = "name") Profile target,
-                     @Param(name = "reason", wildcard = true, baseValue = "Misconduct") String reason) {
+                     @Name("name") @Single Profile target,
+                     @Name("reason") @Default("Misconduct") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         String issuerName = UserConstants.getNameWithColor(profile);
         String targetName = UserConstants.getDisplayNameWithColor(target);

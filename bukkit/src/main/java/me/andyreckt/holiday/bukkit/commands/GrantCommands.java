@@ -1,5 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
@@ -7,8 +9,8 @@ import me.andyreckt.holiday.bukkit.server.redis.packet.PlayerMessagePacket;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+
+
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.bukkit.server.menu.grant.*;
@@ -19,24 +21,29 @@ import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-public class GrantCommands {
+public class GrantCommands extends BaseCommand {
 
-    @Command(names = "grants", permission = Perms.GRANTS_VIEW)
-    public void grants(Player sender, @Param(name = "player") Profile target) {
+    @CommandPermission("core.command.grants.view")
+    @CommandAlias("grants")
+    @CommandCompletion("@players")
+    public void grants(Player sender, @Name("target") @Single Profile target) {
         new GrantsMenu(target).openMenu(sender);
     }
 
-    @Command(names = "grant", permission = Perms.GRANTS_EDIT)
-    public void grant(Player sender, @Param(name = "player") Profile target) {
+    @CommandPermission("core.command.grants.edit")
+    @CommandAlias("grant")
+    @CommandCompletion("@players")
+    public void grant(Player sender, @Name("target") @Single Profile target) {
         new GrantChooseRankMenu(target).openMenu(sender);
     }
 
-    @Command(names = {"ogrant"}, async = true)
+    @CommandPermission("console")
+    @CommandAlias("ogrant")
     public void ogrant(ConsoleCommandSender sender,
-                        @Param(name = "player") Profile target,
-                        @Param(name = "rank") IRank rank,
-                        @Param(name = "time") Duration duration,
-                        @Param(name = "reason", wildcard = true) String reason) {
+                        @Name("target") @Single Profile target,
+                        @Single @Name("rank") IRank rank,
+                        @Single @Name("duration") Duration duration,
+                        @Name("reason") String reason) {
         Holiday plugin = Holiday.getInstance();
 
         Profile issuer = UserProfile.getConsoleProfile();
@@ -55,11 +62,12 @@ public class GrantCommands {
         PacketHandler.send(new PlayerMessagePacket(target.getUuid(), str2));
     }
 
-    @Command(names = "rgrant", async = true)
+    @CommandPermission("console")
+    @CommandAlias("rgrant")
     public void rgrant(ConsoleCommandSender sender,
-                        @Param(name = "player") Profile target,
-                        @Param(name = "rank") IRank rank,
-                        @Param(name = "reason", wildcard = true) String reason) {
+                        @Name("target") @Single Profile target,
+                        @Single @Name("rank") IRank rank,
+                        @Name("reason") String reason) {
         Profile issuer = UserProfile.getConsoleProfile();
         target.getActiveGrants().stream()
                 .filter(grant -> grant.getRank().equals(rank))

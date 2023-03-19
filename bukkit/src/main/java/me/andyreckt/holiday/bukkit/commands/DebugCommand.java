@@ -1,5 +1,8 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandHelp;
+import co.aikar.commands.annotation.*;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import me.andyreckt.holiday.api.user.IGrant;
@@ -7,55 +10,53 @@ import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.Logger;
-import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.*;
-import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
 import org.bson.Document;
 import org.bukkit.command.CommandSender;
-import org.checkerframework.checker.signature.qual.SignatureUnknown;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
+@CommandAlias("debug")
+@CommandPermission("core.command.debug")
+public class DebugCommand extends BaseCommand {
+    @HelpCommand
+    @Syntax("[page]")
+    @Conditions("dev")
+    public void doHelp(Player player, CommandHelp help) {
+        help.showHelp();
+    }
 
-@MainCommand(names = "debug", description = "Debug command", permission = Perms.DEBUG)
-public class DebugCommand {
-    @SubCommand(names = "profile", description = "Profile Debug", async = true)
-    public void profileDebugging(CommandSender sender, @Param(name = "profile") Profile profile) {
-        if (!Logger.DEV) {
-            sender.sendMessage(CC.translate("&cThis command is not available in production"));
-            return;
-        }
+    @Subcommand("profile")
+    @CommandCompletion("@players")
+    @Conditions("dev")
+    public void profileDebugging(CommandSender sender, @Name("profile") Profile profile) {
         Logger.debug(GsonProvider.GSON.toJson(profile));
     }
 
-	@SubCommand(names = "rank", description = "Rank debug", async = true)
-	public void rankDebugging(CommandSender sender, @Param(name = "rank") IRank rank) {
-        if (!Logger.DEV) {
-            sender.sendMessage(CC.translate("&cThis command is not available in production"));
-            return;
-        }
+
+    @CommandCompletion("@ranks")
+    @Subcommand("rank")
+    @Conditions("dev")
+	public void rankDebugging(CommandSender sender, @Name("rank") IRank rank) {
 		Logger.debug(GsonProvider.GSON.toJson(rank));
     }
 
-	@SubCommand(names = "grants", description = "Player grants Debug", async = true)
-	public void grantsDebugging(CommandSender sender, @Param(name = "profile") Profile profile) {
-        if (!Logger.DEV) {
-            sender.sendMessage(CC.translate("&cThis command is not available in production"));
-            return;
-        }
+
+    @Subcommand("grants")
+    @CommandCompletion("@players")
+    @Conditions("dev")
+	public void grantsDebugging(CommandSender sender, @Name("profile") Profile profile) {
 		List<IGrant> grants = Holiday.getInstance().getApi().getGrants(profile.getUuid());
         Logger.debug(GsonProvider.GSON.toJson(grants));
     }
 
-    @SubCommand(names = "raccordtoredis", description = "uuid-cache updating", async = true)
+
+    @Conditions("dev")
+    @Subcommand("raccordtoredis")
     public void raccordToRedis(CommandSender sender) {
-        if (!Logger.DEV) {
-            sender.sendMessage(CC.translate("&cThis command is not available in production"));
-            return;
-        }
 
         HolidayAPI.getUnsafeAPI().runRedisCommand(redis -> {
             HolidayAPI.getUnsafeAPI().getUserManager().getAllProfilesDb().whenComplete((profiles, throwable) -> {
@@ -68,31 +69,26 @@ public class DebugCommand {
         });
     }
 
-    @SubCommand(names = "server", description = "Server debug", async = true)
+
+    @Conditions("dev")
+    @Subcommand("server")
     public void serverDebugging(CommandSender sender) {
-        if (!Logger.DEV) {
-            sender.sendMessage(CC.translate("&cThis command is not available in production"));
-            return;
-        }
         Logger.debug(GsonProvider.GSON.toJson(Holiday.getInstance().getApi().getServer(Holiday.getInstance().getThisServer().getServerId())));
 
     }
 
-    @SubCommand(names = "loadedprofilesamount", description = "Loaded profiles amount", async = true)
+
+    @Conditions("dev")
+    @Subcommand("loadedprofilesamount")
     public void loadedProfilesAmount(CommandSender sender) {
-        if (!Logger.DEV) {
-            sender.sendMessage(CC.translate("&cThis command is not available in production"));
-            return;
-        }
         sender.sendMessage("Loaded profiles amount: " + HolidayAPI.getUnsafeAPI().getUserManager().getProfiles().size());
     }
 
-    @SubCommand(names = "db", description = "Database debug")
-    public void dbDebugging(CommandSender sender, @Param(name = "player", baseValue = "self") Profile profile) {
-        if (!Logger.DEV) {
-            sender.sendMessage(CC.translate("&cThis command is not available in production"));
-            return;
-        }
+
+    @Private
+    @Conditions("dev")
+    @Subcommand("db")
+    public void dbDebugging(CommandSender sender, @Default("self") Profile profile) {
         long savestart = System.currentTimeMillis();
         HolidayAPI.getUnsafeAPI().getMongoManager().getProfiles().replaceOne(
                 Filters.eq("_id", profile.getUuid().toString()),
@@ -106,12 +102,6 @@ public class DebugCommand {
         long loadend = System.currentTimeMillis();
         sender.sendMessage("Saving Profile: " + (saveend - savestart) + "ms");
         sender.sendMessage("Loading Profile: " + (loadend - loadstart) + "ms");
-    }
-
-    @SubCommand(names = "flag", description = "Flag debug", async = true)
-    public void flagged(CommandSender sender, @Flag(identifier = 'f') boolean flag, @Param(name = "text", wildcard = true) String text) {
-        sender.sendMessage("Flag: " + flag);
-        sender.sendMessage("Text: " + text);
     }
 
 

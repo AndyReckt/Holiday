@@ -1,18 +1,20 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.disguise.DisguiseMenu;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.menu.anvilgui.AnvilGUI;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+  
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.user.disguise.Disguise;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
 import me.andyreckt.holiday.bukkit.util.other.Cooldown;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
+ 
 import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import org.bukkit.entity.Player;
@@ -22,11 +24,13 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-public class DisguiseCommands {
+public class DisguiseCommands extends BaseCommand {
 
     private final Map<UUID, Cooldown> cooldownMap = new HashMap<>();
 
-    @Command(names = {"disguise", "dis", "nick"}, permission = Perms.DISGUISE, description = "Disguise yourself as another player.")
+    @CommandAlias("disguise|dis|nick")
+    @CommandPermission("core.command.disguise")
+    @Description("Disguise yourself as another player.")
     public void disguise(Player player) {
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
@@ -55,7 +59,9 @@ public class DisguiseCommands {
         new DisguiseMenu(disguise).openMenu(player);
     }
 
-    @Command(names = {"undisguise", "undis", "unnick"}, permission = Perms.DISGUISE, description = "Undisguise yourself.")
+    @CommandAlias("undisguise|undis|unnick")
+    @CommandPermission("core.command.disguise")
+    @Description("Undisguise yourself.")
     public void undisguise(Player player) {
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
@@ -68,8 +74,14 @@ public class DisguiseCommands {
         player.sendMessage(Locale.DISGUISE_MESSAGE_OFF.getString());
     }
 
-    @Command(names = {"manualdisguise", "mdis", "mnick"}, permission = Perms.DISGUISE_MANUAL, description = "Disguise yourself as another player.")
-    public void manualDisguise(Player player, @Param(name = "name") String name, @Param(name = "skin") String skin, @Param(name = "rank", baseValue = "default") IRank rank) {
+    @CommandAlias("manualdisguise|mdis|mnick")
+    @CommandPermission("core.command.disguise.manual")
+    @Description("Disguise yourself as another player.")
+    @CommandCompletion("@dnames @dskins @ranks")
+    public void manualDisguise(Player player,
+                               @Single @Name("name") String name,
+                               @Single @Name("name") String skin,
+                               @Optional @Single @Name("name") @Default("default") IRank rank) {
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
         if (profile.isDisguised()) {
@@ -105,7 +117,9 @@ public class DisguiseCommands {
                         Holiday.getInstance().getApi().getProfile(player.getUniqueId()))));
     }
 
-    @Command(names = {"disguiselist", "dislist", "nicklist"}, permission = Perms.DISGUISE_LIST, description = "List all disguises.")
+    @CommandAlias("disguiselist|dislist|nicklist")
+    @CommandPermission("core.command.disguise.list")
+    @Description("List all disguises.")
     public void disguiseList(Player player) {
         if (Holiday.getInstance().getDisguiseManager().getDisguises().isEmpty()) {
             player.sendMessage(Locale.NOBODY_DISGUISED.getString());

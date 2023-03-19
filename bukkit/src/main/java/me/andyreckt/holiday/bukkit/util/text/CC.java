@@ -1,13 +1,15 @@
 package me.andyreckt.holiday.bukkit.util.text;
 
+import co.aikar.commands.MessageType;
 import lombok.experimental.UtilityClass;
+import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import org.bukkit.ChatColor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 @UtilityClass
 public final class CC {
@@ -15,6 +17,10 @@ public final class CC {
 	public static String PRIMARY;
 	public static String SECONDARY;
 	public static String CHAT;
+
+	public static ChatColor PRIMARY_CC;
+	public static ChatColor SECONDARY_CC;
+	public static ChatColor CHAT_CC;
 
 	public static String B_PRIMARY;
 	public static String B_SECONDARY;
@@ -125,11 +131,23 @@ public final class CC {
 	}
 
 	public static void setupColors() {
+		PRIMARY_CC = getColor(Locale.COLOR_PRIMARY.getString());
+		SECONDARY_CC = getColor(Locale.COLOR_SECONDARY.getString());
+		CHAT_CC = getColor(Locale.COLOR_CHAT.getString());
+
 		PRIMARY = getColor(Locale.COLOR_PRIMARY.getString()).toString();
 		SECONDARY = getColor(Locale.COLOR_SECONDARY.getString()).toString();
 		CHAT = getColor(Locale.COLOR_CHAT.getString()).toString();
+
 		B_PRIMARY = PRIMARY + ChatColor.BOLD;
 		B_SECONDARY = SECONDARY + ChatColor.BOLD;
+
+		if (Holiday.getInstance().getCommandManager() != null) {
+			Holiday.getInstance().getCommandManager().setFormat(MessageType.HELP, CC.CHAT_CC, CC.PRIMARY_CC, CC.PRIMARY_CC);
+			Holiday.getInstance().getCommandManager().setFormat(MessageType.SYNTAX, CC.CHAT_CC, CC.PRIMARY_CC, ChatColor.WHITE);
+			Holiday.getInstance().getCommandManager().setFormat(MessageType.ERROR, ChatColor.RED, ChatColor.YELLOW, ChatColor.RED);
+			Holiday.getInstance().getCommandManager().setFormat(MessageType.INFO, CC.CHAT_CC, CC.PRIMARY_CC, CC.PRIMARY_CC);
+		}
 	}
 
 	public static String addNetworkPlaceholder(String string) {

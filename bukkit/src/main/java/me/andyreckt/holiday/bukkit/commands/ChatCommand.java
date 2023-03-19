@@ -1,16 +1,14 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandHelp;
+import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
 import me.andyreckt.holiday.core.util.duration.Duration;
-import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
@@ -19,14 +17,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-@MainCommand(names = "chat",
-        permission = Perms.CHAT,
-        description = "Chat management commands.",
-        usage = "/chat (clear|slow|unslow|mute)")
-public class ChatCommand {
+@CommandAlias("chat")
+public class ChatCommand extends BaseCommand {
 
-    @SubCommand(names = "clear", permission = Perms.CHAT_CLEAR, async = true, usage = "/chat clear", description = "Clears the chat")
-    @Command(names = "clearchat", permission = Perms.CHAT_CLEAR, async = true, usage = "/clearchat", description = "Clears the chat")
+    @HelpCommand
+    @Syntax("[page]")
+    public void doHelp(Player player, CommandHelp help) {
+        help.showHelp();
+    }
+
+    @Subcommand("clear")
+    @CommandAlias("clearchat")
+    @CommandPermission("core.command.chat.clear")
+    @Description("Clears the chat")
     public void clear(CommandSender sender) {
         Bukkit.getOnlinePlayers().forEach(player -> {
             Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
@@ -45,8 +48,10 @@ public class ChatCommand {
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
-    @SubCommand(names = "mute", permission = Perms.CHAT_MUTE, async = true, usage = "/chat mute", description = "Mutes the chat")
-    @Command(names = {"mutechat"}, permission = Perms.CHAT_MUTE, async = true, usage = "/mutechat", description = "Mutes the chat")
+    @Subcommand("mute")
+    @CommandAlias("mutechat")
+    @CommandPermission("core.command.chat.mute")
+    @Description("Mutes the chat")
     public void mutechat(CommandSender sender) {
         Holiday.getInstance().getChatManager().setChatMuted(!Holiday.getInstance().getChatManager().isChatMuted());
         Bukkit.broadcastMessage(Holiday.getInstance().getChatManager().isChatMuted() ? Locale.GLOBAL_CHAT_MUTED.getString() : Locale.GLOBAL_CHAT_UNMUTED.getString());
@@ -61,9 +66,13 @@ public class ChatCommand {
                         Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
-    @SubCommand(names = "slow", permission = Perms.CHAT_SLOW, async = true, usage = "/chat slow (duration)", description = "Slows the chat")
-    @Command(names = {"slowchat"}, permission = Perms.CHAT_SLOW, async = true, usage = "/slowchat (duration)", description = "Slows the chat")
-    public void slowchat(CommandSender sender, @Param(name = "time") Duration duration){
+
+
+    @Subcommand("slow")
+    @CommandAlias("slowchat")
+    @CommandPermission("core.command.chat.slow")
+    @Description("Slows the chat")
+    public void slowchat(CommandSender sender, @Single @Name("time") Duration duration){
 
         if(duration.get() == 0L || duration.isPermanent()) {
             sender.sendMessage(Locale.TIME_FORMAT.getString());
@@ -79,10 +88,11 @@ public class ChatCommand {
                 new BroadcastPacket(toSend, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
-    @SubCommand(names = {"unslow"}, permission = Perms.CHAT_SLOW, async = true, usage = "/chat unslow", description = "Unslows the chat")
-    @Command(names = {"unslowchat"}, permission = Perms.CHAT_SLOW, async = true, usage = "/unslowchat", description = "Unslows the chat")
+    @Subcommand("unslow")
+    @CommandAlias("unslowchat")
+    @CommandPermission("core.command.chat.slow")
+    @Description("Unslows the chat")
     public void unslowchat(CommandSender sender){
-
         Holiday.getInstance().getChatManager().setChatDelay(0L);
         Bukkit.broadcastMessage(Locale.GLOBAL_CHAT_UNSLOWED.getString());
         String toSend = Locale.STAFF_CHAT_UNSLOWED.getString()

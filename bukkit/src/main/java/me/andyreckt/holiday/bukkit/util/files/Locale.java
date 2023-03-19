@@ -216,8 +216,8 @@ public enum Locale {
     STAFF_CHAT_MUTED(MESSAGES.get(), "chat.staff.chat-muted", "&b[S] &3[%server%] &eThe chat has been muted by %executor%"),
     GLOBAL_CHAT_UNMUTED(MESSAGES.get(), "chat.global.chat-unmuted", "&aThe global chat has been unmuted."),
     STAFF_CHAT_UNMUTED(MESSAGES.get(), "chat.staff.chat-unmuted", "&b[S] &3[%server%] &eThe chat has been unmuted by %executor%"),
-    GLOBAL_CHAT_SLOWED(MESSAGES.get(), "chat.global.chat-slowed", "&cThe global chat has been slowed to %delay% seconds."),
-    STAFF_CHAT_SLOWED(MESSAGES.get(), "chat.staff.chat-slowed", "&b[S] &3[%server%] &eThe chat has been slowed down to %delay% seconds by %executor%"),
+    GLOBAL_CHAT_SLOWED(MESSAGES.get(), "chat.global.chat-slowed", "&cThe global chat has been slowed to %delay%."),
+    STAFF_CHAT_SLOWED(MESSAGES.get(), "chat.staff.chat-slowed", "&b[S] &3[%server%] &eThe chat has been slowed down to %delay% by %executor%"),
     GLOBAL_CHAT_UNSLOWED(MESSAGES.get(), "chat.global.chat-unslowed", "&aThe global chat has been unslowed."),
     STAFF_CHAT_UNSLOWED(MESSAGES.get(), "chat.staff.chat-unslowed", "&b[S] &3[%server%] &eThe chat has been unslowed by %executor%"),
     CHAT_DELAY_MESSAGE(MESSAGES.get(), "chat.delay-message", "&cYou must wait %delay% before sending another message."),
@@ -365,7 +365,7 @@ public enum Locale {
     SUDO_ALL_STAFF(MESSAGES.get(), "sudo.all.staff", "&b[S] &3[%server%] %executor% &ehas forced all players to say %text%"),
 
     /* ERROR */
-    NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
+//    NO_PERMISSION(MESSAGES.get(), "error.no-permission", "&cYou do not have permission to execute this command."),
     RANK_ALREADY_EXISTS(MESSAGES.get(), "error.rank-already-exists", "&cA rank with that name already exists."),
     RANK_NOT_FOUND(MESSAGES.get(), "error.rank-not-found", "&cA rank with that name could not be found."),
     RANK_PERMISSION_ALREADY_EXISTS(MESSAGES.get(), "error.rank-permission-already-exists", "&cRank %rank% already has permission '%permission%'."),

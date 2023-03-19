@@ -1,5 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.api.API;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
@@ -7,59 +9,69 @@ import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Flag;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+ 
+
 import me.andyreckt.holiday.core.user.UserProfile;
-import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class PunishmentRemoveCommands {
+public class PunishmentRemoveCommands extends BaseCommand {
 
-    @Command(names = {"unban", "pardon"}, async = true, permission = Perms.UNBAN)
+    @CommandPermission("core.command.unban")
+    @CommandAlias("unban|pardon")
     public void unban(CommandSender sender,
-                      @Flag(name = "silent", identifier = 's') boolean silent,
-                      @Param(name = "player") Profile target,
-                      @Param(name = "reason", wildcard = true, baseValue = "Appealed") String reason) {
+                      @Single @Name("player") Profile target,
+                      @Name("reason") @Default("Appealed") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.BAN, reason, silent, sender);
     }
 
-    @Command(names = "unipban", async = true, permission = Perms.UNIPBAN)
+    @CommandPermission("core.command.unipban")
+    @CommandAlias("unipban|pardonip")
     public void unipban(CommandSender sender,
-                        @Flag(name = "silent", identifier = 's') boolean silent,
-                        @Param(name = "player") Profile target,
-                        @Param(name = "reason", wildcard = true, baseValue = "Appealed") String reason) {
+                        @Single @Name("player") Profile target,
+                        @Name("reason") @Default("Appealed") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.IP_BAN, reason, silent, sender);
     }
 
-    @Command(names = "unmute", async = true, permission = Perms.UNMUTE)
+    @CommandAlias("unmute|pardonmute")
+    @CommandPermission("core.command.unmute")
     public void unmute(CommandSender sender,
-                       @Flag(name = "silent", identifier = 's') boolean silent,
-                       @Param(name = "player") Profile target,
-                       @Param(name = "reason", wildcard = true, baseValue = "Appealed") String reason) {
+                       @Single @Name("player") Profile target,
+                       @Name("reason") @Default("Appealed") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.MUTE, reason, silent, sender);
     }
 
-    @Command(names = "unblacklist", async = true, permission = Perms.UNBLACKLIST)
+    @CommandAlias("unblacklist|pardonblacklist")
+    @CommandPermission("core.command.unblacklist")
     public void unblacklist(CommandSender sender,
-                            @Flag(name = "silent", identifier = 's') boolean silent,
-                            @Param(name = "player") Profile target,
-                            @Param(name = "reason", wildcard = true, baseValue = "Appealed") String reason) {
+                            @Single @Name("player") Profile target,
+                            @Name("reason") @Default("Appealed") String reason) {
         API api = Holiday.getInstance().getApi();
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
+
+        boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        if (reason.equals("") || reason.equals(" ")) reason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.BLACKLIST, reason, silent, sender);
     }

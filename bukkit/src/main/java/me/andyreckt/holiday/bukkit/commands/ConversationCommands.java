@@ -1,5 +1,7 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
@@ -7,23 +9,22 @@ import me.andyreckt.holiday.bukkit.server.redis.packet.MessagePacket;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.user.punishment.Punishment;
-import me.andyreckt.holiday.core.util.duration.TimeUtil;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class ConversationCommands {
+public class ConversationCommands extends BaseCommand { //TODO: filter those
 
     public static HashMap<UUID, UUID> LAST_MESSAGE = new HashMap<>();
 
-    @Command(names = {"message", "msg", "pm", "tell"}, async = true)
-    public void sendMessage(Player player, @Param(name = "target") Profile target, @Param(name = "message", wildcard = true) String message) {
+    @CommandAlias("message|msg|pm|tell")
+    @Description("Send a private message to a player.")
+    @CommandCompletion("@players")
+    public void sendMessage(Player player, @Single @Name("target") Profile target, @Name("message") String message) {
 
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
         boolean bypass = profile.isStaff();
@@ -40,7 +41,7 @@ public class ConversationCommands {
                 toSend = Locale.PUNISHMENT_TEMP_MUTE_PLAYER.getString();
             }
 
-            toSend = toSend.replace("%duration%", punishment.getRemainingDuration().toRoundedTime());
+            toSend = toSend.replace("%duration%", punishment.getRemainingDuration().getFormatted());
             player.sendMessage(toSend);
             return;
         }
@@ -75,8 +76,9 @@ public class ConversationCommands {
         LAST_MESSAGE.put(profile.getUuid(), target.getUuid());
     }
 
-    @Command(names = {"reply", "r"}, async = true)
-    public void reply(Player player, @Param(name = "message", wildcard = true) String message) {
+    @CommandAlias("reply|r")
+    @Description("Reply to the last player you messaged.")
+    public void reply(Player player, @Name("message") String message) {
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
         boolean bypass = profile.isStaff();
 
@@ -92,7 +94,7 @@ public class ConversationCommands {
                 toSend = Locale.PUNISHMENT_TEMP_MUTE_PLAYER.getString();
             }
 
-            toSend = toSend.replace("%duration%", punishment.getRemainingDuration().toRoundedTime());
+            toSend = toSend.replace("%duration%", punishment.getRemainingDuration().getFormatted());
             player.sendMessage(toSend);
             return;
         }
@@ -134,7 +136,9 @@ public class ConversationCommands {
         LAST_MESSAGE.put(profile.getUuid(), target.getUuid());
     }
 
-    @Command(names = "socialspy", async = true, permission = Perms.STAFF_SOCIAL_SPY)
+    @CommandAlias("socialspy|sspy")
+    @Description("Toggle social spy on or off.")
+    @CommandPermission("core.staff.socialspy")
     public void spy(Player sender) {
         Profile profile = Holiday.getInstance().getApi().getProfile(sender.getUniqueId());
         profile.getStaffSettings().setSocialSpy(!profile.getStaffSettings().isSocialSpy());

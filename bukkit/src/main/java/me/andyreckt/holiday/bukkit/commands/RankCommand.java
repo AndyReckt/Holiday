@@ -1,6 +1,8 @@
 package me.andyreckt.holiday.bukkit.commands;
 
-
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandHelp;
+import co.aikar.commands.annotation.*;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.gson.reflect.TypeToken;
@@ -12,19 +14,16 @@ import me.andyreckt.holiday.bukkit.server.menu.rank.RankManageMenu;
 import me.andyreckt.holiday.bukkit.server.menu.rank.RankManagerMenu;
 import me.andyreckt.holiday.bukkit.server.redis.packet.PermissionUpdatePacket;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
-import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
+ 
+  
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.bukkit.util.text.TextComponentBuilder;
 import me.andyreckt.holiday.core.user.rank.Rank;
 import me.andyreckt.holiday.core.util.json.GsonProvider;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -32,11 +31,18 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-@MainCommand(names = {"rank", "ranks"}, description = "Manage ranks.", permission = Perms.RANKS)
-public class RankCommand {
+@CommandAlias("rank|ranks")
+@CommandPermission("core.command.ranks")
+public class RankCommand extends BaseCommand {
 
-    @SubCommand(names = {"create", "add", "new"}, async = true, description = "Create a new rank.", usage = "/rank create <rank>")
-    public void create(CommandSender sender, @Param(name = "rank") String string) {
+    @HelpCommand
+    @Syntax("[page]")
+    public void doHelp(Player player, CommandHelp help) {
+        help.showHelp();
+    }
+
+    @Subcommand("create|add|new")
+    public void create(CommandSender sender, @Single @Name("rank") String string) {
         API api = Holiday.getInstance().getApi();
         if (api.getRank(string) != null) {
             sender.sendMessage(Locale.RANK_ALREADY_EXISTS.getString());
@@ -47,17 +53,18 @@ public class RankCommand {
         sender.sendMessage(Locale.RANK_SUCCESSFULLY_CREATED.getString().replace("%rank%", string));
     }
 
-    @SubCommand(names = {"edit", "manage"}, description = "Manage a rank.", usage = "/rank manage <rank>")
-    public void manage(Player sender, @Param(name = "rank") IRank rank) {
+    @Subcommand("edit|manage")
+    @CommandCompletion("@ranks")
+    public void manage(Player sender, @Single @Name("rank") IRank rank) {
         new RankManageMenu(rank).openMenu(sender);
     }
 
-    @SubCommand(names = {"editor", "manager"}, description = "Manage ranks.", usage = "/rank manager")
+    @Subcommand("editor|manager")
     public void editor(Player sender) {
         new RankManagerMenu().openMenu(sender);
     }
 
-    @SubCommand(names = {"list"}, description = "List all ranks.", usage = "/rank list")
+    @Subcommand("list|all")
     public void list(Player sender) {
         API api = Holiday.getInstance().getApi();
         sender.sendMessage(CC.translate("&aRank list: "));
@@ -85,8 +92,8 @@ public class RankCommand {
         sender.sendMessage(CC.CHAT_BAR);
     }
 
-    @SubCommand(names = {"addperm", "addpermission"}, async = true, description = "Add a permission to a rank.", usage = "/rank addperm <rank> <permission>")
-    public void addperm(CommandSender sender, @Param(name = "rank") IRank rank, @Param(name = "perm") String perm) {
+    @Subcommand("addperm|addpermission")
+    public void addperm(CommandSender sender, @Single @Name("rank") IRank rank, @Single @Name("permission") String perm) {
         API api = Holiday.getInstance().getApi();
         if (rank.getPermissions().contains(perm)) {
             sender.sendMessage(Locale.RANK_PERMISSION_ALREADY_EXISTS.getString().replace("%rank%", rank.getName()).replace("%permission%", perm));
@@ -102,8 +109,9 @@ public class RankCommand {
                 .replace("%permission%", perm));
     }
 
-    @SubCommand(names = {"removeperm", "remperm", "removepermission", "rempermission"}, async = true, description = "Remove a permission from a rank.", usage = "/rank removeperm <rank> <permission>")
-    public void removePerm(CommandSender sender, @Param(name = "rank") IRank rank, @Param(name = "perm") String perm) {
+
+    @Subcommand("removeperm|removepermission|remperm|rempermission")
+    public void removePerm(CommandSender sender, @Single @Name("rank") IRank rank, @Single @Name("permission") String perm) {
         API api = Holiday.getInstance().getApi();
         if (!rank.getPermissions().contains(perm)) {
             sender.sendMessage(Locale.RANK_PERMISSION_DOES_NOT_EXIST.getString()
@@ -121,8 +129,9 @@ public class RankCommand {
                 .replace("%perm%", perm));
     }
 
-    @SubCommand(names = {"addchild"}, async = true, description = "Add a child rank to a rank.", usage = "/rank addchild <rank> <child>")
-    public void addChild(CommandSender sender, @Param(name = "rank") IRank rank, @Param(name = "child") IRank child) {
+    @Subcommand("addchild|addinheritance|addchildrank|addchild")
+    @CommandCompletion("@ranks @ranks")
+    public void addChild(CommandSender sender, @Single @Name("rank") IRank rank, @Single @Name("child") IRank child) {
         API api = Holiday.getInstance().getApi();
         if (rank.getChilds().contains(child.getUuid())) {
             sender.sendMessage(Locale.RANK_INHERITANCE_ALREADY_EXISTS.getString()
@@ -141,8 +150,9 @@ public class RankCommand {
                 .replace("%child%", CC.translate(child.getDisplayName())));
     }
 
-    @SubCommand(names = {"removechild", "remchild"}, async = true, description = "Remove a child rank from a rank.", usage = "/rank removechild <rank> <child>")
-    public void remChild(CommandSender sender, @Param(name = "rank") IRank rank, @Param(name = "child") IRank child) {
+    @Subcommand("removechild|removeinheritance|remchildrank|remchild")
+    @CommandCompletion("@ranks @ranks")
+    public void remChild(CommandSender sender, @Single @Name("rank") IRank rank, @Single @Name("child") IRank child) {
         API api = Holiday.getInstance().getApi();
         if (!rank.getChilds().contains(child.getUuid())) {
             sender.sendMessage(Locale.RANK_INHERITANCE_DOES_NOT_EXIST.getString()
@@ -161,8 +171,9 @@ public class RankCommand {
                 .replace("%child%", CC.translate(child.getDisplayName())));
     }
 
-    @SubCommand(names = {"setpriority", "priority", "setweight", "weight"}, async = true, description = "Set the priority of a rank.", usage = "/rank setpriority <rank> <priority>")
-    public void remChild(CommandSender sender, @Param(name = "rank") IRank rank, @Param(name = "priority") int i) {
+    @CommandCompletion("@ranks")
+    @Subcommand("setpriority|priority|setweight|weight")
+    public void remChild(CommandSender sender, @Single @Name("rank") IRank rank, @Single @Name("priority") int i) {
         API api = Holiday.getInstance().getApi();
         rank.setPriority(i);
         api.saveRank(rank);
@@ -172,8 +183,9 @@ public class RankCommand {
                 .replace("%priority%", String.valueOf(i)));
     }
 
-    @SubCommand(names = {"delete", "remove"}, async = true, description = "Delete a rank.", usage = "/rank delete <rank>")
-    public void remRank(CommandSender sender, @Param(name = "rank") IRank rank) {
+    @CommandCompletion("@ranks")
+    @Subcommand("delete|remove")
+    public void remRank(CommandSender sender, @Single @Name("rank") IRank rank) {
         if (rank.isDefault()) {
             sender.sendMessage(CC.translate("&cYou cannot delete the default rank!"));
             return;
@@ -183,7 +195,7 @@ public class RankCommand {
     }
 
     @SneakyThrows
-    @SubCommand(names = "export", description = "Export all the ranks to a file.", usage = "/rank export")
+    @Subcommand("export")
     public void export(CommandSender sender) {
         File file = new File(Holiday.getInstance().getDataFolder(), "ranks.json");
         if (!file.exists()) {
@@ -196,7 +208,7 @@ public class RankCommand {
     }
 
     @SneakyThrows
-    @SubCommand(names = "import", description = "Import all the ranks from a file.", usage = "/rank import")
+    @Subcommand("import")
     public void importRanks(CommandSender sender) {
         File file = new File(Holiday.getInstance().getDataFolder(), "ranks.json");
         if (!file.exists()) {

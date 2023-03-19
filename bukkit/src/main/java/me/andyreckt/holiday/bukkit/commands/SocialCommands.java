@@ -1,28 +1,30 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
+ 
 import org.bukkit.command.CommandSender;
 
-public class SocialCommands {
+public class SocialCommands extends BaseCommand {
 
 
-    @Command(names = {"discord", "disc", "dc"}, async = true)
+    @CommandAlias("discord|disc|dc")
     public void discord(CommandSender sender) {
         sender.sendMessage(Locale.SOCIAL_DISCORD.getStringNetwork());
     }
 
-    @Command(names = {"teamspeak", "ts"})
+    @CommandAlias("teamspeak|ts")
     public void ts(CommandSender sender) {
         sender.sendMessage(Locale.SOCIAL_TEAMSPEAK.getStringNetwork());
     }
 
-    @Command(names = {"twitter"})
+    @CommandAlias("twitter")
     public void twitter(CommandSender sender) {
         sender.sendMessage(Locale.SOCIAL_TWITTER.getStringNetwork());
     }
 
-    @Command(names = {"store", "shop"})
+    @CommandAlias("store|shop")
     public void store(CommandSender sender) {
         sender.sendMessage(Locale.SOCIAL_STORE.getStringNetwork());
     }

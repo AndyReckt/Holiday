@@ -1,14 +1,15 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandHelp;
+import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7_R4;
 import me.andyreckt.holiday.bukkit.user.UserConstants;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
+ 
+  
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.util.enums.AlertType;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
@@ -17,35 +18,49 @@ import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@MainCommand(names = {"gamemode", "gm"},
-        permission = Perms.GAMEMODE,
-        description = "Change your gamemode.")
-public class GamemodeCommands {
+@CommandAlias("gm|gamemode")
+@CommandPermission("core.command.gamemode")
+public class GamemodeCommands extends BaseCommand {
 
-    @SubCommand(names = {"creative", "c", "crea", "1"}, permission = Perms.GAMEMODE, description = "Change your gamemode to creative.", usage = "/gamemode creative [player]")
-    @Command(names = {"gmc", "gm1"}, permission = Perms.GAMEMODE, description = "Change your gamemode to creative.", usage = "/gmc [player]")
-    public void creative(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
+    @HelpCommand
+    @Syntax("[page]")
+    @Conditions("dev")
+    public void doHelp(Player player, CommandHelp help) {
+        help.showHelp();
+    }
+
+    @CommandAlias("gmc|gm1")
+    @Subcommand("creative|c|crea|1")
+    @CommandPermission("core.command.gamemode")
+    @CommandCompletion("@players")
+    public void creative(CommandSender sender, @Name("target") @Default("self") @Single Player target) {
         target.setGameMode(GameMode.CREATIVE);
         sendMessage(sender, target);
     }
 
-    @SubCommand(names = {"adventure", "a", "adv", "2"}, permission = Perms.GAMEMODE, description = "Change your gamemode to adventure.", usage = "/gamemode adventure [player]")
-    @Command(names = {"gma", "gm2"}, permission = Perms.GAMEMODE)
-    public void adventure(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
+    @CommandPermission("core.command.gamemode")
+    @Subcommand("adventure|a|adv|2")
+    @CommandCompletion("@players")
+    @CommandAlias("gma|gm2")
+    public void adventure(CommandSender sender, @Name("target") @Default("self") @Single Player target) {
         target.setGameMode(GameMode.ADVENTURE);
         sendMessage(sender, target);
     }
 
-    @SubCommand(names = {"survival", "s", "surv" , "0"}, permission = Perms.GAMEMODE, description = "Change your gamemode to survival.", usage = "/gamemode survival [player]")
-    @Command(names = {"gms", "gm0"}, permission = Perms.GAMEMODE)
-    public void survival(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
+    @CommandCompletion("@players")
+    @CommandAlias("gms|gm0")
+    @Subcommand("survival|s|surv|0")
+    @CommandPermission("core.command.gamemode")
+    public void survival(CommandSender sender, @Name("target") @Default("self") @Single Player target) {
         target.setGameMode(GameMode.SURVIVAL);
         sendMessage(sender, target);
     }
 
-    @SubCommand(names = {"spectator", "sp", "spec", "3"}, permission = Perms.GAMEMODE, description = "Change your gamemode to spectator.", usage = "/gamemode spectator [player]")
-    @Command(names = {"gmsp", "gm3"}, permission = Perms.GAMEMODE)
-    public void spectator(CommandSender sender, @Param(name = "target", baseValue = "self") Player target) {
+    @CommandCompletion("@players")
+    @Subcommand("spectator|sp|spec|3")
+    @CommandPermission("core.command.gamemode")
+    @CommandAlias("gmsp|gm3")
+    public void spectator(CommandSender sender, @Name("target") @Default("self") @Single Player target) {
         if (Holiday.getInstance().getNms() instanceof NMS_v1_7_R4) {
             sender.sendMessage(CC.RED + "Spectator mode is not supported on 1.7.");
             return;

@@ -1,24 +1,31 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Name;
+import co.aikar.commands.annotation.Single;
 import me.andyreckt.holiday.api.user.IPunishment;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.menu.punishments.PunishmentLookupMenu;
 import me.andyreckt.holiday.bukkit.server.menu.staff.StaffAlertsMenu;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
+ 
+  
 import org.bukkit.entity.Player;
 
-public class StaffCommands {
+public class StaffCommands extends BaseCommand {
 
-    @Command(names = "staffalerts", permission = Perms.STAFF_VIEW_NOTIFICATIONS, description = "Toggle your staff alerts.")
+    @CommandAlias("staffalerts|sa")
+    @CommandPermission("core.staff.notifications")
     public void staffAlerts(Player sender) {
         new StaffAlertsMenu().openMenu(sender);
     }
 
-    @Command(names = {"lookupid", "checkid"}, permission = Perms.CHECK_PUNISHMENTS, description = "Lookup a punishment by it's ID.")
-    public void checkId(Player sender, @Param(name = "id") String id) {
+    @CommandAlias("lookupid|checkid")
+    @CommandPermission("core.command.checkpunishments")
+    public void checkId(Player sender, @Single @Name("id") String id) {
         IPunishment punishment = Holiday.getInstance().getApi().getPunishment(id);
 
         if (punishment == null) {

@@ -100,7 +100,7 @@ public enum Perms {
     ;
 
     private final String path;
-    @Setter private String perm;
+    private final String perm;
 
     Perms(String path, String perm) {
         this.path = path;
@@ -126,7 +126,6 @@ public enum Perms {
                     yamlConfiguration.set(perm.getPath(), perm.getPerm());
                     yamlConfiguration.save(file);
                 }
-                perm.setPerm(yamlConfiguration.getString(perm.getPath()));
             }
         }
     }

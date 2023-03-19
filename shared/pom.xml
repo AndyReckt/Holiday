@@ -6,7 +6,7 @@
     <parent>
         <groupId>me.andyreckt</groupId>
         <artifactId>holiday</artifactId>
-        <version>1.3.2</version>
+        <version>1.3.3</version>
     </parent>
 
     <groupId>me.andyreckt.holiday</groupId>
@@ -132,6 +132,10 @@
                         <relocation>
                             <pattern>redis.clients</pattern>
                             <shadedPattern>me.andyreckt.holiday.relocations.redis.clients</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.apache</pattern>
+                            <shadedPattern>me.andyreckt.holiday.relocations.org.apache</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

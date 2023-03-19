@@ -1,14 +1,15 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.*;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.server.redis.packet.KickPlayerPacket;
 import me.andyreckt.holiday.bukkit.server.redis.packet.PermissionUpdatePacket;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
 import me.andyreckt.holiday.bukkit.util.files.Perms;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.MainCommand;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Param;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.SubCommand;
+ 
+  
 import me.andyreckt.holiday.bukkit.util.text.CC;
 import me.andyreckt.holiday.core.util.http.UUIDFetcher;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
@@ -16,11 +17,12 @@ import org.bukkit.command.CommandSender;
 
 import java.util.UUID;
 
-@MainCommand(names = "user", permission = Perms.USER, description = "User command.")
-public class UserCommand {
+@CommandAlias("user|u")
+@CommandPermission("core.command.user")
+public class UserCommand extends BaseCommand {
 
-    @SubCommand(names = {"addpermission", "addperm"}, description = "Add permission to an user.")
-    public void addPermission(CommandSender sender, @Param(name = "player") Profile profile, @Param(name = "permission") String permission) {
+    @Subcommand("addpermission|addperm")
+    public void addPermission(CommandSender sender, @Single @Name("player") Profile profile, @Single @Name("permission") String permission) {
         if (profile.getPermissions().contains(permission)) {
             sender.sendMessage(Locale.PLAYER_ALREADY_HAS_PERMISSION.getString());
             return;
@@ -31,8 +33,8 @@ public class UserCommand {
         PacketHandler.send(new PermissionUpdatePacket(profile.getUuid()));
     }
 
-    @SubCommand(names = {"removepermission", "removeperm", "remperm"}, description = "Remove permission from me.andyreckt.holiday.user.")
-    public void removePermission(CommandSender sender, @Param(name = "player") Profile profile, @Param(name = "permission") String permission) {
+    @Subcommand("removepermission|removeperm|remperm")
+    public void removePermission(CommandSender sender, @Single @Name("player") Profile profile, @Single @Name("permission") String permission) {
         if (!profile.getPermissions().contains(permission)) {
             sender.sendMessage(Locale.PLAYER_DOES_NOT_HAVE_PERMISSION.getString());
             return;
@@ -44,15 +46,17 @@ public class UserCommand {
         PacketHandler.send(new PermissionUpdatePacket(profile.getUuid()));
     }
 
-    @SubCommand(names = {"wipe", "delete"}, description = "Wipes a profile.", permission = Perms.USER_WIPE)
-    public void wipe(CommandSender sender, @Param(name = "player") Profile profile) {
+    @Subcommand("wipe|delete")
+    @CommandPermission("core.command.user.wipe")
+    public void wipe(CommandSender sender, @Single @Name("player") Profile profile) {
         PacketHandler.send(new KickPlayerPacket(profile.getUuid(), "&cYour profile has been wiped."));
         Holiday.getInstance().getApi().deleteProfile(profile);
         sender.sendMessage(CC.translate("&cWiped " + profile.getName() + "'s profile."));
     }
 
-    @SubCommand(names = {"uuid"}, description = "Get a player's UUID.", permission = Perms.USER_RESOLVE, async = true)
-    public void uuid(CommandSender sender, @Param(name = "player") String playerName) {
+    @Subcommand("uuid")
+    @CommandPermission("core.command.user.resolve")
+    public void uuid(CommandSender sender, @Single @Name("player") String playerName) {
         sender.sendMessage(CC.CHAT + "Resolving UUID for " + playerName + "...");
         UUID cached = Holiday.getInstance().getUuidCache().uuid(playerName);
         if (cached != null) {
@@ -68,8 +72,9 @@ public class UserCommand {
         });
     }
 
-    @SubCommand(names = {"name"}, description = "Get a player's name.", permission = Perms.USER_RESOLVE, async = true)
-    public void name(CommandSender sender, @Param(name = "uuid") UUID uuid) {
+    @CommandPermission("core.command.user.resolve")
+    @Subcommand("name")
+    public void name(CommandSender sender, @Name("uuid") UUID uuid) {
         sender.sendMessage(CC.CHAT + "Resolving name for " + uuid + "...");
         String cached = Holiday.getInstance().getUuidCache().name(uuid);
         if (cached != null) {

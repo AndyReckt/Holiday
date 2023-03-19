@@ -39,7 +39,7 @@ public class ChatListener implements Listener {
                 toSend = Locale.PUNISHMENT_TEMP_MUTE_PLAYER.getString();
             }
 
-            toSend = toSend.replace("%duration%", punishment.getRemainingDuration().toRoundedTime());
+            toSend = toSend.replace("%duration%", punishment.getRemainingDuration().getFormatted());
 
             player.sendMessage(toSend);
         }
@@ -141,7 +141,7 @@ public class ChatListener implements Listener {
             boolean temp = punishment.getDurationObject().isPermanent();
 
             player.sendMessage(temp ? Locale.PUNISHMENT_TEMP_MUTE_PLAYER.getString()
-                     .replace("%duration%", punishment.getRemainingDuration().toRoundedTime())
+                     .replace("%duration%", punishment.getRemainingDuration().getFormatted())
                     : Locale.PUNISHMENT_MUTE_PLAYER.getString());
         }
 

@@ -1,14 +1,16 @@
 package me.andyreckt.holiday.bukkit.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
 import me.andyreckt.holiday.api.user.Profile;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
-import me.andyreckt.holiday.bukkit.util.sunset.annotations.Command;
+ 
 import org.bukkit.entity.Player;
 
-public class SettingsCommands {
+public class SettingsCommands extends BaseCommand {
 
-    @Command(names = {"toggleprivatemessages", "tpm", "togglepm", "togglepms"}, async = true)
+    @CommandAlias("toggleprivatemessages|tpm|togglepm|togglepms")
     public void togglePm(Player sender) {
         Profile profile = Holiday.getInstance().getApi().getProfile(sender.getUniqueId());
         profile.getSettings().setPrivateMessages(!profile.getSettings().isPrivateMessages());
@@ -21,7 +23,7 @@ public class SettingsCommands {
         }
     }
 
-    @Command(names = {"toggleprivatemessagessounds", "tpms", "togglepmsounds", "togglepmsound", "sounds"}, async = true)
+    @CommandAlias("toggleprivatemessagessounds|tpms|togglepmsounds|togglepmsound|sounds")
     public void togglePmSounds(Player sender) {
         Profile profile = Holiday.getInstance().getApi().getProfile(sender.getUniqueId());
         profile.getSettings().setPrivateMessagesSounds(!profile.getSettings().isPrivateMessagesSounds());

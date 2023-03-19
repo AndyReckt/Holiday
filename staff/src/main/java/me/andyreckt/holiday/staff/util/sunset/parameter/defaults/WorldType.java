@@ -1,7 +1,7 @@
 package me.andyreckt.holiday.staff.util.sunset.parameter.defaults;
 
 import me.andyreckt.holiday.staff.util.sunset.parameter.PType;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
