@@ -14,6 +14,7 @@ import me.andyreckt.holiday.bukkit.commands.*;
 import me.andyreckt.holiday.bukkit.server.chat.ChatManager;
 import me.andyreckt.holiday.bukkit.server.listeners.ChatListener;
 import me.andyreckt.holiday.bukkit.server.listeners.PlayerListener;
+import me.andyreckt.holiday.bukkit.server.listeners.VisibilityListener;
 import me.andyreckt.holiday.bukkit.server.nms.INMS;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_7_R4;
 import me.andyreckt.holiday.bukkit.server.nms.impl.NMS_v1_8_R3;
@@ -22,6 +23,8 @@ import me.andyreckt.holiday.bukkit.server.tasks.RebootTask;
 import me.andyreckt.holiday.bukkit.server.tasks.ServerTask;
 import me.andyreckt.holiday.bukkit.user.disguise.DisguiseManager;
 import me.andyreckt.holiday.bukkit.user.permission.PermissionManager;
+import me.andyreckt.holiday.bukkit.user.visibility.VisibilityHandler;
+import me.andyreckt.holiday.bukkit.user.visibility.impl.DefaultVisibilityHandler;
 import me.andyreckt.holiday.bukkit.util.Logger;
 import me.andyreckt.holiday.bukkit.util.files.ConfigFile;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
@@ -77,6 +80,7 @@ public final class Holiday extends JavaPlugin {
     private ChatManager chatManager;
     private DisguiseManager disguiseManager;
     private PermissionManager permissionManager;
+    @Setter private VisibilityHandler visibilityHandler;
 
     private UUIDCache uuidCache;
 
@@ -110,6 +114,7 @@ public final class Holiday extends JavaPlugin {
             this.setupTasks();
             this.setupListeners();
             this.setupCommands();
+            this.setupVisibility();
             this.setupSoftDependencies();
             this.finishSetup();
 
@@ -163,20 +168,36 @@ public final class Holiday extends JavaPlugin {
         this.commandManager.setFormat(MessageType.INFO, CC.CHAT_CC, CC.PRIMARY_CC, CC.PRIMARY_CC);
 
         this.commandManager.getCommandContexts().registerContext(Duration.class, c -> Duration.of(c.popFirstArg()));
+        this.commandManager.getCommandContexts().registerContext(Player.class, c -> {
+            String source = c.popFirstArg();
+            if (c.getIssuer().isPlayer() && (source.equalsIgnoreCase("self") || source.equals(""))) {
+                return c.getPlayer();
+            }
+            if ((!c.getIssuer().isPlayer()) && (source.equalsIgnoreCase("self") || source.equals(""))) {
+                throw new InvalidCommandArgument(ChatColor.RED + "Are you insane?");
+            }
+
+            Player player = Bukkit.getPlayer(source);
+
+            if (player == null) {
+                throw new InvalidCommandArgument(Locale.PLAYER_NOT_FOUND.getString());
+            }
+
+            return (player);
+        });
         this.commandManager.getCommandContexts().registerContext(UUID.class, c -> {
             String source = c.popFirstArg();
             if (c.getIssuer().isPlayer() && (source.equalsIgnoreCase("self") || source.equals(""))) {
                 return c.getPlayer().getUniqueId();
             }
-            Holiday plugin = Holiday.getInstance();
             try {
                 return UUID.fromString(source);
             } catch (Exception ignored) {
-                if (plugin.getDisguiseManager().isDisguised(source)) {
-                    return plugin.getDisguiseManager().getDisguise(source).getUuid();
+                if (this.getDisguiseManager().isDisguised(source)) {
+                    return this.getDisguiseManager().getDisguise(source).getUuid();
                 }
 
-                UUID uuid = plugin.getUuidCache().uuid(source);
+                UUID uuid = this.getUuidCache().uuid(source);
 
                 if (uuid != null) {
                     return uuid;
@@ -302,26 +323,6 @@ public final class Holiday extends JavaPlugin {
                 new ShutdownCommands(), new SocialCommands(), new StaffCommands(),
                 new TeleportCommands(), new UserCommand(), new WhitelistCommand()
         ).forEach(commandManager::registerCommand);
-
-
-//        this.commandManager.registerCommand(new DebugCommand());
-//        this.commandManager.registerCommand(new SocialCommands());
-
-//        this.commandManager.registerPackage(this, "me.andyreckt.holiday.bukkit.commands");
-
-
-//        Arrays.asList(
-//                new DebugCommand(), new RankCommand(), new ChatCommand(),
-//                new WhitelistCommand(), new ServerManagerCommand(),
-//                new GamemodeCommands(), new UserCommand()
-//        ).forEach(commandManager::registerCommandWithSubCommands);
-//        Arrays.asList(
-//                new ChatCommand(), new ServerManagerCommand(), new GamemodeCommands(),
-//                new TeleportCommands(), new SocialCommands(), new SettingsCommands(),
-//                new ConversationCommands(), new GrantCommands(), new ShutdownCommands(),
-//                new EssentialCommands(), new StaffCommands(), new DisguiseCommands(),
-//                new PunishmentCommands(), new PunishmentRemoveCommands()
-//        ).forEach(commandManager::registerCommands);
     }
 
     private void setupNms() {
@@ -357,6 +358,21 @@ public final class Holiday extends JavaPlugin {
         this.chatManager = new ChatManager(this);
         this.disguiseManager = new DisguiseManager(this, this.nms);
         this.permissionManager = new PermissionManager();
+    }
+
+    private void setupVisibility() {
+        if (Locale.USE_VISIBILITY_HANDLER.getBoolean()) {
+            this.visibilityHandler = new DefaultVisibilityHandler(this);
+            this.addListener(new VisibilityListener());
+
+            this.commandManager.getCommandCompletions().registerCompletion("players", c -> {
+                if (c.getIssuer().isPlayer()) {
+                    return this.visibilityHandler.getAllOnlineTo(c.getPlayer()).stream().map(Player::getName).collect(Collectors.toList());
+                }
+
+                return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+            });
+        }
     }
 
     private void setupListeners() {

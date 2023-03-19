@@ -48,6 +48,7 @@ public enum Locale {
     SERVER_PLAYER_DISPLAYNAME(SETTINGS.get(), "server.change-player-displayname", true),
     SERVER_PLAYER_LISTNAME(SETTINGS.get(), "server.change-player-listname", false),
     SERVER_CREATE_PROFILE_IF_NOT_EXISTS(SETTINGS.get(), "server.create-profile-if-not-exists", false),
+    USE_VISIBILITY_HANDLER(SETTINGS.get(), "server.use-visibility-handler", true),
 
 
     /* COLORS */
