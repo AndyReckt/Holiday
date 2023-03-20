@@ -127,7 +127,8 @@ public class DisguiseCommands extends BaseCommand {
     @CommandAlias("disguiselist|dislist|nicklist")
     @CommandPermission("core.command.disguise.list")
     @Description("List all disguises.")
-    public void disguiseList(Player player) {
+    @Conditions("player")
+    public void disguiseList(CommandSender player) {
         if (Holiday.getInstance().getDisguiseManager().getDisguises().isEmpty()) {
             player.sendMessage(Locale.NOBODY_DISGUISED.getString());
             return;
