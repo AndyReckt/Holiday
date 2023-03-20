@@ -2,9 +2,6 @@ package me.andyreckt.holiday.bukkit.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketContainer;
 import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.api.user.Profile;
@@ -457,16 +454,8 @@ public class EssentialCommands extends BaseCommand {
     @CommandCompletion("@players")
     @CommandPermission("core.command.demomode")
     public void demo(CommandSender sender, @Name("target") @Default("self") Player target) {
-        if (!Holiday.getInstance().isProtocolEnabled()) {
-            sender.sendMessage(CC.translate("&cYou need ProtocolLib in order to run this command"));
-            return;
-        }
-
-        final PacketContainer packet = new PacketContainer(PacketType.Play.Server.GAME_STATE_CHANGE);
-        packet.getIntegers().write(0, 5);
-        packet.getFloat().write(0, 0.0f);
         try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(target, packet);
+            Holiday.getInstance().getNms().sendDemoScreen(target);
             sender.sendMessage(Locale.DEMO_SCREEN.getString().replace("%player%", target.getName()));
         } catch (Exception ignored) {
             sender.sendMessage(Locale.PACKET_ERROR.getString());

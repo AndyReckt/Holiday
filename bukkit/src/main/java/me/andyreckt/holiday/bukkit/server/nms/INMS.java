@@ -23,4 +23,6 @@ public interface INMS {
     void unDisguise(Disguise disguise);
 
     ItemBuilder insertSkinPropertyFromHash(String hash, ItemBuilder builder);
+
+    void sendDemoScreen(Player target);
 }

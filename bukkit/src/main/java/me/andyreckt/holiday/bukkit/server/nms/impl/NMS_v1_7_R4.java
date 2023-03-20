@@ -188,4 +188,10 @@ public class NMS_v1_7_R4 implements INMS {
         return builder;
     }
 
+    @Override
+    public void sendDemoScreen(Player target) {
+        final EntityPlayer entityPlayer = ((CraftPlayer) target).getHandle();
+        entityPlayer.playerConnection.sendPacket(new PacketPlayOutGameStateChange(5, 0));
+    }
+
 }

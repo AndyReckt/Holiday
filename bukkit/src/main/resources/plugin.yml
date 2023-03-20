@@ -6,6 +6,5 @@ authors: ["AndyReckt"]
 description: "Holiday is an Open Source server core which manages ranks, punishments, and more."
 website: "https://github.com/AndyReckt/Holiday"
 softdepend:
-  - "ProtocolLib"
   - "Vault"
   - "PlaceholderAPI"

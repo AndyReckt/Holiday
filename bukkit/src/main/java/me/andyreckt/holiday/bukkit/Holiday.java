@@ -95,7 +95,6 @@ public final class Holiday extends JavaPlugin {
     @Setter private RebootTask rebootTask;
     private Random random;
 
-    private boolean protocolEnabled = false;
 
 
     @Override
@@ -421,10 +420,6 @@ public final class Holiday extends JavaPlugin {
     }
 
     private void setupSoftDependencies() {
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib")) {
-            this.protocolEnabled = true;
-        }
-
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderAPIExpansion(this).register();
         }
