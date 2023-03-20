@@ -27,15 +27,17 @@ public class GrantCommands extends BaseCommand {
     @CommandPermission("core.command.grants.view")
     @CommandAlias("grants")
     @CommandCompletion("@players")
-    public void grants(Player sender, @Name("target") @Single Profile target) {
-        new GrantsMenu(target).openMenu(sender);
+    @Conditions("player")
+    public void grants(CommandSender sender, @Name("target") @Single Profile target) {
+        new GrantsMenu(target).openMenu((Player) sender);
     }
 
     @CommandPermission("core.command.grants.edit")
     @CommandAlias("grant")
     @CommandCompletion("@players")
-    public void grant(Player sender, @Name("target") @Single Profile target) {
-        new GrantChooseRankMenu(target).openMenu(sender);
+    @Conditions("player")
+    public void grant(CommandSender sender, @Name("target") @Single Profile target) {
+        new GrantChooseRankMenu(target).openMenu((Player) sender);
     }
 
     @Conditions("console")

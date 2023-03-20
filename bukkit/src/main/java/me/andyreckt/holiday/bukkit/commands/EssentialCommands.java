@@ -50,7 +50,7 @@ public class EssentialCommands extends BaseCommand {
     @CommandAlias("report")
     @CommandCompletion("@players @nothing")
     @Conditions("player")
-    public void report(CommandSender sen, @Name("target") Player target, @Name("target") String reason) {
+    public void report(CommandSender sen, @Single @Name("target") Player target, @Name("target") String reason) {
         Player sender = (Player) sen;
 
         if (sender == target) {
@@ -214,7 +214,7 @@ public class EssentialCommands extends BaseCommand {
     @CommandPermission("core.command.give")
     @CommandCompletion("@players @materials")
     @Conditions("player")
-    public void give(CommandSender sen, @Name("target") Player target, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
+    public void give(CommandSender sen, @Single @Name("target") Player target, @Single @Name("material") String material, @Single @Name("amount") @Default("1") int amount) {
         Player sender = (Player) sen;
         Material mat = Bukkit.getUnsafe().getMaterialFromInternalName(material);
         if (mat != null) {
@@ -569,23 +569,23 @@ public class EssentialCommands extends BaseCommand {
     @CommandAlias("invsee|inv")
     @CommandPermission("core.command.invsee")
     @Conditions("player")
-    public void invsee(Player player, @Name("target") Player target) {
-        new InvSeeMenu(target).openMenu(player);
+    public void invsee(CommandSender player, @Name("target") Player target) {
+        new InvSeeMenu(target).openMenu((Player) player);
     }
 
     @CommandPermission("core.command.checkpunishments")
     @CommandCompletion("@players")
-    @CommandAlias("checkpunishments|checkpun|checkban|checkmute|checkp|checkb|checkm|punishmentcheck|punishcheck|puncheck|puncheck|pcheck|bcheck|mcheck|bancheck|mutecheck|punishments|c")
+    @CommandAlias("checkpunishments|checkpun|punishmentcheck|punishcheck|punishments|c")
     @Conditions("player")
-    public void check(Player player, @Name("player") Profile target) {
-        new PunishmentCheckMenu(target).openMenu(player);
+    public void check(CommandSender player, @Name("player") Profile target) {
+        new PunishmentCheckMenu(target).openMenu((Player) player);
     }
 
     @CommandAlias("punishmentlist|plist|banlist|mutelist|blacklistlist")
     @CommandPermission("core.command.punishmentlist")
     @Conditions("player")
-    public void punishmentsList(Player player) {
-        new PunishmentListMenu().openMenu(player);
+    public void punishmentsList(CommandSender player) {
+        new PunishmentListMenu().openMenu((Player) player);
     }
 
     @CommandAlias("alts|alt|accounts|associatedaccounts|listallaccounts")
@@ -613,7 +613,8 @@ public class EssentialCommands extends BaseCommand {
     @CommandAlias("staffchat|sc|staffc")
     @CommandPermission("core.staff.chat")
     @Conditions("player")
-    public void staffchat(Player player, @Name("message") @Default("$toggle$") String message) {
+    public void staffchat(CommandSender sender, @Name("message") @Default("$toggle$") String message) {
+        Player player = (Player) sender;
         UserProfile profile = (UserProfile) Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
         if (message.equalsIgnoreCase("$toggle$")) {
@@ -641,7 +642,8 @@ public class EssentialCommands extends BaseCommand {
     @CommandAlias("adminchat|achat|ac")
     @CommandPermission("core.admin.chat")
     @Conditions("player")
-    public void adminchat(Player player, @Name("message") @Default("$toggle$") String message) {
+    public void adminchat(CommandSender sender, @Name("message") @Default("$toggle$") String message) {
+        Player player = (Player) sender;
         UserProfile profile = (UserProfile) Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
         if (message.equalsIgnoreCase("$toggle$")) {
