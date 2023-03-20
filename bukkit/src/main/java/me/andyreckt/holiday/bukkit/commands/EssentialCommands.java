@@ -50,7 +50,7 @@ public class EssentialCommands extends BaseCommand {
     @CommandAlias("report")
     @CommandCompletion("@players @nothing")
     @Conditions("player")
-    public void report(CommandSender sen, @Single @Name("target") Player target, @Name("target") String reason) {
+    public void report(CommandSender sen, @Name("target") Player target, @Name("reason") String reason) {
         Player sender = (Player) sen;
 
         if (sender == target) {
