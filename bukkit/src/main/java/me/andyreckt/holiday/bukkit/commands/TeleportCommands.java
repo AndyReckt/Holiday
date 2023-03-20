@@ -58,7 +58,7 @@ public class TeleportCommands extends BaseCommand {
                 .replace("%server%", Holiday.getInstance().getThisServer().getServerName())
                 .replace("%executor%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(sender.getUniqueId())))
                 .replace("%player%", UserConstants.getNameWithColor(Holiday.getInstance().getApi().getProfile(target.getUniqueId())));
-        PacketHandler.send(new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get()));
+        PacketHandler.send(new BroadcastPacket(message, Perms.STAFF_VIEW_NOTIFICATIONS.get(), AlertType.ABUSE));
     }
 
     @CommandAlias("teleportposition|tpposition|teleportpos|tppos")
