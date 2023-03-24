@@ -16,7 +16,6 @@ import me.andyreckt.holiday.core.util.json.GsonProvider;
 import me.andyreckt.holiday.core.util.redis.messaging.PacketHandler;
 import me.andyreckt.holiday.core.util.redis.pubsub.packets.BroadcastPacket;
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 public class DisguiseManager {
@@ -77,7 +76,7 @@ public class DisguiseManager {
         return disguises.values().stream().noneMatch(disguise -> disguise.getDisplayName().equalsIgnoreCase(name));
     }
 
-    public boolean isValidName(String name) {
+    public boolean isPlayerOnline(String name) {
         return plugin.getApi().getOnlinePlayers().keySet()
                 .stream()
                 .map(plugin.getApi()::getProfile)

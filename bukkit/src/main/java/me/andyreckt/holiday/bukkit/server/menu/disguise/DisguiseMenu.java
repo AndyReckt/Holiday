@@ -18,6 +18,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,32 +53,9 @@ public class DisguiseMenu extends GlassMenu {
                         .build()
         ));
         if (player.hasPermission(Perms.DISGUISE_CUSTOM_NAME.get())) {
-            buttons.put(11, new EasyButton(
-                    new ItemBuilder(Material.ANVIL)
+            buttons.put(11, new EasyButton(new ItemBuilder(Material.NAME_TAG)
                             .displayname(CC.PRIMARY + "Change Name").build(), o -> {
-                    new AnvilGUI.Builder()
-                        .text("Name")
-                        .title("Change Name")
-                        .onComplete((player1, text) -> {
-                            if (!Pattern.matches(UserConstants.DISGUISE_NAME_MATCHER, text)) {
-                                player1.sendMessage(Locale.INVALID_NAME.getString());
-                                return AnvilGUI.Response.text(disguise.getDisplayName());
-                            }
-
-                            if (!Holiday.getInstance().getDisguiseManager().isValidName(text)) {
-                                player1.sendMessage(Locale.DISGUISE_NAME_TAKEN.getString());
-                                return AnvilGUI.Response.text(disguise.getDisplayName());
-                            }
-
-                            disguise.setDisplayName(text);
-                            new DisguiseMenu(disguise).openMenu(player1);
-                            return AnvilGUI.Response.close();
-                        })
-                        .onClose(player1 -> {
-                            new DisguiseMenu(disguise).openMenu(player1);
-                        })
-                        .plugin(Holiday.getInstance())
-                        .open(player);
+                    new DisguiseNamesMenu(disguise).openMenu(player);
             }));
         }
         buttons.put(13, new EasyButton(
