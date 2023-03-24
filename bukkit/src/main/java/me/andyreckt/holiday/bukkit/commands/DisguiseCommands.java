@@ -84,7 +84,7 @@ public class DisguiseCommands extends BaseCommand {
     @Description("Disguise yourself as another player.")
     @CommandCompletion("@dnames @dskins @ranks")
     @Conditions("player")
-    public void manualDisguise(CommandSender sender, 
+    public void manualDisguise(CommandSender sender,
                                @Single @Name("name") String name,
                                @Single @Name("skin") String skin,
                                @Optional @Single @Name("rank") @Default("default") IRank rank) {
@@ -106,7 +106,7 @@ public class DisguiseCommands extends BaseCommand {
             return;
         }
 
-        if (!Holiday.getInstance().getDisguiseManager().isValidName(name)) {
+        if (!Holiday.getInstance().getDisguiseManager().isPlayerOnline(name)) {
             player.sendMessage(Locale.DISGUISE_NAME_TAKEN.getString());
             return;
         }
