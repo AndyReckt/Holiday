@@ -149,6 +149,9 @@ public class TimeUtil {
     }
 
     public static String millisToRoundedTime(long millis) {
+        if (millis == PERMANENT) {
+            return "Permanent";
+        }
         ++millis;
         long seconds = millis / 1000L;
         long minutes = seconds / 60L;
@@ -173,6 +176,9 @@ public class TimeUtil {
     }
 
     public static String millisToSmallRoundedTime(long millis) {
+        if (millis == PERMANENT) {
+            return "Permanent";
+        }
         ++millis;
         long seconds = millis / 1000L;
         long minutes = seconds / 60L;
