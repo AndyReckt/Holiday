@@ -105,7 +105,7 @@ public abstract class PaginatedMenu extends Menu {
         }
 
         if (backButton() != null) {
-            buttons.put(getSize() - 5, new BackButton(this.backButton()));
+            buttons.put(40, new BackButton(this.backButton())); //getSize() - 5
         }
 
         return buttons;
