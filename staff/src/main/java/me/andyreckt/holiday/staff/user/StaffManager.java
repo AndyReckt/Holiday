@@ -102,18 +102,19 @@ public class StaffManager {
 
     private void updateVisibility(Player player) {
         if (!SLocale.UPDATE_VISIBILITY.getBoolean()) return;
+        Holiday.getInstance().getVisibilityHandler().updateToAll(player);
 
-        boolean vanished = api.getProfile(player.getUniqueId()).getStaffSettings().isVanished();
-
-        for (Player online : plugin.getServer().getOnlinePlayers()) {
-            if (online.hasPermission(SPerms.SEE_VANISHED.get())) {
-                online.showPlayer(player);
-                continue;
-            }
-
-            if (vanished) online.hidePlayer(player);
-            else online.showPlayer(player);
-        }
+//        boolean vanished = api.getProfile(player.getUniqueId()).getStaffSettings().isVanished();
+//
+//        for (Player online : plugin.getServer().getOnlinePlayers()) {
+//            if (online.hasPermission(SPerms.SEE_VANISHED.get())) {
+//                online.showPlayer(player);
+//                continue;
+//            }
+//
+//            if (vanished) online.hidePlayer(player);
+//            else online.showPlayer(player);
+//        }
     }
 
     public void updateItems(Player player, boolean first) {

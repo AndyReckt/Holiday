@@ -95,6 +95,7 @@ public enum Perms {
 
     /* OTHER */
     NONE(null, ""),
+    SEE_VANISHED("", "staff.see"),
     OP(null, "op"),
 
     ;

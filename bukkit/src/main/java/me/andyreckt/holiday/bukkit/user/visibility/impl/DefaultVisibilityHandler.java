@@ -49,10 +49,9 @@ public class DefaultVisibilityHandler implements VisibilityHandler {
 
     @Override
     public boolean treatAsOnline(Player viewer, Player target) {
-        Profile viewerProfile = HolidayAPI.getInstance().getProfile(viewer.getUniqueId());
         Profile targetProfile = HolidayAPI.getInstance().getProfile(target.getUniqueId());
 
-        if (targetProfile.getStaffSettings().isVanished()) return viewerProfile.isStaff();
+        if (targetProfile.getStaffSettings().isVanished()) return viewer.hasPermission("staff.see");
 
         return target.isOnline();
     }

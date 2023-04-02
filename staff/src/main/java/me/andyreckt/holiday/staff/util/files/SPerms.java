@@ -26,7 +26,7 @@ public enum SPerms {
     ;
 
     private final String path;
-    @Setter private String perm;
+    private final String perm;
 
     SPerms(String path, String perm) {
         this.path = path;
@@ -46,14 +46,14 @@ public enum SPerms {
             if (!file.exists()) {
                 plugin.saveResource("permissions.yml", false);
             }
+
             YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-            if (!(perm.getPath() == null)) {
-                if (!yamlConfiguration.contains(perm.getPath())) {
-                    yamlConfiguration.set(perm.getPath(), perm.getPerm());
-                    yamlConfiguration.save(file);
-                }
-                perm.setPerm(yamlConfiguration.getString(perm.getPath()));
-            }
+
+            if (perm.getPath() != null) continue;
+            if (yamlConfiguration.contains(perm.getPath())) continue;
+
+            yamlConfiguration.set(perm.getPath(), perm.getPerm());
+            yamlConfiguration.save(file);
         }
     }
 
