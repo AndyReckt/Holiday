@@ -37,7 +37,7 @@ public class RankCommand extends BaseCommand {
 
     @HelpCommand
     @Syntax("[page]")
-    public void doHelp(Player player, CommandHelp help) {
+    public void doHelp(CommandSender sender, CommandHelp help) {
         help.showHelp();
     }
 

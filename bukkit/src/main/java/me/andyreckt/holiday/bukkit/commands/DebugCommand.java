@@ -19,19 +19,18 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+@Conditions("dev")
 @CommandAlias("debug")
 @CommandPermission("core.command.debug")
 public class DebugCommand extends BaseCommand {
     @HelpCommand
     @Syntax("[page]")
-    @Conditions("dev")
-    public void doHelp(Player player, CommandHelp help) {
+    public void doHelp(CommandSender sender, CommandHelp help) {
         help.showHelp();
     }
 
     @Subcommand("profile")
     @CommandCompletion("@players")
-    @Conditions("dev")
     public void profileDebugging(CommandSender sender, @Name("profile") Profile profile) {
         Logger.debug(GsonProvider.GSON.toJson(profile));
     }
@@ -39,7 +38,6 @@ public class DebugCommand extends BaseCommand {
 
     @CommandCompletion("@ranks")
     @Subcommand("rank")
-    @Conditions("dev")
 	public void rankDebugging(CommandSender sender, @Name("rank") IRank rank) {
 		Logger.debug(GsonProvider.GSON.toJson(rank));
     }
@@ -47,14 +45,12 @@ public class DebugCommand extends BaseCommand {
 
     @Subcommand("grants")
     @CommandCompletion("@players")
-    @Conditions("dev")
 	public void grantsDebugging(CommandSender sender, @Name("profile") Profile profile) {
 		List<IGrant> grants = Holiday.getInstance().getApi().getGrants(profile.getUuid());
         Logger.debug(GsonProvider.GSON.toJson(grants));
     }
 
 
-    @Conditions("dev")
     @Subcommand("raccordtoredis")
     public void raccordToRedis(CommandSender sender) {
 
@@ -70,7 +66,6 @@ public class DebugCommand extends BaseCommand {
     }
 
 
-    @Conditions("dev")
     @Subcommand("server")
     public void serverDebugging(CommandSender sender) {
         Logger.debug(GsonProvider.GSON.toJson(Holiday.getInstance().getApi().getServer(Holiday.getInstance().getThisServer().getServerId())));
@@ -78,7 +73,6 @@ public class DebugCommand extends BaseCommand {
     }
 
 
-    @Conditions("dev")
     @Subcommand("loadedprofilesamount")
     public void loadedProfilesAmount(CommandSender sender) {
         sender.sendMessage("Loaded profiles amount: " + HolidayAPI.getUnsafeAPI().getUserManager().getProfiles().size());
@@ -86,7 +80,6 @@ public class DebugCommand extends BaseCommand {
 
 
     @Private
-    @Conditions("dev")
     @Subcommand("db")
     public void dbDebugging(CommandSender sender, @Default("self") Profile profile) {
         long savestart = System.currentTimeMillis();

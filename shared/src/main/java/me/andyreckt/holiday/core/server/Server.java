@@ -58,6 +58,7 @@ public class Server implements IServer {
 
     @Override
     public void setWhitelistRank(IRank whitelistRank) {
+        whitelistRank = (whitelistRank == null || whitelistRank.getUuid() == null) ? HolidayAPI.getUnsafeAPI().getDefaultRank() : whitelistRank;
         this.whitelistRank = whitelistRank.getUuid();
     }
 

@@ -9,6 +9,7 @@ import me.andyreckt.holiday.core.HolidayAPI;
 import me.andyreckt.holiday.core.user.UserProfile;
 import me.andyreckt.holiday.core.util.duration.Duration;
 import me.andyreckt.holiday.core.util.duration.TimeUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -91,6 +92,5 @@ public class Grant implements IGrant {
         revoke(UserProfile.getConsoleProfile().getUuid(), "Automatic", "Expired");
         return true;
     }
-
 
 }

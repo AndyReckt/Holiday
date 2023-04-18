@@ -57,7 +57,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -80,21 +83,23 @@ public final class Holiday extends JavaPlugin {
     private ChatManager chatManager;
     private DisguiseManager disguiseManager;
     private PermissionManager permissionManager;
-    @Setter private VisibilityHandler visibilityHandler;
+    @Setter
+    private VisibilityHandler visibilityHandler;
 
     private UUIDCache uuidCache;
 
     private Executor executor;
     private ScheduledExecutorService scheduledExecutor;
 
-    @Setter private boolean joinable = false;
+    @Setter
+    private boolean joinable = false;
 
     private Server thisServer;
 
     private ServerTask serverTask;
-    @Setter private RebootTask rebootTask;
+    @Setter
+    private RebootTask rebootTask;
     private Random random;
-
 
 
     @Override
@@ -128,9 +133,15 @@ public final class Holiday extends JavaPlugin {
 
 
     private void setupApi() {
-        MongoCredentials mongoCreds = Locale.MONGO_AUTH.getBoolean() ? new MongoCredentials(
-                Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_USERNAME.getString(), Locale.MONGO_PASSWORD.getString(), Locale.MONGO_DATABASE.getString())
-                : new MongoCredentials(Locale.MONGO_HOST.getString(), Locale.MONGO_PORT.getInt(), Locale.MONGO_DATABASE.getString());
+        MongoCredentials mongoCreds = Locale.MONGO_AUTH.getBoolean() ?
+                new MongoCredentials(Locale.MONGO_HOST.getString(),
+                                     Locale.MONGO_PORT.getInt(),
+                                     Locale.MONGO_USERNAME.getString(),
+                                     Locale.MONGO_PASSWORD.getString(),
+                                     Locale.MONGO_DATABASE.getString()) :
+                new MongoCredentials(Locale.MONGO_HOST.getString(),
+                                     Locale.MONGO_PORT.getInt(),
+                                     Locale.MONGO_DATABASE.getString());
         if (Locale.MONGO_URI_MODE.getBoolean()) {
             mongoCreds = new MongoCredentials(Locale.MONGO_URI.getString(), Locale.MONGO_DATABASE.getString());
         }
@@ -338,8 +349,7 @@ public final class Holiday extends JavaPlugin {
         if (this.getServer().getVersion().contains("1.7")) {
             this.nms = new NMS_v1_7_R4();
             log(ChatColor.GREEN + "FOUND COMPATIBLE SPIGOT VERSION, IT IS RECOMMENDED TO CHANGE TO 1.8.8, LOADING PLUGIN");
-        }
-        else if (this.getServer().getVersion().contains("1.8")) {
+        } else if (this.getServer().getVersion().contains("1.8")) {
             this.nms = new NMS_v1_8_R3();
             log(ChatColor.GREEN + "FOUND FULLY COMPATIBLE SPIGOT VERSION, LOADING PLUGIN");
         } else {
@@ -392,7 +402,7 @@ public final class Holiday extends JavaPlugin {
         HolidayAPI _api = (HolidayAPI) api;
 
         _api.setBroadcastConsumer(packet -> {
-            if(packet.getPermission() != null) {
+            if (packet.getPermission() != null) {
                 if (packet.getAlertType() != null) {
                     Bukkit.getOnlinePlayers().stream()
                             .filter(player -> player.hasPermission(packet.getPermission()))
@@ -472,7 +482,8 @@ public final class Holiday extends JavaPlugin {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
                 return br.readLine();
             }
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
 
         return "127.0.0.1";
     }
