@@ -5,6 +5,7 @@ import lombok.Setter;
 import me.andyreckt.holiday.api.server.IServer;
 import me.andyreckt.holiday.api.user.IRank;
 import me.andyreckt.holiday.core.HolidayAPI;
+import me.andyreckt.holiday.core.user.rank.Rank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,11 @@ public class Server implements IServer {
 
     @Override
     public IRank getWhitelistRank() {
-        return HolidayAPI.getUnsafeAPI().getRank(whitelistRank);
+        IRank whitelistRank = HolidayAPI.getUnsafeAPI().getRank(this.whitelistRank);
+
+        if (whitelistRank == null) return HolidayAPI.getUnsafeAPI().getDefaultRank();
+
+        return whitelistRank;
     }
 
 }
