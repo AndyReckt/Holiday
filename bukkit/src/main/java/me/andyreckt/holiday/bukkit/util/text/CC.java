@@ -1,6 +1,5 @@
 package me.andyreckt.holiday.bukkit.util.text;
 
-import co.aikar.commands.MessageType;
 import lombok.experimental.UtilityClass;
 import me.andyreckt.holiday.bukkit.Holiday;
 import me.andyreckt.holiday.bukkit.util.files.Locale;
@@ -141,13 +140,6 @@ public final class CC {
 
 		B_PRIMARY = PRIMARY + ChatColor.BOLD;
 		B_SECONDARY = SECONDARY + ChatColor.BOLD;
-
-		if (Holiday.getInstance().getCommandManager() != null) {
-			Holiday.getInstance().getCommandManager().setFormat(MessageType.HELP, CC.CHAT_CC, CC.PRIMARY_CC, CC.PRIMARY_CC);
-			Holiday.getInstance().getCommandManager().setFormat(MessageType.SYNTAX, CC.CHAT_CC, CC.PRIMARY_CC, ChatColor.WHITE);
-			Holiday.getInstance().getCommandManager().setFormat(MessageType.ERROR, ChatColor.RED, ChatColor.YELLOW, ChatColor.RED);
-			Holiday.getInstance().getCommandManager().setFormat(MessageType.INFO, CC.CHAT_CC, CC.PRIMARY_CC, CC.PRIMARY_CC);
-		}
 	}
 
 	public static String addNetworkPlaceholder(String string) {

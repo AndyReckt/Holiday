@@ -2,7 +2,6 @@ package me.andyreckt.holiday.bukkit;
 
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.InvalidCommandArgument;
-import co.aikar.commands.MessageType;
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -172,11 +171,6 @@ public final class Holiday extends JavaPlugin {
 
         this.commandManager.enableUnstableAPI("help");
 
-        this.commandManager.setFormat(MessageType.HELP, CC.CHAT_CC, CC.PRIMARY_CC, CC.PRIMARY_CC);
-        this.commandManager.setFormat(MessageType.SYNTAX, CC.CHAT_CC, CC.PRIMARY_CC, ChatColor.WHITE);
-        this.commandManager.setFormat(MessageType.ERROR, ChatColor.RED, ChatColor.YELLOW, ChatColor.RED);
-        this.commandManager.setFormat(MessageType.INFO, CC.CHAT_CC, CC.PRIMARY_CC, CC.PRIMARY_CC);
-
         this.commandManager.getCommandContexts().registerContext(Duration.class, c -> Duration.of(c.popFirstArg()));
         this.commandManager.getCommandContexts().registerContext(Player.class, c -> {
             String source = c.popFirstArg();
@@ -326,14 +320,6 @@ public final class Holiday extends JavaPlugin {
                 throw new ConditionFailedException("&cThis command is only available for console");
             }
         });
-
-        try {
-            ConfigFile lang = new ConfigFile(this, "plugins/Holiday/", "cmdlang_en.yml");
-            this.commandManager.getLocales().loadYamlLanguageFile(lang.getFile(), java.util.Locale.ENGLISH);
-        } catch (IOException | InvalidConfigurationException exception) {
-            exception.printStackTrace();
-            error("&cCould not load cmdlang_en.yml");
-        }
 
         Arrays.asList(
                 new ChatCommand(), new ConversationCommands(), new DebugCommand(),
