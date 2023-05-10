@@ -22,6 +22,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Set;
+import java.util.UUID;
+
 public class PunishmentCommands extends BaseCommand {
 
     @CommandAlias("ban|b")
@@ -196,6 +199,17 @@ public class PunishmentCommands extends BaseCommand {
                 .replace("%duration%", punishment.getDurationObject().toRoundedTime());
         PacketHandler.send(new KickPlayerPacket(punishment.getPunished(), toSend));
 
+        if (punishment.getType() != IPunishment.PunishmentType.BAN) return;
+
+        Profile punished = Holiday.getInstance().getApi().getProfile(punishment.getPunished());
+
+        for (UUID alt : punished.getAlts()) {
+            String altToSend = Locale.PUNISHMENT_BLACKLIST_KICK_RELATED.getStringNetwork();
+            altToSend = altToSend.replace("%reason%", punishment.getAddedReason())
+                    .replace("%duration%", punishment.getDurationObject().toRoundedTime())
+                    .replace("%related%", UserConstants.getNameWithColor(punished));
+            PacketHandler.send(new KickPlayerPacket(alt, altToSend));
+        }
     }
 
     private void sendPunishmentBroadcast(Punishment punishment, boolean silent) {

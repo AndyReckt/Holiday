@@ -40,7 +40,7 @@ public interface IPunishment {
         MUTE, BAN, IP_BAN, BLACKLIST;
 
         public String getName() {
-            if(this.name().equals("IP_BAN")) {
+            if (this.name().equals("IP_BAN")) {
                 return "IP Ban";
             }
             return WordUtils.capitalizeFully(this.name());

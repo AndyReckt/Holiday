@@ -70,25 +70,47 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         Profile profile = Holiday.getInstance().getApi().getProfile(player.getUniqueId());
 
-        Punishment punishment = (Punishment) profile.getActivePunishments().stream()
-                .filter(pun -> pun.getType() == IPunishment.PunishmentType.BAN ||
-                        pun.getType() == IPunishment.PunishmentType.IP_BAN ||
-                        pun.getType() == IPunishment.PunishmentType.BLACKLIST)
-                .findFirst().orElse(null);
+        Punishment punishment = null;
+
+        for (IPunishment active : profile.getActivePunishments()) {
+            if (active.getType() == IPunishment.PunishmentType.MUTE) {
+                continue;
+            }
+
+            if (active.getType() == IPunishment.PunishmentType.BLACKLIST) {
+                punishment = (Punishment) active;
+                break;
+            }
+
+            if (active.getType() == IPunishment.PunishmentType.IP_BAN) {
+                punishment = (Punishment) active;
+                continue;
+            }
+
+            if (active.getType() == IPunishment.PunishmentType.BAN) {
+                if (!(punishment != null && punishment.getType() == IPunishment.PunishmentType.IP_BAN)) {
+                    punishment = (Punishment) active;
+                }
+            }
+        }
 
         if (punishment == null) return;
         if (punishment.getType() == IPunishment.PunishmentType.BAN && Locale.BANNED_JOIN.getBoolean()) return;
 
         Locale locale;
+        Locale related;
         switch (punishment.getType()) {
             case BAN:
                 locale = punishment.getDurationObject().isPermanent() ? Locale.PUNISHMENT_BAN_KICK : Locale.PUNISHMENT_TEMP_BAN_KICK;
+                related = null;
                 break;
             case IP_BAN:
                 locale = Locale.PUNISHMENT_IP_BAN_KICK;
+                related = Locale.PUNISHMENT_IP_BAN_KICK_RELATED;
                 break;
             case BLACKLIST:
                 locale = Locale.PUNISHMENT_BLACKLIST_KICK;
+                related = Locale.PUNISHMENT_BLACKLIST_KICK_RELATED;
                 break;
             default:
                 return;
@@ -101,13 +123,24 @@ public class PlayerListener implements Listener {
         }
 
 
-        String kickMessage = locale.getStringNetwork()
-                .replace("%reason%", punishment.getAddedReason())
-                .replace("%duration%", punishment.getRemainingDuration().toRoundedTime());
-        event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
-        event.setKickMessage(CC.translate(kickMessage));
-        String toSend = Locale.PUNISHMENT_BANNED_LOGIN_ALERT.getString()
-                .replace("%player%", player.getName());
+        if (punishment.getPunished() == player.getUniqueId()) {
+            String kickMessage = locale.getStringNetwork()
+                    .replace("%reason%", punishment.getAddedReason())
+                    .replace("%duration%", punishment.getRemainingDuration().toRoundedTime());
+            event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
+            event.setKickMessage(CC.translate(kickMessage));
+        }
+        else if (related != null) {
+            String kickMessage = related.getStringNetwork()
+                    .replace("%reason%", punishment.getAddedReason())
+                    .replace("%duration%", punishment.getRemainingDuration().toRoundedTime())
+                    .replace("%related%", Bukkit.getOfflinePlayer(punishment.getPunished()).getName());
+            event.setResult(PlayerLoginEvent.Result.KICK_BANNED);
+            event.setKickMessage(CC.translate(kickMessage));
+        }
+
+        String toSend = Locale.PUNISHMENT_BANNED_LOGIN_ALERT.getString().replace("%player%", player.getName());
+
         PacketHandler.send(new BroadcastPacket(toSend, Perms.ADMIN_VIEW_NOTIFICATIONS.get(), AlertType.BANNED_LOGIN));
     }
 
