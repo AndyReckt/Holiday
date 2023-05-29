@@ -21,7 +21,7 @@ public class Rank implements IRank {
 
     private String prefix = "";
     private String suffix = "";
-    private String displayName = name;
+    private String displayName;
     private String color = "GREEN";
 
     private boolean bold = false;
@@ -45,6 +45,7 @@ public class Rank implements IRank {
     public Rank(String name) {
         this.uuid = UUID.randomUUID();
         this.name = name;
+        this.displayName = name;
     }
 
     @Override
