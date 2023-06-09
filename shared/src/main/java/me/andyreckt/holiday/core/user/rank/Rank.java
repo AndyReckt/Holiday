@@ -7,6 +7,7 @@ import me.andyreckt.holiday.api.user.IRank;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,12 +70,11 @@ public class Rank implements IRank {
     }
 
     @Override
-    public boolean isAboveOrEqual(IRank rank) {
-        return getPriority() >= rank.getPriority();
-    }
-
-    @Override
     public int compareTo(@NotNull IRank o) {
-        return Integer.compare(getPriority(), o.getPriority());
+        if (o.getPriority() > getPriority()) {
+            return 1;
+        } else if (o.getPriority() < getPriority()) {
+            return -1;
+        } else return Comparator.comparing(IRank::getName).compare(this, o);
     }
 }

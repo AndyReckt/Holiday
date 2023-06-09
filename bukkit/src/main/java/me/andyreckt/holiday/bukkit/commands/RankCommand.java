@@ -5,6 +5,7 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.SneakyThrows;
 import me.andyreckt.holiday.api.API;
@@ -28,6 +29,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -208,7 +210,7 @@ public class RankCommand extends BaseCommand {
         }
         Set<Rank> ranks = new HashSet<>();
         Holiday.getInstance().getApi().getRanks().forEach(r -> ranks.add((Rank) r));
-        Files.write(GsonProvider.GSON.toJson(ranks), file, Charsets.UTF_8);
+        Files.write(GsonProvider.GSON.newBuilder().setPrettyPrinting().create().toJson(ranks), file, Charsets.UTF_8);
         sender.sendMessage(CC.translate("&aSuccessfully exported ranks to &f" + file.getName()));
     }
 
