@@ -78,7 +78,8 @@ public class EssentialCommands extends BaseCommand {
                 UserConstants.getDisplayNameWithColor(profile),
                 UserConstants.getDisplayNameWithColor(targetProfile),
                 reason,
-                Holiday.getInstance().getThisServer().getServerName()
+                Holiday.getInstance().getThisServer().getServerName(),
+                Holiday.getInstance().getThisServer().getServerId()
         );
 
         PacketHandler.send(packet);

@@ -16,6 +16,7 @@ public class ReportPacket implements Packet {
     private String reported;
     private String reason;
     private String server;
+    private String serverId;
 
     @Override
     public void onReceive() {
@@ -30,7 +31,7 @@ public class ReportPacket implements Packet {
             Clickable clickable = new Clickable(s,
                     Locale.REPORT_CLICK_MESSAGE.getString()
                             .replace("%server%", server),
-                    "/join " + server
+                    "/join " + serverId
             );
 
             Bukkit.getOnlinePlayers().stream()
