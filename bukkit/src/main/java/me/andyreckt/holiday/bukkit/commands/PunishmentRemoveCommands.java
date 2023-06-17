@@ -29,6 +29,7 @@ public class PunishmentRemoveCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.BAN, reason, silent, sender);
@@ -43,6 +44,7 @@ public class PunishmentRemoveCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.IP_BAN, reason, silent, sender);
@@ -57,6 +59,7 @@ public class PunishmentRemoveCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.MUTE, reason, silent, sender);
@@ -71,6 +74,7 @@ public class PunishmentRemoveCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Appealed";
 
         unPunish(profile, target, IPunishment.PunishmentType.BLACKLIST, reason, silent, sender);

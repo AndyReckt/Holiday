@@ -37,6 +37,7 @@ public class PunishmentCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BAN, Duration.PERMANENT, reason, silent, sender);
@@ -52,6 +53,7 @@ public class PunishmentCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BLACKLIST, Duration.PERMANENT, reason, silent, sender);
@@ -67,6 +69,7 @@ public class PunishmentCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.IP_BAN, Duration.PERMANENT, reason, silent, sender);
@@ -83,6 +86,7 @@ public class PunishmentCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.BAN, duration, reason, silent, sender);
@@ -98,6 +102,7 @@ public class PunishmentCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.MUTE, Duration.PERMANENT, reason, silent, sender);
@@ -114,6 +119,7 @@ public class PunishmentCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         punish(profile, target, IPunishment.PunishmentType.MUTE, duration, reason, silent, sender);
@@ -129,6 +135,7 @@ public class PunishmentCommands extends BaseCommand {
         Profile profile = sender instanceof Player ? api.getProfile(((Player) sender).getUniqueId()) : UserProfile.getConsoleProfile();
 
         boolean silent = reason.contains("-s") || reason.endsWith("-s");
+        reason = reason.replace("-s", "");
         if (reason.equals("") || reason.equals(" ")) reason = "Cheating";
 
         String issuerName = UserConstants.getNameWithColor(profile);
