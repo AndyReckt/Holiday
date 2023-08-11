@@ -1,0 +1,70 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: 'maven'
+    directory: '/'
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: 'org.yaml:snakeyaml'
+        versions: ['>=1.33']
+    
+  - package-ecosystem: 'maven'
+    directory: '/shared'
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: 'org.yaml:snakeyaml'
+        versions: ['>=1.33']
+    
+  - package-ecosystem: 'maven'
+    directory: '/bukkit'
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: 'org.yaml:snakeyaml'
+        versions: ['>=1.33']
+      - dependency-name: 'io.github.git-commit-id:git-commit-id-maven-plugin'
+        versions: ['>=4.9.9']
+        
+  - package-ecosystem: 'maven'
+    directory: '/bungee'
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: 'org.yaml:snakeyaml'
+        versions: ['>=1.33']
+
+  - package-ecosystem: 'maven'
+    directory: '/staff'
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: 'org.yaml:snakeyaml'
+        versions: ['>=1.33']
+  
+  - package-ecosystem: 'maven'
+    directory: '/velocity'
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: 'org.yaml:snakeyaml'
+        versions: ['>=1.33']
+      - dependency-name: 'com.velocitypowered:velocity-api'
+        versions: ['>=3.1.1']
+  
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 5
