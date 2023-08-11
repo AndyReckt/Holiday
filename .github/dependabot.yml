@@ -42,6 +42,8 @@ updates:
     ignore:
       - dependency-name: 'org.yaml:snakeyaml'
         versions: ['>=1.33']
+      - dependency-name: 'io.github.git-commit-id:git-commit-id-maven-plugin'
+        versions: ['>=4.9.9']
 
   - package-ecosystem: 'maven'
     directory: '/staff'
@@ -51,6 +53,8 @@ updates:
     ignore:
       - dependency-name: 'org.yaml:snakeyaml'
         versions: ['>=1.33']
+      - dependency-name: 'io.github.git-commit-id:git-commit-id-maven-plugin'
+        versions: ['>=4.9.9']
   
   - package-ecosystem: 'maven'
     directory: '/velocity'
@@ -62,6 +66,8 @@ updates:
         versions: ['>=1.33']
       - dependency-name: 'com.velocitypowered:velocity-api'
         versions: ['>=3.1.1']
+      - dependency-name: 'io.github.git-commit-id:git-commit-id-maven-plugin'
+        versions: ['>=4.9.9']
   
   - package-ecosystem: 'github-actions'
     directory: '/'
